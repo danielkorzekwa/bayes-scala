@@ -34,11 +34,11 @@ Consider the following example of a Bayesian Network [1](#references).
 	
 	//Create cluster graph
 	val clusterGraph = GenericClusterGraph()
-	clusterGraph.addCluster(1, studentBN.difficultyFactor)
-	clusterGraph.addCluster(2, studentBN.intelliFactor)
-	clusterGraph.addCluster(3, studentBN.gradeFactor)
-	clusterGraph.addCluster(4, studentBN.satFactor)
-	clusterGraph.addCluster(5, studentBN.letterFactor)
+	clusterGraph.addCluster(1, difficultyVar)
+	clusterGraph.addCluster(2, intelliVar)
+	clusterGraph.addCluster(3, gradeVar)
+	clusterGraph.addCluster(4, satVar)
+	clusterGraph.addCluster(5, letterVar)
 	
 	//Add edges between clusters in a cluster graph
 	clusterGraph.addEdges((1, 3), (2, 3), (2, 4), (3, 5))
@@ -51,7 +51,7 @@ Consider the following example of a Bayesian Network [1](#references).
 	println(gradeMarginal.getVariables()) 
 	println(gradeMarginal.getValues())
  
-### Example 2: Compute beliefs for Grade variable given intelligence is high
+### Example 2: Compute beliefs for Grade variable given Intelligence is high
  
 @TODO
  
