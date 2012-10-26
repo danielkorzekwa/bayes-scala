@@ -9,4 +9,4 @@ Functionality:
 - Expectation Maximisation in Dynamic Bayesian Networks
 
 Test:
-![Student Bayesian Network](bayes-scala/master/doc/student_bn.png "Student Bayesian Network1")
+![Student Bayesian Network](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/student_bn.png "Student Bayesian Network1")
