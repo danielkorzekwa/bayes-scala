@@ -9,7 +9,7 @@ Functionality:
  * Cluster Loopy BP inference
  * Expectation Maximisation in Dynamic Bayesian Networks
 
-Getting Started - Loopy Belief Propagation in a Cluster Graph
+Getting Started - Loopy Belief Propagation in a Cluster Graph [1](#references)
 ---------------
 
 Consider the following example of a Bayesian Network [1](#references).
