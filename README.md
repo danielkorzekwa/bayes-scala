@@ -7,3 +7,6 @@ Functionality:
 - Discrete Factor - product, marginal, evidence, normalise
 - Cluster Loopy BP inference
 - Expectation Maximisation in Dynamic Bayesian Networks
+
+Test:
+![Student Bayesian Network](/doc/student_bn.png "Student Bayesian Network1")
