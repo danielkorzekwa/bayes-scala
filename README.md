@@ -16,7 +16,7 @@ Consider the following example of a Bayesian Network [1](#references).
 
 ![Student Bayesian Network](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/student_bn.png "Student Bayesian Network")
 
-### Example 1: Compute beliefs for Grade variable
+### Example 1: Create cluster graph and compute beliefs for Grade variable
 
 	//Create variables
 	val difficultyVar = Var(1, 2)
@@ -51,8 +51,15 @@ Consider the following example of a Bayesian Network [1](#references).
 	val gradeMarginalVariables = gradeMarginal.getVariables() // Var(3,3)
     val gradeMarginalValues = gradeMarginal.getValues() // List(0.3620, 0.2884, 0.3496)
 	
-### Example 2: Compute beliefs for Grade variable given Intelligence is high
- 
+### Example 2: Compute beliefs for Grade variable given SAT test is high
+
+	clusterGraph.setEvidence(satVar.id, 0)
+	clusterGraph.calibrate(Some(progress))
+	
+	val gradeMarginal = clusterGraph.marginal(gradeVar.id)
+	val gradeMarginalVariables = gradeMarginal.getVariables() // Var(3,3)
+	val gradeMarginalValues = gradeMarginal.getValues() // List(0.2446, 0.3257, 0.4295)
+
 @TODO
  
 References
