@@ -20,6 +20,7 @@ Consider the following example of a Bayesian Network [1](#references), created w
 
 1. Create cluster graph
 
+
 	//Create variables
 	val difficultyVar = Var(1, 2)
 	val intelliVar = Var(2, 2)
@@ -46,6 +47,7 @@ Consider the following example of a Bayesian Network [1](#references), created w
 	clusterGraph.addEdges((1, 3), (2, 3), (2, 4), (3, 5))
 
 2. Calibrate cluster graph and get Grade marginal
+
 	
 	//Calibrate cluster graph
 	clusterGraph.calibrate()
