@@ -18,6 +18,8 @@ Consider the following example of a Bayesian Network [1](#references), created w
 
 ### Example 1: Create cluster graph and compute beliefs for Grade variable
 
+1. Create cluster graph
+
 	//Create variables
 	val difficultyVar = Var(1, 2)
 	val intelliVar = Var(2, 2)
@@ -42,26 +44,28 @@ Consider the following example of a Bayesian Network [1](#references), created w
 
 	//Add edges between clusters in a cluster graph
 	clusterGraph.addEdges((1, 3), (2, 3), (2, 4), (3, 5))
+
+2. Calibrate cluster graph and get Grade marginal
 	
 	//Calibrate cluster graph
 	clusterGraph.calibrate()
 	
-	//Compute beliefs for Grade variable
+	//Get beliefs for Grade variable
 	val gradeMarginal = clusterGraph.marginal(gradeVar.id)
-	val gradeMarginalVariables = gradeMarginal.getVariables() // Var(3,3)
-    val gradeMarginalValues = gradeMarginal.getValues() // List(0.3620, 0.2884, 0.3496)
+	gradeMarginal.getVariables() // Var(3,3)
+    gradeMarginal.getValues() // List(0.3620, 0.2884, 0.3496)
 	
 ### Example 2: Compute beliefs for Grade variable given SAT test is high
 
+1. Set evidence for SAT variable and get Grade marginal
+
 	clusterGraph.setEvidence(satVar.id, 0)
-	clusterGraph.calibrate(Some(progress))
+	clusterGraph.calibrate()
 	
 	val gradeMarginal = clusterGraph.marginal(gradeVar.id)
-	val gradeMarginalVariables = gradeMarginal.getVariables() // Var(3,3)
-	val gradeMarginalValues = gradeMarginal.getValues() // List(0.2446, 0.3257, 0.4295)
+	gradeMarginal.getVariables() // Var(3,3)
+	gradeMarginal.getValues() // List(0.2446, 0.3257, 0.4295)
 
-@TODO
- 
 References
 ---------------
 1. Daphne Koller, Nir Friedman. Probabilistic Graphical Models, Principles and Techniques, 2009
