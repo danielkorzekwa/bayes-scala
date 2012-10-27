@@ -48,9 +48,9 @@ Consider the following example of a Bayesian Network [1](#references).
 	
 	//Compute beliefs for Grade variable
 	val gradeMarginal = clusterGraph.marginal(gradeVar.id)
-	println(gradeMarginal.getVariables()) 
-	println(gradeMarginal.getValues())
- 
+	val gradeMarginalVariables = gradeMarginal.getVariables() // Var(3,3)
+    val gradeMarginalValues = gradeMarginal.getValues() // List(0.3620, 0.2884, 0.3496)
+	
 ### Example 2: Compute beliefs for Grade variable given Intelligence is high
  
 @TODO
