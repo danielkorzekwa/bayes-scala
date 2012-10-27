@@ -18,8 +18,7 @@ Consider the following example of a Bayesian Network [1](#references), created w
 
 ### Example 1: Create cluster graph and compute beliefs for Grade variable
 
-1. Create cluster graph
-
+Create cluster graph:
 
 	//Create variables
 	val difficultyVar = Var(1, 2)
@@ -46,8 +45,7 @@ Consider the following example of a Bayesian Network [1](#references), created w
 	//Add edges between clusters in a cluster graph
 	clusterGraph.addEdges((1, 3), (2, 3), (2, 4), (3, 5))
 
-2. Calibrate cluster graph and get Grade marginal
-
+Calibrate cluster graph and get Grade marginal:
 	
 	//Calibrate cluster graph
 	clusterGraph.calibrate()
@@ -59,7 +57,7 @@ Consider the following example of a Bayesian Network [1](#references), created w
 	
 ### Example 2: Compute beliefs for Grade variable given SAT test is high
 
-1. Set evidence for SAT variable and get Grade marginal
+Set evidence for SAT variable and get Grade marginal:
 
 	clusterGraph.setEvidence(satVar.id, 0)
 	clusterGraph.calibrate()
