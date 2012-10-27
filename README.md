@@ -12,7 +12,7 @@ Functionality:
 Getting Started - Loopy Belief Propagation in a Cluster Graph [1](#references)
 ---------------
 
-Consider the following example of a Bayesian Network [1](#references).
+Consider the following example of a Bayesian Network [1](#references), created with SamIam tool [2](#references).
 
 ![Student Bayesian Network](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/student_bn.png "Student Bayesian Network")
 
@@ -64,4 +64,5 @@ Consider the following example of a Bayesian Network [1](#references).
  
 References
 ---------------
-1.  Daphne Koller, Nir Friedman. Probabilistic Graphical Models, Principles and Techniques, 2009
+1. Daphne Koller, Nir Friedman. Probabilistic Graphical Models, Principles and Techniques, 2009
+2. Automated Reasoning Group of Professor Adnan Darwiche at UCLA. SamIam: Sensitivity Analysis, Modelling, Inference and More, version 3.0
