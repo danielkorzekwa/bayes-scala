@@ -76,4 +76,27 @@ object Factor {
   def apply(variable: Var, values: Array[Double]): SingleFactor = {
     new SingleFactor(variable, values)
   }
+
+  /**
+   * Creates multi factor.
+   *
+   * @param variable1 Factor variable
+   * @param variable2 Factor variable
+   * @param values Factor values
+   */
+  def apply(variable1: Var, variable2: Var, values: Array[Double]): MultiFactor = {
+    MultiFactor(Array(variable1, variable2), values)
+  }
+
+  /**
+   * Creates multi factor.
+   *
+   * @param variable1 Factor variable
+   * @param variable2 Factor variable
+   * @param variable3 Factor variable
+   * @param values Factor values
+   */
+  def apply(variable1: Var, variable2: Var, variable3: Var, values: Array[Double]): MultiFactor = {
+    MultiFactor(Array(variable1, variable2, variable3), values)
+  }
 }
