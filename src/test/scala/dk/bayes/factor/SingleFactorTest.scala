@@ -97,12 +97,12 @@ class SingleFactorTest {
    * Tests for normalise() method.
    */
 
-  @Test def normalise_aready_normalised {
+  @Test def normalise_already_normalised {
 
     val factor = SingleFactor(Var(1, 3), Array(0.3, 0.5, 0.2))
     val normalisedFactor = factor.normalise()
 
-    assertFactor(SingleFactor(Var(1, 3), Array(0.3, 0.5, 0.2)), normalisedFactor)
+    assertFactor(factor, normalisedFactor)
   }
 
   @Test def normalise {

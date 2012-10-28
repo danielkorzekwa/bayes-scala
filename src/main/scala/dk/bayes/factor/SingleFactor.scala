@@ -38,7 +38,7 @@ class SingleFactor(variable: Var, values: Array[Double]) extends Factor {
       i += 1
     }
 
-    new SingleFactor(variable, productValues)
+    SingleFactor(variable, productValues)
   }
 
   def withEvidence(evidence: Tuple2[Int, Int]): Factor = {
@@ -47,7 +47,7 @@ class SingleFactor(variable: Var, values: Array[Double]) extends Factor {
     val evidenceValues = new Array[Double](values.size)
     evidenceValues(evidence._2) = values(evidence._2)
 
-    new SingleFactor(variable, evidenceValues)
+    SingleFactor(variable, evidenceValues)
   }
 
   def marginal(varId: Int): SingleFactor = {
@@ -61,27 +61,13 @@ class SingleFactor(variable: Var, values: Array[Double]) extends Factor {
       i += 1
     }
 
-    new SingleFactor(variable, marginalValues)
+    SingleFactor(variable, marginalValues)
   }
 
   def normalise(): SingleFactor = {
 
-    var normalisation = 0d
-    val normalisedValues = new Array[Double](values.size)
-
-    var i = 0
-    while (i < values.size) {
-      normalisation += values(i)
-      i += 1
-    }
-
-    i = 0
-    while (i < values.size) {
-      normalisedValues(i) += values(i) / normalisation
-      i += 1
-    }
-
-    new SingleFactor(variable, normalisedValues)
+    val normalisedValues = FactorUtil.normalise(values)
+    SingleFactor(variable, normalisedValues)
   }
 
 }
