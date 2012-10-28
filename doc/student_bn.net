@@ -1,0 +1,94 @@
+net
+{
+	propagationenginegenerator1791944048146838126L = "edu.ucla.belief.approx.BeliefPropagationSettings@17c6323";
+	huginenginegenerator3061656038650325130L = "edu.ucla.belief.inference.JoinTreeSettings@150b06b";
+	recoveryenginegenerator6944530267470113528l = "edu.ucla.util.SettingsImpl@6e6874";
+	node_size = (130.0 55.0);
+}
+
+node Grade
+{
+	states = ("g0" "g1" "g2" );
+	position = (642 -326);
+	excludepolicy = "include whole CPT";
+	ismapvariable = "false";
+	ID = "variable2";
+	label = "Grade";
+	DSLxSUBMODEL = "Root Submodel";
+	DSLxEXTRA_DEFINITIONxDIAGNOSIS_TYPE = "AUXILIARY";
+	diagnosistype = "AUXILIARY";
+}
+node SAT
+{
+	states = ("s0" "s1" );
+	position = (801 -324);
+	excludepolicy = "include whole CPT";
+	ismapvariable = "false";
+	ID = "variable4";
+	label = "SAT";
+	DSLxSUBMODEL = "Root Submodel";
+	DSLxEXTRA_DEFINITIONxDIAGNOSIS_TYPE = "AUXILIARY";
+	diagnosistype = "AUXILIARY";
+}
+node Letter
+{
+	states = ("l0" "l1" );
+	position = (642 -436);
+	excludepolicy = "include whole CPT";
+	ismapvariable = "false";
+	ID = "variable3";
+	label = "Letter";
+	DSLxSUBMODEL = "Root Submodel";
+	DSLxEXTRA_DEFINITIONxDIAGNOSIS_TYPE = "AUXILIARY";
+	diagnosistype = "AUXILIARY";
+}
+node Difficulty
+{
+	states = ("d0" "d1" );
+	position = (559 -210);
+	excludepolicy = "include whole CPT";
+	ismapvariable = "false";
+	ID = "variable0";
+	label = "Difficulty";
+	DSLxSUBMODEL = "Root Submodel";
+	DSLxEXTRA_DEFINITIONxDIAGNOSIS_TYPE = "AUXILIARY";
+	diagnosistype = "AUXILIARY";
+}
+node Intelligence
+{
+	states = ("i0" "i1" );
+	position = (723 -210);
+	excludepolicy = "include whole CPT";
+	ismapvariable = "false";
+	ID = "variable1";
+	label = "Intelligence";
+	DSLxSUBMODEL = "Root Submodel";
+	DSLxEXTRA_DEFINITIONxDIAGNOSIS_TYPE = "AUXILIARY";
+	diagnosistype = "AUXILIARY";
+}
+potential ( Grade | Intelligence Difficulty )
+{
+	data = (((	0.3	0.4	0.3	)
+		(	0.05	0.25	0.7	))
+		((	0.9	0.08	0.02	)
+		(	0.5	0.3	0.2	)));
+}
+potential ( SAT | Intelligence )
+{
+	data = ((	0.95	0.05	)
+		(	0.2	0.8	));
+}
+potential ( Letter | Grade )
+{
+	data = ((	0.1	0.9	)
+		(	0.4	0.6	)
+		(	0.99	0.01	));
+}
+potential ( Difficulty | )
+{
+	data = (	0.6	0.4	);
+}
+potential ( Intelligence | )
+{
+	data = (	0.7	0.3	);
+}
