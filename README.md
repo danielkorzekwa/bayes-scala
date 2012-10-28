@@ -28,11 +28,11 @@ Create cluster graph:
 	val letterVar = Var(5, 2)
 	
 	//Create factors
-	val difficultyFactor = GenericFactor(difficultyVar, Array(0.6, 0.4))
-	val intelliFactor = GenericFactor(intelliVar, Array(0.7, 0.3))
-	val gradeFactor = GenericFactor(intelliVar, difficultyVar, gradeVar, Array(0.3, 0.4, 0.3, 0.05, 0.25, 0.7, 0.9, 0.08, 0.02, 0.5,0.3,0.2))
-	val satFactor = GenericFactor(intelliVar, satVar, Array(0.95, 0.05, 0.2, 0.8))
-	val letterFactor = GenericFactor(gradeVar, letterVar, Array(0.1, 0.9, 0.4, 0.6, 0.99, 0.01))
+	val difficultyFactor = Factor(difficultyVar, Array(0.6, 0.4))
+	val intelliFactor = Factor(intelliVar, Array(0.7, 0.3))
+	val gradeFactor = Factor(intelliVar, difficultyVar, gradeVar, Array(0.3, 0.4, 0.3, 0.05, 0.25, 0.7, 0.9, 0.08, 0.02, 0.5,0.3,0.2))
+	val satFactor = Factor(intelliVar, satVar, Array(0.95, 0.05, 0.2, 0.8))
+	val letterFactor = Factor(gradeVar, letterVar, Array(0.1, 0.9, 0.4, 0.6, 0.99, 0.01))
 	
 	//Create cluster graph
     val clusterGraph = GenericClusterGraph()

@@ -5,6 +5,8 @@ import scala.collection.mutable.LinkedHashMap
 
 /**
  * Represents potentials over a set of variables.
+ * 
+ * @author Daniel Korzekwa
  */
 trait Factor {
 
@@ -27,6 +29,7 @@ trait Factor {
 
   /**
    *  Returns product of this factor and single factor.
+   *  
    */
   def product(singleFactor: SingleFactor): Factor
 
@@ -60,4 +63,8 @@ object Factor {
    */
   case class Var(id: Int, dim: Int)
 
+  /**Creates single factor.*/
+  def apply(variable: Var, values: Array[Double]): SingleFactor = {
+    SingleFactor(variable, values)
+  }
 }
