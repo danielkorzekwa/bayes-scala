@@ -1,8 +1,5 @@
 package dk.bayes.factor
 
-import Factor._
-import scala.collection.mutable.LinkedHashMap
-
 /**
  * Represents potentials over a set of variables.
  * 
@@ -29,7 +26,6 @@ trait Factor {
 
   /**
    *  Returns product of this factor and single factor.
-   *  
    */
   def product(singleFactor: SingleFactor): Factor
 
@@ -41,7 +37,7 @@ trait Factor {
   def withEvidence(evidence: Tuple2[Int, Int]): Factor
 
   /**
-   * Returns marginal factor for a given variable.
+   * Returns marginal factor for a given variable id.
    */
   def marginal(varId: Int): SingleFactor
 
@@ -53,18 +49,13 @@ trait Factor {
 }
 
 object Factor {
-
-  /**
-   * Represents factor variable.
-   *
-   * @param name Unique variable identifier.
-   * @param values Number of values that this variables can take on.
-   *
-   */
-  case class Var(id: Int, dim: Int)
-
-  /**Creates single factor.*/
+  
+  /**Creates single factor.
+   * 
+   * @param variable Factor variable
+   * @param values Factor values
+   * */
   def apply(variable: Var, values: Array[Double]): SingleFactor = {
-    SingleFactor(variable, values)
+    new SingleFactor(variable, values)
   }
 }

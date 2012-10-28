@@ -1,13 +1,14 @@
 package dk.bayes.factor
 
-import Factor._
-
 /**
  * Represents factor for a single variable.
  *
  * @author Daniel Korzekwa
+ *
+ * @param variable Factor variable
+ * @param values Factor values
  */
-case class SingleFactor(variable: Var, values: Array[Double]) extends Factor {
+class SingleFactor(variable: Var, values: Array[Double]) extends Factor {
 
   require(variable.dim == values.size, "Number of potential values must equal to variable dimension")
 
@@ -26,8 +27,8 @@ case class SingleFactor(variable: Var, values: Array[Double]) extends Factor {
   }
 
   def product(singleFactor: SingleFactor): SingleFactor = {
-    require(variable.id == singleFactor.variable.id, "Variable ids for product factors are not the same")
-    require(variable.dim == singleFactor.variable.dim, "Variable dimensions for product factors are not the same")
+    require(variable.id == singleFactor.getVariable().id, "Variable ids for product factors are not the same")
+    require(variable.dim == singleFactor.getVariable().dim, "Variable dimensions for product factors are not the same")
 
     val productValues = new Array[Double](values.size)
 
@@ -37,7 +38,7 @@ case class SingleFactor(variable: Var, values: Array[Double]) extends Factor {
       i += 1
     }
 
-    this.copy(values = productValues)
+    new SingleFactor(variable, productValues)
   }
 
   def withEvidence(evidence: Tuple2[Int, Int]): Factor = {
@@ -46,7 +47,7 @@ case class SingleFactor(variable: Var, values: Array[Double]) extends Factor {
     val evidenceValues = new Array[Double](values.size)
     evidenceValues(evidence._2) = values(evidence._2)
 
-    this.copy(values = evidenceValues)
+    new SingleFactor(variable, evidenceValues)
   }
 
   def marginal(varId: Int): SingleFactor = {
@@ -60,7 +61,7 @@ case class SingleFactor(variable: Var, values: Array[Double]) extends Factor {
       i += 1
     }
 
-    this.copy(values = marginalValues)
+    new SingleFactor(variable, marginalValues)
   }
 
   def normalise(): SingleFactor = {
@@ -80,7 +81,18 @@ case class SingleFactor(variable: Var, values: Array[Double]) extends Factor {
       i += 1
     }
 
-    this.copy(values = normalisedValues)
+    new SingleFactor(variable, normalisedValues)
   }
 
+}
+
+object SingleFactor {
+
+  /**
+   * Creates single factor.
+   *
+   * @param variable Factor variable
+   * @param values Factor values
+   */
+  def apply(variable: Var, values: Array[Double]): SingleFactor = new SingleFactor(variable, values)
 }

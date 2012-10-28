@@ -7,7 +7,7 @@ import dk.bayes.testutil.AssertUtil._
 
 class SingleFactorTest {
 
-  val factor = SingleFactor(Var(1, 3), Array(0.3, 0.5, 0.2))
+  val factor = new SingleFactor(Var(1, 3), Array(0.3, 0.5, 0.2))
 
   /**
    * Tests for constructor
@@ -59,7 +59,7 @@ class SingleFactorTest {
   }
 
   @Test def product {
-    val thatFactor = SingleFactor(Var(1, 3), Array(0.4, 0.1, 0.5))
+    val thatFactor = new SingleFactor(Var(1, 3), Array(0.4, 0.1, 0.5))
     val factorProduct = factor.product(thatFactor)
 
     assertFactor(SingleFactor(Var(1, 3), Array(0.12, 0.05, 0.1)), factorProduct)
