@@ -3,7 +3,7 @@ package dk.bayes.factor
 import scala.Math._
 
 /**
- * Represents factor for a multiple variables.
+ * Represents factor for multiple variables.
  *
  * @author Daniel Korzekwa
  *
@@ -47,19 +47,11 @@ case class MultiFactor(variables: Array[Var], values: Array[Double]) extends Fac
     }
     require(singleFactorStepSize > 0, "Factor variable not found:" + singleFactor.getVariable().id)
 
+    val singleFactorValues = singleFactor.getValues()
     val productValues = new Array[Double](values.size)
-    i = 0
-    var singleFactorIndex = 0
-    while (i < values.size) {
 
-      if (i > 0 && (i % singleFactorStepSize) == 0) {
-        if (singleFactorIndex < singleFactor.getVariable().dim - 1) singleFactorIndex += 1
-        else singleFactorIndex = 0
-      }
-
-      productValues(i) = values(i) * singleFactor.getValues()(singleFactorIndex)
-      i += 1
-    }
+    processValues(singleFactor.getVariable().dim, singleFactorStepSize,
+      (i: Int, varIndex: Int) => productValues(i) = values(i) * singleFactorValues(varIndex))
 
     MultiFactor(variables, productValues)
   }
@@ -75,19 +67,9 @@ case class MultiFactor(variables: Array[Var], values: Array[Double]) extends Fac
 
       val stepSize = stepSizes(varIndex)
       val evidenceValues = new Array[Double](values.size)
-      var evidenceIndex = 0
 
-      var i = 0
-      while (i < values.size) {
-
-        if (i > 0 && (i % stepSize) == 0) {
-          if (evidenceIndex < evidenceVariable.dim - 1) evidenceIndex += 1 else evidenceIndex = 0
-        }
-
-        if (evidenceIndex == evidence._2) evidenceValues(i) = values(i)
-
-        i += 1
-      }
+      processValues(evidenceVariable.dim, stepSize,
+        (i: Int, varIndex: Int) => if (varIndex == evidence._2) evidenceValues(i) = values(i))
 
       MultiFactor(variables, evidenceValues)
 
@@ -107,18 +89,8 @@ case class MultiFactor(variables: Array[Var], values: Array[Double]) extends Fac
 
       val marginalValues = new Array[Double](marginalVariable.dim)
 
-      var i = 0
-      var marginalIndex = 0
-      while (i < values.size) {
-
-        if (i > 0 && (i % stepSize) == 0) {
-          if (marginalIndex < marginalVariable.dim - 1) marginalIndex += 1 else marginalIndex = 0
-        }
-
-        marginalValues(marginalIndex) = marginalValues(marginalIndex) + values(i)
-
-        i += 1
-      }
+      processValues(marginalVariable.dim, stepSize,
+        (i: Int, varIndex: Int) => marginalValues(varIndex) += values(i))
 
       SingleFactor(marginalVariable, marginalValues)
 
@@ -127,20 +99,45 @@ case class MultiFactor(variables: Array[Var], values: Array[Double]) extends Fac
     marginalFactor
   }
 
+  def normalise(): Factor = {
+    val normalisedValues = FactorUtil.normalise(values)
+    new MultiFactor(variables, normalisedValues)
+  }
+
+  /**
+   * Iterates over all factor values, providing at every iteration value index and variable index.
+   *
+   * @param dim Variable dimension
+   * @param stepSize Number of steps before reaching next assignment for a given dimension
+   * @param process (valueIndex, variableIndex) => Unit
+   */
+  private def processValues(dim: Int, stepSize: Int, process: (Int, Int) => Unit) {
+
+    var i = 0
+    var varIndex = 0
+    while (i < values.size) {
+
+      process(i, varIndex)
+
+      if (((i + 1) % stepSize) == 0) {
+        if (varIndex < dim - 1) varIndex += 1 else varIndex = 0
+      }
+
+      i += 1
+    }
+  }
+
+  /**
+   * Returns variable index for variable id or -1 if variable not found.
+   */
   private def findVariableIndex(varId: Int): Int = {
 
     var i = 0
     while (i < variables.size) {
-      val variable = variables(i)
-      if (variable.id == varId) return i
+      if (variables(i).id == varId) return i
       i += 1
     }
     -1
-  }
-
-  def normalise(): Factor = {
-    val normalisedValues = FactorUtil.normalise(values)
-    new MultiFactor(variables, normalisedValues)
   }
 
 }

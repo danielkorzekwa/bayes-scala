@@ -45,7 +45,7 @@ object FactorUtil {
 
   /**
    * Returns step sizes for factor variables.
-   * Step size - how many steps are there before reaching next assignment for a given dimension.
+   * Step size - Number of steps before reaching next assignment for a given dimension.
    */
   def calcStepSizes(variables: Array[Var]): Array[Int] = {
 
