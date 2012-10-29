@@ -11,7 +11,7 @@ object AssertUtil {
     var i = 0
     for ((expected, actual) <- expected.zip(actual)) {
       assertEquals("Element: " + i, expected, actual, delta)
-      i = i + 1
+      i += 1
     }
   }
   
