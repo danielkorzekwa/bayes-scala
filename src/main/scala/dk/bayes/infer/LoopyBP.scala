@@ -10,10 +10,14 @@ import dk.bayes.factor.SingleFactor
 import scala.Math._
 
 /**
- * Loopy BP calibration and inference i cluster graph presented in
- * 'Daphne Koller, Nir Friedman. Probabilistic Graphical Models, Principles and Techniques, 2009'
+ * Loopy BP calibration and inference in a cluster graph, presented in
+ * 'Daphne Koller, Nir Friedman. Probabilistic Graphical Models, Principles and Techniques, 2009' book.
  *
  *  @author Daniel Korzekwa
+ *  
+ *  @param clusterGraph  
+ *  @param threshold Maximum absolute difference between old and new corresponding messages in a cluster graph,
+ *  before calibration is completed
  */
 case class LoopyBP(clusterGraph: ClusterGraph, threshold: Double = 0.00001) extends ClusterGraphInfer {
 
