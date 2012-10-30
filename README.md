@@ -4,15 +4,15 @@ Bayesian Inference Engine in Scala
 
 Major features:
 
- * Factorisation 
+ * Factorisation
    * product
    * marginal
    * evidence
    * likelihood of assignment
-   
+
  * Loopy Belief Propagation in a Cluster Graph with discrete variables
  
- * Cluster Graph functions: 
+ * Cluster Graph functions
    * get cluster belief
    * get variable marginal
    * get log likelihood of assignment
