@@ -1,13 +1,15 @@
 Bayesian Inference Engine in Scala
 ===========
 
-Moving the Bayesian Inference Scala code from https://github.com/danielkorzekwa/tennis-rating-dbn-em-scala to this project - in progress...
 
-Functionality:
+Major features:
 
- * Discrete Factor - product, marginal, evidence, normalise
- * Cluster Loopy BP inference
- * Expectation Maximisation in Dynamic Bayesian Networks
+ * Loopy Belief Propagation in a Cluster Graph with discrete variables
+ * Cluster Graph functions: 
+   * get cluster belief
+   * get variable marginal
+   * get log likelihood of assignment
+   * set evidence
 
 Getting Started - Loopy Belief Propagation in a Cluster Graph [1](#references)
 ---------------
@@ -16,7 +18,7 @@ Consider the following example of a Bayesian Network [1](#references), created w
 
 ![Student Bayesian Network](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/student_bn.png "Student Bayesian Network")
 
-### Example 1: Create cluster graph and compute beliefs for Grade variable
+### Example 1: Create cluster graph and compute marginal for Grade variable ([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/infer/LoopyBPGettingStarted.scala))
 
 Create cluster graph:
 
@@ -30,39 +32,40 @@ Create cluster graph:
 	//Create factors
 	val difficultyFactor = Factor(difficultyVar, Array(0.6, 0.4))
 	val intelliFactor = Factor(intelliVar, Array(0.7, 0.3))
-	val gradeFactor = Factor(intelliVar, difficultyVar, gradeVar, Array(0.3, 0.4, 0.3, 0.05, 0.25, 0.7, 0.9, 0.08, 0.02, 0.5,0.3,0.2))
+	val gradeFactor = Factor(intelliVar, difficultyVar, gradeVar, Array(0.3, 0.4, 0.3, 0.05, 0.25, 0.7, 0.9, 0.08, 0.02, 0.5, 0.3, 0.2))
 	val satFactor = Factor(intelliVar, satVar, Array(0.95, 0.05, 0.2, 0.8))
 	val letterFactor = Factor(gradeVar, letterVar, Array(0.1, 0.9, 0.4, 0.6, 0.99, 0.01))
 	
 	//Create cluster graph
-    val clusterGraph = GenericClusterGraph()
-    clusterGraph.addCluster(1, difficultyFactor)
-    clusterGraph.addCluster(2, intelliFactor)
-    clusterGraph.addCluster(3, gradeFactor)
-    clusterGraph.addCluster(4, satFactor)
-    clusterGraph.addCluster(5, letterFactor)
-
+	val clusterGraph = GenericClusterGraph()
+	clusterGraph.addCluster(1, difficultyFactor)
+	clusterGraph.addCluster(2, intelliFactor)
+	clusterGraph.addCluster(3, gradeFactor)
+	clusterGraph.addCluster(4, satFactor)
+	clusterGraph.addCluster(5, letterFactor)
+	
 	//Add edges between clusters in a cluster graph
 	clusterGraph.addEdges((1, 3), (2, 3), (2, 4), (3, 5))
 
 Calibrate cluster graph and get Grade marginal:
 	
 	//Calibrate cluster graph
-	clusterGraph.calibrate()
-	
-	//Get beliefs for Grade variable
-	val gradeMarginal = clusterGraph.marginal(gradeVar.id)
+	val loopyBP = LoopyBP(clusterGraph)
+	loopyBP.calibrate()
+	 
+	//Get marginal for Grade variable
+	val gradeMarginal = loopyBP.marginal(gradeVar.id)
 	gradeMarginal.getVariables() // Var(3,3)
-    gradeMarginal.getValues() // List(0.3620, 0.2884, 0.3496)
-	
-### Example 2: Compute beliefs for Grade variable given SAT test is high
+	gradeMarginal.getValues() // List(0.3620, 0.2884, 0.3496)
 
-Set evidence for SAT variable and get Grade marginal:
+### Example 2: Compute beliefs for Grade variable given SAT test is high ([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/infer/LoopyBPGettingStarted.scala))
 
-	clusterGraph.setEvidence(satVar.id, 0)
-	clusterGraph.calibrate()
+Set evidence for SAT variable and compute marginal for Grade variable:
+
+	loopyBP.setEvidence(satVar.id, 0)
+	loopyBP.calibrate()
 	
-	val gradeMarginal = clusterGraph.marginal(gradeVar.id)
+	val gradeMarginal = loopyBP.marginal(gradeVar.id)
 	gradeMarginal.getVariables() // Var(3,3)
 	gradeMarginal.getValues() // List(0.2446, 0.3257, 0.4295)
 

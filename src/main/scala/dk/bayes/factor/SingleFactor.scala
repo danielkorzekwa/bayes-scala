@@ -41,7 +41,7 @@ class SingleFactor(variable: Var, values: Array[Double]) extends Factor {
     SingleFactor(variable, productValues)
   }
 
-  def withEvidence(evidence: Tuple2[Int, Int]): Factor = {
+  def withEvidence(evidence: Tuple2[Int, Int]): SingleFactor = {
     require(variable.id == evidence._1, "Variable not found:" + evidence._1)
 
     val evidenceValues = new Array[Double](values.size)

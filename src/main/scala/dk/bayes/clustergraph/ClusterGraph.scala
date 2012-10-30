@@ -41,7 +41,7 @@ trait ClusterGraph {
 }
 
 object ClusterGraph {
-  
+
   /**
    * Creates default cluster graph.
    */
