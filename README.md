@@ -1,4 +1,4 @@
-Bayesian Networks Scala
+Bayesian Networks in Scala
 ===========
 
 
