@@ -38,6 +38,10 @@ trait ClusterGraph {
    */
   def getClusters(): Seq[Cluster]
 
+  /**
+   * Returns cluster for a cluster id.
+   */
+  def getCluster(clusterId:Int):Cluster
 }
 
 object ClusterGraph {

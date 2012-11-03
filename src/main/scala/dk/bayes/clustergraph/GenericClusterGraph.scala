@@ -23,6 +23,8 @@ case class GenericClusterGraph extends ClusterGraph {
     val cluster = Cluster(clusterId, factor)
     clusters = cluster :: clusters
   }
+  
+  def getCluster(clusterId:Int):Cluster = clusters.find(c => c.id==clusterId).get
 
   def addEdge(clusterId1: Int, clusterId2: Int) {
     val cluster1 = clusters.find(c => c.id == clusterId1).get
