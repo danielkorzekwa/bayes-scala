@@ -1,4 +1,4 @@
-Bayesian Inference Engine in Scala
+Bayesian Networks in Scala
 ===========
 
 
