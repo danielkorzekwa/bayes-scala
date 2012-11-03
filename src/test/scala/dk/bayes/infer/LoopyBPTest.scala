@@ -8,30 +8,21 @@ import dk.bayes.testutil._
 import dk.bayes.testutil.AssertUtil._
 import dk.bayes.factor._
 import dk.bayes.clustergraph.ClusterGraph
+import StudentBN._
 
 class LoopyBPTest {
 
-  val studentBN = StudentBN()
-  import studentBN._
-
-  val clusterGraph = ClusterGraph()
-  clusterGraph.addCluster(1, difficultyFactor)
-  clusterGraph.addCluster(2, intelliFactor)
-  clusterGraph.addCluster(3, gradeFactor)
-  clusterGraph.addCluster(4, satFactor)
-  clusterGraph.addCluster(5, letterFactor)
-
-  clusterGraph.addEdges((1, 3), (2, 3), (2, 4), (3, 5))
+  val studentGraph = createStudentGraph()
 
   def progress(iterNum: Int) = println("Loopy BP iter= " + iterNum)
 
-  val loopyBP = LoopyBP(clusterGraph)
+  val loopyBP = LoopyBP(studentGraph)
 
   /**
    * Tests for marginal() method
    */
 
-  @Test def marginal {
+  @Test def marginal_for_grade {
 
     loopyBP.calibrate(progress)
 
@@ -48,7 +39,7 @@ class LoopyBPTest {
     assertFactor(Factor(Var(5, 2), Array(0.4976, 0.5023)), letterMarginal, 0.0001)
   }
 
-  @Test def marginal_given_sat_is_high {
+  @Test def marginal_for_grade_given_sat_is_high {
     loopyBP.setEvidence(satVar.id, 0)
 
     loopyBP.calibrate(progress)
@@ -71,7 +62,7 @@ class LoopyBPTest {
    * Tests for clusterBelief() method
    */
 
-  @Test def cluster_belief {
+  @Test def cluster_belief_for_grade {
 
     loopyBP.calibrate(progress)
 
@@ -91,7 +82,7 @@ class LoopyBPTest {
     assertFactor(Factor(Var(3, 3), Var(5, 2), Array(0.0362, 0.3258, 0.1154, 0.1730, 0.3461, 0.0035)), letterClusterBelief, 0.0001)
   }
 
-  @Test def cluster_belief_given_sat_is_high {
+  @Test def cluster_belief_for_grade__given_sat_is_high {
     loopyBP.setEvidence(satVar.id, 0)
 
     loopyBP.calibrate(progress)

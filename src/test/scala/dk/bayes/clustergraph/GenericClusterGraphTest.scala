@@ -11,17 +11,9 @@ import dk.bayes.factor._
 
 class GenericClusterGraphTest {
 
-  val studentBN = StudentBN()
-  import studentBN._
+  import StudentBN._
 
-  val clusterGraph = GenericClusterGraph()
-  clusterGraph.addCluster(1, difficultyFactor)
-  clusterGraph.addCluster(2, intelliFactor)
-  clusterGraph.addCluster(3, gradeFactor)
-  clusterGraph.addCluster(4, satFactor)
-  clusterGraph.addCluster(5, letterFactor)
-
-  clusterGraph.addEdges((1, 3), (2, 3), (2, 4), (3, 5))
+  val clusterGraph = createStudentGraph()
 
   @Test(expected = classOf[IllegalArgumentException]) def add_edge_with_multiple_sepset_variables {
     clusterGraph.addEdge(3, 3)
