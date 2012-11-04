@@ -21,6 +21,6 @@ class SprinklerBNTest {
 
     val slipperyRoadMarginal = loopyBP.marginal(slipperyRoadVar.id)
 
-    assertFactor(Factor(Var(5, 2), Array(0.2180, 0.7819)), slipperyRoadMarginal, 0.0001)
+    assertFactor(Factor(Var(5, 2), Array(0.2249, 0.7750)), slipperyRoadMarginal, 0.0001)
   }
 }

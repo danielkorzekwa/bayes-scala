@@ -22,8 +22,8 @@ object SprinklerBN {
   val winterFactor = Factor(winterVar, Array(0.6, 0.4))
   val sprinklerFactor = Factor(winterVar, sprinklerVar, Array(0.2, 0.8, 0.75, 0.25))
   val rainFactor = Factor(winterVar, rainVar, Array(0.8, 0.2, 0.1, 0.9))
-  val wetGrassFactor = Factor(sprinklerVar, rainVar, wetGrassVar, Array(0.95, 0.05, 0.9, 0.1, 0.8, 0.2, 0, 1))
-  val slipperyRoadFactor = Factor(rainVar, slipperyRoadVar, Array(0.7, 0.3, 0.0, 1))
+  val wetGrassFactor = Factor(sprinklerVar, rainVar, wetGrassVar, Array(0.95, 0.05, 0.9, 0.1, 0.8, 0.2, 0.01, 0.99))
+  val slipperyRoadFactor = Factor(rainVar, slipperyRoadVar, Array(0.7, 0.3, 0.01, 0.99))
 
   def createSprinklerGraph(): ClusterGraph = {
     val clusterGraph = ClusterGraph()
