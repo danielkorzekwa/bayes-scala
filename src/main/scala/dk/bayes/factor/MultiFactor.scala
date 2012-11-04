@@ -1,6 +1,7 @@
 package dk.bayes.factor
 
 import scala.Math._
+import MultiFactor._
 
 /**
  * Represents factor for multiple variables.
@@ -10,7 +11,7 @@ import scala.Math._
  * @param variables Factor variables
  * @param values Factor values
  */
-case class MultiFactor(variables: Array[Var], values: Array[Double]) extends Factor {
+class MultiFactor(variables: Array[Var], values: Array[Double]) extends Factor {
 
   private val stepSizes: Array[Int] = FactorUtil.calcStepSizes(variables)
   private val dimProduct = stepSizes(0) * variables(0).dim
@@ -152,7 +153,7 @@ object MultiFactor {
    * @param values Factor values
    */
   def apply(variable1: Var, variable2: Var, values: Array[Double]): MultiFactor = {
-    MultiFactor(Array(variable1, variable2), values)
+    new MultiFactor(Array(variable1, variable2), values)
   }
 
   /**
@@ -164,6 +165,16 @@ object MultiFactor {
    * @param values Factor values
    */
   def apply(variable1: Var, variable2: Var, variable3: Var, values: Array[Double]): MultiFactor = {
-    MultiFactor(Array(variable1, variable2, variable3), values)
+    new MultiFactor(Array(variable1, variable2, variable3), values)
+  }
+
+  /**
+   * Creates multi factor.
+   *
+   * @param variables Factor variables
+   * @param values Factor values
+   */
+  def apply(variables: Array[Var], values: Array[Double]): MultiFactor = {
+    new MultiFactor(variables, values)
   }
 }

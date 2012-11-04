@@ -99,4 +99,14 @@ object Factor {
   def apply(variable1: Var, variable2: Var, variable3: Var, values: Array[Double]): MultiFactor = {
     MultiFactor(Array(variable1, variable2, variable3), values)
   }
+
+  /**
+   * Creates multi factor.
+   *
+   * @param variables Factor variables
+   * @param values Factor values
+   */
+  def apply(variables: Array[Var], values: Array[Double]): MultiFactor = {
+    MultiFactor(variables, values)
+  }
 }
