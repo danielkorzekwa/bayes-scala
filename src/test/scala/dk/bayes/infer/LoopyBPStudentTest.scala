@@ -10,7 +10,7 @@ import dk.bayes.factor._
 import dk.bayes.clustergraph.ClusterGraph
 import StudentBN._
 
-class LoopyBPTest {
+class LoopyBPStudentTest {
 
   val studentGraph = createStudentGraph()
 
@@ -22,7 +22,7 @@ class LoopyBPTest {
    * Tests for marginal() method
    */
 
-  @Test def marginal_for_grade {
+  @Test def marginal {
 
     loopyBP.calibrate(progress)
 
@@ -39,7 +39,7 @@ class LoopyBPTest {
     assertFactor(Factor(Var(5, 2), Array(0.4976, 0.5023)), letterMarginal, 0.0001)
   }
 
-  @Test def marginal_for_grade_given_sat_is_high {
+  @Test def marginal_given_sat_is_high {
     loopyBP.setEvidence(satVar.id, 0)
 
     loopyBP.calibrate(progress)
@@ -62,7 +62,7 @@ class LoopyBPTest {
    * Tests for clusterBelief() method
    */
 
-  @Test def cluster_belief_for_grade {
+  @Test def cluster_belief {
 
     loopyBP.calibrate(progress)
 
@@ -82,7 +82,7 @@ class LoopyBPTest {
     assertFactor(Factor(Var(3, 3), Var(5, 2), Array(0.0362, 0.3258, 0.1154, 0.1730, 0.3461, 0.0035)), letterClusterBelief, 0.0001)
   }
 
-  @Test def cluster_belief_for_grade__given_sat_is_high {
+  @Test def cluster_belief_given_sat_is_high {
     loopyBP.setEvidence(satVar.id, 0)
 
     loopyBP.calibrate(progress)
@@ -102,6 +102,31 @@ class LoopyBPTest {
     assertFactor(Factor(Var(2, 2), Var(4, 2), Array(0.9172, 0.0000, 0.0828, 0.0000)), satClusterBelief, 0.0001)
     assertFactor(Factor(Var(3, 3), Var(5, 2), Array(0.0245, 0.2202, 0.1303, 0.1955, 0.4252, 0.0043)), letterClusterBelief, 0.0001)
 
+  }
+
+  @Test def cluster_belief_given_full_evidence{
+    loopyBP.setEvidence(difficultyVar.id, 0)
+    loopyBP.setEvidence(intelliVar.id, 1)
+    loopyBP.setEvidence(gradeVar.id, 0)
+    loopyBP.setEvidence(satVar.id, 0)
+    loopyBP.setEvidence(letterVar.id, 1)
+
+    loopyBP.calibrate(progress)
+
+    val difficultyClusterBelief = loopyBP.clusterBelief(1)
+    val intelliClusterBelief = loopyBP.clusterBelief(2)
+    val gradeClusterBelief = loopyBP.clusterBelief(3)
+    val satClusterBelief = loopyBP.clusterBelief(4)
+    val letterClusterBelief = loopyBP.clusterBelief(5)
+
+    assertFactor(Factor(Var(1, 2), Array(1d, 0)), difficultyClusterBelief, 0.0001)
+    assertFactor(Factor(Var(2, 2), Array(0d, 1)), intelliClusterBelief, 0.0001)
+
+    assertFactor(Factor(Var(2, 2), Var(1, 2), Var(3, 3),
+      Array(0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0)), gradeClusterBelief, 0.0001)
+
+    assertFactor(Factor(Var(2, 2), Var(4, 2), Array(0, 0, 1, 0.0000)), satClusterBelief, 0.0001)
+    assertFactor(Factor(Var(3, 3), Var(5, 2), Array(0, 1, 0, 0, 0, 0)), letterClusterBelief, 0.0001)
   }
 
   /**
