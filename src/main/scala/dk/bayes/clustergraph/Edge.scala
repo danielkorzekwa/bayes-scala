@@ -1,5 +1,5 @@
 package dk.bayes.clustergraph
-import dk.bayes.factor.SingleFactor
+import dk.bayes.factor._
 
 /**
  * Represents outgoing edge in a cluster graph
@@ -7,19 +7,24 @@ import dk.bayes.factor.SingleFactor
  * @author Daniel Korzekwa
  *
  * @param destClusterId Destination cluster id for this edge
- * @param initialMessage Initial outgoing message
+ * @param sepsetVariable Shared variable between clusters for this edge
  */
-class Edge(val destClusterId: Int, initialMessage: SingleFactor) {
+class Edge(val destClusterId: Int, val sepsetVariable: Var) {
 
   private var incomingEdge: Option[Edge] = None
 
-  private var oldMessage: SingleFactor = initialMessage
-  private var newMessage: SingleFactor = initialMessage
+  private var newMessage: SingleFactor = SingleFactor(sepsetVariable, Array.fill(sepsetVariable.dim)(1d))
+  private var oldMessage: SingleFactor = newMessage
 
   def setIncomingEdge(edge: Edge) {
     incomingEdge = Some(edge)
   }
   def getIncomingEdge(): Option[Edge] = incomingEdge
+
+  def resetMessage() {
+    newMessage = SingleFactor(sepsetVariable, Array.fill(sepsetVariable.dim)(1d))
+    oldMessage = newMessage
+  }
 
   def updateMessage(message: SingleFactor) {
     oldMessage = newMessage
@@ -36,7 +41,7 @@ object Edge {
    * Creates outgoing edge in a cluster graph.
    *
    * @param destClusterId Destination cluster id for this edge
-   * @param initialMessage Initial outgoing message
+   * @param sepsetVariable Shared variable between clusters for this edge
    */
-  def apply(destClusterId: Int, initialMessage: SingleFactor): Edge = new Edge(destClusterId, initialMessage)
+  def apply(destClusterId: Int, sepsetVariable: Var): Edge = new Edge(destClusterId, sepsetVariable)
 }

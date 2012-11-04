@@ -26,7 +26,11 @@ class Cluster(val id: Int, val typeId: Int, factor: Factor) {
 
   def getFactor(): Factor = _factor
 
-  def updateFactor(newFactor: Factor) { _factor = newFactor }
+  def updateFactor(newFactor: Factor) {
+    _factor = newFactor
+
+    edges.foreach { edge => edge.resetMessage() }
+  }
 }
 
 object Cluster {

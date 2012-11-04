@@ -52,12 +52,12 @@ class GenericClusterGraphTest {
   }
 
   private def edge(srcClusterId: Int, destClusterId: Int, variable: Var): Edge = {
-    val edge = Edge(destClusterId, msg(variable))
-    val linkedEdge = Edge(srcClusterId, msg(variable))
+    val edge = Edge(destClusterId, variable)
+    val linkedEdge = Edge(srcClusterId, variable)
     edge.setIncomingEdge(linkedEdge)
+    linkedEdge.setIncomingEdge(edge)
     edge
   }
-  private def msg(variable: Var): SingleFactor = Factor(variable, Array.fill(variable.dim)(1d))
 
   private def assertEdges(expected: Seq[Edge], actual: Seq[Edge]) {
 
@@ -67,6 +67,7 @@ class GenericClusterGraphTest {
     for ((expected, actual) <- expected.zip(actual)) {
       assertEquals("Element: " + i, expected.destClusterId, actual.destClusterId)
 
+      assertEquals(expected.sepsetVariable, actual.sepsetVariable)
       assertFactor(expected.getOldMessage, actual.getOldMessage)
       assertFactor(expected.getNewMessage, actual.getNewMessage)
 
