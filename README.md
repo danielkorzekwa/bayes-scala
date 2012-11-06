@@ -1,7 +1,7 @@
 Bayesian Networks in Scala
 ===========
 
-Major features:
+**Major features**:
 
  * Model representation
    * discrete factor
