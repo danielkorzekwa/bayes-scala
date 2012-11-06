@@ -58,7 +58,7 @@ Calibrate cluster graph and get Grade marginal:
 	gradeMarginal.getVariables() // Var(3,3)
 	gradeMarginal.getValues() // List(0.3620, 0.2884, 0.3496)
 
-### Example 2: Compute beliefs for Grade variable given SAT test is high ([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/infer/LoopyBPGettingStarted.scala))
+### Example 2: Compute marginal for Grade variable given SAT test is high ([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/infer/LoopyBPGettingStarted.scala))
 
 Set evidence for SAT variable and compute marginal for Grade variable:
 
