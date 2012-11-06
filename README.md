@@ -103,7 +103,7 @@ Create Sprinkler Network with table CPT parameters:
 	
 	sprinklerGraph.addEdges((1, 2), (1, 3), (2, 4), (3, 4), (3, 5))
 
-Learn parameters of Sprinkler Network from samples ([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/resources/sprinkler_data/sprinkler_10k_samples_5pct_missing_values.dat)):
+Learn parameters of Sprinkler Network from samples ([sprinkler_10k_samples_5pct_missing_values.dat](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/resources/sprinkler_data/sprinkler_10k_samples_5pct_missing_values.dat)):
 
 	val maxIterNum = 5
 	val variableIds = Array(winterVar.id, rainVar.id, sprinklerVar.id, slipperyRoadVar.id, wetGrassVar.id)
