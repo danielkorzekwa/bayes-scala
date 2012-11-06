@@ -1,6 +1,5 @@
-Bayesian Inference Engine in Scala
+Bayesian Networks in Scala
 ===========
-
 
 Major features:
 
@@ -73,11 +72,11 @@ Set evidence for SAT variable and compute marginal for Grade variable:
 Getting Started - Learning parameters with Expectation Maximisation in Bayesian Networks from incomplete data  [3](#references)
 ---------------
 
-In this example we learn parameters of a Sprinkler Bayesian Network [3](#references).
+In this example we learn parameters of a Sprinkler Bayesian Network [3](#references). ([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/em/EMLearnSprinklerGettingStarted.scala))
 
 ![Sprinkler Bayesian Network](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/sprinkler_bn.png "Sprinkler Bayesian Network")
 
-Create Sprinkler Network with true table CPD parameters:
+Create Sprinkler Network with table CPT parameters:
 
 	//Create variables
 	val winterVar = Var(1, 2)
@@ -104,7 +103,7 @@ Create Sprinkler Network with true table CPD parameters:
 	
 	sprinklerGraph.addEdges((1, 2), (1, 3), (2, 4), (3, 4), (3, 5))
 
-Learn parameters of Sprinkler Network from samples:
+Learn parameters of Sprinkler Network from samples ([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/resources/sprinkler_data/sprinkler_10k_samples_5pct_missing_values.dat)):
 
 	val maxIterNum = 5
 	val variableIds = Array(winterVar.id, rainVar.id, sprinklerVar.id, slipperyRoadVar.id, wetGrassVar.id)
