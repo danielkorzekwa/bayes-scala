@@ -1,20 +1,16 @@
-Bayesian Networks in Scala
+Bayesian Inference Engine in Scala
 ===========
 
 
 Major features:
 
- * Factorisation
-   * product
-   * marginal
-   * evidence
-   * likelihood of assignment
- * Loopy Belief Propagation in a Cluster Graph with discrete variables
- * Cluster Graph functions
-   * get cluster belief
-   * get variable marginal
-   * get log likelihood of assignment
-   * set evidence
+ * Model representation
+   * discrete factor
+   * cluster graph
+ * Inference
+   * Loopy Belief Propagation in a Cluster Graph
+ * Learning parameters 
+   * Expectation Maximisation - CPT Factors, Complete/Incomplete data, BN and Unrolled DBN
 
 Getting Started - Loopy Belief Propagation in a Cluster Graph [1](#references)
 ---------------
@@ -74,7 +70,62 @@ Set evidence for SAT variable and compute marginal for Grade variable:
 	gradeMarginal.getVariables() // Var(3,3)
 	gradeMarginal.getValues() // List(0.2446, 0.3257, 0.4295)
 
+Getting Started - Learning parameters with Expectation Maximisation in Bayesian Networks from incomplete data  [3](#references)
+---------------
+
+In this example we learn parameters of a Sprinkler Bayesian Network [3](#references).
+
+![Sprinkler Bayesian Network](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/sprinkler_bn.png "Sprinkler Bayesian Network")
+
+Create Sprinkler Network with true table CPD parameters:
+
+	//Create variables
+	val winterVar = Var(1, 2)
+	val sprinklerVar = Var(2, 2)
+	val rainVar = Var(3, 2)
+	val wetGrassVar = Var(4, 2)
+	val slipperyRoadVar = Var(5, 2)
+	
+	//Create factors
+	val winterFactor = Factor(winterVar, Array(0.2, 0.8))
+	val sprinklerFactor = Factor(winterVar, sprinklerVar, Array(0.6, 0.4, 0.55, 0.45))
+	val rainFactor = Factor(winterVar, rainVar, Array(0.1, 0.9, 0.3, 0.7))
+	val wetGrassFactor = Factor(sprinklerVar, rainVar, wetGrassVar, Array(0.85, 0.15, 0.3, 0.7, 0.35, 0.65, 0.55, 0.45))
+	val slipperyRoadFactor = Factor(rainVar, slipperyRoadVar, Array(0.5, 0.5, 0.4, 0.6))
+
+	//Create cluster graph	
+	val sprinklerGraph = ClusterGraph()
+
+	sprinklerGraph.addCluster(winterVar.id, winterFactor)
+	sprinklerGraph.addCluster(sprinklerVar.id, sprinklerFactor)
+	sprinklerGraph.addCluster(rainVar.id, rainFactor)
+	sprinklerGraph.addCluster(wetGrassVar.id, wetGrassFactor)
+	sprinklerGraph.addCluster(slipperyRoadVar.id, slipperyRoadFactor)
+	
+	sprinklerGraph.addEdges((1, 2), (1, 3), (2, 4), (3, 4), (3, 5))
+
+Learn parameters of Sprinkler Network from samples:
+
+	val maxIterNum = 5
+	val variableIds = Array(winterVar.id, rainVar.id, sprinklerVar.id, slipperyRoadVar.id, wetGrassVar.id)
+	val dataSet = DataSet.fromFile("src/test/resources/sprinkler_data/sprinkler_10k_samples_5pct_missing_values.dat", variableIds)
+	
+	GenericEMLearn.learn(sprinklerGraph, dataSet, maxIterNum)
+    
+	sprinklerGraph.getCluster(winterVar.id).getFactor() //Factor(winterVar, Array(0.6086, 0.3914))
+	sprinklerGraph.getCluster(sprinklerVar.id).getFactor() //Factor(winterVar, sprinklerVar, Array(0.2041, 0.7958, 0.7506, 0.2493))
+	sprinklerGraph.getCluster(rainVar.id).getFactor() //Factor(winterVar, rainVar, Array(0.8066, 0.1933, 0.0994, 0.9005))
+	sprinklerGraph.getCluster(wetGrassVar.id).getFactor() //Factor(sprinklerVar, rainVar, wetGrassVar, Array(0.9481, 0.0518, 0.9052, 0.0947, 0.7924, 0.2075, 0.00001, 0.9999))
+	sprinklerGraph.getCluster(slipperyRoadVar.id).getFactor() //Factor(rainVar, slipperyRoadVar, Array(.6984, 0.3015, 0.00001, 0.9999))
+
+Getting Started - Learning parameters with Expectation Maximisation in Unrolled Bayesian Networks from incomplete data  [3](#references)
+---------------
+
+@TODO
+
 References
 ---------------
 1. Daphne Koller, Nir Friedman. Probabilistic Graphical Models, Principles and Techniques, 2009
 2. Automated Reasoning Group of Professor Adnan Darwiche at UCLA. SamIam: Sensitivity Analysis, Modelling, Inference and More, version 3.0
+3. Adnan Darwiche. Modeling and Reasoning with Bayesian Networks, 2009
+4. Stuart Russell, Peter Norvig. Artificial Intelligence - A Modern Approach, Third Edition, 2010
