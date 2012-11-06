@@ -69,7 +69,7 @@ Set evidence for SAT variable and compute marginal for Grade variable:
 	gradeMarginal.getVariables() // Var(3,3)
 	gradeMarginal.getValues() // List(0.2446, 0.3257, 0.4295)
 
-Getting Started - Learning parameters with Expectation Maximisation in Bayesian Networks from incomplete data  [3](#references)
+Getting Started - Learning parameters with Expectation Maximisation in Bayesian Networks from incomplete data  [1](#references)
 ---------------
 
 In this example we learn parameters of a Sprinkler Bayesian Network [3](#references). ([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/em/EMLearnSprinklerGettingStarted.scala))
@@ -117,7 +117,7 @@ Learn parameters of Sprinkler Network from samples ([sprinkler_10k_samples_5pct_
 	sprinklerGraph.getCluster(wetGrassVar.id).getFactor() //Factor(sprinklerVar, rainVar, wetGrassVar, Array(0.9481, 0.0518, 0.9052, 0.0947, 0.7924, 0.2075, 0.00001, 0.9999))
 	sprinklerGraph.getCluster(slipperyRoadVar.id).getFactor() //Factor(rainVar, slipperyRoadVar, Array(.6984, 0.3015, 0.00001, 0.9999))
 
-Getting Started - Learning parameters with Expectation Maximisation in Unrolled Bayesian Networks from incomplete data  [3](#references)
+Getting Started - Learning parameters with Expectation Maximisation in Unrolled Bayesian Networks from incomplete data  [1](#references)
 ---------------
 
 @TODO
