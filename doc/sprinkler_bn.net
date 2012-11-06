@@ -1,0 +1,94 @@
+net
+{
+	propagationenginegenerator1791944048146838126L = "edu.ucla.belief.approx.BeliefPropagationSettings@1e990b4";
+	huginenginegenerator3061656038650325130L = "edu.ucla.belief.inference.JoinTreeSettings@11b1b6d";
+	recoveryenginegenerator6944530267470113528l = "edu.ucla.util.SettingsImpl@a5bfd5";
+	node_size = (130.0 55.0);
+}
+
+node SlipperyRoad
+{
+	states = ("T" "F" );
+	position = (741 -509);
+	excludepolicy = "include whole CPT";
+	ismapvariable = "false";
+	ID = "variable4";
+	label = "SlipperyRoad";
+	DSLxSUBMODEL = "Root Submodel";
+	DSLxEXTRA_DEFINITIONxDIAGNOSIS_TYPE = "AUXILIARY";
+	diagnosistype = "AUXILIARY";
+}
+node Sprinkler
+{
+	states = ("T" "F" );
+	position = (467 -421);
+	excludepolicy = "include whole CPT";
+	ismapvariable = "false";
+	ID = "variable1";
+	label = "Sprinkler";
+	DSLxSUBMODEL = "Root Submodel";
+	DSLxEXTRA_DEFINITIONxDIAGNOSIS_TYPE = "AUXILIARY";
+	diagnosistype = "AUXILIARY";
+}
+node Winter
+{
+	states = ("T" "F" );
+	position = (559 -311);
+	excludepolicy = "include whole CPT";
+	ismapvariable = "false";
+	ID = "variable0";
+	label = "Winter";
+	DSLxSUBMODEL = "Root Submodel";
+	DSLxEXTRA_DEFINITIONxDIAGNOSIS_TYPE = "AUXILIARY";
+	diagnosistype = "AUXILIARY";
+}
+node Rain
+{
+	states = ("T" "F" );
+	position = (666 -417);
+	excludepolicy = "include whole CPT";
+	ismapvariable = "false";
+	ID = "variable2";
+	label = "Rain";
+	DSLxSUBMODEL = "Root Submodel";
+	DSLxEXTRA_DEFINITIONxDIAGNOSIS_TYPE = "AUXILIARY";
+	diagnosistype = "AUXILIARY";
+}
+node WetGrass
+{
+	states = ("T" "F" );
+	position = (566 -513);
+	excludepolicy = "include whole CPT";
+	ismapvariable = "false";
+	ID = "variable3";
+	label = "WetGrass";
+	DSLxSUBMODEL = "Root Submodel";
+	DSLxEXTRA_DEFINITIONxDIAGNOSIS_TYPE = "AUXILIARY";
+	diagnosistype = "AUXILIARY";
+}
+potential ( SlipperyRoad | Rain )
+{
+	data = ((	0.7	0.3	)
+		(	0.01	0.99	));
+}
+potential ( Sprinkler | Winter )
+{
+	data = ((	0.2	0.8	)
+		(	0.75	0.25	));
+}
+potential ( Winter | )
+{
+	data = (	0.6	0.4	);
+}
+potential ( Rain | Winter )
+{
+	data = ((	0.8	0.2	)
+		(	0.1	0.9	));
+}
+potential ( WetGrass | Sprinkler Rain )
+{
+	data = (((	0.95	0.05	)
+		(	0.9	0.1	))
+		((	0.8	0.2	)
+		(	0.01	0.99	)));
+}
