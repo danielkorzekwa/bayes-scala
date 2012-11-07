@@ -120,6 +120,31 @@ Learn parameters of Sprinkler Network from samples ([sprinkler_10k_samples_5pct_
 Getting Started - Learning parameters with Expectation Maximisation in Unrolled Bayesian Networks from incomplete data  [1](#references)
 ---------------
 
+For this scenario we learn parameters in a Dynamic Bayesian Network designed for predicting outcomes of tennis matches.
+ 
+There are two types of variables in this network:
+
+<table>
+  <tbody>
+    <tr>
+      <th>Type</th>
+      <th>Values</th>
+      <th>Description</th>
+     
+    </tr>
+    <tr>
+      <td>Player Skill</td>
+      <td>1,2..10</td>
+      <td></td>
+    </tr>
+     <tr>
+      <td>Match Outcome</td>
+      <td>Won/Lost</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+
 @TODO
 
 References
