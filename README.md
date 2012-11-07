@@ -134,16 +134,28 @@ There are two types of variables in this network:
     </tr>
     <tr>
       <td>Player Skill</td>
-      <td>1,2..10</td>
-      <td></td>
+      <td>High, Medium, Low</td>
+      <td>How good player is at tennis</td>
     </tr>
      <tr>
       <td>Match Outcome</td>
-      <td>Won/Lost</td>
-      <td></td>
+      <td>Win, Loss</td>
+      <td>Outcome of tennis match between two players</td>
     </tr>
   </tbody>
 </table>
+
+Tennis network is time sliced by weeks. Within a single time slice, tennis matches are represented by Match Outcome variables, whereas players are represented by Player Skill variables. 
+For better understanding of this structure, look at diagram below, which reflects the following sequence of tennis matches.
+
+	player_id_1, player_id_2, winner_1_won (won,lost), time
+	1,2,won,0
+	1,2,won,1
+	2,3,lost,1
+	1,3,lost,2
+	2,3,won,2
+
+![Tennis Dynamic Bayesian Network](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/tennis_dbn.png "Tennis Dynamic Bayesian Network")
 
 @TODO
 

@@ -1,0 +1,253 @@
+net
+{
+	propagationenginegenerator1791944048146838126L = "edu.ucla.belief.approx.BeliefPropagationSettings@7ee018";
+	huginenginegenerator3061656038650325130L = "edu.ucla.belief.inference.JoinTreeSettings@1042592";
+	recoveryenginegenerator6944530267470113528l = "edu.ucla.util.SettingsImpl@1aa4afc";
+	node_size = (130.0 55.0);
+}
+
+node P2_P3_2
+{
+	states = ("won" "lost" );
+	position = (808 -476);
+	excludepolicy = "include whole CPT";
+	ismapvariable = "false";
+	ID = "variable1";
+	label = "P2_P3_2";
+	DSLxEXTRA_DEFINITIONxDIAGNOSIS_TYPE = "AUXILIARY";
+	diagnosistype = "AUXILIARY";
+}
+node P3_SKILL_1
+{
+	states = ("low" "medium" "high" );
+	position = (470 -305);
+	excludepolicy = "include whole CPT";
+	ismapvariable = "false";
+	ID = "variable0";
+	label = "P3_SKILL_1";
+	DSLxEXTRA_DEFINITIONxDIAGNOSIS_TYPE = "AUXILIARY";
+	diagnosistype = "AUXILIARY";
+}
+node P1_P3_2
+{
+	states = ("won" "lost" );
+	position = (809 -391);
+	excludepolicy = "include whole CPT";
+	ismapvariable = "false";
+	ID = "variable1";
+	label = "P1_P3_2";
+	DSLxEXTRA_DEFINITIONxDIAGNOSIS_TYPE = "AUXILIARY";
+	diagnosistype = "AUXILIARY";
+}
+node P2_SKILL_0
+{
+	states = ("low" "medium" "high" );
+	position = (284 -213);
+	excludepolicy = "include whole CPT";
+	ismapvariable = "false";
+	ID = "variable0";
+	label = "P2_SKILL_0";
+	DSLxEXTRA_DEFINITIONxDIAGNOSIS_TYPE = "AUXILIARY";
+	diagnosistype = "AUXILIARY";
+}
+node P2_SKILL_1
+{
+	states = ("low" "medium" "high" );
+	position = (465 -212);
+	excludepolicy = "include whole CPT";
+	ismapvariable = "false";
+	ID = "variable0";
+	label = "P2_SKILL_1";
+	DSLxEXTRA_DEFINITIONxDIAGNOSIS_TYPE = "AUXILIARY";
+	diagnosistype = "AUXILIARY";
+}
+node P1_SKILL_0
+{
+	states = ("low" "medium" "high" );
+	position = (280 -128);
+	excludepolicy = "include whole CPT";
+	ismapvariable = "false";
+	ID = "variable0";
+	label = "P1_SKILL_0";
+	DSLxEXTRA_DEFINITIONxDIAGNOSIS_TYPE = "AUXILIARY";
+	diagnosistype = "AUXILIARY";
+}
+node P2_SKILL_2
+{
+	states = ("low" "medium" "high" );
+	position = (640 -212);
+	excludepolicy = "include whole CPT";
+	ismapvariable = "false";
+	ID = "variable0";
+	label = "P2_SKILL_2";
+	DSLxEXTRA_DEFINITIONxDIAGNOSIS_TYPE = "AUXILIARY";
+	diagnosistype = "AUXILIARY";
+}
+node P2_P3_1
+{
+	states = ("won" "lost" );
+	position = (618 -471);
+	excludepolicy = "include whole CPT";
+	ismapvariable = "false";
+	ID = "variable1";
+	label = "P2_P3_1";
+	DSLxEXTRA_DEFINITIONxDIAGNOSIS_TYPE = "AUXILIARY";
+	diagnosistype = "AUXILIARY";
+}
+node P1_P2_1
+{
+	states = ("won" "lost" );
+	position = (616 -391);
+	excludepolicy = "include whole CPT";
+	ismapvariable = "false";
+	ID = "variable1";
+	label = "P1_P2_1";
+	DSLxEXTRA_DEFINITIONxDIAGNOSIS_TYPE = "AUXILIARY";
+	diagnosistype = "AUXILIARY";
+}
+node P3_SKILL_2
+{
+	states = ("low" "medium" "high" );
+	position = (647 -305);
+	excludepolicy = "include whole CPT";
+	ismapvariable = "false";
+	ID = "variable0";
+	label = "P3_SKILL_2";
+	DSLxEXTRA_DEFINITIONxDIAGNOSIS_TYPE = "AUXILIARY";
+	diagnosistype = "AUXILIARY";
+}
+node P1_SKILL_2
+{
+	states = ("low" "medium" "high" );
+	position = (635 -129);
+	excludepolicy = "include whole CPT";
+	ismapvariable = "false";
+	ID = "variable0";
+	label = "P1_SKILL_2";
+	DSLxEXTRA_DEFINITIONxDIAGNOSIS_TYPE = "AUXILIARY";
+	diagnosistype = "AUXILIARY";
+}
+node P1_SKILL_1
+{
+	states = ("low" "medium" "high" );
+	position = (463 -128);
+	excludepolicy = "include whole CPT";
+	ismapvariable = "false";
+	ID = "variable0";
+	label = "P1_SKILL_1";
+	DSLxEXTRA_DEFINITIONxDIAGNOSIS_TYPE = "AUXILIARY";
+	diagnosistype = "AUXILIARY";
+}
+node P1_P2_0
+{
+	states = ("won" "lost" );
+	position = (376 -392);
+	excludepolicy = "include whole CPT";
+	ismapvariable = "false";
+	ID = "variable1";
+	label = "P1_P2_0";
+	DSLxEXTRA_DEFINITIONxDIAGNOSIS_TYPE = "AUXILIARY";
+	diagnosistype = "AUXILIARY";
+}
+potential ( P2_P3_2 | P2_SKILL_2 P3_SKILL_2 )
+{
+	data = (((	0.5	0.5	)
+		(	0.33333	0.66667	)
+		(	0.25	0.75	))
+		((	0.66667	0.33333	)
+		(	0.5	0.5	)
+		(	0.4	0.6	))
+		((	0.75	0.25	)
+		(	0.6	0.4	)
+		(	0.5	0.5	)));
+}
+potential ( P3_SKILL_1 | )
+{
+	data = (	0.3333333333333333	0.33666666666666667	0.33	);
+}
+potential ( P1_P3_2 | P1_SKILL_2 P3_SKILL_2 )
+{
+	data = (((	0.5	0.5	)
+		(	0.33333	0.66667	)
+		(	0.25	0.75	))
+		((	0.66667	0.33333	)
+		(	0.5	0.5	)
+		(	0.4	0.6	))
+		((	0.75	0.25	)
+		(	0.6	0.4	)
+		(	0.5	0.5	)));
+}
+potential ( P2_SKILL_0 | )
+{
+	data = (	0.2	0.5	0.3	);
+}
+potential ( P2_SKILL_1 | P2_SKILL_0 )
+{
+	data = ((	0.98	0.01	0.01	)
+		(	0.01	0.98	0.01	)
+		(	0.01	0.02	0.97	));
+}
+potential ( P1_SKILL_0 | )
+{
+	data = (	0.2	0.5	0.3	);
+}
+potential ( P2_SKILL_2 | P2_SKILL_1 )
+{
+	data = ((	0.98	0.01	0.01	)
+		(	0.01	0.98	0.01	)
+		(	0.01	0.02	0.97	));
+}
+potential ( P2_P3_1 | P2_SKILL_1 P3_SKILL_1 )
+{
+	data = (((	0.5	0.5	)
+		(	0.33333	0.66667	)
+		(	0.25	0.75	))
+		((	0.66667	0.33333	)
+		(	0.5	0.5	)
+		(	0.4	0.6	))
+		((	0.75	0.25	)
+		(	0.6	0.4	)
+		(	0.5	0.5	)));
+}
+potential ( P1_P2_1 | P1_SKILL_1 P2_SKILL_1 )
+{
+	data = (((	0.5	0.5	)
+		(	0.33333	0.66667	)
+		(	0.25	0.75	))
+		((	0.66667	0.33333	)
+		(	0.5	0.5	)
+		(	0.4	0.6	))
+		((	0.75	0.25	)
+		(	0.6	0.4	)
+		(	0.5	0.5	)));
+}
+potential ( P3_SKILL_2 | P3_SKILL_1 )
+{
+	data = ((	0.98	0.01	0.01	)
+		(	0.01	0.98	0.01	)
+		(	0.01	0.02	0.97	));
+}
+potential ( P1_SKILL_2 | P1_SKILL_1 )
+{
+	data = ((	0.98	0.01	0.01	)
+		(	0.01	0.98	0.01	)
+		(	0.01	0.02	0.97	));
+}
+potential ( P1_SKILL_1 | P1_SKILL_0 )
+{
+	data = ((	0.98	0.01	0.01	)
+		(	0.01	0.98	0.01	)
+		(	0.01	0.02	0.97	));
+}
+potential ( P1_P2_0 | P1_SKILL_0 P2_SKILL_0 )
+{
+	data = (((	0.5	0.5	)
+		(	0.33333	0.66667	)
+		(	0.25	0.75	))
+		((	0.66667	0.33333	)
+		(	0.5	0.5	)
+		(	0.4	0.6	))
+		((	0.75	0.25	)
+		(	0.6	0.4	)
+		(	0.5	0.5	)));
+}
