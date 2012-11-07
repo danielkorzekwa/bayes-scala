@@ -152,7 +152,7 @@ For better understanding of this structure, look at diagram below, which reflect
 	1,2,won,0
 	1,2,won,1
 	2,3,lost,1
-	1,2,?,2 //This game has not been played yet and we would like to infer the likelihood of the its outcome. 
+	1,2,?,2 //This game has not been played yet and we would like to infer the likelihood of its outcome. 
 	1,3,lost,2
 	2,3,won,2
 
