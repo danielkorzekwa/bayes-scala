@@ -9,7 +9,7 @@ net
 node P2_P3_2
 {
 	states = ("won" "lost" );
-	position = (808 -476);
+	position = (817 -543);
 	excludepolicy = "include whole CPT";
 	ismapvariable = "false";
 	ID = "variable1";
@@ -31,7 +31,7 @@ node P3_SKILL_1
 node P1_P3_2
 {
 	states = ("won" "lost" );
-	position = (809 -391);
+	position = (816 -469);
 	excludepolicy = "include whole CPT";
 	ismapvariable = "false";
 	ID = "variable1";
@@ -113,6 +113,17 @@ node P3_SKILL_2
 	ismapvariable = "false";
 	ID = "variable0";
 	label = "P3_SKILL_2";
+	DSLxEXTRA_DEFINITIONxDIAGNOSIS_TYPE = "AUXILIARY";
+	diagnosistype = "AUXILIARY";
+}
+node P1_P2_2
+{
+	states = ("won" "lost" );
+	position = (813 -390);
+	excludepolicy = "include whole CPT";
+	ismapvariable = "false";
+	ID = "variable1";
+	label = "P1_P2_2";
 	DSLxEXTRA_DEFINITIONxDIAGNOSIS_TYPE = "AUXILIARY";
 	diagnosistype = "AUXILIARY";
 }
@@ -226,6 +237,18 @@ potential ( P3_SKILL_2 | P3_SKILL_1 )
 	data = ((	0.98	0.01	0.01	)
 		(	0.01	0.98	0.01	)
 		(	0.01	0.02	0.97	));
+}
+potential ( P1_P2_2 | P1_SKILL_2 P2_SKILL_2 )
+{
+	data = (((	0.5	0.5	)
+		(	0.33333	0.66667	)
+		(	0.25	0.75	))
+		((	0.66667	0.33333	)
+		(	0.5	0.5	)
+		(	0.4	0.6	))
+		((	0.75	0.25	)
+		(	0.6	0.4	)
+		(	0.5	0.5	)));
 }
 potential ( P1_SKILL_2 | P1_SKILL_1 )
 {

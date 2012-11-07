@@ -145,13 +145,14 @@ There are two types of variables in this network:
   </tbody>
 </table>
 
-Tennis network is time sliced by weeks. Within a single time slice, tennis matches are represented by Match Outcome variables, whereas players are represented by Player Skill variables. 
+Tennis network is time sliced by weeks. Within a single time slice, tennis matches are represented by Match Outcome variables, whereas players are characterised by Player Skill variables. 
 For better understanding of this structure, look at diagram below, which reflects the following sequence of tennis matches.
 
-	player_id_1, player_id_2, winner_1_won (won,lost), time
+	player_id_1, player_id_2, player_1_won (won,lost), time
 	1,2,won,0
 	1,2,won,1
 	2,3,lost,1
+	1,2,?,2 //This game has not been played yet and we would like to infer the likelihood of the it's outcome. 
 	1,3,lost,2
 	2,3,won,2
 
