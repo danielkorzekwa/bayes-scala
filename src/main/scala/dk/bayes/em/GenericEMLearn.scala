@@ -41,9 +41,10 @@ object GenericEMLearn extends EMLearn {
 
   }
 
-  private def updateInitialClusterPotentials(clusterGraph: ClusterGraph, clusterBeliefsByTypeId: Map[Int, Factor]) {
+  private def updateInitialClusterPotentials(clusterGraph: ClusterGraph, clusterPotentialsByTypeId: Map[Int, Factor]) {
     for (cluster <- clusterGraph.getClusters()) {
-      val newClusterPotentials = clusterBeliefsByTypeId(cluster.id)
+      val clusterTypePotentials = clusterPotentialsByTypeId(cluster.typeId)
+      val newClusterPotentials = cluster.getFactor().copy(clusterTypePotentials.getValues())
       cluster.updateFactor(newClusterPotentials)
     }
   }
@@ -105,8 +106,8 @@ object GenericEMLearn extends EMLearn {
 
         val cptVarSize = clusterBeliefFactor.getVariables().last.dim
         val cptValues = toCPT(beliefValuesSum, cptVarSize)
-        val clusterPotentials = Factor(clusterBeliefs.head.getVariables(), cptValues)
-
+        val clusterPotentials = clusterBeliefFactor.copy(cptValues)
+      
         (clusterTypeId -> clusterPotentials)
     }
 
