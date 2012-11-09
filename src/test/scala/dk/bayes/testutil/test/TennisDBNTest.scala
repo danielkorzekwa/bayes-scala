@@ -14,15 +14,15 @@ class TennisDBNTest {
 
   @Test def marginal_for_grade_given_sat_is_high {
 
-    loopyBP.setEvidence(match1v2Time0.id, 0)
-    loopyBP.setEvidence(match1v2Time1.id, 0)
-    loopyBP.setEvidence(match2v3Time1.id, 1)
-    loopyBP.setEvidence(match1v3Time2.id, 1)
-    loopyBP.setEvidence(match2v3Time2.id, 0)
+    loopyBP.setEvidence(match1v2Time0Var.id, 0)
+    loopyBP.setEvidence(match1v2Time1Var.id, 0)
+    loopyBP.setEvidence(match2v3Time1Var.id, 1)
+    loopyBP.setEvidence(match1v3Time2Var.id, 1)
+    loopyBP.setEvidence(match2v3Time2Var.id, 0)
 
     loopyBP.calibrate()
 
-    val match1v2Time2Marginal = loopyBP.marginal(match1v2Time2.id)
+    val match1v2Time2Marginal = loopyBP.marginal(match1v2Time2Var.id)
 
     assertFactor(Factor(Var(12, 2), Array(0.5407, 0.4592)), match1v2Time2Marginal, 0.0001)
   }
