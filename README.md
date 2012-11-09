@@ -191,13 +191,33 @@ The following figure presents initial guess about network parameters, which we w
 
 In the reminder of this tutorial we build cluster graph for Tennis Network and learn its prior, emission and transition parameters.
 
-Create cluster graph for Tennis Network:
+Create cluster graph for Tennis Network ([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/testutil/TennisDBN.scala)):
 
-	@TODO
+	val tennisClusterGraph = createTennisClusterGraph()
+	 
+Learn parameters of Tennis Network from samples (([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/em/EMLearnTennisGettingStarted.scala)),[tennis_3_players_network.dat](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/resources/tennis_data/tennis_3_players_network.dat)):
 
-Learn network parameters:
-
-	@TODO
+	//Prepare training set
+	val variableIds = Array(
+	player1Time0Var.id, player1Time1Var.id, player1Time2Var.id,
+	player2Time0Var.id, player2Time1Var.id, player2Time2Var.id,
+	player3Time1Var.id, player3Time2Var.id,
+	match1v2Time0Var.id, match1v2Time1Var.id, match2v3Time1Var.id, match1v2Time2Var.id, match1v3Time2Var.id, match2v3Time2Var.id)
+	
+	val dataSet = DataSet.fromFile("src/test/resources/tennis_data/tennis_3_players_network.dat", variableIds)
+	
+	//Learn parameters
+	val maxIterNum = 5
+	GenericEMLearn.learn(tennisClusterGraph, dataSet, maxIterNum)
+	
+	//Prior parameter - Array(0.4729, 0.2323, 0.2947)
+	tennisClusterGraph.getCluster(player1Time0Var.id).getFactor()
+	
+	//Transition parameter - Array(0.9998, 0.0001, 0.0001, 0.0083, 0.9720, 0.0197, 0.0020, 0.0091, 0.9890)
+	tennisClusterGraph.getCluster(player2Time1Var.id).getFactor()
+	
+	//Emission parameter - Array(0.0000, 1.0000, 0.0000, 1.0000, 0.0000, 1.0000, 0.9930, 0.0070, 0.9198, 0.0802, 0.8337, 0.1663, 0.9980, 0.0020, 0.9956, 0.0044, 0.9960, 0.0040)
+	tennisClusterGraph.getCluster(match1v2Time2Var.id).getFactor()
 
 References
 ---------------
