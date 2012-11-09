@@ -70,6 +70,7 @@ class SingleFactor(variable: Var, values: Array[Double]) extends Factor {
     SingleFactor(variable, normalisedValues)
   }
 
+  def copy(values:Array[Double]):SingleFactor = new SingleFactor(variable,values)
 }
 
 object SingleFactor {

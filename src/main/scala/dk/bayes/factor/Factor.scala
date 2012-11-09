@@ -62,6 +62,11 @@ trait Factor {
    *  Returns new factor with all potential values normalised to 1.
    */
   def normalise(): Factor
+  
+  /**
+   * Returns a copy of this factor with new values.
+   */
+  def copy(values:Array[Double]):Factor
 
 }
 

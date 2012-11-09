@@ -104,6 +104,8 @@ class MultiFactor(variables: Array[Var], values: Array[Double]) extends Factor {
     val normalisedValues = FactorUtil.normalise(values)
     new MultiFactor(variables, normalisedValues)
   }
+  
+   def copy(values:Array[Double]):MultiFactor = new MultiFactor(variables,values)
 
   /**
    * Iterates over all factor values, providing at every iteration value index and variable index.
