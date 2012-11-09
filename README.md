@@ -127,7 +127,7 @@ There are two types of variables in this network:
 <table>
   <tbody>
     <tr>
-      <th>Type</th>
+      <th>Variable Type</th>
       <th>Values</th>
       <th>Description</th>
      
@@ -166,7 +166,7 @@ Probability distribution of tennis data is modelled with prior, emission and tra
 <table>
   <tbody>
     <tr>
-      <th>Type</th>
+      <th>Parameter Type</th>
       <th>Description</th>
     </tr>
     <tr>
@@ -189,7 +189,7 @@ The following figure presents initial guess about network parameters, which we w
 
 ![Parameters for Tennis Dynamic Bayesian Network](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/tennis_dbn_parameters.png "Parameters for Tennis Dynamic Bayesian Network")
 
-In the reminder of this tutorial we build cluster graph for Tennis Network and its prior, emission and transition parameters.
+In the reminder of this tutorial we build cluster graph for Tennis Network and learn its prior, emission and transition parameters.
 
 Create cluster graph for Tennis Network:
 
