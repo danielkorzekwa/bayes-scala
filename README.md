@@ -117,7 +117,7 @@ Learn parameters of Sprinkler Network from samples ([sprinkler_10k_samples_5pct_
 	sprinklerGraph.getCluster(wetGrassVar.id).getFactor() //Factor(sprinklerVar, rainVar, wetGrassVar, Array(0.9481, 0.0518, 0.9052, 0.0947, 0.7924, 0.2075, 0.00001, 0.9999))
 	sprinklerGraph.getCluster(slipperyRoadVar.id).getFactor() //Factor(rainVar, slipperyRoadVar, Array(.6984, 0.3015, 0.00001, 0.9999))
 
-Getting Started - Learning parameters with Expectation Maximisation in Unrolled Bayesian Networks from incomplete data  [1](#references)
+Getting Started - Learning parameters with Expectation Maximisation in Unrolled Dynamic Bayesian Networks from incomplete data  [1](#references)
 ---------------
 
 For this scenario we learn parameters in a Dynamic Bayesian Network designed for predicting outcomes of tennis matches.
@@ -145,7 +145,10 @@ There are two types of variables in this network:
   </tbody>
 </table>
 
-Tennis network is time sliced by weeks. Within a single time slice, tennis matches are represented by Match Outcome variables, whereas players are characterised by Player Skill variables. 
+We name Player Skills as Hidden variables, because those are never observed and we try to infer their values over the time for all tennis players.
+Match Outcome variables are always observed, given historical tennis results are available to us. 
+
+Tennis network is sliced by time. e.g. weeks. Within a single time slice, tennis matches are represented by Match Outcome variables, whereas players are characterised by Player Skill variables. 
 For better understanding of this structure, look at diagram below, which reflects the following sequence of tennis matches.
 
 	player_id_1, player_id_2, player_1_won (won,lost), time
@@ -158,7 +161,43 @@ For better understanding of this structure, look at diagram below, which reflect
 
 ![Tennis Dynamic Bayesian Network](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/tennis_dbn.png "Tennis Dynamic Bayesian Network")
 
-@TODO
+Probability distribution of tennis data is modelled with prior, emission and transition parameters:
+
+<table>
+  <tbody>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>Prior</td>
+      <td>Initial player skill, at the time of his very first tennis game included in tennis training data</td>
+    </tr>
+     <tr>
+      <td>Emission</td>
+      <td>Probability of winning a tennis game given skills of both players</td>  
+    </tr>
+     <tr>
+      <td>Transition</td>
+      <td>Probability of changing player skills between time slices</td>  
+    </tr>
+  </tbody>
+</table>
+
+Those parameters are shared by corresponding variables, for example emission parameter is shared by all Match Outcome variables.
+The following figure presents initial guess about network parameters, which we will learn from historical data applying Expectation Maximisation algorithm.
+
+![Parameters for Tennis Dynamic Bayesian Network](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/tennis_dbn_parameters.png "Parameters for Tennis Dynamic Bayesian Network")
+
+In the reminder of this tutorial we build cluster graph for Tennis Network and its prior, emission and transition parameters.
+
+Create cluster graph for Tennis Network:
+
+	@TODO
+
+Learn network parameters:
+
+	@TODO
 
 References
 ---------------
