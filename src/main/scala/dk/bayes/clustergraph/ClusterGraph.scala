@@ -11,14 +11,19 @@ import dk.bayes.factor.SingleFactor
  * @author Daniel Korzekwa
  */
 trait ClusterGraph {
-
-  /**
+   
+   /**
    * Adds cluster to this cluster graph.
    *
    * @param clusterId Unique cluster id
+   *
+   * @param clusterTypeId Unique id of a cluster type.
+   * Clusters of the same cluster type usually share the same cluster initial potentials. TypeId can be used for learning
+   * parameters in dynamic bayesian networks, with multiple prior, transition and emission parameters.
+   *
    * @param factor Initial cluster potentials
    */
-  def addCluster(clusterId: Int, factor: Factor)
+  def addCluster(clusterId: Int, factor: Factor, clusterTypeId: Option[Int]=None)
 
   /**
    * Adds edge between clusters in this cluster graph.
@@ -41,7 +46,7 @@ trait ClusterGraph {
   /**
    * Returns cluster for a cluster id.
    */
-  def getCluster(clusterId:Int):Cluster
+  def getCluster(clusterId: Int): Cluster
 }
 
 object ClusterGraph {
@@ -50,4 +55,5 @@ object ClusterGraph {
    * Creates default cluster graph.
    */
   def apply(): ClusterGraph = GenericClusterGraph()
+  
 }

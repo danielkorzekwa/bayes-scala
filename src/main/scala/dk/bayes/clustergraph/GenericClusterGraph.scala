@@ -19,8 +19,10 @@ case class GenericClusterGraph extends ClusterGraph {
 
   def getClusters(): Seq[Cluster] = clusters
 
-  def addCluster(clusterId: Int, factor: Factor) = {
-    val cluster = Cluster(clusterId, factor)
+  def addCluster(clusterId: Int, factor: Factor, clusterTypeId: Option[Int] = None) = {
+    val cluster = if (clusterTypeId.isEmpty) Cluster(clusterId, factor)
+    else Cluster(clusterId, clusterTypeId.get, factor)
+    
     clusters = cluster :: clusters
   }
 
