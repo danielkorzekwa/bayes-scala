@@ -18,12 +18,12 @@ object TennisDBN {
   val player3Time2Var = Var(8, 3)
 
   //Create match outcome variables
-  val match1v2Time0 = Var(9, 2)
-  val match1v2Time1 = Var(10, 2)
-  val match2v3Time1 = Var(11, 2)
-  val match1v2Time2 = Var(12, 2)
-  val match1v3Time2 = Var(13, 2)
-  val match2v3Time2 = Var(14, 2)
+  val match1v2Time0Var = Var(9, 2)
+  val match1v2Time1Var = Var(10, 2)
+  val match2v3Time1Var = Var(11, 2)
+  val match1v2Time2Var = Var(12, 2)
+  val match1v3Time2Var = Var(13, 2)
+  val match2v3Time2Var = Var(14, 2)
 
   //Create network parameters
   val priorTypeId = 1
@@ -65,12 +65,12 @@ object TennisDBN {
     tennisGraph.addCluster(player3Time2Var.id, Factor(player3Time1Var, player3Time2Var, transitionParam), Option(transitionTypeId))
 
     //Match outcomes
-    tennisGraph.addCluster(match1v2Time0.id, Factor(player1Time0Var, player2Time0Var, match1v2Time0, emissionParam), Option(emissionTypeId))
-    tennisGraph.addCluster(match1v2Time1.id, Factor(player1Time1Var, player2Time1Var, match1v2Time1, emissionParam), Option(emissionTypeId))
-    tennisGraph.addCluster(match2v3Time1.id, Factor(player2Time1Var, player3Time1Var, match2v3Time1, emissionParam), Option(emissionTypeId))
-    tennisGraph.addCluster(match1v2Time2.id, Factor(player1Time2Var, player2Time2Var, match1v2Time2, emissionParam), Option(emissionTypeId))
-    tennisGraph.addCluster(match1v3Time2.id, Factor(player1Time2Var, player3Time2Var, match1v3Time2, emissionParam), Option(emissionTypeId))
-    tennisGraph.addCluster(match2v3Time2.id, Factor(player2Time2Var, player3Time2Var, match2v3Time2, emissionParam), Option(emissionTypeId))
+    tennisGraph.addCluster(match1v2Time0Var.id, Factor(player1Time0Var, player2Time0Var, match1v2Time0Var, emissionParam), Option(emissionTypeId))
+    tennisGraph.addCluster(match1v2Time1Var.id, Factor(player1Time1Var, player2Time1Var, match1v2Time1Var, emissionParam), Option(emissionTypeId))
+    tennisGraph.addCluster(match2v3Time1Var.id, Factor(player2Time1Var, player3Time1Var, match2v3Time1Var, emissionParam), Option(emissionTypeId))
+    tennisGraph.addCluster(match1v2Time2Var.id, Factor(player1Time2Var, player2Time2Var, match1v2Time2Var, emissionParam), Option(emissionTypeId))
+    tennisGraph.addCluster(match1v3Time2Var.id, Factor(player1Time2Var, player3Time2Var, match1v3Time2Var, emissionParam), Option(emissionTypeId))
+    tennisGraph.addCluster(match2v3Time2Var.id, Factor(player2Time2Var, player3Time2Var, match2v3Time2Var, emissionParam), Option(emissionTypeId))
 
     //Create transition edges
     tennisGraph.addEdges((player1Time0Var.id, player1Time1Var.id), (player1Time1Var.id, player1Time2Var.id))
@@ -78,14 +78,14 @@ object TennisDBN {
     tennisGraph.addEdges((player3Time1Var.id, player3Time2Var.id))
 
     //Create match outcome edges
-    tennisGraph.addEdges((player1Time0Var.id, match1v2Time0.id), (player2Time0Var.id, match1v2Time0.id))
+    tennisGraph.addEdges((player1Time0Var.id, match1v2Time0Var.id), (player2Time0Var.id, match1v2Time0Var.id))
 
-    tennisGraph.addEdges((player1Time1Var.id, match1v2Time1.id), (player2Time1Var.id, match1v2Time1.id))
-    tennisGraph.addEdges((player2Time1Var.id, match2v3Time1.id), (player3Time1Var.id, match2v3Time1.id))
+    tennisGraph.addEdges((player1Time1Var.id, match1v2Time1Var.id), (player2Time1Var.id, match1v2Time1Var.id))
+    tennisGraph.addEdges((player2Time1Var.id, match2v3Time1Var.id), (player3Time1Var.id, match2v3Time1Var.id))
 
-    tennisGraph.addEdges((player1Time2Var.id, match1v2Time2.id), (player2Time2Var.id, match1v2Time2.id))
-    tennisGraph.addEdges((player1Time2Var.id, match1v3Time2.id), (player3Time2Var.id, match1v3Time2.id))
-    tennisGraph.addEdges((player2Time2Var.id, match2v3Time2.id), (player3Time2Var.id, match2v3Time2.id))
+    tennisGraph.addEdges((player1Time2Var.id, match1v2Time2Var.id), (player2Time2Var.id, match1v2Time2Var.id))
+    tennisGraph.addEdges((player1Time2Var.id, match1v3Time2Var.id), (player3Time2Var.id, match1v3Time2Var.id))
+    tennisGraph.addEdges((player2Time2Var.id, match2v3Time2Var.id), (player3Time2Var.id, match2v3Time2Var.id))
 
     tennisGraph
   }
