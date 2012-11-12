@@ -5,9 +5,12 @@ import Assert._
 import dk.bayes.factor._
 import dk.bayes.clustergraph._
 import dk.bayes.testutil.AssertUtil._
+import EMLearn._
 
 class EMLearnSprinklerGettingStarted {
 
+  def progress(progress: Progress) = println("EM progress(iterNum, logLikelihood): " + progress.iterNum + ", " + progress.logLikelihood)
+  
   @Test def test {
 
     //Create variables
@@ -40,7 +43,7 @@ class EMLearnSprinklerGettingStarted {
     val variableIds = Array(winterVar.id, rainVar.id, sprinklerVar.id, slipperyRoadVar.id, wetGrassVar.id)
     val dataSet = DataSet.fromFile("src/test/resources/sprinkler_data/sprinkler_10k_samples_5pct_missing_values.dat", variableIds)
 
-    GenericEMLearn.learn(sprinklerGraph, dataSet, maxIterNum)
+    GenericEMLearn.learn(sprinklerGraph, dataSet, maxIterNum,progress)
 
     val expectedWinterFactor = sprinklerGraph.getCluster(winterVar.id).getFactor() //Factor(winterVar, Array(0.6086, 0.3914))
     val expectedSprinklerFactor = sprinklerGraph.getCluster(sprinklerVar.id).getFactor() //Factor(winterVar, sprinklerVar, Array(0.2041, 0.7958, 0.7506, 0.2493))

@@ -6,6 +6,7 @@ import dk.bayes.clustergraph.Cluster
 import scala.collection._
 import scala.collection.mutable.ListBuffer
 import scala.annotation.tailrec
+import EMLearn._
 
 /**
  * Default implementation of EM algorithm.
@@ -14,17 +15,23 @@ import scala.annotation.tailrec
  */
 object GenericEMLearn extends EMLearn {
 
-  def learn(clusterGraph: ClusterGraph, trainSet: DataSet, maxIterNum: Int, iterNum: (Int) => Unit = (iterNum: Int) => {}) = {
+  /**
+   * Represents sufficient statistics produced by E-step of EM algorithm.
+   */
+  case class SufficientStats(clusterBeliefsByTypeId: Seq[Tuple2[Int, Factor]], logLikelihood: Double)
+
+  def learn(clusterGraph: ClusterGraph, trainSet: DataSet, maxIterNum: Int, progress: (Progress) => Unit = (progress: Progress) => {}) = {
 
     /**
      * Returns learned cluster potentials by cluster type id.
      */
     @tailrec
     def trainRecursive(clusterPotentialsByTypeId: Map[Int, Factor], currIter: Int): Map[Int, Factor] = {
-      iterNum(currIter)
 
-      val clusterBeliefs = expectationStep(clusterGraph, clusterPotentialsByTypeId, trainSet)
-      val newClusterPotentialsByTypeId = maximisationStep(clusterBeliefs)
+      val sufficientStats = expectationStep(clusterGraph, clusterPotentialsByTypeId, trainSet)
+      val newClusterPotentialsByTypeId = maximisationStep(sufficientStats.clusterBeliefsByTypeId)
+
+      progress(Progress(currIter, sufficientStats.logLikelihood))
 
       if (currIter < maxIterNum) trainRecursive(newClusterPotentialsByTypeId, currIter + 1)
       else newClusterPotentialsByTypeId
@@ -51,32 +58,28 @@ object GenericEMLearn extends EMLearn {
 
   /**
    * Returns sufficient statistics.
-   *
-   * @return Seq[Tuple2[clusterTypeId,cluster belief]]
    */
-  private def expectationStep(clusterGraph: ClusterGraph, clusterPotentialsByTypeId: Map[Int, Factor], trainSet: DataSet): Seq[Tuple2[Int, Factor]] = {
+  private def expectationStep(clusterGraph: ClusterGraph, clusterPotentialsByTypeId: Map[Int, Factor], trainSet: DataSet): SufficientStats = {
 
     val loopyBP = LoopyBP(clusterGraph)
+
+    var dataLogLikelihood = 0d
 
     val clusterBeliefs: Seq[Tuple2[Int, Factor]] = trainSet.samples.flatMap { sample =>
 
       updateInitialClusterPotentials(clusterGraph, clusterPotentialsByTypeId)
 
-      var i = 0
-      while (i < trainSet.variableIds.size) {
-        val varValue = sample(i)
-        if (varValue >= 0) loopyBP.setEvidence(trainSet.variableIds(i), varValue)
-        i += 1
-      }
+      val evidence: Seq[Tuple2[Int, Int]] = DataSet.toEvidence(trainSet.variableIds, sample)
 
-      loopyBP.calibrate()
+      val logLikelihood = loopyBP.calibrateWithEvidence(evidence)
+      dataLogLikelihood += logLikelihood
 
       /**Seq[Tuple2[clusterTypeId,cluster belief]]*/
       val clusterBeliefs: Seq[Tuple2[Int, Factor]] = clusterGraph.getClusters().map(c => c.typeId -> loopyBP.clusterBelief(c.id))
       clusterBeliefs
     }
 
-    clusterBeliefs
+    SufficientStats(clusterBeliefs, dataLogLikelihood)
   }
 
   /**
@@ -107,7 +110,7 @@ object GenericEMLearn extends EMLearn {
         val cptVarSize = clusterBeliefFactor.getVariables().last.dim
         val cptValues = toCPT(beliefValuesSum, cptVarSize)
         val clusterPotentials = clusterBeliefFactor.copy(cptValues)
-      
+
         (clusterTypeId -> clusterPotentials)
     }
 
@@ -117,7 +120,7 @@ object GenericEMLearn extends EMLearn {
   /**
    * Converts factor values to CPT values.
    */
-  def toCPT(values: Seq[Double], sliceSize: Int): Array[Double] = {
+  private def toCPT(values: Seq[Double], sliceSize: Int): Array[Double] = {
 
     val cptValues = values.isEmpty match {
       case true => Nil

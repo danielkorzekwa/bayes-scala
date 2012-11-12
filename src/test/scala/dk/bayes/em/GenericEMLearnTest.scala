@@ -6,6 +6,7 @@ import dk.bayes.testutil.SprinklerBN
 import dk.bayes.testutil.SprinklerBN._
 import dk.bayes.factor.Factor
 import dk.bayes.testutil.AssertUtil._
+import EMLearn._
 
 class GenericEMLearnTest {
 
@@ -27,7 +28,7 @@ class GenericEMLearnTest {
   sprinklerGraph.getCluster(wetGrassVar.id).updateFactor(initialWetGrassFactor)
   sprinklerGraph.getCluster(slipperyRoadVar.id).updateFactor(initialSlipperyRoadFactor)
 
-  def progress(iterNum: Int) = println("EM iter: " + iterNum)
+  def progress(progress: Progress) = println("EM progress(iterNum, logLikelihood): " + progress.iterNum + ", " + progress.logLikelihood)
 
   @Test def train_sprinkler_network_from_complete_data {
 

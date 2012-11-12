@@ -1,5 +1,6 @@
 package dk.bayes.em
 import dk.bayes.clustergraph.ClusterGraph
+import EMLearn._
 
 /**
  * Learns parameters of Bayesian Network with Expectation Maximisation algorithm, presented in
@@ -28,7 +29,19 @@ trait EMLearn {
    *
    *  @param maxIterNum Maximum number of iterations for which EM algorithm is executed
    *
-   *  @param iterNum Progress monitoring. It is called by this method at the beginning of every iteration
+   *  @param progress Progress monitoring. It is called by this method at the end of every iteration
    */
-  def learn(clusterGraph: ClusterGraph, trainSet: DataSet, maxIterNum: Int, iterNum: (Int) => Unit)
+  def learn(clusterGraph: ClusterGraph, trainSet: DataSet, maxIterNum: Int, progress: (Progress) => Unit)
 }
+
+object EMLearn {
+
+  /**
+   * Represents the current progress of EM learning.
+   *
+   * @param iterNum The current iteration number of EM learning
+   * @param Complete data log likelihood
+   */
+  case class Progress(iterNum: Int, logLikelihood: Double)
+}
+

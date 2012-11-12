@@ -9,7 +9,7 @@ import scala.io.Source
  * @param variableIds Defines the order of variables in a single sample
  *
  * @param samples Single sample contains values for all variables in a Bayesian Network
- * 
+ *
  * Use -1 to encode unknown value for a variable.
  *
  */
@@ -30,5 +30,25 @@ object DataSet {
     }
 
     DataSet(variableIds, samples.toArray)
+  }
+
+  /**
+   * Returns sequence of evidence for a given sample and variable ids.
+   *
+   * @param variableIds Defines the order of variables in a sample
+   *
+   * @param sample Contains values for all variables in a Bayesian Network
+   */
+  def toEvidence(variableIds: Array[Int], sample: Array[Int]): Seq[Tuple2[Int, Int]] = {
+
+    var evidence: List[Tuple2[Int, Int]] = List()
+
+    var i = 0
+    while (i < variableIds.size) {
+      val varValue = sample(i)
+      if (varValue >= 0) evidence = (variableIds(i), varValue) :: evidence
+      i += 1
+    }
+    evidence
   }
 }

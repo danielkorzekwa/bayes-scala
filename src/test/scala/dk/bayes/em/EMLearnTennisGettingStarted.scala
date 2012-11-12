@@ -7,9 +7,12 @@ import dk.bayes.clustergraph._
 import dk.bayes.testutil.AssertUtil._
 import dk.bayes.testutil.TennisDBN._
 import dk.bayes.infer.LoopyBP
+import EMLearn._
 
 class EMLearnTennisGettingStarted {
 
+  def progress(progress: Progress) = println("EM progress(iterNum, logLikelihood): " + progress.iterNum + ", " + progress.logLikelihood)
+  
   @Test def test {
 
     val tennisClusterGraph = createTennisClusterGraph()
@@ -24,7 +27,7 @@ class EMLearnTennisGettingStarted {
 
     //Learn parameters
     val maxIterNum = 5
-    GenericEMLearn.learn(tennisClusterGraph, dataSet, maxIterNum)
+    GenericEMLearn.learn(tennisClusterGraph, dataSet, maxIterNum,progress)
 
     val expectedPriorParameter = Factor(player1Time0Var, Array(0.4729, 0.2323, 0.2947))
 
