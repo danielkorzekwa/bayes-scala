@@ -50,6 +50,8 @@ class GenericClusterGraphTest {
     assertEdges(List(edge(1, 3, difficultyVar)), clusters(4).getEdges())
 
   }
+  
+  @Test def getVariables = assertEquals(List(Var(3, 3), Var(5, 2), Var(2, 2), Var(4, 2), Var(1, 2)), clusterGraph.getVariables())
 
   private def edge(srcClusterId: Int, destClusterId: Int, variable: Var): Edge = {
     val edge = Edge(destClusterId, variable)

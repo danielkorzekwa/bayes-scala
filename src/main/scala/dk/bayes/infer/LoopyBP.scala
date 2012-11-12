@@ -14,8 +14,8 @@ import scala.Math._
  * 'Daphne Koller, Nir Friedman. Probabilistic Graphical Models, Principles and Techniques, 2009' book.
  *
  *  @author Daniel Korzekwa
- *  
- *  @param clusterGraph  
+ *
+ *  @param clusterGraph
  *  @param threshold Maximum absolute difference between old and new corresponding messages in a cluster graph,
  *  before calibration is completed
  */
@@ -37,6 +37,27 @@ case class LoopyBP(clusterGraph: ClusterGraph, threshold: Double = 0.00001) exte
     }
 
     calibrateUntilConverge(1)
+  }
+
+  def calibrateWithEvidence(evidence: Seq[Tuple2[Int, Int]], iterNum: (Int) => Unit = (iterNum: Int) => {}): Double = {
+
+    val evidenceByVariableId = Map(evidence: _*)
+    val allVariables = clusterGraph.getVariables()
+
+    //Array of Tuple2[varId,varValue] Fix all variables inconsistent with evidence to 0 (first variable value)
+    val assignment: Array[Tuple2[Int, Int]] = allVariables.map(v => v.id -> evidenceByVariableId.getOrElse(v.id, 0)).toArray
+
+    val jointProb = logLikelihood(assignment)
+
+    evidence.foreach(e => setEvidence(e))
+    calibrate(iterNum)
+
+    val conditionalProb = logLikelihood(assignment)
+
+    //Following conditional probability formula
+    val evidenceLogLikelihood = jointProb - conditionalProb
+
+    evidenceLogLikelihood
   }
 
   private def calibrateCluster(cluster: Cluster) {
@@ -85,7 +106,7 @@ case class LoopyBP(clusterGraph: ClusterGraph, threshold: Double = 0.00001) exte
   }
 
   def logLikelihood(assignment: Array[Tuple2[Int, Int]]): Double = {
-    val allVariableIds = clusterGraph.getClusters().flatMap(c => c.getFactor().getVariables().map(v => v.id)).distinct
+    val allVariableIds = clusterGraph.getVariables().map(v => v.id)
 
     val assignmentDiff = allVariableIds.diff(assignment.map(a => a._1))
     require(assignmentDiff.size == 0, "Assignment of all variables in a cluster is required")

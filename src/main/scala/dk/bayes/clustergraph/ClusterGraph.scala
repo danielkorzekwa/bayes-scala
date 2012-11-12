@@ -1,6 +1,6 @@
 package dk.bayes.clustergraph
 
-import dk.bayes.factor.Factor
+import dk.bayes.factor._
 import ClusterGraph._
 import dk.bayes.factor.SingleFactor
 
@@ -47,6 +47,11 @@ trait ClusterGraph {
    * Returns cluster for a cluster id.
    */
   def getCluster(clusterId: Int): Cluster
+  
+  /**
+   * Returns unique variables in this cluster graph.
+   */
+  def getVariables():Seq[Var]
 }
 
 object ClusterGraph {

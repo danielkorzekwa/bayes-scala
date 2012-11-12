@@ -47,6 +47,8 @@ case class GenericClusterGraph extends ClusterGraph {
     addEdge(firstEdge._1, firstEdge._2)
     nextEdges.foreach(e => addEdge(e._1, e._2))
   }
+  
+  def getVariables():Seq[Var] = clusters.flatMap(c => c.getFactor().getVariables()).distinct
 
   private def calcSepsetVariable(cluster1: Cluster, cluster2: Cluster): Var = {
     val intersectVariables = cluster1.getFactor().getVariables().intersect(cluster2.getFactor().getVariables())

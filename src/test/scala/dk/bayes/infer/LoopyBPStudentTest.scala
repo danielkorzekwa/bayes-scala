@@ -104,7 +104,7 @@ class LoopyBPStudentTest {
 
   }
 
-  @Test def cluster_belief_given_full_evidence{
+  @Test def cluster_belief_given_full_evidence {
     loopyBP.setEvidence(difficultyVar.id, 0)
     loopyBP.setEvidence(intelliVar.id, 1)
     loopyBP.setEvidence(gradeVar.id, 0)
@@ -156,5 +156,40 @@ class LoopyBPStudentTest {
     val llh = loopyBP.logLikelihood(assignment)
 
     assertEquals(-6.3607, llh, 0.0001)
+  }
+
+  /**
+   * Tests for logLikelihood of evidence
+   *
+   */
+
+  @Test def logLikelihood_of_sat_is_high {
+
+    val logLikelihood = loopyBP.calibrateWithEvidence(List((satVar.id, 0)), progress)
+
+    assertEquals(-0.32158, logLikelihood, 0.0001)
+
+    val difficultyClusterBelief = loopyBP.clusterBelief(1)
+    val intelliClusterBelief = loopyBP.clusterBelief(2)
+    val gradeClusterBelief = loopyBP.clusterBelief(3)
+    val satClusterBelief = loopyBP.clusterBelief(4)
+    val letterClusterBelief = loopyBP.clusterBelief(5)
+
+    assertFactor(Factor(Var(1, 2), Array(0.6, 0.4)), difficultyClusterBelief, 0.0001)
+    assertFactor(Factor(Var(2, 2), Array(0.9172, 0.0828)), intelliClusterBelief, 0.0001)
+
+    assertFactor(Factor(Var(2, 2), Var(1, 2), Var(3, 3),
+      Array(0.1651, 0.2201, 0.1651, 0.0183, 0.0917, 0.2568, 0.0447, 0.0040, 0.0010, 0.0166, 0.0099, 0.0066)), gradeClusterBelief, 0.0001)
+
+    assertFactor(Factor(Var(2, 2), Var(4, 2), Array(0.9172, 0.0000, 0.0828, 0.0000)), satClusterBelief, 0.0001)
+    assertFactor(Factor(Var(3, 3), Var(5, 2), Array(0.0245, 0.2202, 0.1303, 0.1955, 0.4252, 0.0043)), letterClusterBelief, 0.0001)
+
+  }
+
+  @Test def logLikelihood_of_full_evidence {
+    val evidence = List((difficultyVar.id, 0), (intelliVar.id, 1), (gradeVar.id, 0), (satVar.id, 0), (letterVar.id, 1))
+    val logLikelihood = loopyBP.calibrateWithEvidence(evidence, progress)
+
+    assertEquals(-3.5349, logLikelihood, 0.0001)
   }
 }

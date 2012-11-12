@@ -19,6 +19,16 @@ trait ClusterGraphInfer {
   def calibrate(iterNum: (Int) => Unit)
 
   /**
+   * Applies evidence and calibrates cluster graph.
+   *
+   * @param evidence Sequence of Tuple2[variableId, variable value]
+   * @param iterNum Progress monitoring. It is called by this method at the beginning of every iteration
+   *
+   * @return Log likelihood of evidence in a cluster graph.
+   */
+  def calibrateWithEvidence(evidence: Seq[Tuple2[Int, Int]], iterNum: (Int) => Unit):Double
+
+  /**
    * Returns cluster belief.
    *
    * @param clusterId Unique cluster id
