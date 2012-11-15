@@ -13,11 +13,9 @@ import scala.io.Source
  * Use -1 to encode unknown value for a variable.
  *
  */
-class DataSet(val variableIds: Array[Int], val samples: Array[Array[Int]])
+case class DataSet(variableIds: Array[Int], samples: Array[Array[Int]])
 
 object DataSet {
-  def apply(variableIds: Array[Int], samples: Array[Array[Int]]): DataSet =
-    new DataSet(variableIds, samples)
 
   def fromFile(filePath: String, variableIds: Array[Int]): DataSet = {
 
