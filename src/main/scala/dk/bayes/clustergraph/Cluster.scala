@@ -29,6 +29,10 @@ class Cluster(val id: Int, val typeId: Int, factor: Factor) {
   def updateFactor(newFactor: Factor) {
     _factor = newFactor
 
+    resetMessages()
+  }
+  
+  def resetMessages() {
     edges.foreach { edge => edge.resetMessage() }
   }
 }
