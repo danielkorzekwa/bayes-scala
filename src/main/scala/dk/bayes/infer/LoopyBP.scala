@@ -140,8 +140,21 @@ case class LoopyBP(clusterGraph: ClusterGraph, threshold: Double = 0.00001) exte
   }
 
   def setEvidence(evidence: Tuple2[Int, Int]) {
-    val evidenceClusters = clusterGraph.getClusters().filter(c => c.getFactor().getVariables().map(v => v.id).contains(evidence._1))
 
-    evidenceClusters.foreach(c => c.updateFactor(c.getFactor().withEvidence(evidence)))
+    for (cluster <- clusterGraph.getClusters()) {
+
+      val variables = cluster.getFactor().getVariables()
+      var i = 0
+      var continue = true
+      while (continue && i < variables.size) {
+        if (evidence._1 == variables(i).id) {
+          val newFactor = cluster.getFactor().withEvidence(evidence)
+          cluster.updateFactor(newFactor)
+          continue = false
+        }
+        i += 1
+      }
+    }
   }
+
 }
