@@ -22,6 +22,8 @@ object GenericEMLearn extends EMLearn {
 
   def learn(clusterGraph: ClusterGraph, trainSet: DataSet, maxIterNum: Int, progress: (Progress) => Unit = (progress: Progress) => {}) = {
 
+    require(trainSet.samples.size>0,"No samples found in training set")
+    
     /**
      * Returns learned cluster potentials by cluster type id.
      */
