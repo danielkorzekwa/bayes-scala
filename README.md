@@ -11,6 +11,11 @@ Bayesian Networks in Scala
  * Learning parameters 
    * Expectation Maximisation - CPT Factors, Complete/Incomplete data, BN and Unrolled DBN
 
+**Roadmap**:
+ * Bayesian Inference in hybrid networks (mix of discrete and continuous variables)
+ * EM learning in hybrid networks with hidden continuous variables
+
+
 Getting Started - Loopy Belief Propagation in a Cluster Graph [1](#references)
 ---------------
 
