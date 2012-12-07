@@ -8,6 +8,7 @@ import dk.bayes.clustergraph.Edge
 import dk.bayes.factor.Factor
 import dk.bayes.factor.SingleFactor
 import scala.Math._
+import LoopyBP._
 
 /**
  * Loopy BP calibration and inference in a cluster graph, presented in
@@ -21,17 +22,15 @@ import scala.Math._
  */
 case class LoopyBP(clusterGraph: ClusterGraph, threshold: Double = 0.00001) extends ClusterGraphInfer {
 
-  def calibrate(iterNum: (Int) => Unit = (iterNum: Int) => {}) {
-
-    val rand = new Random(System.currentTimeMillis())
-
+  def calibrate(iterNum: (Int) => Unit = (iterNum: Int) => {},messageOrder: MessageOrder = ForwardBackwardMsgOrder()) {
+    
     @tailrec
     def calibrateUntilConverge(currentIter: Int): ClusterGraph = {
 
       iterNum(currentIter)
 
-      val shuffledClusters = rand.shuffle(clusterGraph.getClusters())
-      shuffledClusters.foreach(c => calibrateCluster(c))
+      val orderedClusters = messageOrder.ordered(clusterGraph.getClusters())
+      orderedClusters.foreach(c => calibrateCluster(c))
 
       if (isCalibrated(clusterGraph)) clusterGraph else calibrateUntilConverge(currentIter + 1)
     }
@@ -157,4 +156,15 @@ case class LoopyBP(clusterGraph: ClusterGraph, threshold: Double = 0.00001) exte
     }
   }
 
+}
+
+object LoopyBP {
+  case class ForwardMsgOrder extends MessageOrder {
+     def ordered(clusters:Seq[Cluster]):Seq[Cluster] = clusters
+  }
+  
+  case class ForwardBackwardMsgOrder extends MessageOrder {
+     def ordered(clusters:Seq[Cluster]):Seq[Cluster] = clusters ++ clusters.reverse
+  }
+  
 }

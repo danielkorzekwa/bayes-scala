@@ -1,5 +1,6 @@
 package dk.bayes.infer
 import dk.bayes.clustergraph.ClusterGraph
+import dk.bayes.clustergraph._
 import dk.bayes.factor.Factor
 
 /**
@@ -14,9 +15,10 @@ trait ClusterGraphInfer {
    * Calibrates cluster graph.
    *
    * @param iterNum Progress monitoring. It is called by this method at the beginning of every iteration
+   * @param messageOrder Order of clusters in which messages are sent for a single iteration of Belief Propagation
    *
    */
-  def calibrate(iterNum: (Int) => Unit)
+  def calibrate(iterNum: (Int) => Unit, messageOrder: MessageOrder)
 
   /**
    * Applies evidence and calibrates cluster graph.
@@ -26,7 +28,7 @@ trait ClusterGraphInfer {
    *
    * @return Log likelihood of evidence in a cluster graph.
    */
-  def calibrateWithEvidence(evidence: Seq[Tuple2[Int, Int]], iterNum: (Int) => Unit):Double
+  def calibrateWithEvidence(evidence: Seq[Tuple2[Int, Int]], iterNum: (Int) => Unit): Double
 
   /**
    * Returns cluster belief.
