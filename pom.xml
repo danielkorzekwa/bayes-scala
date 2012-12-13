@@ -109,6 +109,12 @@
 			<version>${scala.version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.googlecode.efficient-java-matrix-library</groupId>
+			<artifactId>ejml</artifactId>
+			<version>0.20</version>
+		</dependency>
+
 		<!-- Test dependencies -->
 		<dependency>
 			<groupId>junit</groupId>

@@ -3,15 +3,24 @@ Bayesian Networks in Scala
 
 **Major features**:
 
- * Model representation
-   * discrete factor
-   * cluster graph
- * Inference
-   * Loopy Belief Propagation in a Cluster Graph
- * Learning parameters 
-   * Expectation Maximisation - CPT Factors, Complete/Incomplete data, BN and Unrolled DBN
-
+ * Discrete Bayesian Networks
+   * Model representation
+     * discrete factor
+     * cluster graph
+   * Inference
+     * Loopy Belief Propagation in a Cluster Graph
+   * Learning parameters 
+     * Expectation Maximisation - CPT Factors, Complete/Incomplete data, BN and Unrolled DBN
+ * Continuous Bayesian Networks
+   * Model representation
+     * Canonical Multivariate Gaussian (product, marginalisation, evidence, linear gaussian CPD) [1,5](#references)
+   * Inference
+     * Joint Probability Distribution
+ * Hybrid Bayesian Networks
+   * Work in progress...
+ 
 **Roadmap**:
+
  * Bayesian Inference in hybrid networks (mix of discrete and continuous variables)
  * EM learning in hybrid networks with hidden continuous variables
 
@@ -230,3 +239,4 @@ References
 2. Automated Reasoning Group of Professor Adnan Darwiche at UCLA. SamIam: Sensitivity Analysis, Modelling, Inference and More, version 3.0
 3. Adnan Darwiche. Modeling and Reasoning with Bayesian Networks, 2009
 4. Stuart Russell, Peter Norvig. Artificial Intelligence - A Modern Approach, Third Edition, 2010
+5. Kevin P. Murhpy. A Variational Approximation for Bayesian Networks with Discrete and Continuous Latent Variables, 1999
