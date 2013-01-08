@@ -239,4 +239,4 @@ References
 2. Automated Reasoning Group of Professor Adnan Darwiche at UCLA. SamIam: Sensitivity Analysis, Modelling, Inference and More, version 3.0
 3. Adnan Darwiche. Modeling and Reasoning with Bayesian Networks, 2009
 4. Stuart Russell, Peter Norvig. Artificial Intelligence - A Modern Approach, Third Edition, 2010
-5. Kevin P. Murhpy. A Variational Approximation for Bayesian Networks with Discrete and Continuous Latent Variables, 1999
+5. Kevin P. Murphy. A Variational Approximation for Bayesian Networks with Discrete and Continuous Latent Variables, 1999
