@@ -15,6 +15,8 @@ class CanonicalGaussianMultiplyTest {
     val yGivenx = CanonicalGaussian(Array(xId, yId), 2, 0.5, Matrix(-0.1))
 
     val jointGaussian = x * yGivenx
+
+    assertArrayEquals(Array(xId, yId), jointGaussian.varIds)
     assertEquals(Matrix(Array(3, 1.7)).toString(), jointGaussian.getMu().toString())
     assertEquals(Matrix(2, 2, Array(1.5, -0.15, -0.15, 0.515)).toString(), jointGaussian.getSigma().toString())
 
@@ -27,6 +29,8 @@ class CanonicalGaussianMultiplyTest {
     val yGivenx = CanonicalGaussian(Array(xId, yId), 2, 0.5, Matrix(-0.1))
 
     val jointGaussian = yGivenx * x
+    
+    assertArrayEquals(Array(xId, yId), jointGaussian.varIds)
     assertEquals(Matrix(Array(3, 1.7)).toString(), jointGaussian.getMu().toString())
     assertEquals(Matrix(2, 2, Array(1.5, -0.15, -0.15, 0.515)).toString(), jointGaussian.getSigma().toString())
 

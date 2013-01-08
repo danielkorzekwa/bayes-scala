@@ -40,11 +40,13 @@ case class CanonicalGaussian(varIds: Array[Int], k: Matrix, h: Matrix, g: Double
   def *(gaussian: CanonicalGaussian) = CanonicalGaussianMultiply.*(this, gaussian)
 
   /**
-   * Returns gaussian integral over a given variable.
+   * Returns gaussian integral marginalising out a given variable
    */
   def marginalise(varId: Int): CanonicalGaussian = {
 
     val varIndex = varIds.indexOf(varId)
+
+    val newVarIds = varIds.filter(vId => vId != varId)
 
     val kXX = calcKxx(varIndex)
     val kXY = calcKxy(varIndex)
@@ -55,7 +57,7 @@ case class CanonicalGaussian(varIds: Array[Int], k: Matrix, h: Matrix, g: Double
     val newH = hX - kXY * (1d / k(varIndex, varIndex)) * h(varIndex)
     val newG = g + 0.5 * (log(abs(2 * Pi * (1d / k(varIndex, varIndex)))) + h(varIndex) * (1d / k(varIndex, varIndex)) * h(varIndex))
 
-    CanonicalGaussian(Array(1), newK, newH, newG)
+    CanonicalGaussian(newVarIds, newK, newH, newG)
   }
 
   /**
@@ -65,6 +67,8 @@ case class CanonicalGaussian(varIds: Array[Int], k: Matrix, h: Matrix, g: Double
 
     val varIndex = varIds.indexOf(varId)
 
+    val newVarIds = varIds.filter(vId => vId != varId)
+
     val kXY = calcKxy(varIndex)
     val hX = calcHx(varIndex)
 
@@ -72,7 +76,7 @@ case class CanonicalGaussian(varIds: Array[Int], k: Matrix, h: Matrix, g: Double
     val newH = hX - kXY * varValue
     val newG = g + h(varIndex, 0) * varValue - 0.5 * varValue * k(varIndex, varIndex) * varValue
 
-    CanonicalGaussian(Array(1), newK, newH, newG)
+    CanonicalGaussian(newVarIds, newK, newH, newG)
   }
 
   def getMu(): Matrix = k.inv * h

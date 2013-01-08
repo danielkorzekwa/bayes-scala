@@ -5,7 +5,7 @@ import org.ejml.ops.CommonOps
 /**
  * Linear Algebra.
  *
- * @author korzekwad
+ * @author Daniel Korzekwa
  */
 object Linear {
 
