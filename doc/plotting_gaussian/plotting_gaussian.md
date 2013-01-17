@@ -11,7 +11,7 @@ This page presents some examples on plotting Gaussian distributions:
 Plotting Gaussians with Octave
 ------------------------------
 
-### Univariate Gaussian:
+### Univariate Gaussian
 
 	% Plotting N(x|mu, sigma)
 	function plotnormpdf()
@@ -29,7 +29,7 @@ Plotting Gaussians with Octave
 
 ![Univariate Gaussian](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/plotting_gaussian/octave_univariate_gaussian.png "Univariate Gaussian")
 
-### Multivariate Gaussian:
+### Multivariate Gaussian
 
 	% Required package: http://octave.sourceforge.net/statistics/
 	% Plotting N(x|mu, sigma)
@@ -57,7 +57,7 @@ Plotting Gaussians with Octave
 
 ![Multivariate Gaussian](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/plotting_gaussian/octave_multivariate_gaussian_contour.png "Multivariate Gaussian")
 
-### Linear Gaussian:
+### Linear Gaussian
 
 	% Plotting N(x|Ax + b, sigma)
 	function plotcondpdf()
