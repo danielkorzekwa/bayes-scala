@@ -55,7 +55,7 @@ Multivariate Gaussian:
 
 ![Multivariate Gaussian](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/plotting_gaussian/octave_multivariate_gaussian.png "Multivariate Gaussian")
 
-![Multivariate Gaussian](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/plotting_gaussian/octave_multivariate_gaussia_contour.png "Multivariate Gaussian")
+![Multivariate Gaussian](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/plotting_gaussian/octave_multivariate_gaussian_contour.png "Multivariate Gaussian")
 
 Linear Gaussian:
 
