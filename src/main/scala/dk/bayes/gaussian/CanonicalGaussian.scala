@@ -81,6 +81,15 @@ case class CanonicalGaussian(varIds: Array[Int], k: Matrix, h: Matrix, g: Double
 
   def getMu(): Matrix = k.inv * h
   def getSigma(): Matrix = k.inv
+  
+  /**
+   * Returns logarithm of normalisation constant.
+   */
+  def getLogP(): Double = {
+    val mu = getMu()
+    val logP = g + (0.5*mu.transpose*k*mu)(0)
+    logP
+  }
 
   private def calcKxx(yIndex: Int): Matrix = {
     val kValues = for (
@@ -124,7 +133,7 @@ object CanonicalGaussian {
   def apply(varIds: Array[Int], mu: Matrix, sigma: Matrix): CanonicalGaussian = {
     val k = sigma.inv
     val h = k * mu
-    val g = -0.5 * mu.transpose * k * mu - log(pow(2 * Pi, mu.numRows.toDouble / 2) * pow(sigma.det, 0.5))
+    val g = -0.5 * mu.transpose * k * mu - log(pow(2d * Pi, mu.numRows.toDouble / 2d) * pow(sigma.det, 0.5))
     new CanonicalGaussian(varIds, k, h, g(0))
   }
 

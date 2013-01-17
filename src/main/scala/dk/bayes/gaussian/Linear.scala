@@ -38,6 +38,7 @@ object Linear {
     def det(): Double = matrix.determinant()
     def negative(): Matrix = Matrix(matrix.negative())
 
+    def at(index: Int) = matrix.get(index)
     def apply(row: Int, col: Int): Double = matrix.get(row, col)
     def apply(index: Int): Double = matrix.get(index)
     def column(columnIndex: Int): Matrix = Matrix(matrix.extractVector(false, columnIndex))
