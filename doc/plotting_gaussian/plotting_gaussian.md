@@ -20,7 +20,7 @@ Plotting Gaussians with Octave
 	  sigma= 1.5
 	
 	  x=linspace(mu-4*sigma,mu+4*sigma,100);
-	  y=normpdf(x,3,1.5);
+	  y=normpdf(x,mu,sigma);
 	   
 	  plot(x,y)
 	  xlabel('x')
