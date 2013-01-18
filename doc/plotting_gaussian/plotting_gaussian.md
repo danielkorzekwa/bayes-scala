@@ -1,11 +1,11 @@
 Plotting Gaussians
 ==================
 
-This page presents some examples on plotting Gaussian distributions:
+This page presents some examples on plotting Gaussian distributions both Octave [1](#references) and Gnuplot [2](#references) tools:
 
-* Univariate Gaussian N(x|mu, sigma)
-* Multivariate Gaussian N(x|mu, sigma)
-* Linear Gaussian N(x|Ax + b, sigma)
+* Univariate Gaussian: N(x|mu, sigma) [3](#references) 
+* Multivariate Gaussian: N(x|mu, sigma) [4](#references) [5](#references)
+* Linear Gaussian: N(x|Ax + b, sigma) [6](#references)
 
 
 Plotting Gaussians with Octave
@@ -84,6 +84,78 @@ Plotting Gaussians with Octave
 ![Linear Gaussian](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/plotting_gaussian/octave_linear_gaussian.png "Linear Gaussian")
 ![Linear Gaussian](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/plotting_gaussian/octave_linear_gaussian_contour.png "Linear Gaussian")
 
-Plotting Gaussians with GnuPlot
+Plotting Gaussians with Gnuplot
 -------------------------------
-In progress...
+
+### Univariate Gaussian
+
+	mu = 3
+	sigma = 1.5
+	
+	p = 1/sqrt(2*pi*sigma**2)
+	gaussian(x) = p * exp(-(x-mu)**2/(2*sigma))
+	
+	plot [mu-4*sigma:mu+4*sigma] gaussian(x)
+
+![Univariate Gaussian](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/plotting_gaussian/gnuplot_univariate_gaussian.png "Univariate Gaussian")
+
+### Multivariate Gaussian
+
+	# http://mathworld.wolfram.com/BivariateNormalDistribution.html
+	mu_x = 3
+	mu_y = 1.7
+	
+	sigma_x = 1.5
+	sigma_y = 0.515
+	cov = -0.15
+	
+	z(x,y) = (x - mu_x)**2/sigma_x +  - 2*p*(x-mu_x)*(y-mu_y)/(sigma_x*sigma_y) + (y - mu_y)**2/sigma_y
+	p = cov /(sigma_x*sigma_y)
+	gaussian(x,y) = 1 / (2*pi*sigma_x*sigma_y*sqrt(1-p**2)) * exp(-z(x,y)/(2*(1-p**2)))
+	
+	set xrange [mu_x-4*sigma_x:mu_x+4*sigma_x]
+	set yrange [mu_y-4*sigma_y:mu_y+4*sigma_y]
+	set xlabel "x"
+	set ylabel "y"
+	
+	set xyplane relative  0.2
+	set pm3d at b
+	set isosample 50
+	#set pm3d map
+	
+	splot gaussian(x,y)
+
+![Multivariate Gaussian](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/plotting_gaussian/gnuplot_multivariate_gaussian.png "Multivariate Gaussian")
+
+![Multivariate Gaussian](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/plotting_gaussian/gnuplot_multivariate_gaussian_contour.png "Multivariate Gaussian")
+
+### Linear Gaussian
+
+A = 0.9
+b = 0.1
+sigma = 1.5
+
+p = 1/sqrt(2*pi*sigma**2)
+linear_gaussian(x,y) = p * exp(-(y-(A*x+b))**2/(2*sigma))
+
+set xlabel "x"
+set ylabel "y"
+
+set xyplane relative  0.2
+set pm3d at b
+set isosample 50
+#set pm3d map
+
+splot [-5:5] [-5:5] linear_gaussian(x,y)
+
+![Linear Gaussian](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/plotting_gaussian/gnuplot_linear_gaussian.png "Linear Gaussian")
+![Linear Gaussian](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/plotting_gaussian/gnuplot_linear_gaussian_contour.png "Linear Gaussian")
+
+References
+---------------
+1. Octave - http://www.gnu.org/software/octave/
+2. Gnuplot - http://www.gnuplot.info/
+3. Univariate Gaussian - http://en.wikipedia.org/wiki/Normal_distribution
+4. Multivariate Gaussian - http://en.wikipedia.org/wiki/Multivariate_Gaussian
+5. Bivariate Gaussian - http://mathworld.wolfram.com/BivariateNormalDistribution.html
+6. Christopher M. Bishop. Pattern Recognition and Machine Learning (Information Science and Statistics), 2009
