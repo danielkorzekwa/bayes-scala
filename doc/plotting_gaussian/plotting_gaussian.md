@@ -131,22 +131,22 @@ Plotting Gaussians with Gnuplot
 
 ### Linear Gaussian
 
-A = 0.9
-b = 0.1
-sigma = 1.5
-
-p = 1/sqrt(2*pi*sigma**2)
-linear_gaussian(x,y) = p * exp(-(y-(A*x+b))**2/(2*sigma))
-
-set xlabel "x"
-set ylabel "y"
-
-set xyplane relative  0.2
-set pm3d at b
-set isosample 50
-#set pm3d map
-
-splot [-5:5] [-5:5] linear_gaussian(x,y)
+	A = 0.9
+	b = 0.1
+	sigma = 1.5
+	
+	p = 1/sqrt(2*pi*sigma**2)
+	linear_gaussian(x,y) = p * exp(-(y-(A*x+b))**2/(2*sigma))
+	
+	set xlabel "x"
+	set ylabel "y"
+	
+	set xyplane relative  0.2
+	set pm3d at b
+	set isosample 50
+	#set pm3d map
+	
+	splot [-5:5] [-5:5] linear_gaussian(x,y)
 
 ![Linear Gaussian](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/plotting_gaussian/gnuplot_linear_gaussian.png "Linear Gaussian")
 ![Linear Gaussian](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/plotting_gaussian/gnuplot_linear_gaussian_contour.png "Linear Gaussian")
