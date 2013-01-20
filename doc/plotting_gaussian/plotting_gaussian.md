@@ -1,7 +1,7 @@
 Plotting Gaussians
 ==================
 
-This page presents some examples on plotting Gaussian distributions both Octave [1](#references) and Gnuplot [2](#references) tools:
+This page presents some examples on plotting Gaussian distributions using both Octave [1](#references) and Gnuplot [2](#references) tools:
 
 * Univariate Gaussian: N(x|mu, sigma) [3](#references) 
 * Multivariate Gaussian: N(x|mu, sigma) [4](#references) [5](#references)
