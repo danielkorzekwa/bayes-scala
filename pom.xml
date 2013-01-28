@@ -7,7 +7,7 @@
 	<groupId>dk.bayes</groupId>
 	<artifactId>bayes-scala</artifactId>
 	<name>bayes-scala</name>
-	<version>0.2</version>
+	<version>0.3-SNAPSHOT</version>
 	<inceptionYear>2011</inceptionYear>
 	<url>https://github.com/danielkorzekwa/bayes-scala</url>
 
