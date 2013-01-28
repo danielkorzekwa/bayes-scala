@@ -92,10 +92,10 @@ Plotting Gaussians with Gnuplot
 	mu = 3
 	sigma = 1.5
 	
-	p = 1/sqrt(2*pi*sigma**2)
-	gaussian(x) = p * exp(-(x-mu)**2/(2*sigma))
+	p (sigma)= 1/sqrt(2*pi*sigma**2)
+	gaussian(x,mu,sigma) = p(sigma) * exp(-(x-mu)**2/(2*sigma**2))
 	
-	plot [mu-4*sigma:mu+4*sigma] gaussian(x)
+	plot [mu-4*sigma:mu+4*sigma] gaussian(x,mu,sigma)
 
 ![Univariate Gaussian](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/plotting_gaussian/gnuplot_univariate_gaussian.png "Univariate Gaussian")
 
@@ -135,8 +135,8 @@ Plotting Gaussians with Gnuplot
 	b = 0.1
 	sigma = 1.5
 	
-	p = 1/sqrt(2*pi*sigma**2)
-	linear_gaussian(x,y) = p * exp(-(y-(A*x+b))**2/(2*sigma))
+	p(sigma) = 1/sqrt(2*pi*sigma**2)
+	linear_gaussian(x,y,sigma) = p * exp(-(y-(A*x+b))**2/(2*sigma**2))
 	
 	set xlabel "x"
 	set ylabel "y"
@@ -146,7 +146,7 @@ Plotting Gaussians with Gnuplot
 	set isosample 50
 	#set pm3d map
 	
-	splot [-5:5] [-5:5] linear_gaussian(x,y)
+	splot [-5:5] [-5:5] linear_gaussian(x,y,sigma)
 
 ![Linear Gaussian](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/plotting_gaussian/gnuplot_linear_gaussian.png "Linear Gaussian")
 ![Linear Gaussian](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/plotting_gaussian/gnuplot_linear_gaussian_contour.png "Linear Gaussian")
