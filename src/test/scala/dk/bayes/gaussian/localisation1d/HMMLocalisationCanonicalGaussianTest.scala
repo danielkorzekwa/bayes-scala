@@ -2,18 +2,16 @@ package dk.bayes.gaussian.localisation1d
 
 import org.junit.Assert._
 import org.junit.Test
-
 import dk.bayes.gaussian.CanonicalGaussian
 import dk.bayes.gaussian.Linear.Matrix
+import dk.bayes.gaussian.Gaussian
+import dk.bayes.gaussian.LinearGaussian
 
 class HMMLocalisationCanonicalGaussianTest {
 
-  val locationMean = 3
-  val locationVariance = 1.5
-
-  val transitionNoise = 0.2
-  val observationNoise = 0.9
-  val observationBias = 0
+  val priorProb = Gaussian(mu = 3, sigma = 1.5)
+  val transitionProb = LinearGaussian(a = 1, b = 0, sigma = 0.2)
+  val emissionProb = LinearGaussian(a = 1, b = 0, sigma = 0.9)
 
   @Test def single_observation {
 
@@ -21,9 +19,9 @@ class HMMLocalisationCanonicalGaussianTest {
     val location2Id = 2
     val observationId = 3
 
-    val location1 = CanonicalGaussian(location1Id, locationMean, locationVariance)
-    val location2 = CanonicalGaussian(Array(location1Id, location2Id), observationBias, transitionNoise, beta = Matrix(1))
-    val observation = CanonicalGaussian(Array(location2Id, observationId), observationBias, observationNoise, beta = Matrix(1))
+    val location1 = CanonicalGaussian(location1Id, priorProb.mu, priorProb.sigma)
+    val location2 = CanonicalGaussian(Array(location1Id, location2Id), transitionProb.b, transitionProb.sigma, Matrix(transitionProb.a))
+    val observation = CanonicalGaussian(Array(location2Id, observationId), emissionProb.b, emissionProb.sigma, Matrix(emissionProb.a))
 
     val location2Marginal = (location1 * location2).marginalise(location1Id)
     val location2Posterior = (location2Marginal * observation).withEvidence(observationId, 0.6)
