@@ -137,6 +137,9 @@ object CanonicalGaussian {
     new CanonicalGaussian(varIds, k, h, g(0))
   }
 
+  /**
+   * Creates Canonical Gaussian from Linear Gaussian N(beta * x + mu, sigma)
+   */
   def apply(varIds: Array[Int], mu: Double, sigma: Double, beta: Matrix): CanonicalGaussian = {
     val kMatrix = Matrix(beta.numRows() + 1, beta.numRows() + 1)
 
