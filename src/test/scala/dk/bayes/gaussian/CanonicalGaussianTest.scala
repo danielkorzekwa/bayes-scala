@@ -26,15 +26,15 @@ class CanonicalGaussianTest {
     new CanonicalGaussian(Array(1), Matrix(2, 2, Array(0d, 0, 0, 0)), Matrix(0, 0), 0)
   }
 
-  @Test(expected = classOf[IllegalArgumentException]) def wrong_dimensions_of_k_and_h {
+  @Test(expected = classOf[IllegalArgumentException]) def constructor_wrong_dimensions_of_k_and_h {
     new CanonicalGaussian(Array(1, 2), Matrix(2, 2, Array(0d, 0, 0, 0)), Matrix(0), 0)
   }
 
-  @Test(expected = classOf[IllegalArgumentException]) def k_matrix_is_not_square {
+  @Test(expected = classOf[IllegalArgumentException]) def constructor_k_matrix_is_not_square {
     CanonicalGaussian(Array(1, 2), Matrix(3, 2, Array(0d, 0, 0, 0, 0, 0)), Matrix(0, 0, 0))
   }
 
-  @Test(expected = classOf[IllegalArgumentException]) def h_matrix_is_not_column_vector {
+  @Test(expected = classOf[IllegalArgumentException]) def constructor_h_matrix_is_not_column_vector {
     CanonicalGaussian(Array(1, 2), Matrix(2, 2, Array(0d, 0, 0, 0)), Matrix(1, 3, Array(0d, 0, 0)))
   }
 
@@ -93,75 +93,76 @@ class CanonicalGaussianTest {
     val x = CanonicalGaussian(Array(xId), Matrix(3), Matrix(1.5))
     val yGivenx = CanonicalGaussian(Array(xId, yId), 2, 0.5, Matrix(-0.1))
 
-    val marginalX = (x * yGivenx).marginalise(xId)
+    val marginalY = (x * yGivenx).marginalise(xId)
 
-    assertArrayEquals(Array(yId), marginalX.varIds)
-    assertEquals(Matrix(1.7).toString(), marginalX.getMu().toString())
-    assertEquals(Matrix(0.515).toString(), marginalX.getSigma().toString())
-    assertEquals(0.03360, marginalX.pdf(Matrix(0)), 0.0001)
+    assertArrayEquals(Array(yId), marginalY.varIds)
+    assertEquals(Matrix(1.7).toString(), marginalY.getMu().toString())
+    assertEquals(Matrix(0.515).toString(), marginalY.getSigma().toString())
+    assertEquals(0.03360, marginalY.pdf(Matrix(0)), 0.0001)
   }
 
   /**
    * Tests for withEvidence() method
    */
-  @Test def givenEvidence {
+  @Test def withEvidence_marginal_y {
     val beta = Matrix(-0.1)
 
-    val yGivenX = CanonicalGaussian(Array(xId, yId), 2, 0.5, beta).withEvidence(xId, 3.5)
+    val marginalY = CanonicalGaussian(Array(xId, yId), 2, 0.5, beta).withEvidence(xId, 3.5)
 
-    assertArrayEquals(Array(yId), yGivenX.varIds)
-    assertEquals(0.03707, yGivenX.pdf(Matrix(0)), 0.0001)
-    assertEquals(Matrix(1.65).toString(), yGivenX.getMu().toString())
-    assertEquals(Matrix(0.5).toString(), yGivenX.getSigma().toString())
+    assertArrayEquals(Array(yId), marginalY.varIds)
+    assertEquals(0.03707, marginalY.pdf(Matrix(0)), 0.0001)
+    assertEquals(Matrix(1.65).toString(), marginalY.getMu().toString())
+    assertEquals(Matrix(0.5).toString(), marginalY.getSigma().toString())
   }
 
-  @Test def product_given_x {
+  @Test def withEvidence_marginal_y_given_x {
+    val beta = Matrix(-0.1)
 
+    val x = CanonicalGaussian(Array(xId), Matrix(3), Matrix(1.5))
+    val yGivenx = CanonicalGaussian(Array(xId, yId), 2, 0.5, beta)
+
+    val marginalY = (x * yGivenx).withEvidence(xId, 3.5) //CanonicalGaussian(Array(xId, yId), Matrix(Array(3, 1.7)), Matrix(2, 2, Array(1.5, -0.15, -0.15, 0.515))).withEvidence(xId, 3.5)
+
+    assertArrayEquals(Array(yId), marginalY.varIds)
+    assertEquals(Matrix(1.65).toString(), marginalY.getMu().toString())
+    assertEquals(Matrix(0.5).toString(), marginalY.getSigma().toString())
+    assertEquals(0.0111, marginalY.pdf(Matrix(0)), 0.0001d)
+  }
+
+  @Test def withEvidence_marginal_x_given_y {
     val x = CanonicalGaussian(Array(xId), Matrix(3), Matrix(1.5))
     val yGivenx = CanonicalGaussian(Array(xId, yId), 2, 0.5, Matrix(-0.1))
 
-    val jointGaussian = (x * yGivenx).withEvidence(xId, 3.5) //CanonicalGaussian(Array(xId, yId), Matrix(Array(3, 1.7)), Matrix(2, 2, Array(1.5, -0.15, -0.15, 0.515))).withEvidence(xId, 3.5)
+    val marginalX = (x * yGivenx).withEvidence(yId, 2.5)
 
-    assertArrayEquals(Array(yId), jointGaussian.varIds)
-    assertEquals(Matrix(1.65).toString(), jointGaussian.getMu().toString())
-    assertEquals(Matrix(0.5).toString(), jointGaussian.getSigma().toString())
-    assertEquals(0.0111, jointGaussian.pdf(Matrix(0)), 0.0001d)
+    assertArrayEquals(Array(xId), marginalX.varIds)
+    assertEquals(Matrix(2.7669).toString(), marginalX.getMu().toString())
+    assertEquals(Matrix(1.4563).toString(), marginalX.getSigma().toString())
+    assertEquals(0.00712, marginalX.pdf(Matrix(0)), 0.0001d)
   }
 
-  @Test def product_given_y {
+  @Test def withEvidence_marginal_x_given_y_version2 {
     val x = CanonicalGaussian(Array(xId), Matrix(3), Matrix(1.5))
     val yGivenx = CanonicalGaussian(Array(xId, yId), 2, 0.5, Matrix(-0.1))
 
-    val jointGaussian = (x * yGivenx).withEvidence(yId, 2.5)
+    val marginalX = (x * yGivenx.withEvidence(yId, 2.5))
 
-    assertArrayEquals(Array(xId), jointGaussian.varIds)
-    assertEquals(Matrix(2.7669).toString(), jointGaussian.getMu().toString())
-    assertEquals(Matrix(1.4563).toString(), jointGaussian.getSigma().toString())
-    assertEquals(0.00712, jointGaussian.pdf(Matrix(0)), 0.0001d)
+    assertArrayEquals(Array(xId), marginalX.varIds)
+    assertEquals(Matrix(2.7669).toString(), marginalX.getMu().toString())
+    assertEquals(Matrix(1.4563).toString(), marginalX.getSigma().toString())
+    assertEquals(0.00712, marginalX.pdf(Matrix(0)), 0.0001d)
   }
 
-  @Test def product_yWithEvidence_x {
-    val x = CanonicalGaussian(Array(xId), Matrix(3), Matrix(1.5))
-    val yGivenx = CanonicalGaussian(Array(xId, yId), 2, 0.5, Matrix(-0.1)).withEvidence(yId, 2.5)
-
-    val jointGaussian = (x * yGivenx)
-
-    assertArrayEquals(Array(xId), jointGaussian.varIds)
-    assertEquals(Matrix(2.7669).toString(), jointGaussian.getMu().toString())
-    assertEquals(Matrix(1.4563).toString(), jointGaussian.getSigma().toString())
-    assertEquals(0.00712, jointGaussian.pdf(Matrix(0)), 0.0001d)
-  }
-
-  @Test def product_yx_given_y {
+  @Test def withEvidence_marginal_x_given_y_version3 {
     val x = CanonicalGaussian(Array(xId), Matrix(3), Matrix(1.5))
     val yGivenx = CanonicalGaussian(Array(xId, yId), 2, 0.5, Matrix(-0.1))
 
-    val jointGaussian = (yGivenx * x).withEvidence(yId, 2.5)
-    assertArrayEquals(Array(xId), jointGaussian.varIds)
-    assertEquals(Matrix(2.7669).toString(), jointGaussian.getMu().toString())
-    assertEquals(Matrix(1.4563).toString(), jointGaussian.getSigma().toString())
+    val marginalX = (yGivenx * x).withEvidence(yId, 2.5)
+    assertArrayEquals(Array(xId), marginalX.varIds)
+    assertEquals(Matrix(2.7669).toString(), marginalX.getMu().toString())
+    assertEquals(Matrix(1.4563).toString(), marginalX.getSigma().toString())
 
-    assertEquals(0.00712, jointGaussian.pdf(Matrix(0)), 0.0001d)
+    assertEquals(0.00712, marginalX.pdf(Matrix(0)), 0.0001d)
   }
 
   @Test def getMu_getSigma {
