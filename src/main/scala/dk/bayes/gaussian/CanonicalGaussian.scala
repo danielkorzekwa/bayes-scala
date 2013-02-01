@@ -48,10 +48,10 @@ case class CanonicalGaussian(varIds: Array[Int], k: Matrix, h: Matrix, g: Double
 
     val newVarIds = varIds.filter(vId => vId != varId)
 
-    val kXX = calcKxx(varIndex)
-    val kXY = calcKxy(varIndex)
-    val kYX = calcKyx(varIndex)
-    val hX = calcHx(varIndex)
+    val kXX = k.filterNot(varIndex, varIndex)
+    val kXY = k.column(varIndex).filterNotRow(varIndex)
+    val kYX = k.row(varIndex).filterNotColumn(varIndex)
+    val hX = h.filterNotRow(varIndex)
 
     val newK = kXX - kXY * (1d / k(varIndex, varIndex)) * kYX
     val newH = hX - kXY * (1d / k(varIndex, varIndex)) * h(varIndex)
@@ -69,10 +69,10 @@ case class CanonicalGaussian(varIds: Array[Int], k: Matrix, h: Matrix, g: Double
 
     val newVarIds = varIds.filter(vId => vId != varId)
 
-    val kXY = calcKxy(varIndex)
-    val hX = calcHx(varIndex)
+    val kXY = k.column(varIndex).filterNotRow(varIndex)
+    val hX = h.filterNotRow(varIndex)
 
-    val newK = calcKxx(varIndex)
+    val newK = k.filterNot(varIndex, varIndex)
     val newH = hX - kXY * varValue
     val newG = g + h(varIndex, 0) * varValue - 0.5 * varValue * k(varIndex, varIndex) * varValue
 
@@ -81,46 +81,14 @@ case class CanonicalGaussian(varIds: Array[Int], k: Matrix, h: Matrix, g: Double
 
   def getMu(): Matrix = k.inv * h
   def getSigma(): Matrix = k.inv
-  
+
   /**
    * Returns logarithm of normalisation constant.
    */
   def getLogP(): Double = {
     val mu = getMu()
-    val logP = g + (0.5*mu.transpose*k*mu)(0)
+    val logP = g + (0.5 * mu.transpose * k * mu)(0)
     logP
-  }
-
-  private def calcKxx(yIndex: Int): Matrix = {
-    val kValues = for (
-      row <- 0 until k.numRows();
-      col <- 0 until k.numCols();
-      if (row != yIndex && col != yIndex)
-    ) yield k(row, col)
-
-    val kXX = Matrix(k.numRows() - 1, k.numCols() - 1, kValues.toArray)
-    kXX
-  }
-
-  private def calcKxy(yIndex: Int): Matrix = {
-    val yColumn = k.column(yIndex)
-    val kXYValues = for (row <- 0 until yColumn.numRows(); if (row != yIndex)) yield yColumn(row, 0)
-    val kXY = Matrix(yColumn.numRows() - 1, 1, kXYValues.toArray)
-    kXY
-  }
-
-  private def calcKyx(yIndex: Int): Matrix = {
-    val yRow = k.row(yIndex)
-    val kYXValues = for (column <- 0 until yRow.numCols(); if (column != yIndex)) yield yRow(0, column)
-    val kYX = Matrix(kYXValues.toArray).reshape(1, yRow.numCols() - 1)
-    kYX
-  }
-
-  private def calcHx(yIndex: Int): Matrix = {
-    val hXValues = for (row <- 0 until h.numRows(); if (row != yIndex)) yield h(row, 0)
-
-    val newHx = Matrix(h.numRows() - 1, 1, hXValues.toArray)
-    newHx
   }
 
   private def exp(m: Matrix) = scala.math.exp(m(0))

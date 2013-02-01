@@ -1,8 +1,10 @@
 package dk.bayes.gaussian
 
-import org.junit._
-import Assert._
-import Linear._
+import org.junit.Assert.assertEquals
+import org.junit.Test
+
+import Linear.Matrix
+import dk.bayes.gaussian.Linear.doubleToLinearDouble
 
 class LinearTest {
 
@@ -143,6 +145,52 @@ class LinearTest {
     m.foreach((rowId, colId) => newM.set(rowId, colId, m(rowId, colId)))
 
     assertEquals(newM.toString, m.toString)
+  }
+
+  /**
+   * Tests for filterRowNot
+   */
+
+  @Test def matrix_filterRowNot_first_index {
+    assertEquals(Matrix(2d, 3).toString, Matrix(1.5, 2, 3).filterNotRow(0).toString)
+    assertEquals(Matrix(2, 2, Array(3d, 4, 5, 6)).toString, Matrix(3, 2, Array(1d, 2, 3, 4, 5, 6)).filterNotRow(0).toString)
+  }
+
+  @Test def matrix_filterRowNot_middle_index {
+    assertEquals(Matrix(1.5d, 3).toString, Matrix(1.5, 2, 3).filterNotRow(1).toString)
+    assertEquals(Matrix(2, 2, Array(1d, 2, 5, 6)).toString, Matrix(3, 2, Array(1d, 2, 3, 4, 5, 6)).filterNotRow(1).toString)
+  }
+
+  @Test def matrix_filterRowNot_last_index {
+    assertEquals(Matrix(1.5, 2).toString, Matrix(1.5, 2, 3).filterNotRow(2).toString)
+    assertEquals(Matrix(2, 2, Array(1d, 2, 3, 4)).toString, Matrix(3, 2, Array(1d, 2, 3, 4, 5, 6)).filterNotRow(2).toString)
+  }
+
+  /**
+   * Tests for filterColumnNot
+   */
+
+  @Test def matrix_filterColumnNot_first_index {
+
+    assertEquals(Matrix(2d, 3).transpose.toString, Matrix(1.5, 2, 3).transpose.filterNotColumn(0).toString)
+    assertEquals(Matrix(2, 2, Array(2d, 3, 5, 6)).toString, Matrix(2, 3, Array(1d, 2, 3, 4, 5, 6)).filterNotColumn(0).toString)
+  }
+
+  @Test def matrix_filterColumnNot_middle_index {
+    assertEquals(Matrix(1.5d, 3).transpose.toString, Matrix(1.5, 2, 3).transpose.filterNotColumn(1).toString)
+    assertEquals(Matrix(2, 2, Array(1d, 3, 4, 6)).toString, Matrix(2, 3, Array(1d, 2, 3, 4, 5, 6)).filterNotColumn(1).toString)
+  }
+
+  @Test def matrix_filterColumnNot_last_index {
+    assertEquals(Matrix(1.5, 2).transpose.toString, Matrix(1.5, 2, 3).transpose.filterNotColumn(2).toString)
+    assertEquals(Matrix(2, 2, Array(1d, 2, 4, 5)).toString, Matrix(2, 3, Array(1d, 2, 3, 4, 5, 6)).filterNotColumn(2).toString)
+  }
+
+  /**
+   * Tests for filterNot
+   */
+  @Test def matrix_filterNot {
+    assertEquals(Matrix(1d, 5).toString, Matrix(3, 2, Array(1d, 2, 3, 4, 5, 6)).filterNot(1, 1).toString)
   }
 
   /**

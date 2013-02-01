@@ -45,6 +45,7 @@ object Linear {
     def row(columnIndex: Int): Matrix = Matrix(matrix.extractVector(true, columnIndex))
     def numRows(): Int = matrix.numRows()
     def numCols(): Int = matrix.numCols()
+    def size() = numRows * numCols
 
     def set(row: Int, col: Int, value: Double) = matrix.set(row, col, value)
     def insertIntoThis(insertRow: Int, insertCol: Int, m: Matrix) = this.matrix.insertIntoThis(insertRow, insertCol, m.matrix)
@@ -54,6 +55,40 @@ object Linear {
       Matrix(copy)
     }
 
+    def filterNotRow(rowIndex: Int): Matrix = {
+
+      val newMatrix = rowIndex match {
+        case 0 => matrix.extractMatrix(1, matrix.numRows, 0, matrix.numCols)
+        case x if x == (matrix.numRows - 1) => matrix.extractMatrix(0, matrix.numRows - 1, 0, matrix.numCols)
+        case _ => {
+
+          val top = matrix.extractMatrix(0, rowIndex, 0, matrix.numCols)
+          val bottom = matrix.extractMatrix(rowIndex + 1, matrix.numRows, 0, matrix.numCols)
+
+          top.combine(rowIndex, 0, bottom)
+        }
+      }
+      Matrix(newMatrix)
+    }
+
+    def filterNotColumn(columnIndex: Int): Matrix = {
+
+      val newMatrix = columnIndex match {
+        case 0 => matrix.extractMatrix(0, matrix.numRows, 1, matrix.numCols)
+        case x if x == (matrix.numCols - 1) => matrix.extractMatrix(0, matrix.numRows, 0, matrix.numCols - 1)
+        case _ => {
+
+          val left = matrix.extractMatrix(0, matrix.numRows, 0, columnIndex)
+          val right = matrix.extractMatrix(0, matrix.numRows, columnIndex + 1, matrix.numCols)
+
+          left.combine(0, columnIndex, right)
+        }
+      }
+      Matrix(newMatrix)
+    }
+
+    def filterNot(rowIndex: Int, columnIndex: Int): Matrix = filterNotRow(rowIndex).filterNotColumn(columnIndex)
+
     /**
      * Iterates over all matrix elements row by row.
      *
@@ -62,6 +97,8 @@ object Linear {
     def foreach(f: (Int, Int) => Unit) {
       for (rowId <- 0 until numRows; colId <- 0 until numCols) f(rowId, colId)
     }
+
+    override def toString(): String = matrix.toString
   }
 
   object Matrix {
