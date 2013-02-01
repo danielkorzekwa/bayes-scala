@@ -1,0 +1,37 @@
+package dk.bayes.gaussian
+
+import org.junit.Assert._
+import org.junit.Test
+
+class KalmanFilterTest {
+
+  /**
+   * Tests for marginal y: P(y)
+   */
+
+  @Test def marginal {
+    val x0 = Gaussian(3, 1.5)
+    val x1Sigma = 0.5
+
+    val marginalX1 = KalmanFilter.marginal(x0, x1Sigma)
+
+    assertEquals(3, marginalX1.mu, 0)
+    assertEquals(2, marginalX1.sigma, 0)
+    assertEquals(0.0297, marginalX1.pdf(0), 0.0001)
+  }
+
+  /**
+   * Tests for posterior x: P(x|z)
+   */
+
+  @Test def posterior {
+    val x = Gaussian(3, 1.5)
+    val zSigma = 0.5
+
+    val marginalX = KalmanFilter.posterior(x, zSigma, 2.5)
+
+    assertEquals(2.625, marginalX.mu, 0)
+    assertEquals(0.375, marginalX.sigma, 0)
+    assertEquals(0.3869, marginalX.pdf(2), 0.0001d)
+  }
+}
