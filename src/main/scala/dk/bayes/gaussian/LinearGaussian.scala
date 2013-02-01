@@ -10,4 +10,8 @@ package dk.bayes.gaussian
  * @param b Mean component: mu = ax + b
  * @param sigma Variance
  */
-case class LinearGaussian(a: Double, b: Double, sigma: Double)
+case class LinearGaussian(a: Double, b: Double, sigma: Double) {
+
+  def *(gaussian: Gaussian): MultivariateGaussian = gaussian * this
+  
+}

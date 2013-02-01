@@ -15,4 +15,6 @@ case class Gaussian(mu: Double, sigma: Double) {
   def pdf(x: Double) = normConstant * exp(-pow(x - mu, 2) / (2 * sigma))
 
   def normConstant(): Double = 1 / sqrt(2 * Pi * sigma)
+
+  def *(linearGaussian: LinearGaussian): MultivariateGaussian = throw new UnsupportedOperationException("Not implemented yet.")
 }
