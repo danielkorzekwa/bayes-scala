@@ -9,6 +9,20 @@ Books
 * Daphne Koller, Nir Friedman. Probabilistic Graphical Models, Principles and Techniques, 2009
 * Christopher M. Bishop. Pattern Recognition and Machine Learning (Information Science and Statistics), 2009
 
+Graphical Models Courses
+------------------------------
+
+* [Elec 633, Graphical Models](http://www.ece.rice.edu/~vc3/elec633/)
+* [Probabilistic Graphical Models. Coursera](https://www.coursera.org/course/pgm)
+
+Tools
+-----
+
+* [BNT](https://code.google.com/p/bnt/)
+* [Infer.NET](http://research.microsoft.com/en-us/um/cambridge/projects/infernet/)
+* [SamIam: Sensitivity Analysis, Modelling, Inference and More](http://reasoning.cs.ucla.edu/samiam/)
+* [Software Packages for Graphical Models](http://people.cs.ubc.ca/~murphyk/Software/bnsoft.html)
+
 Expecatation Propagation
 ------------------------------
 
@@ -26,12 +40,6 @@ Variational Inference
 * [Variational Methods in Bayesian Inference, Reading List](http://www.maths.bris.ac.uk/~maomz/readinglist.html)
 * [John Winn. Infer.NET - Practical Implementation Issues and a Comparison of Approximation Techniques, 2007](http://videolectures.net/abi07_winn_ipi/)
 
-Graphical Models Courses
-------------------------------
-
-* [Elec 633, Graphical Models](http://www.ece.rice.edu/~vc3/elec633/)
-* [Probabilistic Graphical Models. Coursera](https://www.coursera.org/course/pgm)
-
 Gaussians
 ---------
 
@@ -46,13 +54,6 @@ Exponential Family
 ------------------
 
 * [Lecture 6: More on the Exponential Family](http://people.stat.sfu.ca/~raltman/stat402/402L6.pdf)
-
-Tools
------
-
-* [BNT](https://code.google.com/p/bnt/)
-* [Infer.NET](http://research.microsoft.com/en-us/um/cambridge/projects/infernet/)
-* [Software Packages for Graphical Models](http://people.cs.ubc.ca/~murphyk/Software/bnsoft.html)
 
 Others
 ------
