@@ -8,6 +8,7 @@ Books
 * Stuart Russell, Peter Norvig. Artificial Intelligence - A Modern Approach, Third Edition, 2010
 * Daphne Koller, Nir Friedman. Probabilistic Graphical Models, Principles and Techniques, 2009
 * Christopher M. Bishop. Pattern Recognition and Machine Learning (Information Science and Statistics), 2009
+* Kevin P. Murphy. Machine Learning: A Probabilistic Perspective, 2012
 
 Graphical Models Courses
 ------------------------------
