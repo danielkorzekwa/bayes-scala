@@ -13,7 +13,7 @@ Bayesian Networks in Scala
       * Expectation Maximisation - CPT Factors, Complete/Incomplete data, BN and Unrolled DBN
 *   Continuous Bayesian Networks
     * Model representation
-      * Canonical Multivariate Gaussian (product, marginalisation, evidence, linear gaussian CPD) [1,5](#references)
+      * Canonical Multivariate Gaussian (product, marginalisation, evidence, linear gaussian CPD)
     * Inference
       * Joint Probability Distribution
 *   Hybrid Bayesian Networks
