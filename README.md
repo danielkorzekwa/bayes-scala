@@ -26,7 +26,7 @@ Bayesian Networks in Scala
 
 **Documenation**:
 
-* [Getting started](#references)
+* [Getting started](#Getting Started)
 * [Linear Gaussian Models - 1D localisation](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/localisation_example/localisation_example.md)
 * [Bayesian Networks Resources](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/bn_resources/bn_resources.md)
 
