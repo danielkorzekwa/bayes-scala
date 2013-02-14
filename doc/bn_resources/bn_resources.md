@@ -21,6 +21,7 @@ Tools
 * [BNT](https://code.google.com/p/bnt/)
 * [Infer.NET](http://research.microsoft.com/en-us/um/cambridge/projects/infernet/)
 * [SamIam: Sensitivity Analysis, Modelling, Inference and More](http://reasoning.cs.ucla.edu/samiam/)
+* [GRMM - Graphical Models in Mallet](http://mallet.cs.umass.edu/grmm/index.php)
 * [Software Packages for Graphical Models](http://people.cs.ubc.ca/~murphyk/Software/bnsoft.html)
 
 Expecatation Propagation
