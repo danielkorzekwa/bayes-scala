@@ -26,7 +26,9 @@ Bayesian Networks in Scala
 
 **Documenation**:
 
-* [Getting started](#Getting Started)
+* [Getting Started - Loopy Belief Propagation in a Cluster Graph](#getting-started---loopy-belief-propagation-in-a-cluster-graph-1)
+* [Getting Started - Learning parameters with Expectation Maximisation in Bayesian Networks from incomplete data](#getting-started---learning-parameters-with-expectation-maximisation-in-bayesian-networks-from-incomplete-data--1)
+* [Getting Started - Learning parameters with Expectation Maximisation in Unrolled Dynamic Bayesian Networks from incomplete data](#getting-started---learning-parameters-with-expectation-maximisation-in-unrolled-dynamic-bayesian-networks-from-incomplete-data--1)
 * [Linear Gaussian Models - 1D localisation](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/localisation_example/localisation_example.md)
 * [Bayesian Networks Resources](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/bn_resources/bn_resources.md)
 
