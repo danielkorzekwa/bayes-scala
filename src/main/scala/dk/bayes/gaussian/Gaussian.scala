@@ -34,4 +34,43 @@ case class Gaussian(mu: Double, sigma: Double) {
 
     MultivariateGaussian(mu, sigma)
   }
+
+  /**
+   * P.A. Bromiley. Products and Convolutions of Gaussian Distributions, 2003
+   */
+  def *(gaussian: Gaussian): Gaussian = {
+
+    val product = if (gaussian.sigma == Double.PositiveInfinity) this else {
+      val newMu = (mu * gaussian.sigma + gaussian.mu * sigma) / (sigma + gaussian.sigma)
+      val newSigma = (sigma * gaussian.sigma) / (sigma + gaussian.sigma)
+      Gaussian(newMu, newSigma)
+    }
+
+    product
+  }
+
+  /**
+   * Thomas Minka. EP: A quick reference, 2008
+   */
+  def /(gaussian: Gaussian): Gaussian = {
+    val newSigma = 1 / (1 / sigma - 1 / gaussian.sigma)
+    val newMu = newSigma * (mu / sigma - gaussian.mu / gaussian.sigma)
+
+    Gaussian(newMu, newSigma)
+  }
+
+  /**
+   * P.A. Bromiley. Products and Convolutions of Gaussian Distributions, 2003
+   */
+  def +(gaussian: Gaussian): Gaussian = {
+    val newMu = mu + gaussian.mu
+    val newSigma = sigma + gaussian.sigma
+    Gaussian(newMu, newSigma)
+  }
+
+  /**
+   * http://mathworld.wolfram.com/NormalDifferenceDistribution.html
+   */
+  def -(gaussian: Gaussian): Gaussian = this + gaussian.copy(mu = -gaussian.mu)
+
 }

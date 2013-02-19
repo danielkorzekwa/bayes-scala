@@ -63,5 +63,10 @@ case class MultivariateGaussian(mu: Matrix, sigma: Matrix) {
 
 object MultivariateGaussian {
 
+  implicit def toGaussian(mvnGaussian: MultivariateGaussian): Gaussian = {
+    require(mvnGaussian.mu.size == 1 && mvnGaussian.sigma.size == 1, "Multivariate gaussian cannot be transformed into univariate gaussian")
+    Gaussian(mvnGaussian.mu.at(0), mvnGaussian.sigma.at(0))
+  }
+
   def apply(mu: Double, sigma: Double): MultivariateGaussian = new MultivariateGaussian(Matrix(mu), Matrix(sigma))
 }
