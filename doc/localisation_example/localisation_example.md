@@ -1,7 +1,7 @@
-1D robot localisation [1](#references)
+1D robot localisation
 ====================
 
-The task is to predict the location of a robot given noisy observations of its current position. In a static localisation setup (Figure 1b), 
+The task is to predict the location of a robot given noisy observations of its current position [1](#references). In a static localisation setup (Figure 1b), 
 it's assumed that robot is not moving while subsequent measurements of a robot location are taken. Whereas in a dynamic variant (Figure 1a), 
 robot's position is changing over the time.
 

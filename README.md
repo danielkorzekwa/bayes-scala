@@ -1,9 +1,9 @@
 Bayesian Networks in Scala
 ===========
 
-**Major features**:
+**Major features**
 
-*   Discrete Bayesian Networks
+*   Discrete Bayesian Networks [1](#references)
     * Model representation
       * discrete factor
       * cluster graph
@@ -11,25 +11,26 @@ Bayesian Networks in Scala
       * Loopy Belief Propagation in a Cluster Graph
     * Learning parameters 
       * Expectation Maximisation - CPT Factors, Complete/Incomplete data, BN and Unrolled DBN
-*   Continuous Bayesian Networks
+*   Continuous Bayesian Networks [1,5,6](#references)
     * Model representation
-      * Canonical Multivariate Gaussian (product, marginalisation, evidence, linear gaussian CPD)
+      * Univariate, Multivariate, Canonical and Linear Gaussians
+      * Operations: product, marginalisation, evidence
     * Inference
       * Joint Probability Distribution
 *   Hybrid Bayesian Networks
     * Work in progress...
  
-**Roadmap**:
+**Roadmap**
 
 *   Bayesian Inference in hybrid networks (mix of discrete and continuous variables)
 *   EM learning in hybrid networks with hidden continuous variables
 
-**Documenation**:
+**Documenation**
 
 * [Getting Started - Loopy Belief Propagation in a Cluster Graph](#getting-started---loopy-belief-propagation-in-a-cluster-graph-1)
 * [Getting Started - Learning parameters with Expectation Maximisation in Bayesian Networks from incomplete data](#getting-started---learning-parameters-with-expectation-maximisation-in-bayesian-networks-from-incomplete-data--1)
 * [Getting Started - Learning parameters with Expectation Maximisation in Unrolled Dynamic Bayesian Networks from incomplete data](#getting-started---learning-parameters-with-expectation-maximisation-in-unrolled-dynamic-bayesian-networks-from-incomplete-data--1)
-* [Linear Gaussian Models - 1D localisation](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/localisation_example/localisation_example.md)
+* [Linear Gaussian Models - 1D localisation, 4 approaches: Canonical Gaussian, Bayes's theorem for Gaussian Variables, Expectation Propagation, Kalman Filter](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/localisation_example/localisation_example.md)
 * [Plotting gaussians](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/plotting_gaussian/plotting_gaussian.md)
 * [Resources for Bayesian Networks](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/bn_resources/bn_resources.md)
 
@@ -248,3 +249,4 @@ References
 3. Adnan Darwiche. Modeling and Reasoning with Bayesian Networks, 2009
 4. Stuart Russell, Peter Norvig. Artificial Intelligence - A Modern Approach, Third Edition, 2010
 5. Kevin P. Murphy. A Variational Approximation for Bayesian Networks with Discrete and Continuous Latent Variables, 1999
+6. Christopher M. Bishop. Pattern Recognition and Machine Learning (Information Science and Statistics), 2009

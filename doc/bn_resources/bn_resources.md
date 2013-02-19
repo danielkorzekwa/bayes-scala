@@ -13,8 +13,10 @@ Books
 Graphical Models Courses
 ------------------------------
 
-* [Elec 633, Graphical Models](http://www.ece.rice.edu/~vc3/elec633/)
+* [Elec 633, Graphical Models, Rice University](http://www.ece.rice.edu/~vc3/elec633/)
 * [Probabilistic Graphical Models. Coursera](https://www.coursera.org/course/pgm)
+* [Probabilistic Graphical Models, Carnegie-Mellon University](http://www.cs.cmu.edu/~epxing/Class/10708-05/)
+* [Probabilistic modelling and resoning course, The University of Edinburg](http://www.inf.ed.ac.uk/teaching/courses/pmr/)
 
 Tools
 -----
@@ -25,7 +27,7 @@ Tools
 * [GRMM - Graphical Models in Mallet](http://mallet.cs.umass.edu/grmm/index.php)
 * [Software Packages for Graphical Models](http://people.cs.ubc.ca/~murphyk/Software/bnsoft.html)
 
-Expecatation Propagation
+Expectation Propagation
 ------------------------------
 
 * [Tom Minka. A roadmap to research on EP](http://research.microsoft.com/en-us/um/people/minka/papers/ep/roadmap.html)
@@ -56,6 +58,10 @@ Exponential Family
 ------------------
 
 * [Lecture 6: More on the Exponential Family](http://people.stat.sfu.ca/~raltman/stat402/402L6.pdf)
+* [(ML 5.1) Exponential families (part 1)](http://www.youtube.com/watch?v=_aNk4QKi2_o&list=PLD0F06AA0D2E8FFBA&index=27)
+* [(ML 5.1) Exponential families (part 2)](http://www.youtube.com/watch?v=Jc-gVN8tQC8&list=PLD0F06AA0D2E8FFBA&index=28)
+* [MLE for an exponential family (part 1)](http://www.youtube.com/watch?v=LcbwmT1OAKo&list=PLD0F06AA0D2E8FFBA&index=29)
+* [MLE for an exponential family (part 2)](http://www.youtube.com/watch?v=7EyKEtN-PJA&list=PLD0F06AA0D2E8FFBA&index=30)
 
 Others
 ------
