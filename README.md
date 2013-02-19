@@ -14,7 +14,7 @@ Bayesian Networks in Scala
 *   Continuous Bayesian Networks [1,5,6](#references)
     * Model representation
       * Univariate, Multivariate, Canonical and Linear Gaussians
-      * Operations: product, marginalisation, evidence
+      * Operations: * / + -, marginalisation, evidence
     * Inference
       * Joint Probability Distribution
 *   Hybrid Bayesian Networks
@@ -30,7 +30,7 @@ Bayesian Networks in Scala
 * [Getting Started - Loopy Belief Propagation in a Cluster Graph](#getting-started---loopy-belief-propagation-in-a-cluster-graph-1)
 * [Getting Started - Learning parameters with Expectation Maximisation in Bayesian Networks from incomplete data](#getting-started---learning-parameters-with-expectation-maximisation-in-bayesian-networks-from-incomplete-data--1)
 * [Getting Started - Learning parameters with Expectation Maximisation in Unrolled Dynamic Bayesian Networks from incomplete data](#getting-started---learning-parameters-with-expectation-maximisation-in-unrolled-dynamic-bayesian-networks-from-incomplete-data--1)
-* [Linear Gaussian Models - 1D localisation, 4 approaches: Canonical Gaussian, Bayes's theorem for Gaussian Variables, Expectation Propagation, Kalman Filter](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/localisation_example/localisation_example.md)
+* [Linear Gaussian Models - 1D localisation, 4 approaches: Canonical Gaussian, Bayes's theorem for Gaussian Variables, Expectation Propagation and Kalman Filter](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/localisation_example/localisation_example.md)
 * [Plotting gaussians](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/plotting_gaussian/plotting_gaussian.md)
 * [Resources for Bayesian Networks](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/bn_resources/bn_resources.md)
 
