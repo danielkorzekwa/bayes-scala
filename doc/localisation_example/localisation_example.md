@@ -7,7 +7,7 @@ robot's position is changing over the time.
 
 ![Localisation 1D](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/localisation_example/localisation_1d.png "Localisation 1D")
 
-Figure 1 Graphical model for dynamic (a) and static (b) robot localisation.
+Figure 1 Probabilistic graphical model for dynamic (a) and static (b) robot localisation.
 
 Robot location at the time t0:
 
