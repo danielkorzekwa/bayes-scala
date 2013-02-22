@@ -27,7 +27,7 @@ Predicted robot position given observed position:
 
 ![1D static localisation](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/localisation_example/static_localisation_gaussian.png "1D static localisation")
 
-* Implementation
+* Scala code examples
   * [Kalman Filter](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/gaussian/localisation1d/StaticLocalisationKalmanTest.scala)
   * [Canonical Gaussian](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/gaussian/localisation1d/StaticLocalisationCanonicalGaussianTest.scala)
   * [Bayes's theorem for Gaussian Variables](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/gaussian/localisation1d/StaticLocalisationGaussianTest.scala)
@@ -59,7 +59,7 @@ Predicted robot location given observed position:
 
 ![1D dynamic localisation](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/localisation_example/dynamic_localisation_gaussian.png "1D dynamic localisation")
 
-* Implementation
+* Scala code examples
  * [Kalman Filter](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/gaussian/localisation1d/HMMLocalisationKalmanTest.scala)
  * [Canonical Gaussian](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/gaussian/localisation1d/HMMLocalisationCanonicalGaussianTest.scala)
  * [Bayes's theorem for Gaussian](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/gaussian/localisation1d/HMMLocalisationGaussianTest.scala)
