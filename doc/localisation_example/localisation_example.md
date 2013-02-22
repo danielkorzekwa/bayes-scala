@@ -1,10 +1,10 @@
-1D robot localisation (in progress)
+1D robot localisation
 ====================
 
-The task is to predict the location of a robot given noisy observations of its current position [1](#references). In a static localisation setup,  
-it's assumed that robot is not moving while subsequent measurements of a robot location are taken. Whereas in a dynamic variant, 
-robot's position is changing over the time. There are 4 different solutions to 1D location problem, including 
-Kalman Filter [1](#references), Canonical Gaussian [2,4](#references), Bayes's theorem for Gaussian Variables [3](#references) and Expectation Propagation [3,5](#references).
+The task is to predict the location of a robot given noisy observations of its current position [1](#references). In a static localisation setup, 
+it's assumed that robot is not moving while subsequent measurements of a robot location are taken. Whereas in a dynamic variant, robot's position 
+is changing over the time. There are 4 different solutions to 1D location problem, including Kalman Filter [1](#references), 
+Canonical Gaussian [2,4](#references), Bayes's theorem for Gaussian Variables [3](#references) and Expectation Propagation [3,5](#references).
 
 Static localisation
 -------------------
@@ -58,7 +58,7 @@ Measured robot position given its current location:
 
 Predicted robot location given observed position:
 
-![Posterior](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/localisation_example/posterior.png "Posterior")
+![Posterior](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/localisation_example/dynamic_posterior.png "Posterior")
 
 * Implementation
  * [Kalman Filter](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/gaussian/localisation1d/HMMLocalisationKalmanTest.scala)
