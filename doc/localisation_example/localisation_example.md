@@ -26,9 +26,7 @@ Predicted robot position given observed position:
 
 ![Posterior](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/localisation_example/static_posterior.png "Posterior")
 
-![Prior, likelihood and posterior distribution](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/localisation_example/static_localisation_gaussian.png "Prior, likelihood and posterior distribution")
-
-Figure 2 Prior, likelihood and posterior distributions
+![1D static localisation](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/localisation_example/static_localisation_gaussian.png "1D static localisation")
 
 * Implementation
   * [Kalman Filter](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/gaussian/localisation1d/StaticLocalisationKalmanTest.scala)
@@ -59,6 +57,8 @@ Measured robot position given its current location:
 Predicted robot location given observed position:
 
 ![Posterior](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/localisation_example/dynamic_posterior.png "Posterior")
+
+![1D dynamic localisation](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/localisation_example/dynamic_localisation_gaussian.png "1D dynamic localisation")
 
 * Implementation
  * [Kalman Filter](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/gaussian/localisation1d/HMMLocalisationKalmanTest.scala)

@@ -37,7 +37,7 @@ Expectation Propagation
 * [O. Zoeter and T. Heskes, in Z. Ghahramani and R. Cowell (eds.). Gaussian quadrature based expectation propagation, 2005](http://www.gatsby.ucl.ac.uk/aistats/fullpapers/140.pdf)
 * [Antti Honkela,Introduction to Expectation Propagation](http://www.cis.hut.fi/cis/projects/mi/ep_intro.pdf)
 * [Charles Sutton. Expectation Propagation in Factor Graphs: A Tutorial,2005](http://homepages.inf.ed.ac.uk/csutton/publications/ep-tutorial.pdf)
-* [Kevin P. Murphy. From Belief Propagation to Expectation Propagation, 2001](www.cs.ubc.ca/~murphyk/Papers/EP.ps.gz)
+* [Kevin P. Murphy. From Belief Propagation to Expectation Propagation, 2001](http://www.cs.ubc.ca/~murphyk/Papers/EP.ps.gz)
 
 Variational Inference
 ---------------------
