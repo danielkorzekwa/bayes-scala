@@ -16,9 +16,8 @@ Bayesian Networks in Scala
       * Univariate, Multivariate, Canonical and Linear Gaussians
       * Operations: * / + -, marginalisation, evidence
     * Inference
-      * Joint Probability Distribution
-*   Hybrid Bayesian Networks
-    * Work in progress...
+      * Manual inference using supported gaussian operations
+*   Hybrid Bayesian Networks - Work in progress...
  
 **Roadmap**
 
