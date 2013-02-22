@@ -136,7 +136,7 @@ Plotting Gaussians with Gnuplot
 	sigma = 1.5
 	
 	p(sigma) = 1/sqrt(2*pi*sigma**2)
-	linear_gaussian(x,y,sigma) = p * exp(-(y-(A*x+b))**2/(2*sigma**2))
+	linear_gaussian(x,y,sigma) = p(sigma) * exp(-(y-(A*x+b))**2/(2*sigma**2))
 	
 	set xlabel "x"
 	set ylabel "y"

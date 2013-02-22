@@ -17,6 +17,7 @@ Graphical Models Courses
 * [Probabilistic Graphical Models. Coursera](https://www.coursera.org/course/pgm)
 * [Probabilistic Graphical Models, Carnegie-Mellon University](http://www.cs.cmu.edu/~epxing/Class/10708-05/)
 * [Probabilistic modelling and resoning course, The University of Edinburg](http://www.inf.ed.ac.uk/teaching/courses/pmr/)
+* [COS 597C: ADTOPCS: ADVANCED PROBABILISTIC MODELING, Princeton University](http://www.cs.princeton.edu/courses/archive/fall11/cos597C/lectures/)
 
 Tools
 -----
@@ -62,6 +63,9 @@ Exponential Family
 * [(ML 5.1) Exponential families (part 2)](http://www.youtube.com/watch?v=Jc-gVN8tQC8&list=PLD0F06AA0D2E8FFBA&index=28)
 * [MLE for an exponential family (part 1)](http://www.youtube.com/watch?v=LcbwmT1OAKo&list=PLD0F06AA0D2E8FFBA&index=29)
 * [MLE for an exponential family (part 2)](http://www.youtube.com/watch?v=7EyKEtN-PJA&list=PLD0F06AA0D2E8FFBA&index=30)
+* [The Exponential Family of Distributions](http://www.cs.columbia.edu/~jebara/4771/tutorials/lecture12.pdf)
+* [David M. Blei. Exponential Families](http://www.cs.princeton.edu/courses/archive/fall11/cos597C/lectures/exponential-families.pdf)
+* [Introduction to Gaussian distribution and Exponential family](http://enpub.fulton.asu.edu/cseml/summer07/slides/Ch2_Supplemental.pdf)
 
 Others
 ------
