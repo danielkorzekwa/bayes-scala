@@ -22,10 +22,10 @@ Graphical Models Courses
 Tools
 -----
 
-* [BNT](https://code.google.com/p/bnt/)
-* [Infer.NET](http://research.microsoft.com/en-us/um/cambridge/projects/infernet/)
-* [SamIam: Sensitivity Analysis, Modelling, Inference and More](http://reasoning.cs.ucla.edu/samiam/)
-* [GRMM - Graphical Models in Mallet](http://mallet.cs.umass.edu/grmm/index.php)
+* [Kevin Murphy. BNT (Bayes Net Toolbox for Matlab), 1997-2007](https://code.google.com/p/bnt/)
+* [Microsoft Corporation. Infer.NET](http://research.microsoft.com/en-us/um/cambridge/projects/infernet/)
+* [Automated Reasoning Group, University of California. SamIam: Sensitivity Analysis, Modelling, Inference and More](http://reasoning.cs.ucla.edu/samiam/)
+* [Sutton, Charles.  "GRMM: GRaphical Models in Mallet. 2006.](http://mallet.cs.umass.edu/grmm)
 * [Software Packages for Graphical Models](http://people.cs.ubc.ca/~murphyk/Software/bnsoft.html)
 
 Expectation Propagation
