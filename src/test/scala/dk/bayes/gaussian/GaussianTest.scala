@@ -51,8 +51,8 @@ class GaussianTest {
     assertEquals(2, product.mu, 0.0001)
     assertEquals(0.25, product.sigma, 0.0001)
   }
-  
-   @Test def product_gaussian_with_infinite_variance {
+
+  @Test def product_gaussian_with_infinite_variance {
 
     val gaussian1 = Gaussian(2, 0.5)
     val gaussian2 = Gaussian(3, Double.PositiveInfinity)
@@ -112,5 +112,18 @@ class GaussianTest {
 
     assertEquals(-1, diff.mu, 0.0001)
     assertEquals(0.7, diff.sigma, 0.0001)
+  }
+
+  @Test def derivativeMu {
+    assertEquals(-0.0023121, Gaussian(15, 101).derivativeMu(3), 0.000001)
+    assertEquals(0, Gaussian(15, 101).derivativeMu(15), 0)
+
+    assertEquals(0.1079, Gaussian(0, 1).derivativeMu(2), 0.0001)
+  }
+
+  @Test def derivativeSigma {
+    assertEquals(0.000041015595, Gaussian(15, 101).derivativeSigma(3), 0.00000001)
+
+    assertEquals(0.0809, Gaussian(0, 1).derivativeSigma(2), 0.0001)
   }
 }

@@ -73,4 +73,13 @@ case class Gaussian(mu: Double, sigma: Double) {
    */
   def -(gaussian: Gaussian): Gaussian = this + gaussian.copy(mu = -gaussian.mu)
 
+  /**
+   * Returns the derivative value of Gaussian with respect to mu, evaluated at the value of x.
+   */
+  def derivativeMu(x: Double): Double = pdf(x) * (x - mu) / sigma
+
+  /**
+   * Returns the derivative value of Gaussian with respect to sigma, evaluated at the value of x.
+   */
+  def derivativeSigma(x: Double): Double = pdf(x) * (1d / (2 * sigma * sigma) * (x - mu) * (x - mu) - 1d / (2 * sigma))
 }
