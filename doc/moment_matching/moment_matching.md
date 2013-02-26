@@ -1,6 +1,10 @@
 Gaussian approximation with moment matching, aka proj() operator in Expectation Propagation (IN PROGRESS)
 ====================================================
 
+
+ img {
+    vertical-align:middle
+  }
 <body>
 <style>
   img {
