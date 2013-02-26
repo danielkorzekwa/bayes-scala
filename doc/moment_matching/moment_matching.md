@@ -1,8 +1,6 @@
 Gaussian approximation with moment matching, aka proj() operator in Expectation Propagation (IN PROGRESS)
 ====================================================
 
-[eq1]
-
 Moment matching is a technique for approximating a function ![p(x)][eq1] with a Gaussian distribution ![p_new(x)][eq2] by matching expectations 
 ![E[x]][eq3] and ![E[xx]][eq4].
 
