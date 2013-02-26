@@ -66,6 +66,7 @@ Predicted robot location given observed position:
  
 References
 ---------------
+
 1. Stuart Russell, Peter Norvig. Artificial Intelligence - A Modern Approach, Third Edition, Chapter 15.4.2 A simple one-dimensional example, 2010
 2. Daphne Koller, Nir Friedman. Probabilistic Graphical Models, Principles and Techniques, 2009
 3. Christopher M. Bishop. Pattern Recognition and Machine Learning (Information Science and Statistics), 2009
