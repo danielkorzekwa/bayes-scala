@@ -32,7 +32,7 @@ References
 2. Kevin P. Murphy. From Belief Propagation to Expectation Propagation , 2001
 3. Exponential Family, http://en.wikipedia.org/wiki/Exponential_family
 
-[eq1]: https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/moment_matching/eq1.png "p(x)"
+[eq1]: https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/moment_matching/eq1.png style="vertical-align:middle" "p(x)"
 [eq2]: https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/moment_matching/eq2.png "p_new(x)"
 [eq3]: https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/moment_matching/eq3.png "E[x]"
 [eq4]: https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/moment_matching/eq4.png "E[xx]"
