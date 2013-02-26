@@ -1,6 +1,7 @@
 Gaussian approximation with moment matching, aka proj() operator in Expectation Propagation (IN PROGRESS)
 ====================================================
 
+<style>
 #container {
     height:100px;
     line-height:100px;
@@ -11,6 +12,7 @@ Gaussian approximation with moment matching, aka proj() operator in Expectation 
     max-height:100%;
 }
 
+</style>
 <div id="container">
 
 Moment matching is a technique for approximating a function ![p(x)][eq1] with a Gaussian distribution ![p_new(x)][eq2] by matching expectations 
