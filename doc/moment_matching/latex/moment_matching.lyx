@@ -108,7 +108,7 @@ Moment matching is a technique for approximating a function
 \begin_inset Formula $E[x]$
 \end_inset
 
-and 
+ and 
 \begin_inset Formula $E[x^{2}]$
 \end_inset
 
@@ -203,7 +203,7 @@ key "Murphy-1"
 , it can be shown that
 \begin_inset Formula 
 \begin{equation}
-E_{p}[x]=m+v\nabla_{m}logZ(m,v)\label{eq:-4}
+E_{p}[x]=m+v\nabla_{m}logZ\label{eq:-4}
 \end{equation}
 
 \end_inset
@@ -229,7 +229,7 @@ E_{p}[x^{2}]=2v^{2}\nabla_{v}logZ+v+m^{2}+2vm\nabla_{m}logZ\label{eq:-5}
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-m_{\tilde{p}}=E_{p}[x]=m+v\nabla_{m}logZ(m,v)\label{eq:-6}
+m_{\tilde{p}}=E_{p}[x]=m+v\nabla_{m}logZ\label{eq:-6}
 \end{equation}
 
 \end_inset
@@ -357,7 +357,7 @@ In order to compute Gaussian approximation
 \begin_inset Formula $x=3,m=15,v=100,w=0.4,a=10$
 \end_inset
 
-, first we compute normalisation constant 
+, we compute normalisation constant 
 \begin_inset Formula $Z(m,v)$
 \end_inset
 
@@ -376,7 +376,7 @@ Z(m,v)=(1-w)\mathcal{N}(x|m,v+1)+w\mathcal{N}(x|0,a)
 
 \begin_inset Formula 
 \[
-\nabla_{m}logZ(m,v)=(1-w)\frac{1}{Z}\nabla_{m}\mathcal{N}(x|m,v+1)
+\nabla_{m}logZ=(1-w)\frac{1}{Z}\nabla_{m}\mathcal{N}(x|m,v+1)
 \]
 
 \end_inset
@@ -384,7 +384,7 @@ Z(m,v)=(1-w)\mathcal{N}(x|m,v+1)+w\mathcal{N}(x|0,a)
 
 \begin_inset Formula 
 \[
-\nabla_{v}logZ(m,v)=(1-w)\frac{1}{Z}\nabla_{v}\mathcal{N}(x|m,v+1)
+\nabla_{v}logZ=(1-w)\frac{1}{Z}\nabla_{v}\mathcal{N}(x|m,v+1)
 \]
 
 \end_inset
@@ -400,7 +400,7 @@ Z(m,v)=(1-w)\mathcal{N}(x|m,v+1)+w\mathcal{N}(x|0,a)
 \end_layout
 
 \begin_layout Standard
-Then, we can compute Gaussian approximation 
+Then, we can calculate Gaussian approximation 
 \family roman
 \series medium
 \shape up
@@ -493,24 +493,6 @@ v_{\tilde{p}}=101.21589
 \end_layout
 
 \begin_layout Standard
-Scala implementation of Moment Matching for Clutter Problem 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "Bayes-Scala-1"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset space \space{}
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
 The following chart presents both 
 \begin_inset Formula $p(\theta)$
 \end_inset
@@ -530,6 +512,24 @@ The following chart presents both
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Bayes-Scala toolbox 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Bayes-Scala-1"
+
+\end_inset
+
+ provides example implementation of Moment Matching for a Clutter Problem.
 \end_layout
 
 \begin_layout Bibliography

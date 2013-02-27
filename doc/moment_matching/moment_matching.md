@@ -8,7 +8,7 @@ Gaussian approximation with moment matching, aka proj() operator in Expectation 
 
 **Scala code example**
 
-* [Scala implementation of Moment Matching for a Clutter Problem][scala_code]
+* [Moment Matching for a Clutter Problem][scala_code]
 
 [pdf]: https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/moment_matching/moment_matching.pdf
 [latex]: https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/moment_matching/latex/moment_matching.lyx

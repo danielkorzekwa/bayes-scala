@@ -2,7 +2,7 @@
 ====================
 
 The task is to predict the location of a robot given noisy observations of its current position [1](#references). In a static localisation setup, 
-it's assumed that robot is not moving while subsequent measurements of a robot location are taken. Whereas in a dynamic variant, robot's position 
+it's assumed that robot is not moving, while subsequent measurements of a robot location are taken. Whereas in a dynamic variant, robot's position 
 is changing over the time. There are 4 different solutions presented to 1D localisation problem, including Kalman Filter [1](#references), 
 Canonical Gaussian [2,4](#references), Bayes's theorem for Gaussian Variables [3](#references) and Expectation Propagation [3,5](#references).
 
