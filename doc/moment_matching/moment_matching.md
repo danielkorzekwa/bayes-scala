@@ -1,4 +1,4 @@
-Gaussian approximation with moment matching, aka proj() operator in Expectation Propagation (IN PROGRESS)
+Gaussian approximation with moment matching, aka proj() operator in Expectation Propagation
 ====================================================
 
 **Documentation**
