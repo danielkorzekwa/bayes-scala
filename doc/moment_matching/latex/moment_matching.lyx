@@ -1,0 +1,588 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref true
+\pdf_title "Gaussian approximation with moment matching, aka proj() operator in Expectation Propagation"
+\pdf_author "Daniel Korzekwa"
+\pdf_subject "Moment matching"
+\pdf_keywords "moment matching, proj()"
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks true
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle true
+\papersize default
+\use_geometry true
+\use_amsmath 1
+\use_esint 0
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\topmargin 2cm
+\bottommargin 2cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Gaussian approximation with moment matching, aka proj() operator in Expectation
+ Propagation
+\end_layout
+
+\begin_layout Author
+Daniel Korzekwa (daniel.korzekwa@gmail.com)
+\end_layout
+
+\begin_layout Section*
+Overview
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Moment matching is a technique for approximating a function 
+\begin_inset Formula $p(x)$
+\end_inset
+
+ with a Gaussian distribution 
+\begin_inset Formula $\tilde{p}(x)\sim\mathcal{N}(m,v)$
+\end_inset
+
+ by matching expectations 
+\begin_inset Formula $E[x]$
+\end_inset
+
+and 
+\begin_inset Formula $E[x^{2}]$
+\end_inset
+
+, where
+\begin_inset Formula 
+\begin{equation}
+E_{p}[x]=E_{\tilde{p}}[x]\label{eq:}
+\end{equation}
+
+\end_inset
+
+
+\begin_inset Formula 
+\begin{equation}
+E_{p}[x^{2}]=E_{\tilde{p}}[x^{2}]\label{eq:-1}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Then the mean and the variance of Gaussian approximation 
+\begin_inset Formula $\tilde{p}(x)$
+\end_inset
+
+ are defined by
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+m_{\tilde{p}}=E_{p}[x]\label{eq:-2}
+\end{equation}
+
+\end_inset
+
+
+\begin_inset Formula 
+\begin{equation}
+v_{\tilde{p}}=E_{p}[x^{2}]-E_{p}[x]^{2}\label{eq:-3}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Following Thomas Minka 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Minka-1"
+
+\end_inset
+
+ and Kevin P.
+ Murphy 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Murphy-1"
+
+\end_inset
+
+, in a specific case of a function 
+\begin_inset Formula $p(x)=\frac{f(x)q(x)}{Z(m,v)}$
+\end_inset
+
+, where 
+\begin_inset Formula $q(x)\sim\mathcal{N}(m,v)$
+\end_inset
+
+ and 
+\begin_inset Formula $Z(m,v)=\int f(x)q(x)dx$
+\end_inset
+
+, it can be shown that
+\begin_inset Formula 
+\begin{equation}
+E_{p}[x]=m+v\nabla_{m}logZ(m,v)\label{eq:-4}
+\end{equation}
+
+\end_inset
+
+
+\begin_inset Formula 
+\begin{equation}
+E_{p}[x^{2}]=2v^{2}\nabla_{v}logZ+v+m^{2}+2vm\nabla_{m}logZ\label{eq:-5}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+m_{\tilde{p}}=E_{p}[x]=m+v\nabla_{m}logZ(m,v)\label{eq:-6}
+\end{equation}
+
+\end_inset
+
+
+\begin_inset Formula 
+\begin{equation}
+v_{\tilde{p}}=E_{p}[x^{2}]-E_{p}[x]^{2}=v-v(\nabla_{m}^{2}logZ-2\nabla_{v}logZ)v\label{eq:-7}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+More generally, for any member of exponential family 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Exponential Family-1"
+
+\end_inset
+
+ 
+\begin_inset Formula $p(x|\eta)=h(x)g(\eta)exp\{\eta^{T}u(x)\}$
+\end_inset
+
+, moments can be computed by differentiaing the log partition function 
+\begin_inset Formula $A(\eta)=-lng(\eta)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Example
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Consider a function 
+\begin_inset Formula $p(\theta)=\frac{q(\theta)f(x|\theta)}{\int q(\theta)f(x|\theta)d\theta}$
+\end_inset
+
+, borrowed from a Clutter Problem 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Minka-1"
+
+\end_inset
+
+, where
+\begin_inset Formula 
+\[
+q(\theta)\sim\mathcal{N}(\theta|m,v)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+f(x|\theta)=(1-w)\mathcal{N}(x|\theta,1)+w\mathcal{N}(0,a)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In order to compute Gaussian approximation 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $\tilde{p}(\theta)$
+\end_inset
+
+
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+ to function 
+\begin_inset Formula $p(\theta)$
+\end_inset
+
+, evaluated at the value of 
+\begin_inset Formula $x=3,m=15,v=100,w=0.4,a=10$
+\end_inset
+
+, first we compute normalisation constant 
+\begin_inset Formula $Z(m,v)$
+\end_inset
+
+ and derivatives of 
+\begin_inset Formula $log(Z)$
+\end_inset
+
+ with respect to mean and variance.
+\begin_inset Formula 
+\[
+Z(m,v)=(1-w)\mathcal{N}(x|m,v+1)+w\mathcal{N}(x|0,a)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\nabla_{m}logZ(m,v)=(1-w)\frac{1}{Z}\nabla_{m}\mathcal{N}(x|m,v+1)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\nabla_{v}logZ(m,v)=(1-w)\frac{1}{Z}\nabla_{v}\mathcal{N}(x|m,v+1)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Then, we can compute Gaussian approximation 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $\tilde{p}(\theta)$
+\end_inset
+
+
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+ with equations 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:-6"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:-7"
+
+\end_inset
+
+ 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula 
+\[
+m_{\tilde{p}}=11.8364
+\]
+
+\end_inset
+
+
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+
+\begin_inset Formula 
+\[
+v_{\tilde{p}}=101.21589
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Scala implementation of Moment Matching for Clutter Problem 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Bayes-Scala-1"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The following chart presents both 
+\begin_inset Formula $p(\theta)$
+\end_inset
+
+ distribution and its Gaussian approximation 
+\begin_inset Formula $\tilde{p}(\theta)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename moment_matching_plot.png
+	lyxscale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "Minka-1"
+
+\end_inset
+
+Thomas P Minka.
+ A family of algorithms for approximate Bayesian inference, 2001
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "Murphy-1"
+
+\end_inset
+
+Kevin P.
+ Murphy.
+ From Belief Propagation to Expectation Propagation , 2001
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "Exponential Family-1"
+
+\end_inset
+
+Exponential Family.
+ http://en.wikipedia.org/wiki/Exponential_family
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "Bayes-Scala-1"
+
+\end_inset
+
+
+\begin_inset CommandInset href
+LatexCommand href
+name "Daniel Korzekwa. Bayes-Scala tool, MomentMatchingTest.scala"
+target "https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/gaussian/ep/MomentMatchingTest.scala"
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
