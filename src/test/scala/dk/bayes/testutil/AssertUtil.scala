@@ -3,6 +3,7 @@ package dk.bayes.testutil
 import org.junit._
 import Assert._
 import dk.bayes.factor._
+import dk.bayes.gaussian.Gaussian
 
 object AssertUtil {
 
@@ -14,9 +15,14 @@ object AssertUtil {
       i += 1
     }
   }
-  
+
   def assertFactor(expected: Factor, actual: Factor, delta: Double = 0) {
     assertEquals(expected.getVariables().toList, actual.getVariables().toList)
     assertVector(expected.getValues().toList, actual.getValues().toList, delta)
+  }
+
+  def assertGaussian(expected: Gaussian, actual: Gaussian, delta: Double = 0) {
+    assertEquals(expected.m, actual.m, delta)
+    assertEquals(expected.v, actual.v, delta)
   }
 }
