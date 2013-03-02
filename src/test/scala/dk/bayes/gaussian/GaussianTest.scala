@@ -17,6 +17,32 @@ class GaussianTest {
     assertEquals(0.4607, Gaussian(1.65, 0.5).pdf(1.2), 0.0001)
   }
 
+  @Test def cdf {
+
+    assertEquals(0.5, Gaussian(0, 1).cdf(0), 0.0001)
+    assertEquals(0.6914, Gaussian(0, 1).cdf(0.5), 0.0001)
+    assertEquals(0.3085, Gaussian(0, 1).cdf(-0.5), 0.0001)
+
+    assertEquals(0.5, Gaussian(2, 3.5).cdf(2), 0.0001)
+    assertEquals(0.2113, Gaussian(2, 3.5).cdf(0.5), 0.0001)
+    assertEquals(0.0907, Gaussian(2, 3.5).cdf(-0.5), 0.0001)
+
+  }
+
+  @Test def truncateUpperTail {
+    assertEquals(1.141, Gaussian(0, 1).truncateUpperTail(0.5).m, 0.0001)
+    assertEquals(0.2685, Gaussian(0, 1).truncateUpperTail(0.5).v, 0.0001)
+
+    assertEquals(1.1284, Gaussian(0, 2).truncateUpperTail(0).m, 0.0001)
+    assertEquals(0.7267, Gaussian(0, 2).truncateUpperTail(0).v, 0.0001)
+
+    assertEquals(1.4647, Gaussian(0, 2).truncateUpperTail(0.5).m, 0.0001)
+    assertEquals(0.5868, Gaussian(0, 2).truncateUpperTail(0.5).v, 0.0001)
+
+    assertEquals(2.8217, Gaussian(2, 3.5).truncateUpperTail(0.8).m, 0.0001)
+    assertEquals(1.8386, Gaussian(2, 3.5).truncateUpperTail(0.8).v, 0.0001)
+  }
+
   @Test def product_with_linear_gaussian {
 
     val priorProb = Gaussian(3, 1.5)
@@ -24,8 +50,8 @@ class GaussianTest {
 
     val jointProb = priorProb * likelihoodProb
 
-    assertEquals(Matrix(Array(3, 1.7)).toString(), jointProb.mu.toString())
-    assertEquals(Matrix(2, 2, Array(1.5, -0.15, -0.15, 0.515)).toString(), jointProb.sigma.toString())
+    assertEquals(Matrix(Array(3, 1.7)).toString(), jointProb.m.toString())
+    assertEquals(Matrix(2, 2, Array(1.5, -0.15, -0.15, 0.515)).toString(), jointProb.v.toString())
 
     assertEquals(0.0111, jointProb.pdf(Matrix(Array(3.5, 0))), 0.0001d)
     assertEquals(0.1679, jointProb.pdf(Matrix(Array(3d, 2))), 0.0001d)
@@ -38,8 +64,8 @@ class GaussianTest {
 
     val product = gaussian1 * gaussian2
 
-    assertEquals(2.7142, product.mu, 0.0001)
-    assertEquals(0.1428, product.sigma, 0.0001)
+    assertEquals(2.7142, product.m, 0.0001)
+    assertEquals(0.1428, product.v, 0.0001)
   }
 
   @Test def product_of_single_gaussian {
@@ -48,8 +74,8 @@ class GaussianTest {
 
     val product = gaussian1 * gaussian1
 
-    assertEquals(2, product.mu, 0.0001)
-    assertEquals(0.25, product.sigma, 0.0001)
+    assertEquals(2, product.m, 0.0001)
+    assertEquals(0.25, product.v, 0.0001)
   }
 
   @Test def product_gaussian_with_infinite_variance {
@@ -59,8 +85,8 @@ class GaussianTest {
 
     val product = gaussian1 * gaussian2
 
-    assertEquals(2, product.mu, 0.0001)
-    assertEquals(0.5, product.sigma, 0.0001)
+    assertEquals(2, product.m, 0.0001)
+    assertEquals(0.5, product.v, 0.0001)
   }
 
   @Test def divide_negative_variance {
@@ -69,8 +95,8 @@ class GaussianTest {
 
     val div = gaussian1 / gaussian2
 
-    assertEquals(3.6666, div.mu, 0.0001)
-    assertEquals(-0.3333, div.sigma, 0.0001)
+    assertEquals(3.6666, div.m, 0.0001)
+    assertEquals(-0.3333, div.v, 0.0001)
   }
 
   @Test def divide {
@@ -79,8 +105,8 @@ class GaussianTest {
 
     val div = gaussian2 / gaussian1
 
-    assertEquals(3.6666, div.mu, 0.0001)
-    assertEquals(0.3333, div.sigma, 0.0001)
+    assertEquals(3.6666, div.m, 0.0001)
+    assertEquals(0.3333, div.v, 0.0001)
   }
 
   @Test def divide_single_gaussian {
@@ -88,8 +114,8 @@ class GaussianTest {
 
     val div = gaussian1 / gaussian1
 
-    assertEquals(Double.NaN, div.mu, 0.0001)
-    assertEquals(Double.PositiveInfinity, div.sigma, 0.0001)
+    assertEquals(Double.NaN, div.m, 0.0001)
+    assertEquals(Double.PositiveInfinity, div.v, 0.0001)
   }
 
   @Test def add {
@@ -99,8 +125,8 @@ class GaussianTest {
 
     val sum = gaussian1 + gaussian2
 
-    assertEquals(5, sum.mu, 0.0001)
-    assertEquals(0.7, sum.sigma, 0.0001)
+    assertEquals(5, sum.m, 0.0001)
+    assertEquals(0.7, sum.v, 0.0001)
   }
 
   @Test def subtract {
@@ -110,20 +136,20 @@ class GaussianTest {
 
     val diff = gaussian1 - gaussian2
 
-    assertEquals(-1, diff.mu, 0.0001)
-    assertEquals(0.7, diff.sigma, 0.0001)
+    assertEquals(-1, diff.m, 0.0001)
+    assertEquals(0.7, diff.v, 0.0001)
   }
 
   @Test def derivativeMu {
-    assertEquals(-0.0023121, Gaussian(15, 101).derivativeMu(3), 0.000001)
-    assertEquals(0, Gaussian(15, 101).derivativeMu(15), 0)
+    assertEquals(-0.0023121, Gaussian(15, 101).derivativeM(3), 0.000001)
+    assertEquals(0, Gaussian(15, 101).derivativeM(15), 0)
 
-    assertEquals(0.1079, Gaussian(0, 1).derivativeMu(2), 0.0001)
+    assertEquals(0.1079, Gaussian(0, 1).derivativeM(2), 0.0001)
   }
 
   @Test def derivativeSigma {
-    assertEquals(0.000041015595, Gaussian(15, 101).derivativeSigma(3), 0.00000001)
+    assertEquals(0.000041015595, Gaussian(15, 101).derivativeV(3), 0.00000001)
 
-    assertEquals(0.0809, Gaussian(0, 1).derivativeSigma(2), 0.0001)
+    assertEquals(0.0809, Gaussian(0, 1).derivativeV(2), 0.0001)
   }
 }

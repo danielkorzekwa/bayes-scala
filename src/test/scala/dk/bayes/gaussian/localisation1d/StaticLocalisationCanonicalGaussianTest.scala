@@ -9,21 +9,21 @@ import dk.bayes.gaussian.LinearGaussian
 
 class StaticLocalisationCanonicalGaussianTest {
 
-  val priorProb = Gaussian(mu = 3, sigma = 1.5)
-  val emissionProb = LinearGaussian(a = 1, b = 0, sigma = 0.9)
+  val priorProb = Gaussian(m = 3, v = 1.5)
+  val emissionProb = LinearGaussian(a = 1, b = 0, v = 0.9)
 
   @Test def single_observation {
 
     val locationId = 1
     val observationId = 2
 
-    val location = CanonicalGaussian(locationId, priorProb.mu, priorProb.sigma)
-    val observation = CanonicalGaussian(Array(locationId, observationId), emissionProb.b, emissionProb.sigma, Matrix(emissionProb.a))
+    val location = CanonicalGaussian(locationId, priorProb.m, priorProb.v)
+    val observation = CanonicalGaussian(Array(locationId, observationId), emissionProb.b, emissionProb.v, Matrix(emissionProb.a))
 
     val locationPosterior = (location * observation).withEvidence(observationId, 0.6)
 
-    assertEquals(1.5, locationPosterior.getMu.at(0), 0.001)
-    assertEquals(0.5625, locationPosterior.getSigma.at(0), 0.001)
+    assertEquals(1.5, locationPosterior.getMean.at(0), 0.001)
+    assertEquals(0.5625, locationPosterior.getVariance.at(0), 0.001)
 
   }
 
@@ -33,10 +33,10 @@ class StaticLocalisationCanonicalGaussianTest {
     val observation1Id = 2
     val observation2Id = 3
 
-    val location = CanonicalGaussian(locationId, priorProb.mu, priorProb.sigma)
+    val location = CanonicalGaussian(locationId, priorProb.m, priorProb.v)
 
-    val observation1 = CanonicalGaussian(Array(locationId, observation1Id), emissionProb.b, emissionProb.sigma, Matrix(emissionProb.a))
-    val observation2 = CanonicalGaussian(Array(locationId, observation2Id), emissionProb.b, emissionProb.sigma, Matrix(emissionProb.a))
+    val observation1 = CanonicalGaussian(Array(locationId, observation1Id), emissionProb.b, emissionProb.v, Matrix(emissionProb.a))
+    val observation2 = CanonicalGaussian(Array(locationId, observation2Id), emissionProb.b, emissionProb.v, Matrix(emissionProb.a))
 
     val jointProb = location * observation1 * observation2
     val locationPosterior = jointProb.withEvidence(observation1Id, 0.6).withEvidence(observation2Id, 0.62)
@@ -44,8 +44,8 @@ class StaticLocalisationCanonicalGaussianTest {
     //Alternative approach - applying evidence in a serial order
     //val locationPosterior = (location * observation1).withEvidence(observation1Id, 0.6) * observation2.withEvidence(observation2Id, 0.62)
 
-    assertEquals(1.161, locationPosterior.getMu.at(0), 0.001)
-    assertEquals(0.346, locationPosterior.getSigma.at(0), 0.001)
+    assertEquals(1.161, locationPosterior.getMean.at(0), 0.001)
+    assertEquals(0.346, locationPosterior.getVariance.at(0), 0.001)
 
   }
 
@@ -54,14 +54,14 @@ class StaticLocalisationCanonicalGaussianTest {
     val locationId = 1
     val observationId = 2
 
-    val location = CanonicalGaussian(locationId, priorProb.mu, priorProb.sigma)
-    val observation = CanonicalGaussian(Array(locationId, observationId), emissionProb.b, emissionProb.sigma, Matrix(emissionProb.a))
+    val location = CanonicalGaussian(locationId, priorProb.m, priorProb.v)
+    val observation = CanonicalGaussian(Array(locationId, observationId), emissionProb.b, emissionProb.v, Matrix(emissionProb.a))
 
     val lastLocation = (1 to 100).foldLeft(location) { (currLocation, i) =>
       (currLocation * observation).withEvidence(observationId, 0.6)
     }
 
-    assertEquals(0.614, lastLocation.getMu.at(0), 0.001)
-    assertEquals(0.008, lastLocation.getSigma.at(0), 0.001)
+    assertEquals(0.614, lastLocation.getMean.at(0), 0.001)
+    assertEquals(0.008, lastLocation.getVariance.at(0), 0.001)
   }
 }

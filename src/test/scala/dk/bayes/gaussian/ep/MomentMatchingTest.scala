@@ -17,21 +17,21 @@ class MomentMatchingTest {
   @Test def clutter_problem {
 
     val q = Gaussian(15, 100)
-    //t = (1-w)*N(q.mu,1) + w*N(0,a)
+    //t = (1-w)*N(q.m,1) + w*N(0,a)
     val w = 0.4
     val a = 10
     val x = 3
 
-    //Z(mu,sigma) = (1-w)*Zterm1 + w*Zterm2
+    //Z(m,v) = (1-w)*Zterm1 + w*Zterm2
 
     val Zterm1 = (q * LinearGaussian(1, 0, 1)).marginalise(0)
     val Zterm2 = (q * LinearGaussian(0, 0, a)).marginalise(0)
 
     val Z = (1 - w) * Zterm1.pdf(x) + w * Zterm2.pdf(x)
-    val dZ_mu = (1 - w) * Zterm1.derivativeMu(x)
-    val dZ_sigma = (1 - w) * Zterm1.derivativeSigma(x)
+    val dZ_m = (1 - w) * Zterm1.derivativeM(x)
+    val dZ_v = (1 - w) * Zterm1.derivativeV(x)
 
-    assertEquals(11.8364, Proj.projMu(q, Z, dZ_mu), 0.0001)
-    assertEquals(101.21589, Proj.projSigma(q, Z, dZ_mu, dZ_sigma), 0.0001)
+    assertEquals(11.8364, Proj.projMu(q, Z, dZ_m), 0.0001)
+    assertEquals(101.21589, Proj.projSigma(q, Z, dZ_m, dZ_v), 0.0001)
   }
 }

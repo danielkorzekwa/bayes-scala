@@ -8,24 +8,24 @@ package dk.bayes.gaussian
 object KalmanFilter {
 
   /**
-   * Returns marginal for x1: P(x1) = N(mu,sigma)
+   * Returns marginal for x1: P(x1) = N(m,v)
    *
-   * @param x0 Location at the time t0:  P(x0) = N(mu,sigma)
-   * @param x1Sigma Variance for conditional location at the time t1: P(x1|x0) N(x0,x1Sigma)
+   * @param x0 Location at the time t0:  P(x0) = N(m,v)
+   * @param x1Var Variance for conditional location at the time t1: P(x1|x0) N(x0,x1Var)
    */
-  def marginal(x0: Gaussian, x1Sigma: Double): Gaussian = Gaussian(x0.mu,x0.sigma + x1Sigma)
+  def marginal(x0: Gaussian, x1Var: Double): Gaussian = Gaussian(x0.m, x0.v + x1Var)
 
   /**
-   * Returns posterior for x given the observed value of z: P(x|z) = N(mu,sigma)
+   * Returns posterior for x given the observed value of z: P(x|z) = N(m,v)
    *
-   *  @param x P(x) = N(mu,sigma)
-   *  @param zSigma Variance for conditional observation variable: P(z|x) N(x,zSigma)
+   *  @param x P(x) = N(m,v)
+   *  @param zVar Variance for conditional observation variable: P(z|x) N(x,zV)
    *  @param evidence Observed value for z
    *
    */
-  def posterior(x: Gaussian, zSigma: Double, evidence: Double): Gaussian = {
-    val mu = (x.sigma * evidence + zSigma * x.mu) / (x.sigma + zSigma)
-    val sigma = x.sigma * zSigma / (x.sigma + zSigma)
-    Gaussian(mu, sigma)
+  def posterior(x: Gaussian, zVar: Double, evidence: Double): Gaussian = {
+    val m = (x.v * evidence + zVar * x.m) / (x.v + zVar)
+    val v = x.v * zVar / (x.v + zVar)
+    Gaussian(m, v)
   }
 }

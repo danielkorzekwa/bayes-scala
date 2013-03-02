@@ -16,7 +16,7 @@ class ClutterProblemEPTest {
   /**
    * Expectation Propagation for a Clutter Problem.
    *
-   * Variables: v:N(mu,sigma), z: (1-w)*N(v.mu,1) + w*N(0,a)
+   * Variables: v:N(m,variance), z: (1-w)*N(v.m,1) + w*N(0,a)
    *
    * Factors: f0: P(v), f1: P(z|v)
    *
@@ -31,7 +31,7 @@ class ClutterProblemEPTest {
    */
   @Test def single_observation {
 
-    val f0 = Gaussian(mu = 15, sigma = 100)
+    val f0 = Gaussian(m = 15, v = 100)
 
     //f1
     val w = 0.4
@@ -40,7 +40,7 @@ class ClutterProblemEPTest {
 
     //Init messages
     var f0_to_v = f0
-    var f1_to_v = Gaussian(mu = 0, sigma = Double.PositiveInfinity)
+    var f1_to_v = Gaussian(m = 0, v = Double.PositiveInfinity)
 
     //m-projection for f0_to_v message is not needed as numerator is already a Gaussian
     f0_to_v = (f0 * f1_to_v) / f1_to_v
@@ -48,14 +48,14 @@ class ClutterProblemEPTest {
 
     val v_given_z = f0_to_v * f1_to_v
 
-    assertEquals(11.8364, v_given_z.mu, 0.001)
-    assertEquals(101.21589, v_given_z.sigma, 0.001)
+    assertEquals(11.8364, v_given_z.m, 0.001)
+    assertEquals(101.21589, v_given_z.v, 0.001)
   }
 
   /**
    * Expectation Propagation for a Clutter Problem.
    *
-   * Variables: v:N(mu,sigma), z1,z2: (1-w)*N(v.mu,1) + w*N(0,a)
+   * Variables: v:N(m,variance), z1,z2: (1-w)*N(v.m,1) + w*N(0,a)
    *
    * Factors: f0: P(v), f1: P(z1|v), f2: P(z2|v)
    *
@@ -76,7 +76,7 @@ class ClutterProblemEPTest {
    *
    */
   @Test def two_ovservations {
-    val f0 = Gaussian(mu = 15, sigma = 100)
+    val f0 = Gaussian(m = 15, v = 100)
 
     //f1,f2
     val w = 0.4
@@ -86,8 +86,8 @@ class ClutterProblemEPTest {
 
     //Init messages
     var f0_to_v = f0
-    var f1_to_v = Gaussian(mu = 0, sigma = Double.PositiveInfinity)
-    var f2_to_v = Gaussian(mu = 0, sigma = Double.PositiveInfinity)
+    var f1_to_v = Gaussian(m = 0, v = Double.PositiveInfinity)
+    var f2_to_v = Gaussian(m = 0, v = Double.PositiveInfinity)
 
     def passMessages() {
       f0_to_v = (f0 * f1_to_v * f2_to_v) / (f1_to_v * f2_to_v)
@@ -103,30 +103,30 @@ class ClutterProblemEPTest {
     }
 
     //Iteration 1
-    assertEquals(8.006, v_given_z(0).mu, 0.001)
-    assertEquals(55.77, v_given_z(0).sigma, 0.001)
+    assertEquals(8.006, v_given_z(0).m, 0.001)
+    assertEquals(55.77, v_given_z(0).v, 0.001)
 
     //Iteration 2
-    assertEquals(6.6, v_given_z(1).mu, 0.001)
-    assertEquals(30.016, v_given_z(1).sigma, 0.001)
+    assertEquals(6.6, v_given_z(1).m, 0.001)
+    assertEquals(30.016, v_given_z(1).v, 0.001)
 
     //Iteration 20
-    assertEquals(4.311, v_given_z(19).mu, 0.001)
-    assertEquals(4.338, v_given_z(19).sigma, 0.001)
+    assertEquals(4.311, v_given_z(19).m, 0.001)
+    assertEquals(4.338, v_given_z(19).v, 0.001)
   }
 
   private def project(q: Gaussian, w: Double, a: Double, x: Double): Gaussian = {
-    //Z(mu.sigma) = (1-w)*Zterm1 + w*Zterm2
+    //Z(m,v) = (1-w)*Zterm1 + w*Zterm2
     val Zterm1 = (q * LinearGaussian(1, 0, 1)).marginalise(0)
     val Zterm2 = (q * LinearGaussian(0, 0, a)).marginalise(0)
 
     val Z = (1 - w) * Zterm1.pdf(x) + w * Zterm2.pdf(x)
-    val dZ_mu = (1 - w) * Zterm1.derivativeMu(x)
-    val dZ_sigma = (1 - w) * Zterm1.derivativeSigma(x)
+    val dZ_m = (1 - w) * Zterm1.derivativeM(x)
+    val dZ_v = (1 - w) * Zterm1.derivativeV(x)
 
-    val projMu = Proj.projMu(q, Z, dZ_mu)
-    val projSigma = Proj.projSigma(q, Z, dZ_mu, dZ_sigma)
+    val projM = Proj.projMu(q, Z, dZ_m)
+    val projV = Proj.projSigma(q, Z, dZ_m, dZ_v)
 
-    Gaussian(projMu, projSigma)
+    Gaussian(projM, projV)
   }
 }

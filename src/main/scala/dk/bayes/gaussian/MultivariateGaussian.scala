@@ -8,7 +8,7 @@ import scala.Math._
  *
  * @author Daniel Korzekwa
  */
-case class MultivariateGaussian(mu: Matrix, sigma: Matrix) {
+case class MultivariateGaussian(m: Matrix, v: Matrix) {
 
   /**
    * Returns Gaussian, marginalising out given variable
@@ -17,31 +17,31 @@ case class MultivariateGaussian(mu: Matrix, sigma: Matrix) {
    */
   def marginalise(varIndex: Int): MultivariateGaussian = {
 
-    val marginalMu = mu.filterNotRow(varIndex)
-    val marginalSigma = sigma.filterNot(varIndex, varIndex)
+    val marginalMean = m.filterNotRow(varIndex)
+    val marginalVariance = v.filterNot(varIndex, varIndex)
 
-    MultivariateGaussian(marginalMu, marginalSigma)
+    MultivariateGaussian(marginalMean, marginalVariance)
   }
 
   def withEvidence(varIndex: Int, value: Double): MultivariateGaussian = {
 
-    val precision = sigma.inv
+    val precision = v.inv
     val precisionAA = precision.filterNot(varIndex, varIndex)
     val precisionAB = precision.column(varIndex).filterNotRow(varIndex)
 
-    val muA = mu.filterNotRow(varIndex)
+    val meanA = m.filterNotRow(varIndex)
 
-    val marginalMu = muA - precisionAA.inv * precisionAB * (value - mu(varIndex))
-    val marginalSigma = precisionAA.inv
+    val marginalMean = meanA - precisionAA.inv * precisionAB * (value - m(varIndex))
+    val marginalVariance = precisionAA.inv
 
-    MultivariateGaussian(marginalMu, marginalSigma)
+    MultivariateGaussian(marginalMean, marginalVariance)
   }
 
   def *(linearGaussian: LinearGaussian): MultivariateGaussian = toGaussian() * linearGaussian
 
   def toGaussian(): Gaussian = {
-    require(mu.size == 1 && sigma.size == 1, "Multivariate gaussian cannot be transformed into univariate gaussian")
-    Gaussian(mu.at(0), sigma.at(0))
+    require(m.size == 1 && v.size == 1, "Multivariate gaussian cannot be transformed into univariate gaussian")
+    Gaussian(m.at(0), v.at(0))
   }
 
   /**
@@ -54,19 +54,23 @@ case class MultivariateGaussian(mu: Matrix, sigma: Matrix) {
    */
   def pdf(x: Matrix): Double = {
     val p = normConstant()
-    val pdfValue = p * exp(-0.5 * ((x - mu).transpose * sigma.inv * (x - mu)).at(0))
+    val pdfValue = p * exp(-0.5 * ((x - m).transpose * v.inv * (x - m)).at(0))
     pdfValue
   }
 
-  def normConstant(): Double = 1d / (pow(2 * Pi, mu.size.toDouble / 2) * sqrt(sigma.det))
+  def normConstant(): Double = 1d / (pow(2 * Pi, m.size.toDouble / 2) * sqrt(v.det))
 }
 
 object MultivariateGaussian {
 
   implicit def toGaussian(mvnGaussian: MultivariateGaussian): Gaussian = {
-    require(mvnGaussian.mu.size == 1 && mvnGaussian.sigma.size == 1, "Multivariate gaussian cannot be transformed into univariate gaussian")
-    Gaussian(mvnGaussian.mu.at(0), mvnGaussian.sigma.at(0))
+    require(mvnGaussian.m.size == 1 && mvnGaussian.v.size == 1, "Multivariate gaussian cannot be transformed into univariate gaussian")
+    Gaussian(mvnGaussian.m.at(0), mvnGaussian.v.at(0))
   }
 
-  def apply(mu: Double, sigma: Double): MultivariateGaussian = new MultivariateGaussian(Matrix(mu), Matrix(sigma))
+  /**
+   * @param m Mean
+   * @param v Variance
+   */
+  def apply(m: Double, v: Double): MultivariateGaussian = new MultivariateGaussian(Matrix(m), Matrix(v))
 }

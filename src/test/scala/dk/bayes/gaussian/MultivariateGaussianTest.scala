@@ -9,10 +9,10 @@ class MultivariateGaussianTest {
 
   val xIndex = 0
   val yIndex = 1
-  val mu = Matrix(3, 1.7)
-  val sigma = Matrix(2, 2, Array(1.5, -0.15, -0.15, 0.515))
+  val mean = Matrix(3, 1.7)
+  val variance = Matrix(2, 2, Array(1.5, -0.15, -0.15, 0.515))
 
-  val gaussian = MultivariateGaussian(mu, sigma)
+  val gaussian = MultivariateGaussian(mean, variance)
 
   /**
    * Tests for Gaussian marginalisation
@@ -21,16 +21,16 @@ class MultivariateGaussianTest {
 
     val marginalx = gaussian.marginalise(yIndex)
 
-    assertEquals(3, marginalx.toGaussian.mu, 0)
-    assertEquals(1.5, marginalx.toGaussian.sigma, 0)
+    assertEquals(3, marginalx.toGaussian.m, 0)
+    assertEquals(1.5, marginalx.toGaussian.v, 0)
   }
 
   @Test def marginalise_x {
 
     val marginalY = gaussian.marginalise(xIndex)
 
-    assertEquals(1.7, marginalY.toGaussian.mu, 0)
-    assertEquals(0.515, marginalY.toGaussian.sigma, 0)
+    assertEquals(1.7, marginalY.toGaussian.m, 0)
+    assertEquals(0.515, marginalY.toGaussian.v, 0)
     assertEquals(0.03360, marginalY.toGaussian.pdf(0), 0.0001)
   }
 
@@ -42,8 +42,8 @@ class MultivariateGaussianTest {
 
     val marginalY = gaussian.withEvidence(xIndex, 3.5)
 
-    assertEquals(1.65, marginalY.toGaussian.mu, 0)
-    assertEquals(0.5, marginalY.toGaussian.sigma, 0)
+    assertEquals(1.65, marginalY.toGaussian.m, 0)
+    assertEquals(0.5, marginalY.toGaussian.v, 0)
     assertEquals(0.03707, marginalY.toGaussian.pdf(0), 0.0001)
   }
 
@@ -51,8 +51,8 @@ class MultivariateGaussianTest {
 
     val marginalX = gaussian.withEvidence(yIndex, 2.5)
 
-    assertEquals(2.7669, marginalX.toGaussian.mu, 0.0001)
-    assertEquals(1.4563, marginalX.toGaussian.sigma, 0.0001)
+    assertEquals(2.7669, marginalX.toGaussian.m, 0.0001)
+    assertEquals(1.4563, marginalX.toGaussian.v, 0.0001)
     assertEquals(0.0238, marginalX.toGaussian.pdf(0), 0.0001d)
   }
 

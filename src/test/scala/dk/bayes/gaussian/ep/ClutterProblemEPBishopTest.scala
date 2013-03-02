@@ -16,7 +16,7 @@ class ClutterProblemEPBishopTest {
   /**
    * Expectation Propagation for a Clutter Problem.
    *
-   * Variables: v:N(mu,sigma), z: (1-w)*N(v.mu,1) + w*N(0,a)
+   * Variables: v:N(m,variance), z: (1-w)*N(v.m,1) + w*N(0,a)
    *
    * Factors: f0: P(v), f1: P(z|v)
    *
@@ -31,7 +31,7 @@ class ClutterProblemEPBishopTest {
    */
   @Test def single_observation {
 
-    val f0 = Gaussian(mu = 15, sigma = 100)
+    val f0 = Gaussian(m = 15, v = 100)
 
     //f1
     val w = 0.4
@@ -40,7 +40,7 @@ class ClutterProblemEPBishopTest {
 
     //Init messages
     var f0_to_v = f0
-    var f1_to_v = Gaussian(mu = 0, sigma = Double.PositiveInfinity)
+    var f1_to_v = Gaussian(m = 0, v = Double.PositiveInfinity)
 
     //m-projection for f0_to_v message is not needed as numerator is already a Gaussian
     f0_to_v = (f0 * f1_to_v) / f1_to_v
@@ -48,14 +48,14 @@ class ClutterProblemEPBishopTest {
 
     val v_given_z = f0_to_v * f1_to_v
 
-    assertEquals(11.8364, v_given_z.mu, 0.001)
-    assertEquals(101.21589, v_given_z.sigma, 0.001)
+    assertEquals(11.8364, v_given_z.m, 0.001)
+    assertEquals(101.21589, v_given_z.v, 0.001)
   }
 
   /**
    * Expectation Propagation for a Clutter Problem.
    *
-   * Variables: v:N(mu,sigma), z1,z2: (1-w)*N(v.mu,1) + w*N(0,a)
+   * Variables: v:N(m,variance), z1,z2: (1-w)*N(v.m,1) + w*N(0,a)
    *
    * Factors: f0: P(v), f1: P(z1|v), f2: P(z2|v)
    *
@@ -76,7 +76,7 @@ class ClutterProblemEPBishopTest {
    *
    */
   @Test def two_ovservations {
-    val f0 = Gaussian(mu = 15, sigma = 100)
+    val f0 = Gaussian(m = 15, v = 100)
 
     //f1,f2
     val w = 0.4
@@ -86,8 +86,8 @@ class ClutterProblemEPBishopTest {
 
     //Init messages
     var f0_to_v = f0
-    var f1_to_v = Gaussian(mu = 0, sigma = Double.PositiveInfinity)
-    var f2_to_v = Gaussian(mu = 0, sigma = Double.PositiveInfinity)
+    var f1_to_v = Gaussian(m = 0, v = Double.PositiveInfinity)
+    var f2_to_v = Gaussian(m = 0, v = Double.PositiveInfinity)
 
     def passMessages() {
       f0_to_v = (f0 * f1_to_v * f2_to_v) / (f1_to_v * f2_to_v)
@@ -103,19 +103,19 @@ class ClutterProblemEPBishopTest {
     }
 
     //Iteration 1
-    assertEquals(8.006, v_given_z(0).mu, 0.001)
-    assertEquals(55.77, v_given_z(0).sigma, 0.001)
+    assertEquals(8.006, v_given_z(0).m, 0.001)
+    assertEquals(55.77, v_given_z(0).v, 0.001)
 
     //Iteration 2
-    assertEquals(6.6, v_given_z(1).mu, 0.001)
-    assertEquals(30.016, v_given_z(1).sigma, 0.001)
+    assertEquals(6.6, v_given_z(1).m, 0.001)
+    assertEquals(30.016, v_given_z(1).v, 0.001)
 
     //Iteration 20
-    assertEquals(4.311, v_given_z(19).mu, 0.001)
-    assertEquals(4.338, v_given_z(19).sigma, 0.001)
+    assertEquals(4.311, v_given_z(19).m, 0.001)
+    assertEquals(4.338, v_given_z(19).v, 0.001)
   }
 
-  def calcZ(w: Double, x: Double, q: Gaussian, a: Double): Double = (1 - w) * Gaussian(q.mu, q.sigma + 1).pdf(x) + w * Gaussian(0, a).pdf(x)
+  def calcZ(w: Double, x: Double, q: Gaussian, a: Double): Double = (1 - w) * Gaussian(q.m, q.v + 1).pdf(x) + w * Gaussian(0, a).pdf(x)
 
   def proj(w: Double, x: Double, q: Gaussian, a: Double): Gaussian = {
 
@@ -123,12 +123,12 @@ class ClutterProblemEPBishopTest {
 
     val p = 1 - w / Z * Gaussian(0, a).pdf(x)
 
-    val mu = q.mu + p * (q.sigma / (q.sigma + 1) * (x - q.mu))
+    val m = q.m + p * (q.v / (q.v + 1) * (x - q.m))
 
-    val sigma = q.sigma -
-      p * (pow(q.sigma, 2) / (q.sigma + 1)) +
-      p * (1 - p) * pow(q.sigma * (x - q.mu) / (q.sigma + 1), 2)
+    val v = q.v -
+      p * (pow(q.v, 2) / (q.v + 1)) +
+      p * (1 - p) * pow(q.v * (x - q.m) / (q.v + 1), 2)
 
-    Gaussian(mu, sigma)
+    Gaussian(m, v)
   }
 }

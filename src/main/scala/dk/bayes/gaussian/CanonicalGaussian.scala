@@ -79,15 +79,15 @@ case class CanonicalGaussian(varIds: Array[Int], k: Matrix, h: Matrix, g: Double
     CanonicalGaussian(newVarIds, newK, newH, newG)
   }
 
-  def getMu(): Matrix = k.inv * h
-  def getSigma(): Matrix = k.inv
+  def getMean(): Matrix = k.inv * h
+  def getVariance(): Matrix = k.inv
 
   /**
    * Returns logarithm of normalisation constant.
    */
   def getLogP(): Double = {
-    val mu = getMu()
-    val logP = g + (0.5 * mu.transpose * k * mu)(0)
+    val m = getMean()
+    val logP = g + (0.5 * m.transpose * k * m)(0)
     logP
   }
 
@@ -96,19 +96,34 @@ case class CanonicalGaussian(varIds: Array[Int], k: Matrix, h: Matrix, g: Double
 
 object CanonicalGaussian {
 
-  def apply(varId: Int, mu: Double, sigma: Double): CanonicalGaussian = apply(Array(varId), Matrix(mu), Matrix(sigma))
+  /**
+   * @param varId Unique variable id
+   * @param m Mean
+   * @param v Variance
+   */
+  def apply(varId: Int, m: Double, v: Double): CanonicalGaussian = apply(Array(varId), Matrix(m), Matrix(v))
 
-  def apply(varIds: Array[Int], mu: Matrix, sigma: Matrix): CanonicalGaussian = {
-    val k = sigma.inv
-    val h = k * mu
-    val g = -0.5 * mu.transpose * k * mu - log(pow(2d * Pi, mu.numRows.toDouble / 2d) * pow(sigma.det, 0.5))
+  /**
+   * @param varIds Unique variable ids
+   * @param m Mean
+   * @param v Variance
+   */
+  def apply(varIds: Array[Int], m: Matrix, v: Matrix): CanonicalGaussian = {
+    val k = v.inv
+    val h = k * m
+    val g = -0.5 * m.transpose * k * m - log(pow(2d * Pi, m.numRows.toDouble / 2d) * pow(v.det, 0.5))
     new CanonicalGaussian(varIds, k, h, g(0))
   }
 
   /**
-   * Creates Canonical Gaussian from Linear Gaussian N(beta * x + mu, sigma)
+   * Creates Canonical Gaussian from Linear Gaussian N(beta * x + m, v)
+   *
+   * @param varIds Unique variable ids
+   * @param m Mean
+   * @param v Variance
+   * @beta Slope of linear gaussian function
    */
-  def apply(varIds: Array[Int], mu: Double, sigma: Double, beta: Matrix): CanonicalGaussian = {
+  def apply(varIds: Array[Int], m: Double, v: Double, beta: Matrix): CanonicalGaussian = {
     val kMatrix = Matrix(beta.numRows() + 1, beta.numRows() + 1)
 
     kMatrix.insertIntoThis(0, 0, beta * beta.transpose)
@@ -116,15 +131,15 @@ object CanonicalGaussian {
     kMatrix.insertIntoThis(kMatrix.numRows() - 1, 0, beta.negative().transpose())
     kMatrix.set(kMatrix.numRows() - 1, kMatrix.numCols() - 1, 1)
 
-    val k = (1d / sigma) * kMatrix
+    val k = (1d / v) * kMatrix
 
     val hMatrix = Matrix(beta.numRows() + 1, 1)
     hMatrix.insertIntoThis(0, 0, beta.negative)
     hMatrix.set(hMatrix.numRows() - 1, 0, 1)
 
-    val h = (mu / sigma) * hMatrix
+    val h = (m / v) * hMatrix
 
-    val g = -0.5 * (pow(mu, 2) / sigma) - 0.5 * log(2 * Pi * sigma)
+    val g = -0.5 * (pow(m, 2) / v) - 0.5 * log(2 * Pi * v)
 
     new CanonicalGaussian(varIds, k, h, g)
   }

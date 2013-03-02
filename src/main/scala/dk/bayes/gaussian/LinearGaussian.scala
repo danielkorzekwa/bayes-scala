@@ -1,16 +1,16 @@
 package dk.bayes.gaussian
 
 /**
- * Linear Gaussian Model: N(mu,sigma), where,
- * mu = ax + b
+ * Linear Gaussian Model: N(m,v), where,
+ * m = ax + b
  *
  * @author Daniel Korzekwa
  *
- * @param a Mean component: mu = ax + b
- * @param b Mean component: mu = ax + b
- * @param sigma Variance
+ * @param a Mean component: m = ax + b
+ * @param b Mean component: m = ax + b
+ * @param v Variance
  */
-case class LinearGaussian(a: Double, b: Double, sigma: Double) {
+case class LinearGaussian(a: Double, b: Double, v: Double) {
 
   def *(gaussian: Gaussian): MultivariateGaussian = gaussian * this
   

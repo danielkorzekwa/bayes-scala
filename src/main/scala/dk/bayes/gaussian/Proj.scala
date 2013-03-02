@@ -16,21 +16,21 @@ object Proj {
    *
    * @param q Function q(x)
    * @param Z Normalisation constant for distribution Z(m,v)=f(x)*q(x)
-   * @param dZ Derivative of Z with respect to q_mu
+   * @param dZ Derivative of Z with respect to q_mean
    */
-  def projMu(q: Gaussian, Z: Double, dZ: Double) = q.mu + q.sigma * (dZ / Z)
+  def projMu(q: Gaussian, Z: Double, dZ_m: Double) = q.m + q.v * (dZ_m / Z)
 
   /**
    * Equation 3.19 (page 15) from Minka Thesis
    *
    * @param q Function q(x)
    * @param Z Normalisation constant for distribution Z(m,v)=f(x)*q(x)
-   * @param dZ_mu Derivative of Z with respect to q_mu
-   * @param dZ_sigma Derivative of Z with respect to q_sigma
+   * @param dZ_m Derivative of Z with respect to q_mean
+   * @param dZ_v Derivative of Z with respect to q_variance
    */
-  def projSigma(q: Gaussian, Z: Double, dZ_mu: Double, dZ_sigma: Double): Double = {
-    val logZ_mu = dZ_mu / Z
-    val logZ_sigma = dZ_sigma / Z
-    q.sigma - q.sigma * q.sigma * (logZ_mu * logZ_mu - 2 * logZ_sigma)
+  def projSigma(q: Gaussian, Z: Double, dZ_m: Double, dZ_v: Double): Double = {
+    val logZ_m = dZ_m / Z
+    val logZ_v = dZ_v / Z
+    q.v - q.v * q.v * (logZ_m * logZ_m - 2 * logZ_v)
   }
 }
