@@ -3,6 +3,9 @@ package dk.bayes.gaussian
 import org.junit._
 import Assert._
 import dk.bayes.gaussian.Linear._
+import dk.bayes.discretise.Histogram
+import dk.bayes.testutil.AssertUtil._
+
 class GaussianTest {
 
   @Test def pdf {
@@ -151,5 +154,19 @@ class GaussianTest {
     assertEquals(0.000041015595, Gaussian(15, 101).derivativeV(3), 0.00000001)
 
     assertEquals(0.0809, Gaussian(0, 1).derivativeV(2), 0.0001)
+  }
+
+  @Test(expected = classOf[IllegalArgumentException]) def projHistogram_inconsistent_values_with_probs {
+    Gaussian.projHistogram(List(1, 2, 3), List(0.2, 0.3, 0.3, 0.2))
+  }
+
+  @Test def projHistogram {
+
+    val gaussian = Gaussian(10, 2)
+    val histogram = Histogram(gaussian.m - 4 * gaussian.v, gaussian.m + 4 * gaussian.v, 50)
+
+    val proj = Gaussian.projHistogram(histogram.toValues, histogram.mapValues(v => gaussian.pdf(v)))
+
+    assertGaussian(Gaussian(10, 2), proj, 0.0001)
   }
 }

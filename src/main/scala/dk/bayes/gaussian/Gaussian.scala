@@ -140,4 +140,16 @@ object Gaussian {
    */
   def stdCdf(x: Double): Double = cdf(x, 0, 1)
 
+  /**
+   * Projects histogram to Gaussian distribution by matching the mean and variance moments.
+   */
+  def projHistogram(values: Seq[Double], probs: Seq[Double]): Gaussian = {
+    require(values.size == probs.size, "Number of values is not equal to number of probabilities")
+
+    val Z = probs.sum
+    val m = values.zip(probs).map { case (v, p) => v * p }.sum / Z
+    val mm = values.zip(probs).map { case (v, p) => v * v * p }.sum / Z
+    Gaussian(m, mm - m*m)
+  }
+
 }
