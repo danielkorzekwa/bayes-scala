@@ -112,4 +112,16 @@ class SingleFactorTest {
 
     assertFactor(SingleFactor(Var(1, 3), Array(0.6, 0, 0.4)), normalisedFactor)
   }
+
+  /**
+   * Tests for mapAssignments
+   */
+
+  @Test def mapAssignments {
+    val factor = SingleFactor(Var(1, 3), Array(0.3, 0.5, 0.2))
+
+    val assignments = factor.mapAssignments(a => a(0) + 5)
+
+    assertEquals(List(5, 6, 7), assignments.toList)
+  }
 }

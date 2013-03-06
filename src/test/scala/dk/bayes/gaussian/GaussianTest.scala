@@ -159,6 +159,10 @@ class GaussianTest {
   @Test(expected = classOf[IllegalArgumentException]) def projHistogram_inconsistent_values_with_probs {
     Gaussian.projHistogram(List(1, 2, 3), List(0.2, 0.3, 0.3, 0.2))
   }
+  
+   @Test(expected = classOf[IllegalArgumentException]) def projHistogram_zero_probs {
+    Gaussian.projHistogram(List(1, 2, 3), List(0, 0, 0))
+  }
 
   @Test def projHistogram {
 

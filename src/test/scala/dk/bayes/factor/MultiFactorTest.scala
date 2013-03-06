@@ -124,4 +124,22 @@ class MultiFactorTest {
 
     assertFactor(MultiFactor(Var(1, 3), Var(2, 2), Array(0.0625, 0.125, 0.1874, 0, 0.28125, 0.3437)), normalisedFactor, 0.0001)
   }
+
+  /**
+   * Tests for mapAssignments
+   */
+
+  @Test def mapAssignments {
+    val factor = MultiFactor(Var(1, 3), Var(2, 2), Array(0.05, 0.1, 0.15, 0, 0.225, 0.275))
+
+    val assignments = factor.mapAssignments(f => f)
+
+    assertEquals(List(0, 0), assignments(0).toList)
+    assertEquals(List(0, 1), assignments(1).toList)
+    assertEquals(List(1, 0), assignments(2).toList)
+    assertEquals(List(1, 1), assignments(3).toList)
+    assertEquals(List(2, 0), assignments(4).toList)
+    assertEquals(List(2, 1), assignments(5).toList)
+  }
+
 }

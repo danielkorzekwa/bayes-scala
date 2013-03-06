@@ -104,8 +104,35 @@ class MultiFactor(variables: Array[Var], values: Array[Double]) extends Factor {
     val normalisedValues = FactorUtil.normalise(values)
     new MultiFactor(variables, normalisedValues)
   }
-  
-   def copy(values:Array[Double]):MultiFactor = new MultiFactor(variables,values)
+
+  def copy(values: Array[Double]): MultiFactor = new MultiFactor(variables, values)
+
+  def mapAssignments[T: Manifest](f: Array[Int] => T): Array[T] = {
+
+    val valuesNum = values.size
+    val mapping = new Array[T](valuesNum)
+
+    var assignment = new Array[Int](variables.size)
+    var i = 0
+    while (i < valuesNum) {
+      mapping(i) = f(assignment.clone)
+
+      var dimIndex = variables.size - 1
+      var continue = true
+      while (continue && dimIndex >= 0) {
+
+        if (assignment(dimIndex) < variables(dimIndex).dim - 1) {
+          assignment(dimIndex) += 1
+          continue = false
+        } else assignment(dimIndex) = 0
+
+        dimIndex -= 1
+      }
+      i += 1
+    }
+
+    mapping
+  }
 
   /**
    * Iterates over all factor values, providing at every iteration value index and variable index.

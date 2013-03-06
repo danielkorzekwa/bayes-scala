@@ -62,11 +62,18 @@ trait Factor {
    *  Returns new factor with all potential values normalised to 1.
    */
   def normalise(): Factor
-  
+
   /**
    * Returns a copy of this factor with new values.
    */
-  def copy(values:Array[Double]):Factor
+  def copy(values: Array[Double]): Factor
+
+  /**
+   * Maps all factor assignments to an array of objects.
+   *
+   *  @param f Mapping function. (Assignment) => Array element
+   */
+  def mapAssignments[T: Manifest](f: Array[Int] => T): Array[T]
 
 }
 

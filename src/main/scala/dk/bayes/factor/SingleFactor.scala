@@ -70,7 +70,21 @@ class SingleFactor(variable: Var, values: Array[Double]) extends Factor {
     SingleFactor(variable, normalisedValues)
   }
 
-  def copy(values:Array[Double]):SingleFactor = new SingleFactor(variable,values)
+  def copy(values: Array[Double]): SingleFactor = new SingleFactor(variable, values)
+
+  def mapAssignments[T: Manifest](f: Array[Int] => T): Array[T] = {
+
+    val mapping: Array[T] = new Array[T](values.size)
+
+    var i = 0
+    while (i < values.size) {
+      mapping(i) = f(Array(i))
+      i += 1
+    }
+
+    mapping
+  }
+
 }
 
 object SingleFactor {

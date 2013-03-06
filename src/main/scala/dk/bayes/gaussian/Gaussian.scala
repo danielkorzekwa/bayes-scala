@@ -147,9 +147,11 @@ object Gaussian {
     require(values.size == probs.size, "Number of values is not equal to number of probabilities")
 
     val Z = probs.sum
+    require(Z > 0, "Sum of probabilities is zero")
+
     val m = values.zip(probs).map { case (v, p) => v * p }.sum / Z
     val mm = values.zip(probs).map { case (v, p) => v * v * p }.sum / Z
-    Gaussian(m, mm - m*m)
+    Gaussian(m, mm - m * m)
   }
 
 }
