@@ -10,6 +10,11 @@ object CanonicalGaussianTest {
 
   val xId = 1
   val yId = 2
+
+  val x = CanonicalGaussian(xId, 3, 1.5)
+
+  val a = Matrix(-0.1)
+  val yGivenx = CanonicalGaussian(Array(xId, yId), a, 2, 0.5)
 }
 
 class CanonicalGaussianTest {
@@ -60,8 +65,7 @@ class CanonicalGaussianTest {
 
   @Test def pdf_linear_gaussian_cpd {
 
-    val betaX = Matrix(-0.1)
-    assertEquals(0.03707, CanonicalGaussian(Array(xId, yId), 2, 0.5, betaX).pdf(Matrix(3.5, 0)), 0.0001)
+    assertEquals(0.03707, yGivenx.pdf(Matrix(3.5, 0)), 0.0001)
   }
 
   /**
@@ -69,8 +73,6 @@ class CanonicalGaussianTest {
    */
 
   @Test def marginalise_y {
-    val x = CanonicalGaussian(Array(xId), Matrix(3), Matrix(1.5))
-    val yGivenx = CanonicalGaussian(Array(xId, yId), 2, 0.5, Matrix(-0.1))
 
     val marginalX = (x * yGivenx).marginalise(yId)
 
@@ -80,7 +82,6 @@ class CanonicalGaussianTest {
   }
 
   @Test def marginalise_y_from_gaussian_cpd {
-    val yGivenx = CanonicalGaussian(Array(xId, yId), 2, 0.5, Matrix(-0.1))
 
     val marginalX = (yGivenx).marginalise(yId)
 
@@ -90,8 +91,6 @@ class CanonicalGaussianTest {
   }
 
   @Test def marginalise_x {
-    val x = CanonicalGaussian(Array(xId), Matrix(3), Matrix(1.5))
-    val yGivenx = CanonicalGaussian(Array(xId, yId), 2, 0.5, Matrix(-0.1))
 
     val marginalY = (x * yGivenx).marginalise(xId)
 
@@ -105,9 +104,8 @@ class CanonicalGaussianTest {
    * Tests for withEvidence() method
    */
   @Test def withEvidence_marginal_y {
-    val beta = Matrix(-0.1)
 
-    val marginalY = CanonicalGaussian(Array(xId, yId), 2, 0.5, beta).withEvidence(xId, 3.5)
+    val marginalY = yGivenx.withEvidence(xId, 3.5)
 
     assertArrayEquals(Array(yId), marginalY.varIds)
     assertEquals(0.03707, marginalY.pdf(Matrix(0)), 0.0001)
@@ -116,10 +114,6 @@ class CanonicalGaussianTest {
   }
 
   @Test def withEvidence_marginal_y_given_x {
-    val beta = Matrix(-0.1)
-
-    val x = CanonicalGaussian(Array(xId), Matrix(3), Matrix(1.5))
-    val yGivenx = CanonicalGaussian(Array(xId, yId), 2, 0.5, beta)
 
     val marginalY = (x * yGivenx).withEvidence(xId, 3.5) //CanonicalGaussian(Array(xId, yId), Matrix(Array(3, 1.7)), Matrix(2, 2, Array(1.5, -0.15, -0.15, 0.515))).withEvidence(xId, 3.5)
 
@@ -130,8 +124,6 @@ class CanonicalGaussianTest {
   }
 
   @Test def withEvidence_marginal_x_given_y {
-    val x = CanonicalGaussian(Array(xId), Matrix(3), Matrix(1.5))
-    val yGivenx = CanonicalGaussian(Array(xId, yId), 2, 0.5, Matrix(-0.1))
 
     val marginalX = (x * yGivenx).withEvidence(yId, 2.5)
 
@@ -142,8 +134,6 @@ class CanonicalGaussianTest {
   }
 
   @Test def withEvidence_marginal_x_given_y_version2 {
-    val x = CanonicalGaussian(Array(xId), Matrix(3), Matrix(1.5))
-    val yGivenx = CanonicalGaussian(Array(xId, yId), 2, 0.5, Matrix(-0.1))
 
     val marginalX = (x * yGivenx.withEvidence(yId, 2.5))
 
@@ -154,8 +144,6 @@ class CanonicalGaussianTest {
   }
 
   @Test def withEvidence_marginal_x_given_y_version3 {
-    val x = CanonicalGaussian(Array(xId), Matrix(3), Matrix(1.5))
-    val yGivenx = CanonicalGaussian(Array(xId, yId), 2, 0.5, Matrix(-0.1))
 
     val marginalX = (yGivenx * x).withEvidence(yId, 2.5)
     assertArrayEquals(Array(xId), marginalX.varIds)

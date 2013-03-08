@@ -101,6 +101,13 @@ case class Gaussian(m: Double, v: Double) {
    * Returns the derivative value of Gaussian with respect to variance, evaluated at the value of x.
    */
   def derivativeV(x: Double): Double = pdf(x) * (1d / (2 * v * v) * (x - m) * (x - m) - 1d / (2 * v))
+  
+  /**
+   * Converts Gaussian to Canonical Gaussian.
+   * 
+   * @param varId Unique id of a Gaussian variable in a canonical space.
+   */
+   def toCanonical(varId:Int): CanonicalGaussian = CanonicalGaussian(varId,m,v)
 }
 
 object Gaussian {

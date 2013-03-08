@@ -17,8 +17,8 @@ class StaticLocalisationCanonicalGaussianTest {
     val locationId = 1
     val observationId = 2
 
-    val location = CanonicalGaussian(locationId, priorProb.m, priorProb.v)
-    val observation = CanonicalGaussian(Array(locationId, observationId), emissionProb.b, emissionProb.v, Matrix(emissionProb.a))
+    val location = priorProb.toCanonical(locationId)
+    val observation = emissionProb.toCanonical(locationId, observationId)
 
     val locationPosterior = (location * observation).withEvidence(observationId, 0.6)
 
@@ -33,10 +33,10 @@ class StaticLocalisationCanonicalGaussianTest {
     val observation1Id = 2
     val observation2Id = 3
 
-    val location = CanonicalGaussian(locationId, priorProb.m, priorProb.v)
+    val location = priorProb.toCanonical(locationId)
 
-    val observation1 = CanonicalGaussian(Array(locationId, observation1Id), emissionProb.b, emissionProb.v, Matrix(emissionProb.a))
-    val observation2 = CanonicalGaussian(Array(locationId, observation2Id), emissionProb.b, emissionProb.v, Matrix(emissionProb.a))
+    val observation1 = emissionProb.toCanonical(locationId, observation1Id)
+    val observation2 = emissionProb.toCanonical(locationId, observation2Id)
 
     val jointProb = location * observation1 * observation2
     val locationPosterior = jointProb.withEvidence(observation1Id, 0.6).withEvidence(observation2Id, 0.62)
@@ -54,8 +54,8 @@ class StaticLocalisationCanonicalGaussianTest {
     val locationId = 1
     val observationId = 2
 
-    val location = CanonicalGaussian(locationId, priorProb.m, priorProb.v)
-    val observation = CanonicalGaussian(Array(locationId, observationId), emissionProb.b, emissionProb.v, Matrix(emissionProb.a))
+    val location = priorProb.toCanonical(locationId)
+    val observation = emissionProb.toCanonical(locationId, observationId)
 
     val lastLocation = (1 to 100).foldLeft(location) { (currLocation, i) =>
       (currLocation * observation).withEvidence(observationId, 0.6)

@@ -82,6 +82,15 @@ case class CanonicalGaussian(varIds: Array[Int], k: Matrix, h: Matrix, g: Double
   def getMean(): Matrix = k.inv * h
   def getVariance(): Matrix = k.inv
 
+  def toGaussian(): Gaussian = {
+    val m = getMean()
+    val v = getVariance()
+
+    require(m.size == 1 && v.size == 1, "Multivariate gaussian cannot be transformed into univariate gaussian")
+
+    Gaussian(m(0), v(0))
+  }
+
   /**
    * Returns logarithm of normalisation constant.
    */
@@ -116,32 +125,33 @@ object CanonicalGaussian {
   }
 
   /**
-   * Creates Canonical Gaussian from Linear Gaussian N(beta * x + m, v)
+   * Creates Canonical Gaussian from Linear Gaussian N(a * x + b, v)
    *
    * @param varIds Unique variable ids
-   * @param m Mean
+   * @param a Term of m = (ax+b)
+   * @param b Term of m = (ax+b)
    * @param v Variance
-   * @beta Slope of linear gaussian function
    */
-  def apply(varIds: Array[Int], m: Double, v: Double, beta: Matrix): CanonicalGaussian = {
-    val kMatrix = Matrix(beta.numRows() + 1, beta.numRows() + 1)
+  def apply(varIds: Array[Int], a: Matrix, b: Double, v: Double): CanonicalGaussian = {
+    val kMatrix = Matrix(a.numRows() + 1, a.numRows() + 1)
 
-    kMatrix.insertIntoThis(0, 0, beta * beta.transpose)
-    kMatrix.insertIntoThis(0, kMatrix.numCols() - 1, beta.negative())
-    kMatrix.insertIntoThis(kMatrix.numRows() - 1, 0, beta.negative().transpose())
+    kMatrix.insertIntoThis(0, 0, a * a.transpose)
+    kMatrix.insertIntoThis(0, kMatrix.numCols() - 1, a.negative())
+    kMatrix.insertIntoThis(kMatrix.numRows() - 1, 0, a.negative().transpose())
     kMatrix.set(kMatrix.numRows() - 1, kMatrix.numCols() - 1, 1)
 
     val k = (1d / v) * kMatrix
 
-    val hMatrix = Matrix(beta.numRows() + 1, 1)
-    hMatrix.insertIntoThis(0, 0, beta.negative)
+    val hMatrix = Matrix(a.numRows() + 1, 1)
+    hMatrix.insertIntoThis(0, 0, a.negative)
     hMatrix.set(hMatrix.numRows() - 1, 0, 1)
 
-    val h = (m / v) * hMatrix
+    val h = (b / v) * hMatrix
 
-    val g = -0.5 * (pow(m, 2) / v) - 0.5 * log(2 * Pi * v)
+    val g = -0.5 * (pow(b, 2) / v) - 0.5 * log(2 * Pi * v)
 
     new CanonicalGaussian(varIds, k, h, g)
   }
-
+  
+    implicit def toGaussian(mvnGaussian: CanonicalGaussian): Gaussian = mvnGaussian.toGaussian
 }

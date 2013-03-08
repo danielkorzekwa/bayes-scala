@@ -63,11 +63,8 @@ case class MultivariateGaussian(m: Matrix, v: Matrix) {
 
 object MultivariateGaussian {
 
-  implicit def toGaussian(mvnGaussian: MultivariateGaussian): Gaussian = {
-    require(mvnGaussian.m.size == 1 && mvnGaussian.v.size == 1, "Multivariate gaussian cannot be transformed into univariate gaussian")
-    Gaussian(mvnGaussian.m.at(0), mvnGaussian.v.at(0))
-  }
-
+  implicit def toGaussian(mvnGaussian: MultivariateGaussian): Gaussian = mvnGaussian.toGaussian()
+  
   /**
    * @param m Mean
    * @param v Variance
