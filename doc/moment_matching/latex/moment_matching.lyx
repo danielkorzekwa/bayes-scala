@@ -9,7 +9,7 @@
 \language_package default
 \inputencoding auto
 \fontencoding global
-\font_roman default
+\font_roman lmodern
 \font_sans default
 \font_typewriter default
 \font_default_family default
@@ -264,7 +264,8 @@ key "Exponential Family-1"
 \begin_inset Formula $p(x|\eta)=h(x)g(\eta)exp\{\eta^{T}u(x)\}$
 \end_inset
 
-, moments can be computed by differentiaing the log partition function 
+, moments can be computed by differentiating the log partition function
+ 
 \begin_inset Formula $A(\eta)=-lng(\eta)$
 \end_inset
 
@@ -357,7 +358,11 @@ In order to compute Gaussian approximation
 \begin_inset Formula $x=3,m=15,v=100,w=0.4,a=10$
 \end_inset
 
-, we compute normalisation constant 
+, we compute 
+\lang british
+normalisation
+\lang english
+ constant 
 \begin_inset Formula $Z(m,v)$
 \end_inset
 

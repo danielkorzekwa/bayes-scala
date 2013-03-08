@@ -1,0 +1,609 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman lmodern
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref true
+\pdf_title "Expectation Propagation for a Clutter Problem"
+\pdf_author "Daniel Korzekwa"
+\pdf_subject "Expectation Propagation"
+\pdf_keywords "Expectation, Propagation, Clutter"
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle true
+\papersize default
+\use_geometry true
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\topmargin 2cm
+\bottommargin 2cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Expectation Propagation for a Clutter Problem
+\end_layout
+
+\begin_layout Author
+Daniel Korzekwa
+\end_layout
+
+\begin_layout Section*
+Problem definition
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Clutter Problem is a Gaussian density estimation task, presented by Thomas
+ Minka 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Minka-1"
+
+\end_inset
+
+ to illustrate Expectation Propagation 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Minka-1"
+
+\end_inset
+
+ algorithm in practice.
+ Imagine that we observe data points 
+\begin_inset Formula $\{\theta_{1},...,\theta_{n}\}$
+\end_inset
+
+, generated from a Gaussian distribution.
+ With a probability 
+\begin_inset Formula $1-w$
+\end_inset
+
+, we get noisy observations represented by linear Gaussian model 
+\begin_inset Formula $\mathcal{N}(x|\theta,1)$
+\end_inset
+
+, while with a probability 
+\begin_inset Formula $w,$
+\end_inset
+
+ we receive some clutter 
+\lang british
+characterised
+\lang english
+ by Gaussian distribution 
+\begin_inset Formula $\mathcal{N}(x|0,a)$
+\end_inset
+
+.
+ Additionally, we express prior belief 
+\begin_inset Formula $\mathcal{N}(\theta|m,v)$
+\end_inset
+
+ around the true distribution, from which data points are generated.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Let's setup a probabilistic graphical model, with the prior and likelihood
+ variables defined as 
+\begin_inset Formula $X$
+\end_inset
+
+ and 
+\begin_inset Formula $\{Y_{1},...,Y_{n}\}$
+\end_inset
+
+ respectively, and the following conditional probability distributions.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+p(X)\sim\mathcal{N}(\theta|m,v)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+p(Y|X)\sim(1-w)\mathcal{N}(x|\theta,1)+w\mathcal{N}(0,a)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement tph
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename clutter_problem_pgm.png
+	rotateOrigin rightTop
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Probabilistic graphical model for a Clutter Problem.
+ X - prior belief of the true distribution 
+\begin_inset Formula $\mathcal{\sim N}(\theta|m,v)$
+\end_inset
+
+, 
+\begin_inset Formula $\{Y_{1},...,Y_{n}\}$
+\end_inset
+
+ - observed data points 
+\begin_inset Formula $\sim(1-w)\mathcal{N}(x|\theta,1)+w\mathcal{N}(0,a)$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The posterior probability over variable 
+\begin_inset Formula $X$
+\end_inset
+
+ given observations 
+\begin_inset Formula $\{Y_{1},...,Y_{n}\}$
+\end_inset
+
+, is defined as
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+p(X|Y_{1},...,Y_{n})\propto p(X)\prod_{i=1}^{n}p(Y_{i}|X)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Posterior inference with Expectation Propagation
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In this section, we infer posterior distribution 
+\begin_inset Formula $p(X|Y)$
+\end_inset
+
+ using Expectation Propagation algorithm, given the following setting
+\end_layout
+
+\begin_layout Itemize
+Observed data points 
+\begin_inset Formula $\{3,5\}$
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Itemize
+Prior distribution 
+\begin_inset Formula $p(X)=\mathcal{N}(\theta|m=15,v=100)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Likelihood parameters, 
+\begin_inset Formula $w=0.4$
+\end_inset
+
+, and 
+\begin_inset Formula $a=10$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+First, draw a factor graph 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Bishop-1"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement tph
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename clutter_problem_factor_graph.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Factor graph for a Clutter Problem with observation points 
+\begin_inset Formula $\{3,5\}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Factors:
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $f_{0}\sim\mathcal{N}(\theta|m=15,v=100)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $f_{1},f_{2}\sim(1-w)\mathcal{N}(x|\theta,1)+w\mathcal{N}(0,a)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Next, create a messaging passing schedule and execute it for a given number
+ of iterations.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+m_{f_{0}\rightarrow X}=(f_{o}m_{f_{1}}m_{f_{2}})/(m_{f_{1}}m_{f_{2}})=f_{0}
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+m_{f_{1}\rightarrow X}=proj(f_{1}m_{f_{0}}m_{f_{2}})/(m_{f_{0}}m_{f_{2}})
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+m_{f_{2}\rightarrow X}=proj(f_{2}m_{f_{0}}m_{f_{1}})/(m_{f_{0}}m_{f_{1}})
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\begin_inset Formula $proj(q)$
+\end_inset
+
+ operator 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Minka-1,Korzekwa-1"
+
+\end_inset
+
+ approximates distribution 
+\begin_inset Formula $q$
+\end_inset
+
+ with a Gaussian distribution by matching the mean and the variance moments.
+ To compute posterior distribution, multiply all incoming messages for a
+ variable 
+\begin_inset Formula $X$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+\begin_inset Formula 
+\[
+p(X|Y)=m_{f_{0}}m_{f_{1}}m_{f_{2}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+The following chart shows the mean for the posterior distribution 
+\begin_inset Formula $p(X|Y)$
+\end_inset
+
+ as a function of current iteration.
+ It takes about 6 iterations of the message passing routine, till the posterior
+ mean for 
+\begin_inset Formula $p(X|Y)$
+\end_inset
+
+ gets very close to the stationary point of 
+\begin_inset Formula $\sim4.34$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename clutter_problem_posterior_plot.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+The mean for the posterior distribution 
+\begin_inset Formula $p(X|Y)$
+\end_inset
+
+ as a function of current iteration
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Appendix A
+\end_layout
+
+\begin_layout Standard
+Scala implementation for a Clutter Problem - 
+\begin_inset CommandInset href
+LatexCommand href
+name "Bayes-Scala toolbox"
+target "https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/gaussian/ep/ClutterProblemEPTest.scala"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "Minka-1"
+
+\end_inset
+
+Thomas P Minka.
+ A family of algorithms for approximate Bayesian inference, 2001
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "Bishop-1"
+
+\end_inset
+
+Christopher M.
+ Bishop.
+ Pattern Recognition and Machine Learning (Information Science and Statistics),
+ 2009
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "Korzekwa-1"
+
+\end_inset
+
+Daniel Korzekwa.
+ Gaussian approximation with moment matching, aka proj() operator in Expectation
+ Propagation, 2013
+\end_layout
+
+\end_body
+\end_document

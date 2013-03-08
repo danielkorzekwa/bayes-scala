@@ -1,4 +1,11 @@
+p (sigma)= 1/sqrt(2*pi*sigma**2)
+gaussian(x,mu,sigma) = p(sigma) * exp(-(x-mu)**2/(2*sigma**2))
+linear_gaussian(x,y,sigma) = p(sigma) * exp(-(y-(A*x+b))**2/(2*sigma**2))
+
 set samples 10000
+set dummy theta
+set grid
+
 set title '1D static localisation' font '1,12'
 plot [-4:8] gaussian(theta,3,sqrt(1.5)) t 'Current location N(3,1.5)',linear_gaussian(theta,0.6,sqrt(0.9)) t 'Observed location N(0.6,0.9)',gaussian(theta,1.5,sqrt(0.5625)) t 'Location after 1 observation N(1.5,0.5625)',\
 gaussian(theta,1.1538,sqrt(0.3461))  t 'Location after 2 observations N(1.1538,0.3461)',gaussian(theta,0.8571,sqrt(0.1607))  t 'Location after 5 observations N(0.8571,0.1607)'
