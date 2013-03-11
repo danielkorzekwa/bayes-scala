@@ -7,7 +7,7 @@ import dk.bayes.gaussian.LinearGaussian
 import dk.bayes.gaussian.Proj
 
 /**
- * Expectation Propagation for a Clutter Problem. Tom Minka. A family of algorithms for approximate Bayesian inference, 2001
+ * Expectation Propagation for the Clutter Problem. Tom Minka. A family of algorithms for approximate Bayesian inference, 2001
  *
  * @author Daniel Korzekwa
  */
