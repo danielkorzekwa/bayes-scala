@@ -76,7 +76,7 @@
 \begin_body
 
 \begin_layout Title
-Expectation Propagation for a Clutter Problem
+Expectation Propagation for the Clutter Problem
 \end_layout
 
 \begin_layout Author
@@ -206,7 +206,7 @@ status open
 \begin_inset Caption
 
 \begin_layout Plain Layout
-Probabilistic graphical model for a Clutter Problem.
+Probabilistic graphical model for the Clutter Problem.
  X - prior belief of the true distribution 
 \begin_inset Formula $\mathcal{\sim N}(\theta|m,v)$
 \end_inset
@@ -348,7 +348,7 @@ status collapsed
 \begin_inset Caption
 
 \begin_layout Plain Layout
-Factor graph for a Clutter Problem with observation points 
+Factor graph for the Clutter Problem with observation points 
 \begin_inset Formula $\{3,5\}$
 \end_inset
 
@@ -558,7 +558,7 @@ Appendix A
 \end_layout
 
 \begin_layout Standard
-Scala implementation for a Clutter Problem - 
+Scala implementation for the Clutter Problem - 
 \begin_inset CommandInset href
 LatexCommand href
 name "Bayes-Scala toolbox"

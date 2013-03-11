@@ -14,7 +14,7 @@ import dk.bayes.gaussian.Proj
 class ClutterProblemEPTest {
 
   /**
-   * Expectation Propagation for a Clutter Problem.
+   * Expectation Propagation for the Clutter Problem.
    *
    * Variables: v:N(m,variance), z: (1-w)*N(v.m,1) + w*N(0,a)
    *
@@ -53,7 +53,7 @@ class ClutterProblemEPTest {
   }
 
   /**
-   * Expectation Propagation for a Clutter Problem.
+   * Expectation Propagation for the Clutter Problem.
    *
    * Variables: v:N(m,variance), z1,z2: (1-w)*N(v.m,1) + w*N(0,a)
    *

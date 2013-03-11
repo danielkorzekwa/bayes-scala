@@ -288,7 +288,7 @@ Consider a function
 \begin_inset Formula $p(\theta)=\frac{q(\theta)f(x|\theta)}{\int q(\theta)f(x|\theta)d\theta}$
 \end_inset
 
-, borrowed from a Clutter Problem 
+, borrowed from the Clutter Problem 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Minka-1"
@@ -534,7 +534,7 @@ key "Bayes-Scala-1"
 
 \end_inset
 
- provides example implementation of Moment Matching for a Clutter Problem.
+ provides example implementation of Moment Matching for the Clutter Problem.
 \end_layout
 
 \begin_layout Bibliography
