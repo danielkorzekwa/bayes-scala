@@ -1,6 +1,7 @@
 package dk.bayes.gaussian.ep
 
-import org.junit.Test
+import org.junit._
+import Assert._
 import dk.bayes.gaussian.Gaussian
 import dk.bayes.testutil.AssertUtil.assertGaussian
 import dk.bayes.gaussian.LinearGaussian
@@ -21,7 +22,7 @@ import dk.bayes.gaussian.CanonicalGaussian$
 class TrueSkillTwoPersonGameEPTest {
 
   /**http://atom.research.microsoft.com/trueskill/rankcalculator.aspx*/
-  @Test def test_match_true_skill_calculator {
+  @Test def skills_marginals_match_true_skill_calculator {
     val skillTransitionFactor = LinearGaussian(1, 0, pow(25d / 300, 2))
     val performanceFactor = LinearGaussian(1, 0, pow(25d / 6, 2))
 
@@ -30,7 +31,7 @@ class TrueSkillTwoPersonGameEPTest {
     assertGaussian(Gaussian(33.8460, 20.8610), player2, 0.0001)
   }
 
-  @Test def test_2 {
+  @Test def skills_marginals {
     val skillTransitionFactor = LinearGaussian(1, 0, 0.5)
     val performanceFactor = LinearGaussian(1, 0, 2)
 
@@ -50,6 +51,15 @@ class TrueSkillTwoPersonGameEPTest {
     assertGaussian(Gaussian(5.9797, 2.0298), player1d, 0.0001)
     assertGaussian(Gaussian(5.628281, 2.5785), player2d, 0.0001)
 
+  }
+
+  @Test def outcome_marginal {
+    val skillTransitionFactor = LinearGaussian(1, 0, pow(25d / 300, 2))
+    val performanceFactor = LinearGaussian(1, 0, pow(25d / 6, 2))
+
+    val outcomeMarginal = matchProbability(player1Skill = Gaussian(27.1743, 37.5013), player2Skill = Gaussian(33.8460, 20.8610), skillTransitionFactor, performanceFactor)
+
+    assertEquals(0.24463, outcomeMarginal, 0.0001)
   }
 
   /**
@@ -80,7 +90,7 @@ class TrueSkillTwoPersonGameEPTest {
     val m_f0_to_f1 = player1Skill
     val m_f1_to_f2 = (skillTransitionFactor * m_f0_to_f1).marginalise(0)
     val m_f2_to_f6 = (performanceFactor * m_f1_to_f2).marginalise(0)
-
+    
     //forward messages for player 2
     val m_f3_to_f4 = player2Skill
     val m_f4_to_f5 = (skillTransitionFactor * m_f3_to_f4).marginalise(0)
@@ -102,6 +112,29 @@ class TrueSkillTwoPersonGameEPTest {
     val s2Marginal = m_f5_to_f4 * m_f4_to_f5
 
     (s1Marginal, s2Marginal)
+  }
+
+  /**
+   * Returns the probability of winning a tennis game by player1 against player2
+   *
+   */
+  private def matchProbability(player1Skill: Gaussian, player2Skill: Gaussian,
+    skillTransitionFactor: LinearGaussian, performanceFactor: LinearGaussian): Double = {
+
+    //forward messages for player 1
+    val m_f0_to_f1 = player1Skill
+    val m_f1_to_f2 = (skillTransitionFactor * m_f0_to_f1).marginalise(0)
+    val m_f2_to_f6 = (performanceFactor * m_f1_to_f2).marginalise(0)
+
+    //forward messages for player 2
+    val m_f3_to_f4 = player2Skill
+    val m_f4_to_f5 = (skillTransitionFactor * m_f3_to_f4).marginalise(0)
+    val m_f5_to_f6 = (performanceFactor * m_f4_to_f5).marginalise(0)
+
+    val m_f6_to_f7 = m_f2_to_f6 - m_f5_to_f6
+
+    val outcomeMarginal = 1 - m_f6_to_f7.cdf(0)
+    outcomeMarginal
   }
 
 }

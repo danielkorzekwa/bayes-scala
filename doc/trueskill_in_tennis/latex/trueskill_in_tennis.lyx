@@ -1,0 +1,1003 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman lmodern
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref true
+\pdf_title "TrueSkill - Updating player skills in tennis with Expectation Propagation inference algorithm"
+\pdf_author "Daniel Korzekwa"
+\pdf_subject "Expectation Propagation"
+\pdf_keywords "Expectation Propagation, TrueSkill, Tennis"
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle true
+\papersize default
+\use_geometry true
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\topmargin 2cm
+\bottommargin 2cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+TrueSkill - Updating player skills in tennis with Expectation Propagation
+ inference algorithm
+\end_layout
+
+\begin_layout Author
+Daniel Korzekwa (daniel.korzekwa@gmail.com)
+\end_layout
+
+\begin_layout Section*
+What is the problem to solve?
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Let's define a tennis player 
+\begin_inset Formula $p=\{player\_id\}$
+\end_inset
+
+ and tennis match outcome 
+\begin_inset Formula $o=\{p_{i},p_{j},time,winner\}$
+\end_inset
+
+.
+ Given tennis players 
+\begin_inset Formula $\{p_{1},...,p_{n}\}$
+\end_inset
+
+ and historical outcomes of tennis matches 
+\begin_inset Formula $\{o_{1},...,o_{n}\}$
+\end_inset
+
+, predict the probability 
+\begin_inset Formula $p(o|p_{i},p_{j},t)$
+\end_inset
+
+ of winning a tennis match by player 
+\begin_inset Formula $p_{i}$
+\end_inset
+
+ against player 
+\begin_inset Formula $p_{j}$
+\end_inset
+
+ at the time 
+\begin_inset Formula $t$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section*
+Trueskill rating model
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+TrueSkill 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "TrueSkill-1"
+
+\end_inset
+
+ is a Bayesian rating system developed by Ralf Herbrich, Tom Minka and Thore
+ Graepel at Microsoft Reseach Centre in Cambridge, UK.
+ Although, it is mostly used for ranking and matching players on Xbox Online
+ Games, it is a general rating model that could be applied to any game,
+ including Chess, Tennis or Football.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+It models every player with a single skill variable 
+\begin_inset Formula $s\sim\mathcal{N}(x|m,v)$
+\end_inset
+
+, which indicates how good player is on tennis.
+ The expected skill value 
+\begin_inset Formula $m$
+\end_inset
+
+ is accompanied by a level of uncertainty 
+\begin_inset Formula $v$
+\end_inset
+
+, which tells us, how confident we are about the player's skill estimation.
+ Usually, the skill uncertainty decreases after observing the result of
+ a game and it increases over the time, when player is not playing any games.
+ Regarding to the expect skill value 
+\begin_inset Formula $m$
+\end_inset
+
+, it moves up for a winner of a game and it shifts in an opposite direction
+ for a loser.
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+What if we knew the true skill (variance 
+\begin_inset Formula $v=0$
+\end_inset
+
+) of a tennis player? Would we know for sure, how is he going to perform
+ in a particular game? Probably not.
+ It's because the player performance in a specific game depends on a number
+ of factors, including player skill, player consistency, weather conditions
+ and many other things.
+ For that reason, we introduce performance variable 
+\begin_inset Formula $p\sim\mathcal{N}(x|m_{s},v)$
+\end_inset
+
+, with a variance 
+\begin_inset Formula $v$
+\end_inset
+
+ indicating the amount of uncertainty about player performance given his
+ expected skill value 
+\begin_inset Formula $m_{s}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Let's introduce random variable 
+\begin_inset Formula $d\sim\mathbb{I}(p_{i}>p_{j})$
+\end_inset
+
+ that represents the difference between performance values for players 
+\begin_inset Formula $p_{i}$
+\end_inset
+
+ and 
+\begin_inset Formula $p_{j}$
+\end_inset
+
+.
+ Now, we can predict the outcome of a tennis match 
+\begin_inset Formula $o\sim\mathbb{I}(d>0)$
+\end_inset
+
+, which is the probability that player 
+\begin_inset Formula $p_{i}$
+\end_inset
+
+ will perform better in a game than player 
+\begin_inset Formula $p_{j}$
+\end_inset
+
+.
+ It is defined as 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $p(o)=1-\Phi_{d}(0)$
+\end_inset
+
+, 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+where 
+\begin_inset Formula $\Phi_{d}(0)$
+\end_inset
+
+ is the value of a cumulative distribution function of a difference random
+ variable 
+\begin_inset Formula $d$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+TrueSkill rating model is nothing else than a Bayesian Network, illustrated
+ in a figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Bayesian-Network-for"
+
+\end_inset
+
+, composed of the random variables for skill 
+\begin_inset Formula $s$
+\end_inset
+
+, performance 
+\begin_inset Formula $p$
+\end_inset
+
+, performance difference 
+\begin_inset Formula $d$
+\end_inset
+
+ and match outcome 
+\begin_inset Formula $o$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename tennis_trueskill_bn.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Bayesian Network for a True Skill rating model in tennis
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Bayesian-Network-for"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Three queries of interest in the Tennis Bayesian Network include, predicting
+ the outcome of a tennis match and computing marginal distributions for
+ skill variables of both tennis players given observed outcome of a tennis
+ game.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+p(o)=1-\Phi_{d}(0)\label{eq:-2}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+p(s_{i}|o)=\int p(s_{i},s_{j}|o)ds_{j}\label{eq:}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+p(s_{j}|o)=\int p(s_{i},s_{j}|o)ds_{i}\label{eq:-1}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Tennis example
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Consider two tennis players 
+\begin_inset Formula $p_{1}$
+\end_inset
+
+ and 
+\begin_inset Formula $p_{2}$
+\end_inset
+
+ playing a tennis game and assume that we are provided with the probability
+ distributions of skill and performance variables for both players at the
+ beginning of the game.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+p(s_{1}) & = & \mathcal{N}(x|m=4,v=81)\\
+p(p_{1}|s_{1}) & = & \mathcal{N}(x|m_{s},v=17.361)\\
+p(s_{2}) & = & \mathcal{N}(x|m=41,v=25)\\
+p(p_{2}|s_{2}) & = & \mathcal{N}(x|m_{s},v=17.361)
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We ask for the probability of winning the game by player 
+\begin_inset Formula $p_{1}$
+\end_inset
+
+ and we would like to know the skills for both players given player 
+\begin_inset Formula $p_{1}$
+\end_inset
+
+ is a winner.
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+First, compute marginals of performance variables for both players.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+p(p_{1}) & = & \int p(s_{1})p(p_{1}|s_{1})ds_{1}=\mathcal{N}(m=4,v=98.368)\\
+p(p_{2}) & = & \int p(s_{2})p(p_{2}|s_{2})ds_{2}=\mathcal{N}(m=41,v=42.368)
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Next, compute marginal for performance difference variable.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+p(d)=\int p(p_{1})p(p_{2})\mathbb{I}(d=p_{i}>p_{j})dp_{1}dp_{2}=\mathcal{N}(x|m=-37.0,v=140.736)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Now, compute the probability of winning the game by player 
+\begin_inset Formula $p_{1}$
+\end_inset
+
+ at the beginning of a game.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+p(o)=1-\Phi_{d}(0)=0.0009
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+And finally, infer the skills for both players after the game and calculate
+ the probability of winning the game given new skills.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+p(s_{1}|o) & = & \int p(s_{1},s_{2}|o)ds_{2}=\mathcal{N}(x|m=27.174,v=37.501)\\
+p(s_{2}|o) & = & \int p(s_{1},s_{2}|o)ds_{1}=\mathcal{N}(x|m=33.846,v=20.861)\\
+p(o_{next}) & = & 1-\Phi_{d\_next}(0)=0.244
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Skills-for-player"
+
+\end_inset
+
+ shows the skills for both players, before and after the game.
+ The expected skill value increases for the winner of the game and it lowers
+ for the loser.
+ The value of variance around skills of both players goes down in a result
+ of revealed information about the outcome of a tennis game.
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename tennis_trueskill_skills_before_after.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Skills for player 
+\begin_inset Formula $p_{1}$
+\end_inset
+
+ and 
+\begin_inset Formula $p_{2}$
+\end_inset
+
+ before and after the game (Player 
+\begin_inset Formula $p_{1}$
+\end_inset
+
+ is the winner)
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Skills-for-player"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Bayesian Inference with Expectation Propagation
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Expectation Propagation 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Minka-1"
+
+\end_inset
+
+ is a deterministic and approximated Bayesian inference algorithm developed
+ by Thomas Minka.
+ It's sometimes referred as a generalization of Belief Propagation 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Bishop-1"
+
+\end_inset
+
+ algorithm, in a sense that, instead of passing exact belief messages between
+ factors and variables in a factor graph, it sends belief expectations such
+ as Gaussian distribution.
+ This algorithm plays a central role in the TrueSkill rating model, by inferring
+ the player skills and the probabilities of winning a tennis game.
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+As a practical example, consider the task of calculating the new value of
+ skill for a tennis player given observed outcome of a game.
+ We follow here the process of performing Expectation Propagation inference,
+ presented by Thomas Minka during his lecture on Expectation Propagation
+ that he gave at Machine Learning Summer School in Cambridge UK, 2009 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Minka-2"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+First, draw a factor graph
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename tennis_trueskill_factor_graph.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Factor graph for a True Skill rating model in tennis
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Next, define a message schedule to be executed on a factor graph.
+ Every message forms a uniform Gaussian distribution 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $\mathcal{N}(x|m,v)$
+\end_inset
+
+.
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+The 
+\begin_inset Formula $proj(q)$
+\end_inset
+
+
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Minka-1,Korzekwa-1"
+
+\end_inset
+
+ operation in the message 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $m_{f6\rightarrow f5}$
+\end_inset
+
+
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+ refers to the moment matching technique for approximating function 
+\begin_inset Formula $q$
+\end_inset
+
+ with a Gaussian distribution.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+m_{1}:m_{f1\rightarrow f2} & = & s_{i}\\
+m_{2}:m_{f2\rightarrow f5} & = & \int m_{1}p(p_{i}|s_{i})ds_{i}\\
+m_{3}:m_{f3\rightarrow f4} & = & s_{j}\\
+m_{4}:m_{f4\rightarrow f5} & = & \int m_{3}p(p_{j}|s_{j})ds_{j}\\
+m_{5}:m_{f5\rightarrow f6} & = & m_{2}-m_{4}\\
+m_{6}:m_{f6\rightarrow f5} & = & proj(m_{5}p(o|d))/m_{5}\\
+m_{7}:m_{f5\rightarrow f2} & = & m_{6}+m_{4}\\
+m_{8}:m_{f2\rightarrow f1} & = & \int m_{7}p(p_{i}|s_{i})dp_{i}
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The next step involves executing the message schedule for a number of iterations
+ till achieving some converge point.
+ In our setup, Expectation Propagation algorithm converges after a single
+ iteration, only because there is a single approximated message sent in
+ a factor graph.
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In the end, we can calculate the value of skill for 
+\begin_inset Formula $player_{i}$
+\end_inset
+
+ by multiplying all incoming messages for the variable 
+\begin_inset Formula $s_{i}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+p(s_{i}|o)=m_{f1\rightarrow f2}m_{f2\rightarrow f1}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Appendix A
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Example implementation of Expectation Propagation for a tennis game is available
+ under 
+\begin_inset CommandInset href
+LatexCommand href
+name "Bayes-Scala toolbox"
+target "https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/gaussian/ep/TrueSkillTwoPersonGameEPTest.scala"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "TrueSkill-1"
+
+\end_inset
+
+Ralf Herbrich, Tom Minka, Thore Graepel.
+ TrueSkill TM: A Bayesian Skill Rating System, 2007
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "Minka-1"
+
+\end_inset
+
+Thomas P Minka.
+ A family of algorithms for approximate Bayesian inference, 2001
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "Bishop-1"
+
+\end_inset
+
+Christopher M.
+ Bishop.
+ Pattern Recognition and Machine Learning (Information Science and Statistics),
+ 2009
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "Minka-2"
+
+\end_inset
+
+Thomas Minka, Microsoft Research, Cambridge UK.
+ Lecture on Approximate Inference.
+ Machine Learning Summer School.
+ Cambridge UK, 2009
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "Korzekwa-1"
+
+\end_inset
+
+Daniel Korzekwa.
+ Gaussian approximation with moment matching, aka proj() operator in Expectation
+ Propagation, 2013
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "bayes-scala-1"
+
+\end_inset
+
+
+\begin_inset CommandInset href
+LatexCommand href
+name "Bayes-Scala Toolbox - TrueSkill, Expectation Propagation in Tennis"
+target "https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/gaussian/ep/TrueSkillTwoPersonGameEPTest.scala"
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
