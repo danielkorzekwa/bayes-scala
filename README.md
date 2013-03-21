@@ -35,6 +35,7 @@ Bayesian Networks in Scala
     * [Linear Gaussian Models - 1D localisation, 4 approaches: Canonical Gaussian, Bayes's theorem for Gaussian Variables, Expectation Propagation and Kalman Filter](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/localisation_example/localisation_example.md)
     * [Gaussian approximation with moment matching, aka proj() operator in Expectation Propagation](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/moment_matching/moment_matching.md)
     * [Expectation Propagation for the Clutter Problem](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/clutter_problem_ep/clutter_problem_ep.md)
+    * [TrueSkill - Updating player skills in tennis with Expectation Propagation inference algorithm](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/trueskill_in_tennis/trueskill_in_tennis.md)
 *   Others
     * [Plotting gaussians](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/plotting_gaussian/plotting_gaussian.md)
     * [Resources for Bayesian Networks](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/bn_resources/bn_resources.md)
