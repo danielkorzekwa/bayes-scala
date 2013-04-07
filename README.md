@@ -22,8 +22,8 @@ Bayesian Networks in Scala
  
 **Roadmap**
 
-*   Bayesian Inference in hybrid networks (mix of discrete and continuous variables)
-*   EM learning in hybrid networks with hidden continuous variables
+*   Expectation Propagation on a factor graph
+*   Learning parameters in hybrid Bayesian networks
 
 **Documenation**
 
@@ -31,8 +31,9 @@ Bayesian Networks in Scala
     * [Getting Started - Loopy Belief Propagation in a Cluster Graph](#getting-started---loopy-belief-propagation-in-a-cluster-graph-1)
     * [Getting Started - Learning parameters with Expectation Maximisation in Bayesian Networks from incomplete data](#getting-started---learning-parameters-with-expectation-maximisation-in-bayesian-networks-from-incomplete-data--1)
     * [Getting Started - Learning parameters with Expectation Maximisation in Unrolled Dynamic Bayesian Networks from incomplete data](#getting-started---learning-parameters-with-expectation-maximisation-in-unrolled-dynamic-bayesian-networks-from-incomplete-data--1)
-*   Hybrid/Continuous Bayesian Networks
+*   Continuous Bayesian Networks
     * [Linear Gaussian Models - 1D localisation, 4 approaches: Canonical Gaussian, Bayes's theorem for Gaussian Variables, Expectation Propagation and Kalman Filter](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/localisation_example/localisation_example.md)
+*   Hybrid Bayesian Networks
     * [Gaussian approximation with moment matching, aka proj() operator in Expectation Propagation](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/moment_matching/moment_matching.md)
     * [Expectation Propagation for the Clutter Problem](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/clutter_problem_ep/clutter_problem_ep.md)
     * [TrueSkill - Updating player skills in tennis with Expectation Propagation inference algorithm](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/trueskill_in_tennis/trueskill_in_tennis.md)
