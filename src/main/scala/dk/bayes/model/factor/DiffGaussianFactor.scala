@@ -11,7 +11,7 @@ package dk.bayes.model.factor
  * @param gaussian2VarId
  * @param diffGaussianVarId
  */
-class DiffGaussianFactor(gaussian1VarId: Int, gaussian2VarId: Int, diffGaussianVarId: Int) extends Factor {
+case class DiffGaussianFactor(gaussian1VarId: Int, gaussian2VarId: Int, diffGaussianVarId: Int) extends Factor {
 
   def withEvidence(varId: Int, varValue: AnyVal): TableFactor = throw new UnsupportedOperationException("Not implemented yet")
 

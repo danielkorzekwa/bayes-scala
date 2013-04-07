@@ -11,7 +11,7 @@ package dk.bayes.model.factor
  * @param b Mean term of N(ax + b,v)
  * @param v Variance term of N(ax + b,v)
  */
-class LinearGaussianFactor(parentVarId: Int, varId: Int, a: Double, b: Double, v: Double) extends Factor {
+case class LinearGaussianFactor(parentVarId: Int, varId: Int, a: Double, b: Double, v: Double) extends Factor {
 
   def withEvidence(varId: Int, varValue: AnyVal): TableFactor = throw new UnsupportedOperationException("Not implemented yet")
 

@@ -11,7 +11,7 @@ import dk.bayes.gaussian.Gaussian
  * @param m Mean
  * @param v Variance
  */
-class GaussianFactor(varId: Int, m: Double, v: Double) extends Factor {
+case class GaussianFactor(varId: Int, m: Double, v: Double) extends Factor {
 
   def withEvidence(varId: Int, varValue: AnyVal): TableFactor = throw new UnsupportedOperationException("Not implemented yet")
 

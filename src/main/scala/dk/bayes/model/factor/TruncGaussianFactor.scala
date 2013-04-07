@@ -9,7 +9,7 @@ package dk.bayes.model.factor
  * @param truncVarId
  * @param truncValue The value, at which Gaussian distribution is truncated at.
  */
-class TruncGaussianFactor(gaussianVarId: Int, truncVarId: Int, truncValue: Double) extends Factor {
+case class TruncGaussianFactor(gaussianVarId: Int, truncVarId: Int, truncValue: Double) extends Factor {
 
   def withEvidence(varId: Int, varValue: AnyVal): TableFactor = throw new UnsupportedOperationException("Not implemented yet")
 
