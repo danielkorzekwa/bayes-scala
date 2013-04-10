@@ -8,6 +8,16 @@ package dk.bayes.model.factor
 trait Factor {
 
   /**
+   * Returns factor variable identifiers
+   */
+  def getVariableIds(): Seq[Int]
+
+  /**
+   * Returns marginal factor for a given variable id.
+   */
+  def marginal(varId: Int): Factor
+  
+  /**
    * Returns new factor with a given evidence.
    *
    * @param varId  Variable id
@@ -20,5 +30,10 @@ trait Factor {
    *
    * @param assignment Assignment to all factor variables (varId,varValue)
    */
-  def getValue(assignment: (Int,AnyVal)*): Double
+  def getValue(assignment: (Int, AnyVal)*): Double
+
+  /**
+   * Returns the product of this and that factors.
+   */
+  def *(factor: Factor): Factor
 }
