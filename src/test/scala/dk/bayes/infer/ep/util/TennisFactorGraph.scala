@@ -29,6 +29,15 @@ object TennisFactorGraph {
   val outcomeFactor = TruncGaussianFactor(perfDiffVarId, outcomeVarId, 0)
 
   def createTennisFactorGraph(): FactorGraph = {
-    GenericFactorGraph()
+    val factorGraph = GenericFactorGraph()
+
+    factorGraph.addFactor(skill1Factor)
+    factorGraph.addFactor(skill2Factor)
+    factorGraph.addFactor(perf1Factor)
+    factorGraph.addFactor(perf2Factor)
+    factorGraph.addFactor(perfDiffFactor)
+    factorGraph.addFactor(outcomeFactor)
+
+    factorGraph
   }
 }
