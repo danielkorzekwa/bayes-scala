@@ -90,6 +90,14 @@ class CanonicalGaussianTest {
     assertEquals(Matrix(Double.PositiveInfinity).toString(), marginalX.getVariance().toString())
   }
 
+  @Test def marginalise_x_from_gaussian_cpd {
+
+    val marginalY = (yGivenx).marginalise(xId)
+
+    assertArrayEquals(Array(yId), marginalY.varIds)
+    assertEquals(Matrix(Double.NaN).toString(), marginalY.getMean().toString())
+    assertEquals(Matrix(Double.PositiveInfinity).toString(), marginalY.getVariance().toString())
+  }
   @Test def marginalise_x {
 
     val marginalY = (x * yGivenx).marginalise(xId)

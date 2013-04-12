@@ -20,7 +20,7 @@ class TrueSkillOnlineTennisEPTest {
 
   /**http://atom.research.microsoft.com/trueskill/rankcalculator.aspx*/
   @Ignore @Test def no_result_set {
-
+  
     ep.calibrate()
 
     val outcomeMarginal = ep.marginal(outcomeVarId)

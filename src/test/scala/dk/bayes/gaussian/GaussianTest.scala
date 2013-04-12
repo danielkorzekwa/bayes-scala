@@ -121,6 +121,16 @@ class GaussianTest {
     assertEquals(Double.PositiveInfinity, div.v, 0.0001)
   }
 
+  @Test def divide_with_infinite_gaussian {
+    val gaussian1 = Gaussian(3, Double.PositiveInfinity)
+    val gaussian2 = Gaussian(2, 0.5)
+
+    val div = gaussian2 / gaussian1
+
+    assertEquals(2, div.m, 0.0001)
+    assertEquals(0.5, div.v, 0.0001)
+  }
+
   @Test def add {
 
     val gaussian1 = Gaussian(2, 0.5)
@@ -159,8 +169,8 @@ class GaussianTest {
   @Test(expected = classOf[IllegalArgumentException]) def projHistogram_inconsistent_values_with_probs {
     Gaussian.projHistogram(List(1, 2, 3), List(0.2, 0.3, 0.3, 0.2))
   }
-  
-   @Test(expected = classOf[IllegalArgumentException]) def projHistogram_zero_probs {
+
+  @Test(expected = classOf[IllegalArgumentException]) def projHistogram_zero_probs {
     Gaussian.projHistogram(List(1, 2, 3), List(0, 0, 0))
   }
 
