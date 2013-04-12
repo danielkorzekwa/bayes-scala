@@ -17,7 +17,7 @@ case class TruncGaussianFactor(gaussianVarId: Int, truncVarId: Int, truncValue: 
 
     val marginalFactor = varId match {
       case `gaussianVarId` => GaussianFactor(varId, Double.NaN, Double.PositiveInfinity)
-      case `truncVarId` => TableFactor(Vector(varId), Vector(2), Vector(1d, 1d))
+      case `truncVarId` => TableFactor(Vector(varId), Vector(2), Array(1d, 1d))
       case _ => throw new IllegalArgumentException("Unknown variable id: " + varId)
     }
 

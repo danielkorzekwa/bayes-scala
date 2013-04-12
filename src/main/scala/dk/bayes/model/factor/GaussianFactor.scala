@@ -17,7 +17,7 @@ case class GaussianFactor(varId: Int, m: Double, v: Double) extends Factor {
 
   def marginal(varId: Int): GaussianFactor = this.copy()
 
-  def productMarginal(varId: Int, factors: Seq[Factor]): Factor = factors.foldLeft(this)((f1, f2) => f1 * f2)
+  def productMarginal(varId: Int, factors: Seq[Factor]): GaussianFactor = factors.foldLeft(this)((f1, f2) => f1 * f2)
 
   def withEvidence(varId: Int, varValue: AnyVal): GaussianFactor = throw new UnsupportedOperationException("Not implemented yet")
 
