@@ -21,7 +21,7 @@ sealed abstract class Node {
   /**
    * Returns outgoing gates for a node.
    */
-  def getGates(): Seq[Gate] = throw new UnsupportedOperationException("Not implemented yet.")
+  def getGates(): Seq[Gate] = gates.toList
 }
 
 /**
