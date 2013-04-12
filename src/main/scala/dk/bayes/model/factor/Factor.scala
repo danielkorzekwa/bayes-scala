@@ -16,7 +16,12 @@ trait Factor {
    * Returns marginal factor for a given variable id.
    */
   def marginal(varId: Int): Factor
-  
+
+  /**
+   * Returns a marginal for a given variable from a product of this and other factors.
+   */
+  def productMarginal(varId: Int, factors: Seq[Factor]): Factor
+
   /**
    * Returns new factor with a given evidence.
    *
@@ -33,7 +38,13 @@ trait Factor {
   def getValue(assignment: (Int, AnyVal)*): Double
 
   /**
-   * Returns the product of this and that factors.
+   * Returns the product of this and that factor.
    */
   def *(factor: Factor): Factor
+
+  /**
+   * Divides this factor by that factor.
+   *
+   */
+  def /(factor: Factor): Factor
 }

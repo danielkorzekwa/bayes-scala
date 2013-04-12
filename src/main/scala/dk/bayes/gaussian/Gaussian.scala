@@ -72,10 +72,13 @@ case class Gaussian(m: Double, v: Double) {
    * Thomas Minka. EP: A quick reference, 2008
    */
   def /(gaussian: Gaussian): Gaussian = {
-    val newV = 1 / (1 / v - 1 / gaussian.v)
-    val newM = newV * (m / v - gaussian.m / gaussian.v)
+    if (gaussian.v == Double.PositiveInfinity) this
+    else {
+      val newV = 1 / (1 / v - 1 / gaussian.v)
+      val newM = newV * (m / v - gaussian.m / gaussian.v)
 
-    Gaussian(newM, newV)
+      Gaussian(newM, newV)
+    }
   }
 
   /**
@@ -101,13 +104,13 @@ case class Gaussian(m: Double, v: Double) {
    * Returns the derivative value of Gaussian with respect to variance, evaluated at the value of x.
    */
   def derivativeV(x: Double): Double = pdf(x) * (1d / (2 * v * v) * (x - m) * (x - m) - 1d / (2 * v))
-  
+
   /**
    * Converts Gaussian to Canonical Gaussian.
-   * 
+   *
    * @param varId Unique id of a Gaussian variable in a canonical space.
    */
-   def toCanonical(varId:Int): CanonicalGaussian = CanonicalGaussian(varId,m,v)
+  def toCanonical(varId: Int): CanonicalGaussian = CanonicalGaussian(varId, m, v)
 }
 
 object Gaussian {
