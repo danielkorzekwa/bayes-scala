@@ -21,6 +21,8 @@ case class GaussianFactor(varId: Int, m: Double, v: Double) extends Factor {
 
   def withEvidence(varId: Int, varValue: AnyVal): GaussianFactor = throw new UnsupportedOperationException("Not implemented yet")
 
+  def getEvidence(varId: Int): Option[AnyVal] = throw new UnsupportedOperationException("Not implemented yet")
+
   def getValue(assignment: (Int, AnyVal)*): Double = throw new UnsupportedOperationException("Not implemented yet")
 
   def *(factor: Factor): GaussianFactor = {

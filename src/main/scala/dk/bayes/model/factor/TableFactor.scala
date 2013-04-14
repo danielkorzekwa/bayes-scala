@@ -19,6 +19,8 @@ case class TableFactor(variableIds: Seq[Int], variableDims: Seq[Int], values: Ar
 
   def withEvidence(varId: Int, varValue: AnyVal): TableFactor = throw new UnsupportedOperationException("Not implemented yet")
 
+  def getEvidence(varId: Int): Option[AnyVal] = throw new UnsupportedOperationException("Not implemented yet")
+
   def getValue(assignment: (Int, AnyVal)*): Double = {
     val value = variableIds match {
       case Seq(varId) => getValueForSingleFactor(assignment)

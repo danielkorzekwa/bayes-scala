@@ -52,8 +52,10 @@ case class DiffGaussianFactor(gaussian1VarId: Int, gaussian2VarId: Int, diffGaus
 
     marginalFactor
   }
-  
+
   def withEvidence(varId: Int, varValue: AnyVal): DiffGaussianFactor = throw new UnsupportedOperationException("Not implemented yet")
+
+  def getEvidence(varId: Int): Option[AnyVal] = throw new UnsupportedOperationException("Not implemented yet")
 
   def getValue(assignment: (Int, AnyVal)*): Double = throw new UnsupportedOperationException("Not implemented yet")
 
