@@ -1,5 +1,7 @@
 package dk.bayes.model.factor
 
+import dk.bayes.gaussian.Gaussian
+
 /**
  * This factor represents a truncated Gaussian distribution.
  *
@@ -26,7 +28,28 @@ case class TruncGaussianFactor(gaussianVarId: Int, truncVarId: Int, truncValue: 
 
   def productMarginal(varId: Int, factors: Seq[Factor]): Factor = {
 
-    throw new UnsupportedOperationException("Not implemented yet")
+    val marginalFactor = varId match {
+      case `gaussianVarId` => {
+        val gaussianFactor = factors.find(f => f.getVariableIds().head == gaussianVarId).get.asInstanceOf[GaussianFactor]
+        val tableFactor = factors.find(f => f.getVariableIds().head == truncVarId).get.asInstanceOf[TableFactor]
+        require(tableFactor.valueProbs.size == 2, "Trunc Factor must be a binary table factor")
+
+        val marginalGaussian = tableFactor.getEvidence(truncVarId) match {
+          case Some(0) => Gaussian(gaussianFactor.m, gaussianFactor.v).truncateUpperTail(truncValue)
+          case Some(1) => throw new UnsupportedOperationException("Not implemented yet")
+          case None => throw new UnsupportedOperationException("Not implemented yet")
+          case _ => throw new IllegalArgumentException("Incorrect evidence value for a binary table factor")
+        }
+
+        GaussianFactor(varId, marginalGaussian.m, marginalGaussian.v)
+
+      }
+      case `truncVarId` => throw new UnsupportedOperationException("Not implemented yet")
+
+      case _ => throw new IllegalArgumentException("Incorrect marginal variable id")
+    }
+
+    marginalFactor
   }
 
   def withEvidence(varId: Int, varValue: AnyVal): TruncGaussianFactor = throw new UnsupportedOperationException("Not implemented yet")
