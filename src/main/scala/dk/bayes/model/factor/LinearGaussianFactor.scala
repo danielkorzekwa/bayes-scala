@@ -27,7 +27,7 @@ case class LinearGaussianFactor(parentVarId: Int, varId: Int, a: Double, b: Doub
     factors.asInstanceOf[Seq[GaussianFactor]].foreach(f => require(f.varId == parentVarId || f.varId == varId, "Incorrect factor variable id: " + f.varId))
 
     val factorGaussian = CanonicalGaussian(Array(parentVarId, varId), Matrix(a), b, v)
-    val otherFactorGaussians = factors.asInstanceOf[Seq[GaussianFactor]].map(f => CanonicalGaussian(f.varId, f.m, f.v))
+    val otherFactorGaussians = factors.asInstanceOf[Seq[GaussianFactor]].filter(f => !f.m.isNaN && !f.v.isPosInfinity).map(f => CanonicalGaussian(f.varId, f.m, f.v))
     val factorProduct = otherFactorGaussians.foldLeft(factorGaussian)((f1, f2) => f1 * f2)
 
     val marginalGaussian = marginalVarId match {

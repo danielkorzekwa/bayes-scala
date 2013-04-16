@@ -9,15 +9,17 @@ import dk.bayes.model.factor.Factor
  *
  * @param message The initial outgoing message sent through the gate
  */
-case class Gate() {
+sealed abstract class Gate {
 
-  private var endGate: Option[Gate] = None
+  type END_GATE<:Gate
+  
+  private var endGate: Option[END_GATE] = None
 
   private var message: Option[Factor] = None
   private var oldMessage: Option[Factor] = None
 
-  def setEndGate(gate: Gate) { endGate = Some(gate) }
-  def getEndGate(): Gate = endGate.get
+  def setEndGate(gate: END_GATE) { endGate = Some(gate) }
+  def getEndGate(): END_GATE = endGate.get
 
   def setMessage(newMessage: Factor) {
     message match {
@@ -33,4 +35,11 @@ case class Gate() {
   }
 
   def getMessage(): Factor = message.get
+}
+
+case class FactorGate(factorNode:FactorNode) extends Gate {
+  type END_GATE = VarGate
+}
+case class VarGate(varId:Int) extends Gate {
+  type END_GATE = FactorGate
 }

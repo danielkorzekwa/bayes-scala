@@ -1,7 +1,7 @@
 package dk.bayes.gaussian
 
 import dk.bayes.gaussian.Linear._
-import scala.Math._
+import scala.math._
 
 /**
  * Multivariate Gaussian from the book 'Christopher M. Bishop. Pattern Recognition and Machine Learning (Information Science and Statistics), 2009'

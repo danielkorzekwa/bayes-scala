@@ -1,6 +1,6 @@
 package dk.bayes.factor
 
-import scala.Math._
+import scala.math._
 import MultiFactor._
 
 /**

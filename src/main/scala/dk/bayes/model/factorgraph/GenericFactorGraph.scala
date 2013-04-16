@@ -30,10 +30,10 @@ case class GenericFactorGraph extends FactorGraph {
     factorVarNodes.foreach { varNode =>
 
       val initialMsg = factor.marginal(varNode.varId)
-      
-      val factorGate = Gate()
+
+      val factorGate = FactorGate(factorNode)
       factorGate.setMessage(initialMsg)
-      val varGate = Gate()
+      val varGate = VarGate(varNode.varId)
       varGate.setMessage(initialMsg)
 
       factorGate.setEndGate(varGate)

@@ -90,6 +90,11 @@ class GaussianTest {
 
     assertEquals(2, product.m, 0.0001)
     assertEquals(0.5, product.v, 0.0001)
+
+    val product2 = gaussian2 * gaussian1
+
+    assertEquals(3, product2.m, 0.0001)
+    assertEquals(Double.PositiveInfinity, product2.v, 0.0001)
   }
 
   @Test def divide_negative_variance {
@@ -129,6 +134,11 @@ class GaussianTest {
 
     assertEquals(2, div.m, 0.0001)
     assertEquals(0.5, div.v, 0.0001)
+
+    val div2 = gaussian1 / gaussian2
+
+    assertEquals(3, div2.m, 0.0001)
+    assertEquals(Double.PositiveInfinity, div2.v, 0.0001)
   }
 
   @Test def add {

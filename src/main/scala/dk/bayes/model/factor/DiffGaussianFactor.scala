@@ -33,17 +33,17 @@ case class DiffGaussianFactor(gaussian1VarId: Int, gaussian2VarId: Int, diffGaus
     val marginalFactor = varId match {
 
       case `gaussian1VarId` => {
-        val sumGaussian = Gaussian(diffFactor.m, diffFactor.v) + Gaussian(gaussianFactor2.m, gaussianFactor2.v)
+        val sumGaussian = (Gaussian(diffFactor.m, diffFactor.v) + Gaussian(gaussianFactor2.m, gaussianFactor2.v)) * Gaussian(gaussianFactor1.m, gaussianFactor1.v)
         GaussianFactor(varId, sumGaussian.m, sumGaussian.v)
       }
 
       case `gaussian2VarId` => {
-        val diffGaussian = Gaussian(gaussianFactor1.m, gaussianFactor1.v) - Gaussian(diffFactor.m, diffFactor.v)
+        val diffGaussian = (Gaussian(gaussianFactor1.m, gaussianFactor1.v) - Gaussian(diffFactor.m, diffFactor.v)) * Gaussian(gaussianFactor2.m, gaussianFactor2.v)
         GaussianFactor(varId, diffGaussian.m, diffGaussian.v)
       }
 
       case `diffGaussianVarId` => {
-        val diffGaussian = Gaussian(gaussianFactor1.m, gaussianFactor1.v) - Gaussian(gaussianFactor2.m, gaussianFactor2.v)
+        val diffGaussian = Gaussian(gaussianFactor1.m, gaussianFactor1.v) - Gaussian(gaussianFactor2.m, gaussianFactor2.v) * Gaussian(diffFactor.m, diffFactor.v)
         GaussianFactor(varId, diffGaussian.m, diffGaussian.v)
       }
 

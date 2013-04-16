@@ -1,9 +1,6 @@
 package dk.bayes.gaussian
 
-import scala.Math.Pi
-import scala.Math.exp
-import scala.Math.pow
-import scala.Math.sqrt
+import scala.math._
 import dk.bayes.gaussian.Linear.Matrix
 import org.apache.commons.math3.distribution.NormalDistribution
 import Gaussian._
@@ -59,7 +56,7 @@ case class Gaussian(m: Double, v: Double) {
    */
   def *(gaussian: Gaussian): Gaussian = {
 
-    val product = if (gaussian.v == Double.PositiveInfinity) this else {
+    val product = if (v==Double.PositiveInfinity || gaussian.v == Double.PositiveInfinity) this else {
       val newM = (m * gaussian.v + gaussian.m * v) / (v + gaussian.v)
       val newV = (v * gaussian.v) / (v + gaussian.v)
       Gaussian(newM, newV)
@@ -72,7 +69,7 @@ case class Gaussian(m: Double, v: Double) {
    * Thomas Minka. EP: A quick reference, 2008
    */
   def /(gaussian: Gaussian): Gaussian = {
-    if (gaussian.v == Double.PositiveInfinity) this
+    if (v==Double.PositiveInfinity || gaussian.v == Double.PositiveInfinity) this
     else {
       val newV = 1 / (1 / v - 1 / gaussian.v)
       val newM = newV * (m / v - gaussian.m / gaussian.v)

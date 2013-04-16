@@ -7,7 +7,7 @@ import dk.bayes.clustergraph.Cluster
 import dk.bayes.clustergraph.Edge
 import dk.bayes.factor.Factor
 import dk.bayes.factor.SingleFactor
-import scala.Math._
+import scala.math._
 import LoopyBP._
 
 /**

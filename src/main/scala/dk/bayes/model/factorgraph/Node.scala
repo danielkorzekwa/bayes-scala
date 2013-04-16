@@ -11,17 +11,18 @@ import scala.collection.mutable.ListBuffer
  */
 sealed abstract class Node {
 
-  private val gates = ListBuffer[Gate]()
-  
+  type GATE<:Gate
+  private val gates = ListBuffer[GATE]()
+
   /**
    * Adds an outgoing gate to a node.
    */
-  def addGate(gate: Gate) = gates += gate
+  def addGate(gate: GATE) = gates += gate
 
   /**
    * Returns outgoing gates for a node.
    */
-  def getGates(): Seq[Gate] = gates.toList
+  def getGates(): Seq[GATE] = gates.toList
 }
 
 /**
@@ -29,11 +30,15 @@ sealed abstract class Node {
  *
  * @param factor Factor associated with a factor node
  */
-case class FactorNode(factor: Factor) extends Node
+case class FactorNode(factor: Factor) extends Node {
+  type GATE = FactorGate
+}
 
 /**
  * This class represents a variable node in a factor graph.
  *
  * @param varId Unique variable id
  */
-case class VarNode(varId: Int) extends Node
+case class VarNode(varId: Int) extends Node  {
+  type GATE = VarGate
+}

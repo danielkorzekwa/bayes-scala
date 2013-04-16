@@ -75,4 +75,6 @@ case class TableFactor(variableIds: Seq[Int], variableDims: Seq[Int], valueProbs
 
     TableFactor(variableIds, variableDims, quotientValues)
   }
+  
+  override def toString() = "TableFactor(%s,%s,%s,%s)".format(variableIds,variableDims,valueProbs.toList,evidence)
 }
