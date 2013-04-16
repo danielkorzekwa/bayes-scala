@@ -56,5 +56,23 @@ case class TableFactor(variableIds: Seq[Int], variableDims: Seq[Int], valueProbs
 
   def *(factor: Factor): Factor = throw new UnsupportedOperationException("Not implemented yet")
 
-  def /(that: Factor): Factor = throw new UnsupportedOperationException("Not implemented yet")
+  def /(that: Factor): Factor = variableIds match {
+    case Seq(varId) => divideForSingleFactor(that.asInstanceOf[TableFactor])
+    case _ => throw new UnsupportedOperationException("Not implemented yet")
+  }
+
+  private def divideForSingleFactor(factor: TableFactor): TableFactor = {
+    require(variableIds.head == factor.variableIds.head, "Variable ids for quotient factors are not the same")
+    require(variableDims.head == factor.variableDims.head, "Variable dimensions for quotient factors are not the same")
+
+    val quotientValues = new Array[Double](valueProbs.size)
+
+    var i = 0
+    while (i < quotientValues.size) {
+      quotientValues(i) = valueProbs(i) / factor.valueProbs(i)
+      i += 1
+    }
+
+    TableFactor(variableIds, variableDims, quotientValues)
+  }
 }

@@ -27,24 +27,37 @@ case class TruncGaussianFactor(gaussianVarId: Int, truncVarId: Int, truncValue: 
   }
 
   def productMarginal(varId: Int, factors: Seq[Factor]): Factor = {
+    val gaussianFactor = factors.find(f => f.getVariableIds().head == gaussianVarId).get.asInstanceOf[GaussianFactor]
+    val tableFactor = factors.find(f => f.getVariableIds().head == truncVarId).get.asInstanceOf[TableFactor]
+    require(tableFactor.valueProbs.size == 2, "Trunc Factor must be a binary table factor")
 
     val marginalFactor = varId match {
       case `gaussianVarId` => {
-        val gaussianFactor = factors.find(f => f.getVariableIds().head == gaussianVarId).get.asInstanceOf[GaussianFactor]
-        val tableFactor = factors.find(f => f.getVariableIds().head == truncVarId).get.asInstanceOf[TableFactor]
-        require(tableFactor.valueProbs.size == 2, "Trunc Factor must be a binary table factor")
-
         val marginalGaussian = tableFactor.getEvidence(truncVarId) match {
           case Some(0) => Gaussian(gaussianFactor.m, gaussianFactor.v).truncateUpperTail(truncValue)
           case Some(1) => throw new UnsupportedOperationException("Not implemented yet")
-          case None => throw new UnsupportedOperationException("Not implemented yet")
+          case None => {
+            require(tableFactor.valueProbs.product == 1, "Unity Table factor is required")
+            Gaussian(gaussianFactor.m, gaussianFactor.v)
+          }
           case _ => throw new IllegalArgumentException("Incorrect evidence value for a binary table factor")
         }
 
         GaussianFactor(varId, marginalGaussian.m, marginalGaussian.v)
 
       }
-      case `truncVarId` => throw new UnsupportedOperationException("Not implemented yet")
+      case `truncVarId` => tableFactor.getEvidence(truncVarId) match {
+        case None if (tableFactor.valueProbs.product == 1) => {
+          val valueProbs = if (!gaussianFactor.m.isNaN && !gaussianFactor.v.isNaN) {
+            val value0Prob = 1 - Gaussian(gaussianFactor.m, gaussianFactor.v).cdf(truncValue)
+            val value1Prob = 1 - value0Prob
+            Array(value0Prob, value1Prob)
+
+          } else Array(1d, 1d)
+          TableFactor(Vector(varId), Vector(2), valueProbs)
+        }
+        case _ => throw new UnsupportedOperationException("Not implemented yet")
+      }
 
       case _ => throw new IllegalArgumentException("Incorrect marginal variable id")
     }
