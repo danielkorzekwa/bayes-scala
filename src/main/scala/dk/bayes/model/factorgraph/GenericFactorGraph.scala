@@ -16,7 +16,7 @@ case class GenericFactorGraph extends FactorGraph {
 
   def addFactor(factor: Factor) = {
 
-    val factorNode = FactorNode(factor)
+    val factorNode = new FactorNode(factor)
     allNodes += factorNode
 
     //Add missing variable nodes

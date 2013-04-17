@@ -51,4 +51,5 @@ case class GaussianFactor(varId: Int, m: Double, v: Double) extends Factor {
     }
   }
 
+   override def toString() = "GaussianFactor(%d,%.3f,%.3f)".format(varId,m,v)
 }

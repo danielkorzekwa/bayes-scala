@@ -54,9 +54,27 @@ case class TableFactor(variableIds: Seq[Int], variableDims: Seq[Int], valueProbs
     value
   }
 
-  def *(factor: Factor): Factor = throw new UnsupportedOperationException("Not implemented yet")
+  def *(factor: Factor): TableFactor = variableIds match {
+    case Seq(varId) => productForSingleFactor(factor.asInstanceOf[TableFactor])
+    case _ => throw new UnsupportedOperationException("Not implemented yet")
+  }
+  
+   private def productForSingleFactor(factor: TableFactor): TableFactor = {
+    require(variableIds.head == factor.variableIds.head, "Variable ids for product factors are not the same")
+    require(variableDims.head == factor.variableDims.head, "Variable dimensions for product factors are not the same")
 
-  def /(that: Factor): Factor = variableIds match {
+    val quotientValues = new Array[Double](valueProbs.size)
+
+    var i = 0
+    while (i < quotientValues.size) {
+      quotientValues(i) = valueProbs(i) * factor.valueProbs(i)
+      i += 1
+    }
+
+    TableFactor(variableIds, variableDims, quotientValues)
+  }
+
+  def /(that: Factor): TableFactor = variableIds match {
     case Seq(varId) => divideForSingleFactor(that.asInstanceOf[TableFactor])
     case _ => throw new UnsupportedOperationException("Not implemented yet")
   }
@@ -67,9 +85,11 @@ case class TableFactor(variableIds: Seq[Int], variableDims: Seq[Int], valueProbs
 
     val quotientValues = new Array[Double](valueProbs.size)
 
+    val factorsAreEqual = this.equals(factor)
     var i = 0
     while (i < quotientValues.size) {
-      quotientValues(i) = valueProbs(i) / factor.valueProbs(i)
+      if(factorsAreEqual) quotientValues(i) = 1
+      else quotientValues(i) = valueProbs(i) / factor.valueProbs(i)
       i += 1
     }
 

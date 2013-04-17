@@ -7,6 +7,8 @@ import dk.bayes.model.factorgraph.VarNode
 import com.typesafe.scalalogging.slf4j.Logger
 import org.slf4j.LoggerFactory
 import dk.bayes.model.factorgraph.VarGate
+import dk.bayes.model.factorgraph.FactorNode
+import dk.bayes.model.factor.TableFactor
 
 /**
  * Default implementation of the Expectation Propagation Bayesian Inference algorithm.
@@ -17,7 +19,19 @@ case class GenericEP(factorGraph: FactorGraph) extends EP {
 
   private val logger = Logger(LoggerFactory.getLogger(getClass()))
 
-  def setEvidence(varId: Int, varValue: AnyVal) = throw new UnsupportedOperationException("Not implemented yet")
+  def setEvidence(varId: Int, varValue: AnyVal) = {
+
+    val nodes = factorGraph.getNodes()
+    for (node <- nodes) {
+      node match {
+        case node: FactorNode if (node.getFactor.getVariableIds.contains(varId)) => {
+          val newFactor = node.getFactor().withEvidence(varId, varValue)
+          node.setFactor(newFactor)
+        }
+        case _ => //do nothing
+      }
+    }
+  }
 
   def calibrate() = {
 
@@ -35,22 +49,27 @@ case class GenericEP(factorGraph: FactorGraph) extends EP {
     for (gate <- factorNode.getGates()) {
 
       val marginalVarId = gate.getMessage.getVariableIds.head
-      val marginalNode = factorNode.factor.productMarginal(marginalVarId, inMsgs)
+      val marginalNode = factorNode.getFactor().productMarginal(marginalVarId, inMsgs)
       val newMessage = marginalNode / gate.getEndGate.getMessage
 
       gate.setMessage(newMessage)
-      logger.debug("Msg: %s from: %s to: %s".format(newMessage, factorNode.factor, gate.getEndGate.varId))
+      logger.debug("from: %s\t to: %s\t\t msg: %s".format(factorNode.getFactor().getVariableIds.mkString("f(", ",", ")"), gate.getEndGate.varId, newMessage))
     }
   }
 
   private def sendVariableMessage(varNode: VarNode) {
     val inMsgs = varNode.getGates().map(g => g.getEndGate.getMessage())
+
     val marginalFactor = inMsgs.reduceLeft((msg1, msg2) => msg1 * msg2)
     for (gate <- varNode.getGates()) {
 
       val newMessage = marginalFactor / gate.getEndGate.getMessage
+      if (newMessage.isInstanceOf[TableFactor] && newMessage.asInstanceOf[TableFactor].valueProbs.product.isNaN) {
+        val xxx = inMsgs
+        println("a")
+      }
       gate.setMessage(newMessage)
-      logger.debug("Msg: %s from: %s to: %s".format(newMessage, varNode.varId, gate.getEndGate.factorNode.factor))
+      logger.debug("from: %s\t\t to: %s\t msg: %s".format(varNode.varId, gate.getEndGate.factorNode.getFactor().getVariableIds.mkString("f(", ",", ")"), newMessage))
     }
   }
 

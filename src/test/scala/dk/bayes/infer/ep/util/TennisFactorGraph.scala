@@ -21,18 +21,31 @@ object TennisFactorGraph {
   val perfDiffVarId = 5
   val outcomeVarId = 6
 
-  val skill1Factor = GaussianFactor(skill1VarId, 4, 81)
-  val skill2Factor = GaussianFactor(skill2VarId, 41, 25)
-  val perf1Factor = LinearGaussianFactor(skill1VarId, perf1VarId, 1, 0, pow(25d / 6, 2))
-  val perf2Factor = LinearGaussianFactor(skill2VarId, perf2VarId, 1, 0, pow(25d / 6, 2))
-  val perfDiffFactor = DiffGaussianFactor(perf1VarId, perf2VarId, perfDiffVarId)
-  val outcomeFactor = TruncGaussianFactor(perfDiffVarId, outcomeVarId, 0)
+  private val skill1Factor = GaussianFactor(skill1VarId, 4, 81)
+  private val skill2Factor = GaussianFactor(skill2VarId, 41, 25)
+  private val perf1Factor = LinearGaussianFactor(skill1VarId, perf1VarId, 1, 0, pow(25d / 6, 2))
+  private val perf2Factor = LinearGaussianFactor(skill2VarId, perf2VarId, 1, 0, pow(25d / 6, 2))
+  private val perfDiffFactor = DiffGaussianFactor(perf1VarId, perf2VarId, perfDiffVarId)
+  private val outcomeFactor = TruncGaussianFactor(perfDiffVarId, outcomeVarId, 0)
 
   def createTennisFactorGraph(): FactorGraph = {
     val factorGraph = GenericFactorGraph()
 
     factorGraph.addFactor(skill1Factor)
     factorGraph.addFactor(skill2Factor)
+    factorGraph.addFactor(perf1Factor)
+    factorGraph.addFactor(perf2Factor)
+    factorGraph.addFactor(perfDiffFactor)
+    factorGraph.addFactor(outcomeFactor)
+
+    factorGraph
+  }
+  
+   def createTennisFactorGraphAfterPlayer1Won(): FactorGraph = {
+    val factorGraph = GenericFactorGraph()
+
+    factorGraph.addFactor(GaussianFactor(skill1VarId, 27.1743, 37.5013))
+    factorGraph.addFactor(GaussianFactor(skill2VarId, 33.8460, 20.8610))
     factorGraph.addFactor(perf1Factor)
     factorGraph.addFactor(perf2Factor)
     factorGraph.addFactor(perfDiffFactor)

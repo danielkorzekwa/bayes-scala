@@ -11,7 +11,7 @@ import scala.collection.mutable.ListBuffer
  */
 sealed abstract class Node {
 
-  type GATE<:Gate
+  type GATE <: Gate
   private val gates = ListBuffer[GATE]()
 
   /**
@@ -30,8 +30,16 @@ sealed abstract class Node {
  *
  * @param factor Factor associated with a factor node
  */
-case class FactorNode(factor: Factor) extends Node {
+class FactorNode(factor: Factor) extends Node {
+
   type GATE = FactorGate
+
+  private var _factor: Factor = factor
+
+  def getFactor(): Factor = _factor
+  def setFactor(factor: Factor) { _factor = factor }
+  
+  override def toString() = "FactorNode(%s)".format(factor)
 }
 
 /**
@@ -39,6 +47,6 @@ case class FactorNode(factor: Factor) extends Node {
  *
  * @param varId Unique variable id
  */
-case class VarNode(varId: Int) extends Node  {
+case class VarNode(varId: Int) extends Node {
   type GATE = VarGate
 }
