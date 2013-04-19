@@ -42,8 +42,6 @@ case class LinearGaussianFactor(parentVarId: Int, varId: Int, a: Double, b: Doub
 
   def withEvidence(varId: Int, varValue: AnyVal): LinearGaussianFactor = throw new UnsupportedOperationException("Not implemented yet")
 
-  def getEvidence(varId: Int): Option[AnyVal] = throw new UnsupportedOperationException("Not implemented yet")
-
   def getValue(assignment: (Int, AnyVal)*): Double = throw new UnsupportedOperationException("Not implemented yet")
 
   def *(factor: Factor): Factor = throw new UnsupportedOperationException("Not implemented yet")

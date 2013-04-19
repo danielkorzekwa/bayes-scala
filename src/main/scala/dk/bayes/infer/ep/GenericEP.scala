@@ -33,7 +33,17 @@ case class GenericEP(factorGraph: FactorGraph) extends EP {
     }
   }
 
-  def calibrate() = {
+  def calibrate(maxIter: Int, currIterProgress: (Int) => Unit) = {
+
+    var currIter = 0
+    while (currIter < maxIter) {
+      currIterProgress(currIter)
+      calibrateIteration()
+      currIter += 1
+    }
+  }
+
+  private def calibrateIteration() {
 
     val nodes = factorGraph.getNodes()
     for (node <- nodes) {
@@ -64,10 +74,6 @@ case class GenericEP(factorGraph: FactorGraph) extends EP {
     for (gate <- varNode.getGates()) {
 
       val newMessage = marginalFactor / gate.getEndGate.getMessage
-      if (newMessage.isInstanceOf[TableFactor] && newMessage.asInstanceOf[TableFactor].valueProbs.product.isNaN) {
-        val xxx = inMsgs
-        println("a")
-      }
       gate.setMessage(newMessage)
       logger.debug("from: %s\t\t to: %s\t msg: %s".format(varNode.varId, gate.getEndGate.factorNode.getFactor().getVariableIds.mkString("f(", ",", ")"), newMessage))
     }

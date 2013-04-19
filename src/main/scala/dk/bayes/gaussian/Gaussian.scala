@@ -20,21 +20,39 @@ case class Gaussian(m: Double, v: Double) {
   def cdf(x: Double) = Gaussian.cdf(x, m, v)
 
   /**
-   * Returns upper tail gaussian truncation.
+   * Returns upper/lower tail gaussian truncation.
    * http://en.wikipedia.org/wiki/Truncated_normal_distribution
+   *
+   * @param x The value, at which gaussian is truncated
+   * @param upperTail If true then upper tail truncation is returned, otherwise the lower tail is returned
    */
-  def truncateUpperTail(x: Double): Gaussian = {
-
-    def lambda(alpha: Double): Double = stdPdf(alpha) / (1 - stdCdf(alpha))
-    def delta(alpha: Double): Double = lambda(alpha) * (lambda(alpha) - alpha)
+  def truncate(x: Double, upperTail: Boolean): Gaussian = {
 
     val sd = sqrt(v)
-    val alpha = (x - m) / sd
 
-    val truncatedMean = m + sd * lambda(alpha)
-    val truncatedVariance = v * (1 - delta(alpha))
+    val truncatedGaussian = upperTail match {
+      case true => {
+        def lambda(alpha: Double): Double = stdPdf(alpha) / (1 - stdCdf(alpha))
+        def delta(alpha: Double): Double = lambda(alpha) * (lambda(alpha) - alpha)
 
-    Gaussian(truncatedMean, truncatedVariance)
+        val alpha = (x - m) / sd
+
+        val truncatedMean = m + sd * lambda(alpha)
+        val truncatedVariance = v * (1 - delta(alpha))
+
+        Gaussian(truncatedMean, truncatedVariance)
+      }
+      case false => {
+        val beta = (x - m) / sd
+
+        val truncatedMean = m - sd * (stdPdf(beta) / stdCdf(beta))
+        val truncatedVariance = v * (1 - beta * (stdPdf(beta) / stdCdf(beta)) - pow(stdPdf(beta) / stdCdf(beta), 2))
+
+        Gaussian(truncatedMean, truncatedVariance)
+      }
+    }
+    truncatedGaussian
+
   }
 
   def *(linearGaussian: LinearGaussian): MultivariateGaussian = {
@@ -56,7 +74,7 @@ case class Gaussian(m: Double, v: Double) {
    */
   def *(gaussian: Gaussian): Gaussian = {
 
-    val product = if (v==Double.PositiveInfinity || gaussian.v == Double.PositiveInfinity) this else {
+    val product = if (v == Double.PositiveInfinity || gaussian.v == Double.PositiveInfinity) this else {
       val newM = (m * gaussian.v + gaussian.m * v) / (v + gaussian.v)
       val newV = (v * gaussian.v) / (v + gaussian.v)
       Gaussian(newM, newV)
@@ -69,7 +87,7 @@ case class Gaussian(m: Double, v: Double) {
    * Thomas Minka. EP: A quick reference, 2008
    */
   def /(gaussian: Gaussian): Gaussian = {
-    if (v==Double.PositiveInfinity || gaussian.v == Double.PositiveInfinity) this
+    if (v == Double.PositiveInfinity || gaussian.v == Double.PositiveInfinity) this
     else {
       val newV = 1 / (1 / v - 1 / gaussian.v)
       val newM = newV * (m / v - gaussian.m / gaussian.v)

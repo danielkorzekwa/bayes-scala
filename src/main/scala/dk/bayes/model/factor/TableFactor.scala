@@ -8,9 +8,8 @@ package dk.bayes.model.factor
  * @param variableIds Factor variables
  * @param variableDims Variable dimensions
  * @param values Factor values
- * @param evidence Seq[Tuple2[varId,varValue]]
  */
-case class TableFactor(variableIds: Seq[Int], variableDims: Seq[Int], valueProbs: Array[Double], evidence: Option[Seq[Tuple2[Int, Int]]] = None) extends Factor {
+case class TableFactor(variableIds: Seq[Int], variableDims: Seq[Int], valueProbs: Array[Double]) extends Factor {
 
   def getVariableIds(): Seq[Int] = variableIds
 
@@ -30,11 +29,6 @@ case class TableFactor(variableIds: Seq[Int], variableDims: Seq[Int], valueProbs
     evidenceValueProbs(varValue) = valueProbs(varValue)
 
     this.copy(valueProbs = evidenceValueProbs)
-  }
-
-  def getEvidence(varId: Int): Option[AnyVal] = evidence match {
-    case None => None
-    case Some(evidence) => throw new UnsupportedOperationException("Not implemented yet")
   }
 
   def getValue(assignment: (Int, AnyVal)*): Double = {
@@ -58,8 +52,8 @@ case class TableFactor(variableIds: Seq[Int], variableDims: Seq[Int], valueProbs
     case Seq(varId) => productForSingleFactor(factor.asInstanceOf[TableFactor])
     case _ => throw new UnsupportedOperationException("Not implemented yet")
   }
-  
-   private def productForSingleFactor(factor: TableFactor): TableFactor = {
+
+  private def productForSingleFactor(factor: TableFactor): TableFactor = {
     require(variableIds.head == factor.variableIds.head, "Variable ids for product factors are not the same")
     require(variableDims.head == factor.variableDims.head, "Variable dimensions for product factors are not the same")
 
@@ -88,13 +82,13 @@ case class TableFactor(variableIds: Seq[Int], variableDims: Seq[Int], valueProbs
     val factorsAreEqual = this.equals(factor)
     var i = 0
     while (i < quotientValues.size) {
-      if(factorsAreEqual) quotientValues(i) = 1
+      if (factorsAreEqual) quotientValues(i) = 1
       else quotientValues(i) = valueProbs(i) / factor.valueProbs(i)
       i += 1
     }
 
     TableFactor(variableIds, variableDims, quotientValues)
   }
-  
-  override def toString() = "TableFactor(%s,%s,%s,%s)".format(variableIds,variableDims,valueProbs.toList,evidence)
+
+  override def toString() = "TableFactor(%s,%s,%s)".format(variableIds, variableDims, valueProbs.toList)
 }

@@ -98,7 +98,7 @@ class TrueSkillTwoPersonGameEPTest {
 
     //forward-backward messages for performance difference
     val m_f6_to_f7 = m_f2_to_f6 - m_f5_to_f6
-    val m_f7_to_f6 = m_f6_to_f7.truncateUpperTail(0) / m_f6_to_f7
+    val m_f7_to_f6 = m_f6_to_f7.truncate(0,true) / m_f6_to_f7
 
     //backward messages for player 1
     val m_f6_to_f2 = m_f7_to_f6 + m_f5_to_f6

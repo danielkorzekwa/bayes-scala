@@ -33,17 +33,37 @@ class GaussianTest {
   }
 
   @Test def truncateUpperTail {
-    assertEquals(1.141, Gaussian(0, 1).truncateUpperTail(0.5).m, 0.0001)
-    assertEquals(0.2685, Gaussian(0, 1).truncateUpperTail(0.5).v, 0.0001)
+    assertEquals(1.141, Gaussian(0, 1).truncate(0.5, true).m, 0.0001)
+    assertEquals(0.2685, Gaussian(0, 1).truncate(0.5, true).v, 0.0001)
 
-    assertEquals(1.1284, Gaussian(0, 2).truncateUpperTail(0).m, 0.0001)
-    assertEquals(0.7267, Gaussian(0, 2).truncateUpperTail(0).v, 0.0001)
+    assertEquals(1.1284, Gaussian(0, 2).truncate(0, true).m, 0.0001)
+    assertEquals(0.7267, Gaussian(0, 2).truncate(0, true).v, 0.0001)
 
-    assertEquals(1.4647, Gaussian(0, 2).truncateUpperTail(0.5).m, 0.0001)
-    assertEquals(0.5868, Gaussian(0, 2).truncateUpperTail(0.5).v, 0.0001)
+    assertEquals(1.4647, Gaussian(0, 2).truncate(0.5, true).m, 0.0001)
+    assertEquals(0.5868, Gaussian(0, 2).truncate(0.5, true).v, 0.0001)
 
-    assertEquals(2.8217, Gaussian(2, 3.5).truncateUpperTail(0.8).m, 0.0001)
-    assertEquals(1.8386, Gaussian(2, 3.5).truncateUpperTail(0.8).v, 0.0001)
+    assertEquals(2.8217, Gaussian(2, 3.5).truncate(0.8, true).m, 0.0001)
+    assertEquals(1.8386, Gaussian(2, 3.5).truncate(0.8, true).v, 0.0001)
+
+    assertEquals(2.2610, Gaussian(2, 3.5).truncate(-0.8, true).m, 0.0001)
+    assertEquals(2.7008, Gaussian(2, 3.5).truncate(-0.8, true).v, 0.0001)
+  }
+
+  @Test def truncateLowerTail {
+    assertEquals(-0.50917, Gaussian(0, 1).truncate(0.5, false).m, 0.0001)
+    assertEquals(0.48617, Gaussian(0, 1).truncate(0.5, false).v, 0.0001)
+
+    assertEquals(-1.1283, Gaussian(0, 2).truncate(0, false).m, 0.0001)
+    assertEquals(0.72674, Gaussian(0, 2).truncate(0, false).v, 0.0001)
+
+    assertEquals(-0.8305, Gaussian(0, 2).truncate(0.5, false).m, 0.0001)
+    assertEquals(0.8949, Gaussian(0, 2).truncate(0.5, false).v, 0.0001)
+
+    assertEquals(-0.33126, Gaussian(2, 3.5).truncate(0.8, false).m, 0.0001)
+    assertEquals(0.8627, Gaussian(2, 3.5).truncate(0.8, false).v, 0.0001)
+
+    assertEquals(-1.6216, Gaussian(2, 3.5).truncate(-0.8, false).m, 0.0001)
+    assertEquals(0.5243, Gaussian(2, 3.5).truncate(-0.8, false).v, 0.0001)
   }
 
   @Test def product_with_linear_gaussian {
@@ -139,6 +159,14 @@ class GaussianTest {
 
     assertEquals(3, div2.m, 0.0001)
     assertEquals(Double.PositiveInfinity, div2.v, 0.0001)
+  }
+
+  @Test def product_then_divide {
+    val product = (Gaussian(4.000, 98.361) - Gaussian(41.000, 42.361)) * Gaussian(6.150, 10.096)
+    val divide = product / Gaussian(6.150, 10.096)
+
+    assertGaussian(Gaussian(-37, 140.722), divide, 0.0001)
+
   }
 
   @Test def add {

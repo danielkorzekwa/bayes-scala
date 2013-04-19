@@ -51,8 +51,8 @@ case class TruncGaussianFactor(gaussianVarId: Int, truncVarId: Int, truncValue: 
       case `gaussianVarId` => {
 
         val marginalGaussian = truncFactorProduct.valueProbs match {
-          case Array(1, 0) => Gaussian(gaussianFactor.m, gaussianFactor.v).truncateUpperTail(truncValue)
-          case Array(0, 1) => throw new UnsupportedOperationException("Not implemented yet")
+          case Array(1, 0) => Gaussian(gaussianFactor.m, gaussianFactor.v).truncate(truncValue,true)
+          case Array(0, 1) => Gaussian(gaussianFactor.m, gaussianFactor.v).truncate(truncValue,false)
           case Array(1, 1) => Gaussian(gaussianFactor.m, gaussianFactor.v)
           case _ => throw new IllegalArgumentException("Not implemented yet")
         }
@@ -87,8 +87,6 @@ case class TruncGaussianFactor(gaussianVarId: Int, truncVarId: Int, truncValue: 
       }
     }
   }
-
-  def getEvidence(varId: Int): Option[AnyVal] = throw new UnsupportedOperationException("Not implemented yet")
 
   def getValue(assignment: (Int, AnyVal)*): Double = throw new UnsupportedOperationException("Not implemented yet")
 

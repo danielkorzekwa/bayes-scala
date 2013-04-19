@@ -92,8 +92,7 @@ object GenericEMLearn extends EMLearn {
   private def maximisationStep(clusterBeliefs: Seq[Tuple2[Int, Factor]]): Map[Int, Factor] = {
 
     val clusterBeliefsByTypeId: Map[Int, Seq[Factor]] = clusterBeliefs.groupBy(c => c._1).mapValues(v => v.map(_._2))
-    clusterBeliefsByTypeId
-
+    
     val clusterPotentialsByTypeId: Map[Int, Factor] = clusterBeliefsByTypeId.map {
       case (clusterTypeId, clusterBeliefs) =>
 

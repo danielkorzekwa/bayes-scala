@@ -23,8 +23,10 @@ trait EP {
   /**
    * Calibrates factor graph.
    *
+   * @param maxIter The maximum number of iterations that EP is executed for.
+   * @param currIterProgress Current iteration number. It is called by the calibrate method at the beginning of every iteration
    */
-  def calibrate()
+  def calibrate(maxIter: Int, currIterProgress: (Int) => Unit)
 
   /**
    * Returns marginal factor for a given variable in a factor graph.

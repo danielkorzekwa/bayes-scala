@@ -29,11 +29,6 @@ trait Factor {
    * @param varValue Variable value
    */
   def withEvidence(varId: Int, varValue: AnyVal): Factor
-
-  /**
-   * Returns evidence value for a given variable.
-   */
-  def getEvidence(varId:Int):Option[AnyVal]
   
   /**
    * Returns the factor value for a given assignment to all factor variables.
