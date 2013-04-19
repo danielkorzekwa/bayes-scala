@@ -8,11 +8,11 @@ Bayesian Networks in Scala
   * cluster graph
   * factor graph
   * gaussians: Univariate, Multivariate, Canonical and Linear Gaussians
-* Inference (supported discrete, continuous and hybrid bayesian networks)
-  * Loopy Belief Propagation in a Cluster Graph
+* Inference (discrete, continuous and hybrid Bayesian Networks)
+  * Loopy Belief Propagation in a cluster graph
   * Expectation Propagation on a factor graph
-  * Manual inference using supported factors
-* Learning parameters 
+  * Manual inference using supported factor operations (product, divide, marginal, evidence)
+* Learning parameters (discrete Bayesian Networks)
   * Expectation Maximisation - CPT Factors, Complete/Incomplete data, BN and Unrolled DBN
 
 **Roadmap**
