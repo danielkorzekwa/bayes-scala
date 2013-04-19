@@ -3,23 +3,18 @@ Bayesian Networks in Scala
 
 **Major features**
 
-*   Discrete Bayesian Networks [1](#references)
-    * Model representation
-      * discrete factor
-      * cluster graph
-    * Inference
-      * Loopy Belief Propagation in a Cluster Graph
-    * Learning parameters 
-      * Expectation Maximisation - CPT Factors, Complete/Incomplete data, BN and Unrolled DBN
-*   Continuous Bayesian Networks [1,5,6](#references)
-    * Model representation
-      * Univariate, Multivariate, Canonical and Linear Gaussians
-      * Operations: * / + -, marginalisation, evidence, moment matching (proj operator)
-    * Inference
-      * Manual inference using supported gaussian operations
-*   Hybrid Bayesian Networks 
-      * Expectation Propagation - manual inference using supported gaussian operations
- 
+* Model representation
+  * factors: discrete, gaussian, linear gaussian, difference of gaussians, truncated gaussian
+  * cluster graph
+  * factor graph
+  * gaussians: Univariate, Multivariate, Canonical and Linear Gaussians
+* Inference (supported discrete, continuous and hybrid bayesian networks)
+  * Loopy Belief Propagation in a Cluster Graph
+  * Expectation Propagation on a factor graph
+  * Manual inference using supported factors
+* Learning parameters 
+  * Expectation Maximisation - CPT Factors, Complete/Incomplete data, BN and Unrolled DBN
+
 **Roadmap**
 
 *   Expectation Propagation on a factor graph
