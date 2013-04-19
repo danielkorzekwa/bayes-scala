@@ -37,6 +37,8 @@ Bayesian Networks in Scala
     * [Gaussian approximation with moment matching, aka proj() operator in Expectation Propagation](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/moment_matching/moment_matching.md)
     * [Expectation Propagation for the Clutter Problem](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/clutter_problem_ep/clutter_problem_ep.md)
     * [TrueSkill - Updating player skills in tennis with Expectation Propagation inference algorithm](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/trueskill_in_tennis/trueskill_in_tennis.md)
+    * [TrueSkill on a factor graph in Tennis] (https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/trueskill_in_tennis_factor_graph/trueskill_in_tennis_factor_graph.md)
+    * [TrueSkill on a factor graph in Tennis (Dynamic Bayesian Network for 3 players with 6 games over 3 time slices)] (https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/trueskill_in_tennis_factor_graph_dbn/trueskill_in_tennis_factor_graph_dbn.md)
 *   Others
     * [Plotting gaussians](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/plotting_gaussian/plotting_gaussian.md)
     * [Resources for Bayesian Networks](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/bn_resources/bn_resources.md)
