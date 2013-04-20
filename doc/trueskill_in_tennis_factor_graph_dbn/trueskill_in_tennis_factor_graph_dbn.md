@@ -30,8 +30,6 @@ Create factor variables:
 
 Create factor graph and add skill factors:
 
-	val varId = new AtomicInteger(15)
-	
 	val factorGraph = GenericFactorGraph()
 	
 	factorGraph.addFactor(GaussianFactor(player1Time0VarId, 4, 81))
@@ -44,6 +42,8 @@ Create factor graph and add skill factors:
 	factorGraph.addFactor(LinearGaussianFactor(player3Time1VarId, player3Time2VarId, 1, 0, pow(25d / 6, 2)))
 
 Add factors to factor graph for player performance, performance difference and match outcome:
+
+	val varId = new AtomicInteger(15)
 
 	def addTennisGameToFactorGraph(player1VarId: Int, player2VarId: Int, matchVarId: Int) {
 	
