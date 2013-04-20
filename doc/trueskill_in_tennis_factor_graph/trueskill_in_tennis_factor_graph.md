@@ -1,6 +1,8 @@
 TrueSkill on a factor graph in Tennis
 =============================================================================================
 
+Inference of player skills for a single tennis match.
+
 ![Single tennis game](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/trueskill_in_tennis_factor_graph/tennis_trueskill_bn.png "Single tennis game")
 
 Create factor graph:
