@@ -1,7 +1,7 @@
 TrueSkill on a factor graph in Tennis (Dynamic Bayesian Network)
 =============================================================================================================
 
-Dynamic Bayesian Network for 3 players with 6 games over 3 time slices.
+Dynamic Bayesian Network for 3 players with 6 games over 3 time slices. [(Scala code example)](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/infer/ep/TrueSkillDBNTennisEPTest.scala)
 
 ![TruSkill Tennis DBN](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/trueskill_in_tennis_factor_graph_dbn/trueskill_tennis_dbn.png "TruSkill Tennis DBN")
 
@@ -108,5 +108,3 @@ Get marginals:
 	val skill2_t2_marginal = ep.marginal(player2Time2VarId).asInstanceOf[GaussianFactor]
 	assertEquals(5.0194, skill2_t2_marginal.m, 0.0001)
 	assertEquals(71.2254, skill2_t2_marginal.v, 0.0001)
-
-* [Scala code example](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/infer/ep/TrueSkillDBNTennisEPTest.scala)
