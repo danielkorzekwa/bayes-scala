@@ -1,7 +1,8 @@
 TrueSkill on a factor graph in Tennis
 =============================================================================================
 
-Inference of player skills for a single tennis match.
+Inference of player skills for a single tennis match. [(Scala code example)](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/infer/ep/TrueSkillOnlineTennisEPTest.scala)
+
 
 ![Single tennis game](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/trueskill_in_tennis_factor_graph/tennis_trueskill_bn.png "Single tennis game")
 
@@ -51,5 +52,3 @@ Get marginals for player skills and game outcome:
 	val skill2Marginal = ep.marginal(skill2VarId).asInstanceOf[GaussianFactor]
 	assertEquals(33.8473, skill2Marginal.m, 0.0001)
 	assertEquals(20.8559, skill2Marginal.v, 0.0001)
-
-* [Scala code example](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/infer/ep/TrueSkillOnlineTennisEPTest.scala)
