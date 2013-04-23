@@ -11,8 +11,8 @@ import dk.bayes.model.factor.Factor
  */
 sealed abstract class Gate {
 
-  type END_GATE<:Gate
-  
+  type END_GATE <: Gate
+
   private var endGate: Option[END_GATE] = None
 
   private var message: Option[Factor] = None
@@ -35,11 +35,12 @@ sealed abstract class Gate {
   }
 
   def getMessage(): Factor = message.get
+  def getOldMessage(): Factor = oldMessage.get
 }
 
-case class FactorGate(factorNode:FactorNode) extends Gate {
+case class FactorGate(factorNode: FactorNode) extends Gate {
   type END_GATE = VarGate
 }
-case class VarGate(varId:Int) extends Gate {
+case class VarGate(varId: Int) extends Gate {
   type END_GATE = FactorGate
 }

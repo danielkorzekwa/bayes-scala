@@ -15,6 +15,8 @@ import Gaussian._
  */
 case class Gaussian(m: Double, v: Double) {
 
+  private val minPrecision = 1e-7
+
   def pdf(x: Double): Double = Gaussian.pdf(x, m, v)
 
   def cdf(x: Double) = Gaussian.cdf(x, m, v)
@@ -89,9 +91,9 @@ case class Gaussian(m: Double, v: Double) {
   def /(gaussian: Gaussian): Gaussian = {
     if (v == Double.PositiveInfinity || gaussian.v == Double.PositiveInfinity) this
     else {
-      val newV = 1 / (1 / v - 1 / gaussian.v)
-      val newM = newV * (m / v - gaussian.m / gaussian.v)
-
+      val newPrecision = (1 / v - 1 / gaussian.v)
+      val newV = if (abs(newPrecision) > minPrecision) 1 / newPrecision else Double.PositiveInfinity
+      val newM = if(newV.isPosInfinity) Double.NaN else newV * (m / v - gaussian.m / gaussian.v)
       Gaussian(newM, newV)
     }
   }

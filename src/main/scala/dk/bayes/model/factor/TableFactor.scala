@@ -1,5 +1,7 @@
 package dk.bayes.model.factor
 
+import scala.math._
+
 /**
  * This class represents a multinomial probability distribution over a set of discrete variables.
  *
@@ -88,6 +90,12 @@ case class TableFactor(variableIds: Seq[Int], variableDims: Seq[Int], valueProbs
     }
 
     TableFactor(variableIds, variableDims, quotientValues)
+  }
+
+  def equals(that: Factor, threshold: Double): Boolean = {
+    val tableFactor = that.asInstanceOf[TableFactor]
+    val notTheSame = valueProbs.zip(tableFactor.valueProbs).find { case (thisVal, thatVal) => abs(thisVal - thatVal) > threshold }
+    notTheSame.isEmpty
   }
 
   override def toString() = "TableFactor(%s,%s,%s)".format(variableIds, variableDims, valueProbs.toList)

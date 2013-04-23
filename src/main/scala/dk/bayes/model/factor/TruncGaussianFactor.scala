@@ -11,7 +11,7 @@ import dk.bayes.gaussian.Gaussian
  * @param truncVarId
  * @param truncValue The value, at which Gaussian distribution is truncated at
  * @param truncVarEvidence The evidence for the binary truncation variable.
- *        Its value is 0 when the Gaussian variable value is bigger than the truncValue, and it's 1 if it is lower than the truncValue. 
+ *        Its value is 0 when the Gaussian variable value is bigger than the truncValue, and it's 1 if it is lower than the truncValue.
  *        It's not defined if there is no evidence observed
  */
 case class TruncGaussianFactor(gaussianVarId: Int, truncVarId: Int, truncValue: Double, truncVarEvidence: Option[Int] = None) extends Factor {
@@ -51,8 +51,8 @@ case class TruncGaussianFactor(gaussianVarId: Int, truncVarId: Int, truncValue: 
       case `gaussianVarId` => {
 
         val marginalGaussian = truncFactorProduct.valueProbs match {
-          case Array(1, 0) => Gaussian(gaussianFactor.m, gaussianFactor.v).truncate(truncValue,true)
-          case Array(0, 1) => Gaussian(gaussianFactor.m, gaussianFactor.v).truncate(truncValue,false)
+          case Array(1, 0) => Gaussian(gaussianFactor.m, gaussianFactor.v).truncate(truncValue, true)
+          case Array(0, 1) => Gaussian(gaussianFactor.m, gaussianFactor.v).truncate(truncValue, false)
           case Array(1, 1) => Gaussian(gaussianFactor.m, gaussianFactor.v)
           case _ => throw new IllegalArgumentException("Not implemented yet")
         }
@@ -93,4 +93,6 @@ case class TruncGaussianFactor(gaussianVarId: Int, truncVarId: Int, truncValue: 
   def *(factor: Factor): Factor = throw new UnsupportedOperationException("Not implemented yet")
 
   def /(that: Factor): Factor = throw new UnsupportedOperationException("Not implemented yet")
+
+  def equals(that: Factor, threshold: Double): Boolean = throw new UnsupportedOperationException("Not implemented yet")
 }

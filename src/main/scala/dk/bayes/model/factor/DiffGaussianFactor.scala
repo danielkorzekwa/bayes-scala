@@ -60,4 +60,6 @@ case class DiffGaussianFactor(gaussian1VarId: Int, gaussian2VarId: Int, diffGaus
   def *(factor: Factor): Factor = throw new UnsupportedOperationException("Not implemented yet")
 
   def /(that: Factor): Factor = throw new UnsupportedOperationException("Not implemented yet")
+
+  def equals(that: Factor, threshold: Double): Boolean = throw new UnsupportedOperationException("Not implemented yet")
 }

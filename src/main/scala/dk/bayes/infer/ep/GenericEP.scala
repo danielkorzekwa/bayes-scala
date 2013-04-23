@@ -9,13 +9,19 @@ import org.slf4j.LoggerFactory
 import dk.bayes.model.factorgraph.VarGate
 import dk.bayes.model.factorgraph.FactorNode
 import dk.bayes.model.factor.TableFactor
+import dk.bayes.model.factor.TableFactor
+import dk.bayes.model.factor.GaussianFactor
+import dk.bayes.model.factor.GaussianFactor
+import dk.bayes.model.factor.TableFactor
 
 /**
  * Default implementation of the Expectation Propagation Bayesian Inference algorithm.
  *
  * @author Daniel Korzekwa
+ *
+ * @param threshold Calibration criteria: the maximum absolute difference between old and new corresponding messages on a factor graph,
  */
-case class GenericEP(factorGraph: FactorGraph) extends EP {
+case class GenericEP(factorGraph: FactorGraph, threshold: Double = 0.00001) extends EP {
 
   private val logger = Logger(LoggerFactory.getLogger(getClass()))
 
@@ -33,16 +39,24 @@ case class GenericEP(factorGraph: FactorGraph) extends EP {
     }
   }
 
-  def calibrate(maxIter: Int, currIterProgress: (Int) => Unit) = {
+  def calibrate(maxIter: Int, currIterProgress: (Int) => Unit): Int = {
 
     var currIter = 0
-    while (currIter < maxIter) {
+    var calibrated = false
+    while (!calibrated && currIter < maxIter) {
       currIterProgress(currIter)
       calibrateIteration()
+      calibrated = isCalibrated()
       currIter += 1
     }
+
+    currIter
   }
 
+  /**
+   * Executes a single message passing routine on a factor graph.
+   *
+   */
   private def calibrateIteration() {
 
     val nodes = factorGraph.getNodes()
@@ -77,6 +91,18 @@ case class GenericEP(factorGraph: FactorGraph) extends EP {
       gate.setMessage(newMessage)
       logger.debug("from: %s\t\t to: %s\t msg: %s".format(varNode.varId, gate.getEndGate.factorNode.getFactor().getVariableIds.mkString("f(", ",", ")"), newMessage))
     }
+  }
+
+  /**
+   * Returns true if factor graph is calibrated, false otherwise.
+   */
+  private def isCalibrated(): Boolean = {
+
+    val notCalibratedNode = factorGraph.getNodes().find { node =>
+      val notCalibratedGate = node.getGates.find(g => !g.getMessage().equals(g.getOldMessage(), threshold))
+      notCalibratedGate.isDefined
+    }
+    notCalibratedNode.isEmpty
   }
 
   def marginal(variableId: Int): Factor = {

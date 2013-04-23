@@ -26,7 +26,7 @@ class TrueSkillOnlineTennisEPTest {
     val tennisFactorGraph = createTennisFactorGraphAfterPlayer1Won()
     val ep = GenericEP(tennisFactorGraph)
 
-    ep.calibrate(1, progress)
+    assertEquals(2, ep.calibrate(10, progress))
 
     val outcomeMarginal = ep.marginal(outcomeVarId)
     assertEquals(0.24463, outcomeMarginal.getValue((outcomeVarId, 0)), 0.00001)
@@ -34,13 +34,13 @@ class TrueSkillOnlineTennisEPTest {
 
     val skill1Marginal = ep.marginal(skill1VarId).asInstanceOf[GaussianFactor]
     assertEquals(27.1742, skill1Marginal.m, 0.0001)
-    assertEquals(37.5012, skill1Marginal.v, 0.0001)
+    assertEquals(37.5013, skill1Marginal.v, 0.0001)
 
     val skill2Marginal = ep.marginal(skill2VarId).asInstanceOf[GaussianFactor]
     assertEquals(33.846, skill2Marginal.m, 0.0001)
     assertEquals(20.861, skill2Marginal.v, 0.0001)
 
-    ep.calibrate(3, progress)
+    assertEquals(1, ep.calibrate(10, progress))
 
     val outcomeMarginal2 = ep.marginal(outcomeVarId)
     assertEquals(0.24463, outcomeMarginal2.getValue((outcomeVarId, 0)), 0.00001)
@@ -48,7 +48,7 @@ class TrueSkillOnlineTennisEPTest {
 
     val skill1MarginalLater = ep.marginal(skill1VarId).asInstanceOf[GaussianFactor]
     assertEquals(27.1742, skill1MarginalLater.m, 0.0001)
-    assertEquals(37.5012, skill1MarginalLater.v, 0.0001)
+    assertEquals(37.5013, skill1MarginalLater.v, 0.0001)
 
     val skill2MarginalLater = ep.marginal(skill2VarId).asInstanceOf[GaussianFactor]
     assertEquals(33.846, skill2MarginalLater.m, 0.0001)
@@ -61,7 +61,7 @@ class TrueSkillOnlineTennisEPTest {
     val ep = GenericEP(tennisFactorGraph)
 
     ep.setEvidence(outcomeVarId, 0)
-    ep.calibrate(7, progress)
+    assertEquals(7, ep.calibrate(70, progress))
 
     val outcomeMarginal = ep.marginal(outcomeVarId)
     assertEquals(1, outcomeMarginal.getValue((outcomeVarId, 0)), 0.0001)
@@ -83,7 +83,7 @@ class TrueSkillOnlineTennisEPTest {
     val ep = GenericEP(tennisFactorGraph)
 
     ep.setEvidence(outcomeVarId, 1)
-    ep.calibrate(10, progress)
+    assertEquals(7, ep.calibrate(100, progress))
 
     val outcomeMarginal = ep.marginal(outcomeVarId)
     assertEquals(0, outcomeMarginal.getValue((outcomeVarId, 0)), 0.0001)

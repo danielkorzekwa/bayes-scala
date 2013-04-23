@@ -47,4 +47,10 @@ trait Factor {
    *
    */
   def /(factor: Factor): Factor
+  
+  /**
+   * Returns true if this and that factors are the same
+   * with a tolerance level specified by the threshold parameter.
+   */
+  def equals(that:Factor, threshold:Double):Boolean
 }
