@@ -93,7 +93,7 @@ case class Gaussian(m: Double, v: Double) {
     else {
       val newPrecision = (1 / v - 1 / gaussian.v)
       val newV = if (abs(newPrecision) > minPrecision) 1 / newPrecision else Double.PositiveInfinity
-      val newM = if(newV.isPosInfinity) Double.NaN else newV * (m / v - gaussian.m / gaussian.v)
+      val newM = if (newV.isPosInfinity) Double.NaN else newV * (m / v - gaussian.m / gaussian.v)
       Gaussian(newM, newV)
     }
   }
@@ -132,6 +132,7 @@ case class Gaussian(m: Double, v: Double) {
 
 object Gaussian {
 
+  private val standardNormal = new NormalDistribution(0, 1)
   /**
    * Returns the value of probability density function of the normal distribution.
    *
@@ -165,7 +166,7 @@ object Gaussian {
   /**
    * Returns the value of cumulative distribution function of the standard normal distribution.
    */
-  def stdCdf(x: Double): Double = cdf(x, 0, 1)
+  def stdCdf(x: Double): Double = standardNormal.cumulativeProbability(x)
 
   /**
    * Projects histogram to Gaussian distribution by matching the mean and variance moments.
