@@ -31,11 +31,21 @@ case class LinearGaussianFactor(parentVarId: Int, varId: Int, a: Double, b: Doub
 
         val marginalGaussian = marginalVarId match {
           case `parentVarId` => {
-            var productCanonGaussian = CanonicalGaussian(Array(parentVarId, varId), Matrix(a), b, v)
 
-            if (!g1m.isNaN && !g1v.isPosInfinity) productCanonGaussian = CanonicalGaussianMultiply.*(productCanonGaussian.varIds, productCanonGaussian, CanonicalGaussian(parentVarId, g1m, g1v))
-            if (!g2m.isNaN && !g2v.isPosInfinity) productCanonGaussian = CanonicalGaussianMultiply.*(productCanonGaussian.varIds, productCanonGaussian, CanonicalGaussian(varId, g2m, g2v))
-            productCanonGaussian.marginalise(varId).toGaussian()
+            if (!g2m.isNaN && !g2v.isPosInfinity) {
+              if (a == 1 && b == 0) Gaussian(g2m, g2v + v) * Gaussian(g1m, g1v)
+              else {
+                val linearCanonGaussian = CanonicalGaussian(Array(parentVarId, varId), Matrix(a), b, v)
+                val productCanonGaussian = CanonicalGaussianMultiply.*(linearCanonGaussian.varIds, linearCanonGaussian, CanonicalGaussian(varId, g2m, g2v)).marginalise(varId).toGaussian()
+                val marginal = productCanonGaussian * Gaussian(g1m, g1v)
+                marginal
+              }
+
+            } else if (!g1m.isNaN && !g1v.isPosInfinity) {
+              val marginal = (LinearGaussian(a, b, v) * Gaussian(g1m, g1v)).marginalise(1).toGaussian()
+              marginal
+            } else Gaussian(Double.NaN, Double.PositiveInfinity)
+
           }
           case `varId` => {
             val marginal = (LinearGaussian(a, b, v) * Gaussian(g1m, g1v)).marginalise(0).toGaussian() * Gaussian(g2m, g2v)

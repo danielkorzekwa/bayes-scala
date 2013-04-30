@@ -108,6 +108,45 @@ class CanonicalGaussianTest {
     assertEquals(0.03360, marginalY.pdf(Matrix(0)), 0.0001)
   }
 
+  @Test def marginalise_y_from_linear_gaussian_times_y_scenario_1 {
+    val y = CanonicalGaussian(yId, 3, 1.5)
+
+    val yGivenx = CanonicalGaussian(Array(xId, yId), Matrix(1), 0, 0.5)
+
+    val marginalX = (yGivenx * y).marginalise(yId)
+
+    assertArrayEquals(Array(xId), marginalX.varIds)
+    assertEquals(3, marginalX.toGaussian.m, 0)
+    assertEquals(2, marginalX.toGaussian.v, 0)
+
+  }
+
+  @Test def marginalise_y_from_linear_gaussian_times_y_scenario_2 {
+    val y = CanonicalGaussian(yId, 3, 1.5)
+
+    val yGivenx = CanonicalGaussian(Array(xId, yId), Matrix(2), 0, 0.5)
+
+    val marginalX = (yGivenx * y).marginalise(yId)
+
+    assertArrayEquals(Array(xId), marginalX.varIds)
+    assertEquals(1.5, marginalX.toGaussian.m, 0)
+    assertEquals(0.5, marginalX.toGaussian.v, 0)
+
+  }
+
+  @Test def marginalise_y_from_linear_gaussian_times_y_scenario_3 {
+    val y = CanonicalGaussian(yId, 3, 1.5)
+
+    val yGivenx = CanonicalGaussian(Array(xId, yId), Matrix(1), 0.4, 0.5)
+
+    val marginalX = (yGivenx * y).marginalise(yId)
+
+    assertArrayEquals(Array(xId), marginalX.varIds)
+    assertEquals(2.6, marginalX.toGaussian.m, 0.0001)
+    assertEquals(2, marginalX.toGaussian.v, 0.0001)
+
+  }
+
   /**
    * Tests for withEvidence() method
    */
