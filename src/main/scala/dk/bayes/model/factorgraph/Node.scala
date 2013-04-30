@@ -12,7 +12,7 @@ import scala.collection.mutable.ListBuffer
 sealed abstract class Node {
 
   type GATE <: Gate
-  private val gates = ListBuffer[GATE]()
+  private var gates = ListBuffer[GATE]()
 
   /**
    * Adds an outgoing gate to a node.
@@ -22,7 +22,7 @@ sealed abstract class Node {
   /**
    * Returns outgoing gates for a node.
    */
-  def getGates(): Seq[GATE] = gates.toList
+  def getGates(): Seq[GATE] = gates
 }
 
 /**

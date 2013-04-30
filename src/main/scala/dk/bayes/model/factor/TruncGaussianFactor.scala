@@ -41,42 +41,49 @@ case class TruncGaussianFactor(gaussianVarId: Int, truncVarId: Int, truncValue: 
   }
 
   def productMarginal(varId: Int, factors: Seq[Factor]): Factor = {
-    val gaussianFactor = factors.find(f => f.getVariableIds().head == gaussianVarId).get.asInstanceOf[GaussianFactor]
-    val tableFactor = factors.find(f => f.getVariableIds().head == truncVarId).get.asInstanceOf[TableFactor]
-    require(tableFactor.valueProbs.size == 2, "Trunc Factor must be a binary table factor")
 
-    val truncFactorProduct = (tableFactor * marginal(truncVarId))
+    factors match {
+      case Seq(gaussianFactor: GaussianFactor, tableFactor: TableFactor) if (gaussianFactor.varId == gaussianVarId) &&
+        tableFactor.variableIds.size == 1 &&
+        tableFactor.variableIds.head == truncVarId &&
+        tableFactor.variableDims.size == 1 &&
+        tableFactor.variableDims.head == 2 => {
 
-    val marginalFactor = varId match {
-      case `gaussianVarId` => {
+        val truncFactorProduct = (tableFactor * marginal(truncVarId))
 
-        val marginalGaussian = truncFactorProduct.valueProbs match {
-          case Array(1, 0) => Gaussian(gaussianFactor.m, gaussianFactor.v).truncate(truncValue, true)
-          case Array(0, 1) => Gaussian(gaussianFactor.m, gaussianFactor.v).truncate(truncValue, false)
-          case Array(1, 1) => Gaussian(gaussianFactor.m, gaussianFactor.v)
-          case _ => throw new IllegalArgumentException("Not implemented yet")
+        val marginalFactor = varId match {
+          case `gaussianVarId` => {
+
+            val marginalGaussian =
+              if (truncFactorProduct.valueProbs(0) == 1 && truncFactorProduct.valueProbs(1) == 0) Gaussian(gaussianFactor.m, gaussianFactor.v).truncate(truncValue, true)
+              else if (truncFactorProduct.valueProbs(0) == 0 && truncFactorProduct.valueProbs(1) == 1) Gaussian(gaussianFactor.m, gaussianFactor.v).truncate(truncValue, false)
+              else if (truncFactorProduct.valueProbs(0) == 1 && truncFactorProduct.valueProbs(1) == 1) Gaussian(gaussianFactor.m, gaussianFactor.v)
+              else throw new IllegalArgumentException("Not implemented yet")
+
+            GaussianFactor(varId, marginalGaussian.m, marginalGaussian.v)
+
+          }
+          case `truncVarId` => {
+            if (truncFactorProduct.valueProbs(0) == 1 && truncFactorProduct.valueProbs(1) == 1) {
+              val value0Prob = 1 - Gaussian(gaussianFactor.m, gaussianFactor.v).cdf(truncValue)
+              val value1Prob = 1 - value0Prob
+              val valueProbs = Array(value0Prob, value1Prob)
+
+              TableFactor(Vector(varId), Vector(2), valueProbs)
+            } else if (truncFactorProduct.valueProbs(0) == 1 && truncFactorProduct.valueProbs(1) == 0) TableFactor(Vector(varId), Vector(2), Array(1, 0))
+            else if (truncFactorProduct.valueProbs(0) == 0 && truncFactorProduct.valueProbs(1) == 1) TableFactor(Vector(varId), Vector(2), Array(0, 1))
+            else throw new IllegalArgumentException("Not implemented yet")
+
+          }
+          case _ => throw new IllegalArgumentException("Incorrect marginal variable id")
         }
 
-        GaussianFactor(varId, marginalGaussian.m, marginalGaussian.v)
+        marginalFactor
 
       }
-      case `truncVarId` => truncFactorProduct.valueProbs match {
-        case Array(1, 1) => {
-          val value0Prob = 1 - Gaussian(gaussianFactor.m, gaussianFactor.v).cdf(truncValue)
-          val value1Prob = 1 - value0Prob
-          val valueProbs = Array(value0Prob, value1Prob)
-
-          TableFactor(Vector(varId), Vector(2), valueProbs)
-        }
-        case Array(1, 0) => TableFactor(Vector(varId), Vector(2), Array(1, 0))
-        case Array(0, 1) => TableFactor(Vector(varId), Vector(2), Array(0, 1))
-        case _ => throw new IllegalArgumentException("Not implemented yet")
-      }
-
-      case _ => throw new IllegalArgumentException("Incorrect marginal variable id")
+      case _ => throw new IllegalArgumentException("TruncGaussianFactor can be multiplied by exactly two factors only, GaussianFactor and TableFactor")
     }
 
-    marginalFactor
   }
 
   def withEvidence(varId: Int, varValue: AnyVal): TruncGaussianFactor = {
