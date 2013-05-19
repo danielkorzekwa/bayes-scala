@@ -17,8 +17,7 @@ Bayesian Networks in Scala
 
 **Roadmap**
 
-*   Expectation Propagation on a factor graph
-*   Learning parameters in hybrid Bayesian networks
+*   Learning parameters in LG-SSM models
 
 **Documenation**
 
