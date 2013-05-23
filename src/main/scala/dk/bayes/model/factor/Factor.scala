@@ -6,7 +6,7 @@ package dk.bayes.model.factor
  * @author Daniel Korzekwa
  */
 trait Factor {
-
+  
   /**
    * Returns factor variable identifiers
    */

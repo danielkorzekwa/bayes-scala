@@ -8,6 +8,9 @@ import Assert._
 import com.typesafe.scalalogging.slf4j.Logger
 import org.slf4j.LoggerFactory
 import dk.bayes.model.factor.GaussianFactor
+import dk.bayes.gaussian.Linear._
+import java.util.NoSuchElementException
+import dk.bayes.model.factor.BivariateGaussianFactor
 
 /**
  * This is a test for a skill update with TrueSkill rating system in a two-person game, like Tennis.
@@ -20,8 +23,22 @@ class TrueSkillOnlineTennisEPTest {
 
   private def progress(currIter: Int) = println("EP iteration: " + currIter)
 
+  /**
+   * Tests for variable marginals.
+   */
+
+  @Test(expected = classOf[NoSuchElementException]) def variable_marginal_var_id_not_found {
+
+    val tennisFactorGraph = createTennisFactorGraphAfterPlayer1Won()
+    val ep = GenericEP(tennisFactorGraph)
+
+    assertEquals(2, ep.calibrate(10, progress))
+
+    val outcomeMarginal = ep.marginal(123)
+  }
+
   /**http://atom.research.microsoft.com/trueskill/rankcalculator.aspx*/
-  @Test def no_result_set {
+  @Test def variable_marginal_no_result_set {
 
     val tennisFactorGraph = createTennisFactorGraphAfterPlayer1Won()
     val ep = GenericEP(tennisFactorGraph)
@@ -56,7 +73,7 @@ class TrueSkillOnlineTennisEPTest {
   }
 
   /**http://atom.research.microsoft.com/trueskill/rankcalculator.aspx*/
-  @Test def player1_wins {
+  @Test def variable_marginal_player1_wins {
     val tennisFactorGraph = createTennisFactorGraph()
     val ep = GenericEP(tennisFactorGraph)
 
@@ -77,7 +94,7 @@ class TrueSkillOnlineTennisEPTest {
   }
 
   /**http://atom.research.microsoft.com/trueskill/rankcalculator.aspx*/
-  @Test def player1_looses {
+  @Test def variable_marginal_player1_looses {
 
     val tennisFactorGraph = createTennisFactorGraphAfterPlayer1Won()
     val ep = GenericEP(tennisFactorGraph)
@@ -97,4 +114,81 @@ class TrueSkillOnlineTennisEPTest {
     assertEquals(34.745, skill2Marginal.m, 0.0001)
     assertEquals(18.7083, skill2Marginal.v, 0.0001)
   }
+
+  /**
+   * Tests for factor marginals.
+   */
+
+  @Test(expected = classOf[NoSuchElementException]) def factor_marginal_var_id_not_found {
+
+    val tennisFactorGraph = createTennisFactorGraphAfterPlayer1Won()
+    val ep = GenericEP(tennisFactorGraph)
+
+    val perfMarginal = ep.marginal(skill1VarId, 345)
+  }
+
+  @Test(expected = classOf[NoSuchElementException]) def factor_marginal_var_id_not_found2 {
+
+    val tennisFactorGraph = createTennisFactorGraphAfterPlayer1Won()
+    val ep = GenericEP(tennisFactorGraph)
+
+    val perfMarginal = ep.marginal(skill1VarId, perf1VarId, 45)
+  }
+
+  /**http://atom.research.microsoft.com/trueskill/rankcalculator.aspx*/
+  @Test def factor_marginal_no_result_set {
+
+    val tennisFactorGraph = createTennisFactorGraphAfterPlayer1Won()
+    val ep = GenericEP(tennisFactorGraph)
+
+    val perfMarginal = ep.marginal(skill1VarId, perf1VarId).asInstanceOf[BivariateGaussianFactor]
+    assertEquals(Vector(1, 3), perfMarginal.getVariableIds())
+    assertEquals(Matrix(Double.NaN, Double.NaN).toString, perfMarginal.mean.toString)
+    assertEquals(Matrix(2, 2, Array(Double.NaN, Double.NaN, Double.NaN, Double.NaN)).toString, perfMarginal.variance.toString)
+
+    assertEquals(2, ep.calibrate(10, progress))
+
+    val perfMarginal2 = ep.marginal(skill1VarId, perf1VarId).asInstanceOf[BivariateGaussianFactor]
+    assertEquals(Vector(1, 3), perfMarginal2.getVariableIds())
+    assertEquals(Matrix(Double.NaN, Double.NaN).toString, perfMarginal2.mean.toString)
+    assertEquals(Matrix(2, 2, Array(Double.NaN, Double.NaN, Double.NaN, Double.NaN)).toString, perfMarginal2.variance.toString)
+  }
+
+  /**http://atom.research.microsoft.com/trueskill/rankcalculator.aspx*/
+  @Test def factor_marginal_player1_wins {
+    val tennisFactorGraph = createTennisFactorGraph()
+    val ep = GenericEP(tennisFactorGraph)
+
+    ep.setEvidence(outcomeVarId, 0)
+    assertEquals(7, ep.calibrate(70, progress))
+
+    val perfFactorMarginal = ep.marginal(skill1VarId, perf1VarId).asInstanceOf[BivariateGaussianFactor]
+    assertEquals(Vector(1, 3), perfFactorMarginal.getVariableIds())
+    assertEquals(Matrix(27.174, 32.142).toString, perfFactorMarginal.mean.toString)
+    assertEquals(Matrix(2, 2, Array(37.497, 28.173, 28.173, 34.212)).toString, perfFactorMarginal.variance.toString)
+
+    val player1PerfMarginal = ep.marginal(perf1VarId).asInstanceOf[GaussianFactor]
+    assertEquals(32.1415, player1PerfMarginal.m, 0.0001)
+    assertEquals(34.2117, player1PerfMarginal.v, 0.0001)
+  }
+
+  /**http://atom.research.microsoft.com/trueskill/rankcalculator.aspx*/
+  @Test def factor_marginal_player1_looses {
+
+    val tennisFactorGraph = createTennisFactorGraphAfterPlayer1Won()
+    val ep = GenericEP(tennisFactorGraph)
+
+    ep.setEvidence(outcomeVarId, 1)
+    assertEquals(7, ep.calibrate(100, progress))
+
+    val perfFactorMarginal = ep.marginal(skill1VarId, perf1VarId).asInstanceOf[BivariateGaussianFactor]
+    assertEquals(Vector(1, 3), perfFactorMarginal.getVariableIds)
+    assertEquals(Matrix(25.558, 24.810).toString, perfFactorMarginal.mean.toString)
+    assertEquals(Matrix(2, 2, Array(30.545, 27.324, 27.324, 39.974)).toString(), perfFactorMarginal.variance.toString)
+
+    val player1PerfMarginal = ep.marginal(perf1VarId).asInstanceOf[GaussianFactor]
+    assertEquals(24.8097, player1PerfMarginal.m, 0.0001)
+    assertEquals(39.9735, player1PerfMarginal.v, 0.0001)
+  }
+
 }

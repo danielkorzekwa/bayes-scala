@@ -1,17 +1,18 @@
-package dk.bayes.clustergraph
+package dk.bayes.model.clustergraph
 
 import org.junit._
 import Assert._
+import dk.bayes.model.clustergraph.ClusterGraph._
 import dk.bayes.testutil.StudentBN
 import dk.bayes.testutil.AssertUtil._
-import dk.bayes.clustergraph.ClusterGraph._
+import dk.bayes.model.clustergraph.ClusterGraph._
 import dk.bayes.testutil.AssertUtil._
 import dk.bayes.testutil.StudentBN
 import dk.bayes.factor._
 
 class GenericClusterGraphTest {
 
-  import StudentBN._
+import StudentBN._
 
   val clusterGraph = createStudentGraph()
 

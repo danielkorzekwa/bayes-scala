@@ -21,6 +21,11 @@ trait FactorGraph {
   def getNodes(): Seq[Node]
 
   /**
+   * Returns all factor nodes.
+   */
+  def getFactorNodes(): Seq[FactorNode]
+
+  /**
    * Returns variable node.
    */
   def getVariableNode(varId: Int): VarNode

@@ -1,8 +1,8 @@
 package dk.bayes.em
-import dk.bayes.clustergraph.ClusterGraph
+import dk.bayes.model.clustergraph.ClusterGraph
 import dk.bayes.infer.LoopyBP
 import dk.bayes.factor.Factor
-import dk.bayes.clustergraph.Cluster
+import dk.bayes.model.clustergraph.Cluster
 import scala.collection._
 import scala.collection.mutable.ListBuffer
 import scala.annotation.tailrec

@@ -1,6 +1,6 @@
 package dk.bayes.testutil
 
-import dk.bayes.clustergraph.ClusterGraph
+import dk.bayes.model.clustergraph.ClusterGraph
 import dk.bayes.factor._
 
 object TennisDBN {

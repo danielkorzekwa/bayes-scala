@@ -116,6 +116,11 @@ object Linear {
 
     def apply(numRows: Int, numCols: Int): Matrix = Matrix(new SimpleMatrix(numRows, numCols))
 
+    /**
+     * @param numRows
+     * @param numCols
+     * @param values Values are encoded in a row-major format
+     */
     def apply(numRows: Int, numCols: Int, values: Array[Double]): Matrix = Matrix(new SimpleMatrix(numRows, numCols, true, values: _*))
 
   }

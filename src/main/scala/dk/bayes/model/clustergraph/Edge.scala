@@ -1,4 +1,4 @@
-package dk.bayes.clustergraph
+package dk.bayes.model.clustergraph
 import dk.bayes.factor._
 
 /**

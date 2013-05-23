@@ -66,7 +66,22 @@ case class LinearGaussianFactor(parentVarId: Int, varId: Int, a: Double, b: Doub
 
   def getValue(assignment: (Int, AnyVal)*): Double = throw new UnsupportedOperationException("Not implemented yet")
 
-  def *(factor: Factor): Factor = throw new UnsupportedOperationException("Not implemented yet")
+  def *(factor: Factor): BivariateGaussianFactor = {
+
+    factor match {
+      case factor: GaussianFactor => {
+        val gaussianFactor = factor.asInstanceOf[GaussianFactor]
+        require(gaussianFactor.varId == parentVarId || gaussianFactor.varId == varId, "Incorrect gaussian variable id")
+
+        val linearCanonGaussian = CanonicalGaussian(Array(parentVarId, varId), Matrix(a), b, v)
+
+        val productGaussian = linearCanonGaussian * CanonicalGaussian(gaussianFactor.varId, gaussianFactor.m, gaussianFactor.v)
+        val bivariateGaussianFactor = BivariateGaussianFactor(productGaussian.varIds(0), productGaussian.varIds(1), productGaussian.getMean(), productGaussian.getVariance())
+        bivariateGaussianFactor
+      }
+      case _ => throw new IllegalArgumentException("LinearGaussian factor cannot be multiplied by a factor that is non gaussian")
+    }
+  }
 
   def /(that: Factor): Factor = throw new UnsupportedOperationException("Not implemented yet")
 

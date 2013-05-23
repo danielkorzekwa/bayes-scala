@@ -1,5 +1,5 @@
 package dk.bayes.em
-import dk.bayes.clustergraph.ClusterGraph
+import dk.bayes.model.clustergraph.ClusterGraph
 import EMLearn._
 
 /**

@@ -3,11 +3,11 @@ package dk.bayes.infer
 import org.junit._
 import Assert._
 import dk.bayes.testutil.StudentBN
-import dk.bayes.clustergraph.GenericClusterGraph
+import dk.bayes.model.clustergraph.GenericClusterGraph
 import dk.bayes.testutil._
 import dk.bayes.testutil.AssertUtil._
 import dk.bayes.factor._
-import dk.bayes.clustergraph.ClusterGraph
+import dk.bayes.model.clustergraph.ClusterGraph
 import SprinklerBN._
 import Double._
 

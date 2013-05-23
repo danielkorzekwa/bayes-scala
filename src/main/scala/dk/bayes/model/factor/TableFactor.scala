@@ -50,9 +50,12 @@ case class TableFactor(variableIds: Seq[Int], variableDims: Seq[Int], valueProbs
     value
   }
 
-  def *(factor: Factor): TableFactor = variableIds match {
-    case Seq(varId) => productForSingleFactor(factor.asInstanceOf[TableFactor])
-    case _ => throw new UnsupportedOperationException("Not implemented yet")
+  def *(factor: Factor): TableFactor = {
+   
+    variableIds match {
+      case Seq(varId) => productForSingleFactor(factor.asInstanceOf[TableFactor])
+      case _ => throw new UnsupportedOperationException("Not implemented yet")
+    }
   }
 
   private def productForSingleFactor(factor: TableFactor): TableFactor = {

@@ -2,7 +2,7 @@ package dk.bayes.testutil
 
 import dk.bayes.factor._
 import dk.bayes.factor.Factor._
-import dk.bayes.clustergraph.ClusterGraph
+import dk.bayes.model.clustergraph.ClusterGraph
 
 /**
  * Bayesian network example, borrowed from 'Daphne Koller, Nir Friedman. Probabilistic Graphical Models, Principles and Techniques, 2009' book.

@@ -25,13 +25,13 @@ trait EP {
    *
    * @param maxIter The maximum number of iterations that EP is executed for.
    * @param currIterProgress Current iteration number. It is called by the calibrate method at the beginning of every iteration
-   * 
+   *
    * @return Returns the total number of iterations, after which the EP algorithm has reached the convergence criteria
    */
-  def calibrate(maxIter: Int, currIterProgress: (Int) => Unit):Int
+  def calibrate(maxIter: Int, currIterProgress: (Int) => Unit): Int
 
   /**
-   * Returns marginal factor for a given variable in a factor graph.
+   * Returns marginal factor for a given variable(s) in a factor graph.
    */
-  def marginal(variableId: Int): Factor
+  def marginal(variableId: Int, variablesIds: Int*): Factor
 }

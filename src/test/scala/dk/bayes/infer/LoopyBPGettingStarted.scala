@@ -3,7 +3,7 @@ package dk.bayes.infer
 import org.junit._
 import Assert._
 import dk.bayes.factor._
-import dk.bayes.clustergraph.GenericClusterGraph
+import dk.bayes.model.clustergraph.GenericClusterGraph
 import dk.bayes.testutil.AssertUtil._
 
 class LoopyBPGettingStarted {

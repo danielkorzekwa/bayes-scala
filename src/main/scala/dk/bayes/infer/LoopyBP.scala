@@ -1,10 +1,10 @@
 package dk.bayes.infer
-import dk.bayes.clustergraph.ClusterGraph
+import dk.bayes.model.clustergraph.ClusterGraph
 import scala.annotation.tailrec
 import scala.util.Random
-import dk.bayes.clustergraph.ClusterGraph._
-import dk.bayes.clustergraph.Cluster
-import dk.bayes.clustergraph.Edge
+import dk.bayes.model.clustergraph.ClusterGraph._
+import dk.bayes.model.clustergraph.Cluster
+import dk.bayes.model.clustergraph.Edge
 import dk.bayes.factor.Factor
 import dk.bayes.factor.SingleFactor
 import scala.math._

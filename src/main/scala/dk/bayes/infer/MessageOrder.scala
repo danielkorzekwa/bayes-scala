@@ -1,6 +1,6 @@
 package dk.bayes.infer
 
-import dk.bayes.clustergraph.Cluster
+import dk.bayes.model.clustergraph.Cluster
 
 /**
  * Specifies order of clusters in which messages are sent for a single iteration of Belief Propagation.

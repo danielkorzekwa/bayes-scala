@@ -1,6 +1,6 @@
 package dk.bayes.infer
-import dk.bayes.clustergraph.ClusterGraph
-import dk.bayes.clustergraph._
+import dk.bayes.model.clustergraph.ClusterGraph
+import dk.bayes.model.clustergraph._
 import dk.bayes.factor.Factor
 
 /**

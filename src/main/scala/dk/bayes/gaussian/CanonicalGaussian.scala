@@ -79,9 +79,16 @@ case class CanonicalGaussian(varIds: Array[Int], k: Matrix, h: Matrix, g: Double
     CanonicalGaussian(newVarIds, newK, newH, newG)
   }
 
-  def getMean(): Matrix = k.inv * h
-  def getVariance(): Matrix = k.inv
+  def getMean(): Matrix = {
+    if (!g.isNaN) k.inv * h
+    else Matrix(List.fill(varIds.size)(Double.NaN).toArray)
+  }
 
+  def getVariance(): Matrix = {
+    if (!g.isNaN) k.inv
+    else Matrix(varIds.size, varIds.size, List.fill(pow(varIds.size, 2).toInt)(Double.NaN).toArray)
+  }
+  
   def toGaussian(): Gaussian = {
     val m = getMean()
     val v = getVariance()
@@ -133,6 +140,7 @@ object CanonicalGaussian {
    * @param v Variance
    */
   def apply(varIds: Array[Int], a: Matrix, b: Double, v: Double): CanonicalGaussian = {
+
     val kMatrix = Matrix(a.numRows() + 1, a.numRows() + 1)
 
     kMatrix.insertIntoThis(0, 0, a * a.transpose)
@@ -152,6 +160,6 @@ object CanonicalGaussian {
 
     new CanonicalGaussian(varIds, k, h, g)
   }
-  
-    implicit def toGaussian(mvnGaussian: CanonicalGaussian): Gaussian = mvnGaussian.toGaussian
+
+  implicit def toGaussian(mvnGaussian: CanonicalGaussian): Gaussian = mvnGaussian.toGaussian
 }

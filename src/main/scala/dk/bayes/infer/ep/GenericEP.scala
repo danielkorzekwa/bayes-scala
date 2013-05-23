@@ -105,17 +105,29 @@ case class GenericEP(factorGraph: FactorGraph, threshold: Double = 0.00001) exte
     notCalibratedNode.isEmpty
   }
 
-  def marginal(variableId: Int): Factor = {
+  def marginal(variableId: Int, variablesIds: Int*): Factor = {
 
-    val varNode = factorGraph.getVariableNode(variableId)
+    variablesIds match {
+      case Nil => {
+        val varNode = factorGraph.getVariableNode(variableId)
 
-    val gates = varNode.getGates()
+        val gates = varNode.getGates()
 
-    val inMsgs = gates.map(g => g.getEndGate.getMessage())
+        val inMsgs = gates.map(g => g.getEndGate.getMessage())
 
-    val marginalFactor = inMsgs.reduceLeft((msg1, msg2) => msg1 * msg2)
+        val variableMarginal = inMsgs.reduceLeft((msg1, msg2) => msg1 * msg2)
 
-    marginalFactor
+        variableMarginal
+      }
+      case _ => {
+        val allVarIds = variableId :: variablesIds.toList
+        val factorNode = factorGraph.getFactorNodes().find(f => f.getFactor().getVariableIds().equals(allVarIds)).get
+        val inMsgs = factorNode.getGates().map(g => g.getEndGate().getMessage())
+        val factorMarginal = inMsgs.foldLeft(factorNode.getFactor())((product, msg) => product * msg)
+        factorMarginal
+      }
+    }
+
   }
 
 }
