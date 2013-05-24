@@ -16,13 +16,13 @@ trait LDSLearn {
    */
 
   /**
-   * @param latentVariables The temporal sequence of latent variables from time 1 (prior state) till time N
+   * @param latentVariables The temporal sequence  of sequences of latent variables from time 1 (prior state) till time N
    */
-  def newA(latentVariables: Seq[LatentVariable]): Double
+  def newA(latentVariables: Seq[Seq[LatentVariable]]): Double
 
   /**
-   * @param latentVariables The temporal sequence of latent variables from time 1 (prior state) till time N
+   * @param latentVariables The temporal sequence  of sequences of latent variables from time 1 (prior state) till time N
    */
-  def newQ(latentVariables: Seq[LatentVariable]): Double
+  def newQ(latentVariables: Seq[Seq[LatentVariable]]): Double
 
 }

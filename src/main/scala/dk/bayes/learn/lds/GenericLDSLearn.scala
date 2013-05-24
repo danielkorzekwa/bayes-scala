@@ -13,10 +13,10 @@ object GenericLDSLearn extends LDSLearn {
    * M-step
    */
 
-  def newA(latentVariables: Seq[LatentVariable]): Double = {
+  def newA(latentVariables: Seq[Seq[LatentVariable]]): Double = {
 
-    /**Sequence of expectations. Tuple[E[XU],E[UU]], where X - current time slice, U - previous time slice */
-    val expectations: Seq[Tuple2[Double, Double]] = latentVariables.sliding(2).map {
+    /**Sequence sequences of expectations. Tuple[E[XU],E[UU]], where X - current time slice, U - previous time slice */
+    val expectations: Seq[Seq[Tuple2[Double, Double]]] = for (latentVariablesSeq <- latentVariables) yield latentVariablesSeq.sliding(2).map {
       case Seq(u, x) => {
         val eXU = x.covariance.get + x.mean * u.mean
         val eUU = u.variance + pow(u.mean, 2)
@@ -27,15 +27,16 @@ object GenericLDSLearn extends LDSLearn {
 
     }.toSeq
 
-    val A = expectations.map(_._1).sum / expectations.map(_._2).sum
+    val singleSequence = expectations.flatten
+    val A = singleSequence.map(_._1).sum / singleSequence.map(_._2).sum
     A
   }
 
-  def newQ(latentVariables: Seq[LatentVariable]): Double = {
+  def newQ(latentVariables: Seq[Seq[LatentVariable]]): Double = {
 
     val A = newA(latentVariables)
 
-    val QValues:Seq[Double] = latentVariables.sliding(2).map {
+    val QValues: Seq[Seq[Double]] = for (latentVariablesSeq <- latentVariables) yield latentVariablesSeq.sliding(2).map {
       case Seq(u, x) =>
         val eXU = x.covariance.get + x.mean * u.mean
         val eXX = x.variance + pow(x.mean, 2)
@@ -43,7 +44,8 @@ object GenericLDSLearn extends LDSLearn {
         eXX - A * eXU
     }.toSeq
 
-    val Q = QValues.sum / (latentVariables.size - 1)
+    val singleSequenceQValues = QValues.flatten
+    val Q = singleSequenceQValues.sum / singleSequenceQValues.size
     Q
   }
 
