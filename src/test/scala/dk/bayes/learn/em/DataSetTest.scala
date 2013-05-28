@@ -1,8 +1,13 @@
-package dk.bayes.em
+package dk.bayes.learn.em
 
-import org.junit._
-import Assert._
-import dk.bayes.testutil.SprinklerBN._
+import org.junit.Assert.assertEquals
+import org.junit.Test
+
+import dk.bayes.testutil.SprinklerBN.rainVar
+import dk.bayes.testutil.SprinklerBN.slipperyRoadVar
+import dk.bayes.testutil.SprinklerBN.sprinklerVar
+import dk.bayes.testutil.SprinklerBN.wetGrassVar
+import dk.bayes.testutil.SprinklerBN.winterVar
 
 class DataSetTest {
 

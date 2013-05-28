@@ -98,7 +98,7 @@ Set evidence for SAT variable and compute marginal for Grade variable:
 Getting Started - Learning parameters with Expectation Maximisation in Bayesian Networks from incomplete data  [1](#references)
 ---------------
 
-In this example we learn parameters of a Sprinkler Bayesian Network [3](#references). ([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/em/EMLearnSprinklerGettingStarted.scala))
+In this example we learn parameters of a Sprinkler Bayesian Network [3](#references). ([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/learn/em/EMLearnSprinklerGettingStarted.scala))
 
 ![Sprinkler Bayesian Network](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/sprinkler_bn.png "Sprinkler Bayesian Network")
 
@@ -221,7 +221,7 @@ Create cluster graph for Tennis Network ([source code](https://github.com/daniel
 
 	val tennisClusterGraph = createTennisClusterGraph()
 	 
-Learn parameters of Tennis Network from samples ([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/em/EMLearnTennisGettingStarted.scala), [tennis_3_players_network.dat](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/resources/tennis_data/tennis_3_players_network.dat)):
+Learn parameters of Tennis Network from samples ([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/learn/em/EMLearnTennisGettingStarted.scala), [tennis_3_players_network.dat](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/resources/tennis_data/tennis_3_players_network.dat)):
 
 	//Prepare training set
 	val variableIds = Array(

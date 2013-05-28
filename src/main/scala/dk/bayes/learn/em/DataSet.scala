@@ -1,5 +1,6 @@
-package dk.bayes.em
+package dk.bayes.learn.em
 import scala.io.Source
+import scala.Array.canBuildFrom
 
 /**
  * Represents data samples, which are used for learning parameters of Bayesian Network.

@@ -1,10 +1,8 @@
-package dk.bayes.em
+package dk.bayes.learn.em
 import dk.bayes.model.clustergraph.ClusterGraph
 import dk.bayes.infer.LoopyBP
 import dk.bayes.factor.Factor
-import dk.bayes.model.clustergraph.Cluster
 import scala.collection._
-import scala.collection.mutable.ListBuffer
 import scala.annotation.tailrec
 import EMLearn._
 
@@ -22,8 +20,8 @@ object GenericEMLearn extends EMLearn {
 
   def learn(clusterGraph: ClusterGraph, trainSet: DataSet, maxIterNum: Int, progress: (Progress) => Unit = (progress: Progress) => {}) = {
 
-    require(trainSet.samples.size>0,"No samples found in training set")
-    
+    require(trainSet.samples.size > 0, "No samples found in training set")
+
     /**
      * Returns learned cluster potentials by cluster type id.
      */
@@ -92,7 +90,7 @@ object GenericEMLearn extends EMLearn {
   private def maximisationStep(clusterBeliefs: Seq[Tuple2[Int, Factor]]): Map[Int, Factor] = {
 
     val clusterBeliefsByTypeId: Map[Int, Seq[Factor]] = clusterBeliefs.groupBy(c => c._1).mapValues(v => v.map(_._2))
-    
+
     val clusterPotentialsByTypeId: Map[Int, Factor] = clusterBeliefsByTypeId.map {
       case (clusterTypeId, clusterBeliefs) =>
 

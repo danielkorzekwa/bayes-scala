@@ -1,4 +1,4 @@
-package dk.bayes.em
+package dk.bayes.learn.em
 
 import org.junit._
 import Assert._

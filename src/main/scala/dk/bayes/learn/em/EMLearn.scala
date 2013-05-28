@@ -1,6 +1,6 @@
-package dk.bayes.em
+package dk.bayes.learn.em
 import dk.bayes.model.clustergraph.ClusterGraph
-import EMLearn._
+import dk.bayes.learn.em.EMLearn._
 
 /**
  * Learns parameters of Bayesian Network with Expectation Maximisation algorithm, presented in
