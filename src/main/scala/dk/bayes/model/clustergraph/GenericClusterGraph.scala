@@ -1,12 +1,11 @@
 package dk.bayes.model.clustergraph
 
-import dk.bayes.factor._
+import factor._
 import ClusterGraph._
 import scala.collection._
 import scala.annotation.tailrec
 import scala.util.Random
-import dk.bayes.factor.Factor._
-import dk.bayes.factor.SingleFactor
+
 
 /**
  * Default implementation of a ClusterGraph.

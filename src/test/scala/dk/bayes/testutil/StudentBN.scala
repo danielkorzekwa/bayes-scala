@@ -1,7 +1,7 @@
 package dk.bayes.testutil
 
-import dk.bayes.factor._
-import dk.bayes.factor.Factor._
+import dk.bayes.model.clustergraph.factor._
+import dk.bayes.model.clustergraph.factor.Factor._
 import dk.bayes.model.clustergraph.ClusterGraph
 
 /**

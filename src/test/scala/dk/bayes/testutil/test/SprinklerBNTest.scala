@@ -4,7 +4,7 @@ import org.junit._
 import Assert._
 import dk.bayes.infer.LoopyBP
 import dk.bayes.testutil.AssertUtil._
-import dk.bayes.factor._
+import dk.bayes.model.clustergraph.factor._
 import dk.bayes.testutil.SprinklerBN._
 
 class SprinklerBNTest {

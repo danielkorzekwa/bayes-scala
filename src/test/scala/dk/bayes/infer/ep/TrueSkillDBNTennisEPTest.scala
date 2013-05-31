@@ -25,7 +25,7 @@ class TrueSkillDBNTennisEPTest {
     val tennisFactorGraph = createTennisFactorGraph()
     val ep = GenericEP(tennisFactorGraph)
 
-    assertEquals(2,ep.calibrate(10, progress))
+    assertEquals(1,ep.calibrate(10, progress))
 
     val outcomeMarginal_t2 = ep.marginal(match1v3Time2VarId)
     assertEquals(0.5, outcomeMarginal_t2.getValue((match1v3Time2VarId, 0)), 0.00001)
@@ -52,7 +52,7 @@ class TrueSkillDBNTennisEPTest {
     ep.setEvidence(match1v2Time0VarId, 0)
     ep.setEvidence(match2v3Time1VarId, 0)
 
-    assertEquals(38,ep.calibrate(50, progress))
+    assertEquals(7,ep.calibrate(50, progress))
 
     val outcomeMarginal_t1 = ep.marginal(match1v2Time1VarId)
     assertEquals(0.6590, outcomeMarginal_t1.getValue((match1v2Time1VarId, 0)), 0.0001)

@@ -1,5 +1,6 @@
 package dk.bayes.model.clustergraph
-import dk.bayes.factor._
+
+import factor._
 
 /**
  * Represents outgoing edge in a cluster graph

@@ -1,7 +1,7 @@
 package dk.bayes.infer
 import dk.bayes.model.clustergraph.ClusterGraph
 import dk.bayes.model.clustergraph._
-import dk.bayes.factor.Factor
+import dk.bayes.model.clustergraph.factor.Factor
 
 /**
  * Provides inference functionality in a cluster graph.

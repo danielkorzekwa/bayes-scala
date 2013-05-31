@@ -13,11 +13,13 @@ case class GenericFactorGraph extends FactorGraph {
 
   private val allNodes = ListBuffer[Node]()
   private val varNodes: mutable.Map[Int, VarNode] = mutable.Map[Int, VarNode]()
+  private val factorNodes: mutable.Map[Seq[Int], FactorNode] = mutable.Map[Seq[Int], FactorNode]()
 
   def addFactor(factor: Factor) = {
 
     val factorNode = new FactorNode(factor)
     allNodes += factorNode
+    factorNodes += factorNode.getFactor.getVariableIds() -> factorNode
 
     //Add missing variable nodes
     val factorVarNodes = factor.getVariableIds().map(varId => varNodes.getOrElseUpdate(varId, {
@@ -47,7 +49,7 @@ case class GenericFactorGraph extends FactorGraph {
 
   def getNodes(): Seq[Node] = allNodes.toList
 
-  def getFactorNodes(): Seq[FactorNode] = allNodes.filter(n => n.isInstanceOf[FactorNode]).asInstanceOf[Seq[FactorNode]]
+  def getFactorNode(varIds: Seq[Int]): FactorNode = factorNodes(varIds)
 
   def getVariableNode(varId: Int): VarNode = varNodes(varId)
 

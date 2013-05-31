@@ -1,8 +1,7 @@
 package dk.bayes.model.clustergraph
 
-import dk.bayes.factor._
 import ClusterGraph._
-import dk.bayes.factor.SingleFactor
+import factor._
 
 /**
  * Represents Bayesian Network (or more generally Probabilistic Graphical Model) as a cluster graph.

@@ -8,7 +8,7 @@ import dk.bayes.testutil.AssertUtil._
 import dk.bayes.model.clustergraph.ClusterGraph._
 import dk.bayes.testutil.AssertUtil._
 import dk.bayes.testutil.StudentBN
-import dk.bayes.factor._
+import dk.bayes.model.clustergraph.factor._
 
 class GenericClusterGraphTest {
 

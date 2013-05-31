@@ -21,9 +21,9 @@ trait FactorGraph {
   def getNodes(): Seq[Node]
 
   /**
-   * Returns all factor nodes.
+   * Returns factor node.
    */
-  def getFactorNodes(): Seq[FactorNode]
+  def getFactorNode(varIds: Seq[Int]): FactorNode
 
   /**
    * Returns variable node.

@@ -2,7 +2,7 @@ package dk.bayes.learn.em
 
 import org.junit._
 import Assert._
-import dk.bayes.factor._
+import dk.bayes.model.clustergraph.factor._
 import dk.bayes.model.clustergraph._
 import dk.bayes.testutil.AssertUtil._
 import dk.bayes.testutil.TennisDBN._

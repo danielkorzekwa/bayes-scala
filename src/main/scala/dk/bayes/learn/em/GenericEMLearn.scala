@@ -1,7 +1,7 @@
 package dk.bayes.learn.em
 import dk.bayes.model.clustergraph.ClusterGraph
 import dk.bayes.infer.LoopyBP
-import dk.bayes.factor.Factor
+import  dk.bayes.model.clustergraph.factor.Factor
 import scala.collection._
 import scala.annotation.tailrec
 import EMLearn._

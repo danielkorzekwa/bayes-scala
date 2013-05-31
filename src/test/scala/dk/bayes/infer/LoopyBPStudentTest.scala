@@ -6,7 +6,7 @@ import dk.bayes.testutil.StudentBN
 import dk.bayes.model.clustergraph.GenericClusterGraph
 import dk.bayes.testutil._
 import dk.bayes.testutil.AssertUtil._
-import dk.bayes.factor._
+import dk.bayes.model.clustergraph.factor._
 import dk.bayes.model.clustergraph.ClusterGraph
 import StudentBN._
 

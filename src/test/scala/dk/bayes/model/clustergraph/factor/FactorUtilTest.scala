@@ -1,6 +1,7 @@
-package dk.bayes.factor
+package dk.bayes.model.clustergraph.factor
 
 import org.junit._
+
 import Assert._
 
 class FactorUtilTest {

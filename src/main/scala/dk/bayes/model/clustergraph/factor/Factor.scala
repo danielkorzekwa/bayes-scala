@@ -1,4 +1,4 @@
-package dk.bayes.factor
+package dk.bayes.model.clustergraph.factor
 
 /**
  * Represents potentials over a set of variables.

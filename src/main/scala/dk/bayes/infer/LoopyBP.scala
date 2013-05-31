@@ -5,8 +5,7 @@ import scala.util.Random
 import dk.bayes.model.clustergraph.ClusterGraph._
 import dk.bayes.model.clustergraph.Cluster
 import dk.bayes.model.clustergraph.Edge
-import dk.bayes.factor.Factor
-import dk.bayes.factor.SingleFactor
+import  dk.bayes.model.clustergraph.factor._
 import scala.math._
 import LoopyBP._
 

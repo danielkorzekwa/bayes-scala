@@ -4,7 +4,7 @@ import org.junit._
 import Assert._
 import dk.bayes.testutil.SprinklerBN
 import dk.bayes.testutil.SprinklerBN._
-import dk.bayes.factor.Factor
+import dk.bayes.model.clustergraph.factor.Factor
 import dk.bayes.testutil.AssertUtil._
 import EMLearn._
 

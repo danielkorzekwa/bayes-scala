@@ -1,6 +1,6 @@
 package dk.bayes.infer.ep
 
-import dk.bayes.model.factorgraph.FactorGraph
+import dk.bayes.model.factorgraph._
 import dk.bayes.model.factor.Factor
 import dk.bayes.model.factorgraph.FactorNode
 import dk.bayes.model.factorgraph.VarNode
@@ -13,6 +13,7 @@ import dk.bayes.model.factor.TableFactor
 import dk.bayes.model.factor.GaussianFactor
 import dk.bayes.model.factor.GaussianFactor
 import dk.bayes.model.factor.TableFactor
+import GenericEP._
 
 /**
  * Default implementation of the Expectation Propagation Bayesian Inference algorithm.
@@ -39,13 +40,17 @@ case class GenericEP(factorGraph: FactorGraph, threshold: Double = 0.00001) exte
     }
   }
 
-  def calibrate(maxIter: Int, currIterProgress: (Int) => Unit): Int = {
+  def calibrate(maxIter: Int, currIterProgress: (Int) => Unit, messageOrder: MessageOrder = ForwardBackwardMsgOrder()): Int = {
 
     var currIter = 0
     var calibrated = false
     while (!calibrated && currIter < maxIter) {
       currIterProgress(currIter)
-      calibrateIteration()
+
+      val nodes = factorGraph.getNodes()
+      val orderedNodes = messageOrder.ordered(nodes)
+      calibrateIteration(orderedNodes)
+
       calibrated = isCalibrated()
       currIter += 1
     }
@@ -57,9 +62,8 @@ case class GenericEP(factorGraph: FactorGraph, threshold: Double = 0.00001) exte
    * Executes a single message passing routine on a factor graph.
    *
    */
-  private def calibrateIteration() {
+  private def calibrateIteration(nodes: Seq[Node]) {
 
-    val nodes = factorGraph.getNodes()
     for (node <- nodes) {
       node match {
         case node: FactorNode => sendFactorMessage(node)
@@ -121,13 +125,25 @@ case class GenericEP(factorGraph: FactorGraph, threshold: Double = 0.00001) exte
       }
       case _ => {
         val allVarIds = variableId :: variablesIds.toList
-        val factorNode = factorGraph.getFactorNodes().find(f => f.getFactor().getVariableIds().equals(allVarIds)).get
+        val factorNode = factorGraph.getFactorNode(allVarIds)
         val inMsgs = factorNode.getGates().map(g => g.getEndGate().getMessage())
         val factorMarginal = inMsgs.foldLeft(factorNode.getFactor())((product, msg) => product * msg)
         factorMarginal
       }
     }
 
+  }
+
+}
+
+object GenericEP {
+
+  case class ForwardMsgOrder extends MessageOrder {
+    def ordered(nodes: Seq[Node]): Seq[Node] = nodes
+  }
+
+  case class ForwardBackwardMsgOrder extends MessageOrder {
+    def ordered(nodes: Seq[Node]): Seq[Node] = nodes ++ nodes.reverse
   }
 
 }

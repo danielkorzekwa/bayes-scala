@@ -1,6 +1,6 @@
 package dk.bayes.model.clustergraph
 
-import dk.bayes.factor._
+import factor._
 
 /**
  * Represents cluster in a cluster graph.

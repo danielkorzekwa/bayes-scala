@@ -1,4 +1,4 @@
-package dk.bayes.factor
+package dk.bayes.model.clustergraph.factor
 
 /**
  * Represents factor variable.
