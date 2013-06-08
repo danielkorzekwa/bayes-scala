@@ -5,7 +5,7 @@ import scala.util.Random
 import dk.bayes.model.clustergraph.ClusterGraph._
 import dk.bayes.model.clustergraph.Cluster
 import dk.bayes.model.clustergraph.Edge
-import  dk.bayes.model.clustergraph.factor._
+import dk.bayes.model.clustergraph.factor._
 import scala.math._
 import LoopyBP._
 
@@ -21,8 +21,8 @@ import LoopyBP._
  */
 case class LoopyBP(clusterGraph: ClusterGraph, threshold: Double = 0.00001) extends ClusterGraphInfer {
 
-  def calibrate(iterNum: (Int) => Unit = (iterNum: Int) => {},messageOrder: MessageOrder = ForwardBackwardMsgOrder()) {
-    
+  def calibrate(iterNum: (Int) => Unit = (iterNum: Int) => {}, messageOrder: MessageOrder = ForwardBackwardMsgOrder()) {
+
     @tailrec
     def calibrateUntilConverge(currentIter: Int): ClusterGraph = {
 
@@ -147,6 +147,7 @@ case class LoopyBP(clusterGraph: ClusterGraph, threshold: Double = 0.00001) exte
       while (continue && i < variables.size) {
         if (evidence._1 == variables(i).id) {
           val newFactor = cluster.getFactor().withEvidence(evidence)
+          require(newFactor.getValues().sum > 0, "All factor values can't be set to zero")
           cluster.updateFactor(newFactor)
           continue = false
         }
@@ -159,11 +160,11 @@ case class LoopyBP(clusterGraph: ClusterGraph, threshold: Double = 0.00001) exte
 
 object LoopyBP {
   case class ForwardMsgOrder extends MessageOrder {
-     def ordered(clusters:Seq[Cluster]):Seq[Cluster] = clusters
+    def ordered(clusters: Seq[Cluster]): Seq[Cluster] = clusters
   }
-  
+
   case class ForwardBackwardMsgOrder extends MessageOrder {
-     def ordered(clusters:Seq[Cluster]):Seq[Cluster] = clusters ++ clusters.reverse
+    def ordered(clusters: Seq[Cluster]): Seq[Cluster] = clusters ++ clusters.reverse
   }
-  
+
 }

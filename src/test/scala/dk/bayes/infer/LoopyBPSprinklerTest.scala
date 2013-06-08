@@ -19,7 +19,7 @@ class LoopyBPSprinklerTest {
 
   val loopyBP = LoopyBP(sprinklerGraph)
 
-  @Test def cluster_belief_given_full_evidence_with_zero_probability {
+  @Test(expected = classOf[IllegalArgumentException]) def cluster_belief_given_full_evidence_with_zero_probability {
     val wetGrassFactorWithZeroProbability = Factor(sprinklerVar, rainVar, wetGrassVar, Array(0.95, 0.05, 0.9, 0.1, 0.8, 0.2, 0, 1))
     sprinklerGraph.getCluster(wetGrassVar.id).updateFactor(wetGrassFactorWithZeroProbability)
 
@@ -27,23 +27,11 @@ class LoopyBPSprinklerTest {
     loopyBP.setEvidence(sprinklerVar.id, 1)
     loopyBP.setEvidence(rainVar.id, 1)
     loopyBP.setEvidence(wetGrassVar.id, 0)
-    loopyBP.setEvidence(slipperyRoadVar.id, 1)
+  }
 
-    loopyBP.calibrate(progress)
-
-    val winterClusterBelief = loopyBP.clusterBelief(winterVar.id)
-    val sprinklerClusterBelief = loopyBP.clusterBelief(sprinklerVar.id)
-    val rainClusterBelief = loopyBP.clusterBelief(rainVar.id)
-    val wetGrassClusterBelief = loopyBP.clusterBelief(wetGrassVar.id)
-    val slipperyClusterBelief = loopyBP.clusterBelief(slipperyRoadVar.id)
-
-    assertFactor(Factor(winterVar, Array(NaN, NaN)), winterClusterBelief, 0.0001)
-    assertFactor(Factor(winterVar, sprinklerVar, Array(NaN, NaN, NaN, NaN)), sprinklerClusterBelief, 0.0001)
-
-    assertFactor(Factor(winterVar, rainVar, Array(NaN, NaN, NaN, NaN)), rainClusterBelief, 0.0001)
-
-    assertFactor(Factor(sprinklerVar, rainVar, wetGrassVar, Array(NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN)), wetGrassClusterBelief, 0.0001)
-    assertFactor(Factor(rainVar, slipperyRoadVar, Array(NaN, NaN, NaN, NaN)), slipperyClusterBelief, 0.0001)
+  @Test(expected = classOf[IllegalArgumentException]) def incompatible_evidence {
+    loopyBP.setEvidence(winterVar.id, 0)
+    loopyBP.setEvidence(winterVar.id, 1)
   }
 
   /**
@@ -88,5 +76,4 @@ class LoopyBPSprinklerTest {
     assertFactor(Factor(sprinklerVar, rainVar, wetGrassVar, Array(0, 0, 0, 0, 0, 0, 1, 0)), wetGrassClusterBelief, 0.0001)
     assertFactor(Factor(rainVar, slipperyRoadVar, Array(0, 0, 0, 1)), slipperyClusterBelief, 0.0001)
   }
-
 }

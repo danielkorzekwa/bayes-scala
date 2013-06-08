@@ -47,7 +47,7 @@ case class GenericFactorGraph extends FactorGraph {
 
   }
 
-  def getNodes(): Seq[Node] = allNodes.toList
+  def getNodes(): Seq[Node] = allNodes
 
   def getFactorNode(varIds: Seq[Int]): FactorNode = factorNodes(varIds)
 
