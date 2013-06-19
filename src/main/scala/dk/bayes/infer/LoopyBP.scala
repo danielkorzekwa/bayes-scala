@@ -147,7 +147,7 @@ case class LoopyBP(clusterGraph: ClusterGraph, threshold: Double = 0.00001) exte
       while (continue && i < variables.size) {
         if (evidence._1 == variables(i).id) {
           val newFactor = cluster.getFactor().withEvidence(evidence)
-          require(newFactor.getValues().sum > 0, "All factor values can't be set to zero")
+          require(newFactor.getValues().sum > 0, "All factor values can't be set to zero. Cluster id: " + cluster.id)
           cluster.updateFactor(newFactor)
           continue = false
         }

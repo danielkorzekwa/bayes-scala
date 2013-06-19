@@ -1,7 +1,7 @@
 package dk.bayes.learn.em
 import dk.bayes.model.clustergraph.ClusterGraph
 import dk.bayes.infer.LoopyBP
-import  dk.bayes.model.clustergraph.factor.Factor
+import dk.bayes.model.clustergraph.factor.Factor
 import scala.collection._
 import scala.annotation.tailrec
 import EMLearn._
@@ -12,6 +12,8 @@ import EMLearn._
  * @author Daniel Korzekwa
  */
 object GenericEMLearn extends EMLearn {
+
+  private val ZERO_PROBABILITY = 1.0E-20
 
   /**
    * Represents sufficient statistics produced by E-step of EM algorithm.
@@ -98,7 +100,7 @@ object GenericEMLearn extends EMLearn {
         val beliefValuesSum = new Array[Double](clusterBeliefFactor.getValues().size)
 
         for (belief <- clusterBeliefs) {
-          val beliefValues = belief.getValues()
+          val beliefValues = belief.getValues().map(v => if (v == 0) ZERO_PROBABILITY else v)
           var i = 0
           while (i < beliefValues.size) {
             beliefValuesSum(i) += beliefValues(i)
@@ -124,8 +126,8 @@ object GenericEMLearn extends EMLearn {
     val cptValues = values.isEmpty match {
       case true => Nil
       case false => values.grouped(sliceSize).flatMap { slice =>
-        slice.map(elem => elem / slice.sum)
-      }
+      slice.map(elem => elem / slice.sum)
+    }
     }
 
     cptValues.toArray
