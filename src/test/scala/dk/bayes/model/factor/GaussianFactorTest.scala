@@ -7,6 +7,16 @@ class GaussianFactorTest {
 
   private val gaussianFactor = GaussianFactor(varId = 1, m = 2, v = 3)
 
+  /**
+   * Tests for constructor.
+   */
+  @Test(expected = classOf[IllegalArgumentException]) def constructor_variance_is_NaN {
+    GaussianFactor(10, 0, Double.NaN)
+  }
+  @Test(expected = classOf[IllegalArgumentException]) def constructor_mean_is_NaN {
+    GaussianFactor(10, Double.NaN, 2)
+  }
+
   @Test def getVariablesIds {
     assertEquals(List(1), gaussianFactor.getVariableIds)
   }
@@ -93,7 +103,10 @@ class GaussianFactorTest {
 
     assertEquals(true, f1.equals(f2, 0.00001))
     assertEquals(true, f2.equals(f1, 0.00001))
+
     assertEquals(false, f1.equals(f2, 0.0000000001))
     assertEquals(false, f2.equals(f1, 0.0000000001))
+
+    assertEquals(true, GaussianFactor(varId = 1, m = 0, v = Double.PositiveInfinity) equals(GaussianFactor(varId = 1, m = 0, v = Double.PositiveInfinity),0.0000001))
   }
 }

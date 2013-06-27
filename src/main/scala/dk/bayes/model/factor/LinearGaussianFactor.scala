@@ -22,7 +22,7 @@ case class LinearGaussianFactor(parentVarId: Int, varId: Int, a: Double, b: Doub
 
   def getVariableIds(): Seq[Int] = Vector(parentVarId, varId)
 
-  def marginal(varId: Int): Factor = GaussianFactor(varId, Double.NaN, Double.PositiveInfinity)
+  def marginal(varId: Int): Factor = GaussianFactor(varId, 0, Double.PositiveInfinity)
 
   def productMarginal(marginalVarId: Int, factors: Seq[Factor]): GaussianFactor = {
 
@@ -44,7 +44,7 @@ case class LinearGaussianFactor(parentVarId: Int, varId: Int, a: Double, b: Doub
             } else if (!g1m.isNaN && !g1v.isPosInfinity) {
               val marginal = (LinearGaussian(a, b, v) * Gaussian(g1m, g1v)).marginalise(1).toGaussian()
               marginal
-            } else Gaussian(Double.NaN, Double.PositiveInfinity)
+            } else Gaussian(0, Double.PositiveInfinity)
 
           }
           case `varId` => {

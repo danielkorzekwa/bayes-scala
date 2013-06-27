@@ -23,7 +23,7 @@ case class TruncGaussianFactor(gaussianVarId: Int, truncVarId: Int, truncValue: 
   def marginal(varId: Int): Factor = {
 
     val marginalFactor = varId match {
-      case `gaussianVarId` => GaussianFactor(varId, Double.NaN, Double.PositiveInfinity)
+      case `gaussianVarId` => GaussianFactor(varId, 0, Double.PositiveInfinity)
 
       case `truncVarId` => {
         truncVarEvidence match {

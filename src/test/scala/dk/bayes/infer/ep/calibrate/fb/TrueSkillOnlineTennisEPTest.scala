@@ -1,16 +1,12 @@
-package dk.bayes.infer.ep
-
-import dk.bayes.infer.ep.util.TennisFactorGraph
+package dk.bayes.infer.ep.calibrate.fb
 import org.junit._
-import Assert._
-import TennisFactorGraph._
-import Assert._
-import com.typesafe.scalalogging.slf4j.Logger
-import org.slf4j.LoggerFactory
+import org.junit.Assert._
+import dk.bayes.infer.ep.util.TennisFactorGraph._
+import org.junit.Assert._
 import dk.bayes.model.factor.GaussianFactor
 import dk.bayes.gaussian.Linear._
-import java.util.NoSuchElementException
 import dk.bayes.model.factor.BivariateGaussianFactor
+import dk.bayes.infer.ep.GenericEP
 
 /**
  * This is a test for a skill update with TrueSkill rating system in a two-person game, like Tennis.
@@ -30,10 +26,11 @@ class TrueSkillOnlineTennisEPTest {
   @Test(expected = classOf[NoSuchElementException]) def variable_marginal_var_id_not_found {
 
     val tennisFactorGraph = createTennisFactorGraphAfterPlayer1Won()
+
+    val epCalibrate = ForwardBackwardEPCalibrate(tennisFactorGraph)
+    assertEquals(EPSummary(1, 44), epCalibrate.calibrate(10, progress))
+
     val ep = GenericEP(tennisFactorGraph)
-
-    assertEquals(1, ep.calibrate(10, progress))
-
     val outcomeMarginal = ep.marginal(123)
   }
 
@@ -41,9 +38,11 @@ class TrueSkillOnlineTennisEPTest {
   @Test def variable_marginal_no_result_set {
 
     val tennisFactorGraph = createTennisFactorGraphAfterPlayer1Won()
-    val ep = GenericEP(tennisFactorGraph)
 
-    assertEquals(1, ep.calibrate(10, progress))
+    val epCalibrate = ForwardBackwardEPCalibrate(tennisFactorGraph)
+    assertEquals(EPSummary(1, 44), epCalibrate.calibrate(10, progress))
+
+    val ep = GenericEP(tennisFactorGraph)
 
     val outcomeMarginal = ep.marginal(outcomeVarId)
     assertEquals(0.24463, outcomeMarginal.getValue((outcomeVarId, 0)), 0.00001)
@@ -57,7 +56,7 @@ class TrueSkillOnlineTennisEPTest {
     assertEquals(33.846, skill2Marginal.m, 0.0001)
     assertEquals(20.861, skill2Marginal.v, 0.0001)
 
-    assertEquals(1, ep.calibrate(10, progress))
+    assertEquals(EPSummary(1, 44), epCalibrate.calibrate(10, progress))
 
     val outcomeMarginal2 = ep.marginal(outcomeVarId)
     assertEquals(0.24463, outcomeMarginal2.getValue((outcomeVarId, 0)), 0.00001)
@@ -75,10 +74,12 @@ class TrueSkillOnlineTennisEPTest {
   /**http://atom.research.microsoft.com/trueskill/rankcalculator.aspx*/
   @Test def variable_marginal_player1_wins {
     val tennisFactorGraph = createTennisFactorGraph()
-    val ep = GenericEP(tennisFactorGraph)
 
+    val ep = GenericEP(tennisFactorGraph)
     ep.setEvidence(outcomeVarId, 0)
-    assertEquals(2, ep.calibrate(70, progress))
+
+    val epCalibrate = ForwardBackwardEPCalibrate(tennisFactorGraph)
+    assertEquals(EPSummary(2, 88), epCalibrate.calibrate(70, progress))
 
     val outcomeMarginal = ep.marginal(outcomeVarId)
     assertEquals(1, outcomeMarginal.getValue((outcomeVarId, 0)), 0.0001)
@@ -98,9 +99,10 @@ class TrueSkillOnlineTennisEPTest {
 
     val tennisFactorGraph = createTennisFactorGraphAfterPlayer1Won()
     val ep = GenericEP(tennisFactorGraph)
-
     ep.setEvidence(outcomeVarId, 1)
-    assertEquals(2, ep.calibrate(100, progress))
+
+    val epCalibrate = ForwardBackwardEPCalibrate(tennisFactorGraph)
+    assertEquals(EPSummary(2, 88), epCalibrate.calibrate(100, progress))
 
     val outcomeMarginal = ep.marginal(outcomeVarId)
     assertEquals(0, outcomeMarginal.getValue((outcomeVarId, 0)), 0.0001)
@@ -146,21 +148,23 @@ class TrueSkillOnlineTennisEPTest {
     assertEquals(Matrix(Double.NaN, Double.NaN).toString, perfMarginal.mean.toString)
     assertEquals(Matrix(2, 2, Array(Double.NaN, Double.NaN, Double.NaN, Double.NaN)).toString, perfMarginal.variance.toString)
 
-    assertEquals(1, ep.calibrate(10, progress))
+    val epCalibrate = ForwardBackwardEPCalibrate(tennisFactorGraph)
+    assertEquals(EPSummary(1, 44), epCalibrate.calibrate(10, progress))
 
     val perfMarginal2 = ep.marginal(skill1VarId, perf1VarId).asInstanceOf[BivariateGaussianFactor]
     assertEquals(Vector(1, 3), perfMarginal2.getVariableIds())
-    assertEquals(Matrix(Double.NaN, Double.NaN).toString, perfMarginal2.mean.toString)
-    assertEquals(Matrix(2, 2, Array(Double.NaN, Double.NaN, Double.NaN, Double.NaN)).toString, perfMarginal2.variance.toString)
+    assertEquals(Matrix(27.174, 27.174).toString, perfMarginal2.mean.toString)
+    assertEquals(Matrix(2, 2, Array(37.501, 37.501, 37.501, 54.862)).toString, perfMarginal2.variance.toString)
   }
 
   /**http://atom.research.microsoft.com/trueskill/rankcalculator.aspx*/
   @Test def factor_marginal_player1_wins {
     val tennisFactorGraph = createTennisFactorGraph()
     val ep = GenericEP(tennisFactorGraph)
-
     ep.setEvidence(outcomeVarId, 0)
-    assertEquals(2, ep.calibrate(70, progress))
+
+    val epCalibrate = ForwardBackwardEPCalibrate(tennisFactorGraph)
+    assertEquals(EPSummary(2, 88), epCalibrate.calibrate(70, progress))
 
     val perfFactorMarginal = ep.marginal(skill1VarId, perf1VarId).asInstanceOf[BivariateGaussianFactor]
     assertEquals(Vector(1, 3), perfFactorMarginal.getVariableIds())
@@ -177,9 +181,10 @@ class TrueSkillOnlineTennisEPTest {
 
     val tennisFactorGraph = createTennisFactorGraphAfterPlayer1Won()
     val ep = GenericEP(tennisFactorGraph)
-
     ep.setEvidence(outcomeVarId, 1)
-    assertEquals(2, ep.calibrate(100, progress))
+
+    val epCalibrate = ForwardBackwardEPCalibrate(tennisFactorGraph)
+    assertEquals(EPSummary(2, 88), epCalibrate.calibrate(100, progress))
 
     val perfFactorMarginal = ep.marginal(skill1VarId, perf1VarId).asInstanceOf[BivariateGaussianFactor]
     assertEquals(Vector(1, 3), perfFactorMarginal.getVariableIds)

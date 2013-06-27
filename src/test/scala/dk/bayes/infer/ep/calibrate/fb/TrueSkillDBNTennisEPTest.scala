@@ -1,13 +1,10 @@
-package dk.bayes.infer.ep
-
-import dk.bayes.infer.ep.util.TennisFactorGraphDBN
+package dk.bayes.infer.ep.calibrate.fb
 import org.junit._
-import Assert._
-import TennisFactorGraphDBN._
-import Assert._
-import com.typesafe.scalalogging.slf4j.Logger
-import org.slf4j.LoggerFactory
+import org.junit.Assert._
+import dk.bayes.infer.ep.util.TennisFactorGraphDBN._
+import org.junit.Assert._
 import dk.bayes.model.factor.GaussianFactor
+import dk.bayes.infer.ep.GenericEP
 
 /**
  * This is a test for a skill update with TrueSkill rating system in a two-person game, like Tennis, over 3 time slices including 3 players and 6 games.
@@ -25,7 +22,8 @@ class TrueSkillDBNTennisEPTest {
     val tennisFactorGraph = createTennisFactorGraph()
     val ep = GenericEP(tennisFactorGraph)
 
-    assertEquals(1,ep.calibrate(10, progress))
+    val epCalibrate = ForwardBackwardEPCalibrate(tennisFactorGraph)
+    assertEquals(EPSummary(1, 268), epCalibrate.calibrate(10, progress))
 
     val outcomeMarginal_t2 = ep.marginal(match1v3Time2VarId)
     assertEquals(0.5, outcomeMarginal_t2.getValue((match1v3Time2VarId, 0)), 0.00001)
@@ -52,7 +50,8 @@ class TrueSkillDBNTennisEPTest {
     ep.setEvidence(match1v2Time0VarId, 0)
     ep.setEvidence(match2v3Time1VarId, 0)
 
-    assertEquals(7,ep.calibrate(50, progress))
+    val epCalibrate = ForwardBackwardEPCalibrate(tennisFactorGraph)
+    assertEquals(EPSummary(7, 1876), epCalibrate.calibrate(50, progress))
 
     val outcomeMarginal_t1 = ep.marginal(match1v2Time1VarId)
     assertEquals(0.6590, outcomeMarginal_t1.getValue((match1v2Time1VarId, 0)), 0.0001)

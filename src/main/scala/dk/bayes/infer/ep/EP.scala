@@ -1,6 +1,8 @@
 package dk.bayes.infer.ep
 
 import dk.bayes.model.factor.Factor
+import dk.bayes.infer.ep.calibrate.fb.EPSummary
+
 
 /**
  * Expectation Propagation Bayesian Inferece algorithm by Thomas Minka.
@@ -19,18 +21,7 @@ trait EP {
    * @param varValue Variable value
    */
   def setEvidence(varId: Int, varValue: AnyVal)
-
-  /**
-   * Calibrates factor graph.
-   *
-   * @param maxIter The maximum number of iterations that EP is executed for.
-   * @param currIterProgress Current iteration number. It is called by the calibrate method at the beginning of every iteration
-   * @param messageOrder Defines the order of messages that are sent between nodes in a factor graph during calibration process
-   *
-   * @return Returns the total number of iterations, after which the EP algorithm has reached the convergence criteria
-   */
-  def calibrate(maxIter: Int, currIterProgress: (Int) => Unit,  messageOrder: MessageOrder): Int
-
+ 
   /**
    * Returns marginal factor for a given variable(s) in a factor graph.
    */

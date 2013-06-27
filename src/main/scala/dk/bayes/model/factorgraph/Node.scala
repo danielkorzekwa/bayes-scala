@@ -30,7 +30,7 @@ sealed abstract class Node {
  *
  * @param factor Factor associated with a factor node
  */
-class FactorNode(factor: Factor) extends Node {
+case class FactorNode(factor: Factor) extends Node {
 
   type GATE = FactorGate
 
@@ -38,8 +38,7 @@ class FactorNode(factor: Factor) extends Node {
 
   def getFactor(): Factor = _factor
   def setFactor(factor: Factor) { _factor = factor }
-  
-  override def toString() = "FactorNode(%s)".format(factor)
+
 }
 
 /**

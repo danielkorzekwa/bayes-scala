@@ -17,6 +17,7 @@ Bayesian Networks in Scala
 
 **Roadmap**
 
+*   Improve the performance of calibrating factor graph with Expectation Propagation 
 *   Learning parameters in LG-SSM models
 *   Conditional Bayesian Networks (CPD as a Bayesian Network with input variables X, output variables Y, and internal variables Z)
 

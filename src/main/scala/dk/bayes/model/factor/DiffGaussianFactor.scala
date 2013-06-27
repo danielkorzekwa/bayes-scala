@@ -20,7 +20,7 @@ case class DiffGaussianFactor(gaussian1VarId: Int, gaussian2VarId: Int, diffGaus
 
   def getVariableIds(): Seq[Int] = Vector(gaussian1VarId, gaussian2VarId, diffGaussianVarId)
 
-  def marginal(varId: Int): GaussianFactor = GaussianFactor(varId, Double.NaN, Double.PositiveInfinity)
+  def marginal(varId: Int): GaussianFactor = GaussianFactor(varId, 0, Double.PositiveInfinity)
 
   def productMarginal(varId: Int, factors: Seq[Factor]): GaussianFactor = {
     factors.foreach(f => require(f.isInstanceOf[GaussianFactor], "DiffGaussian factor cannot be multiplied by non gaussian factor:" + f))

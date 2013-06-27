@@ -14,6 +14,8 @@ import Gaussian._
  * @param v Variance
  */
 case class Gaussian(m: Double, v: Double) {
+  require(!m.isNaN(), "Gaussian mean is NaN")
+  require(!v.isNaN(), "Gaussian variance is NaN")
 
   private val minPrecision = 1e-7
 
@@ -30,6 +32,8 @@ case class Gaussian(m: Double, v: Double) {
    */
   def truncate(x: Double, upperTail: Boolean): Gaussian = {
 
+    if (v.isPosInfinity) return this
+    
     val sd = sqrt(v)
 
     val truncatedGaussian = upperTail match {
@@ -76,13 +80,17 @@ case class Gaussian(m: Double, v: Double) {
    */
   def *(gaussian: Gaussian): Gaussian = {
 
-    val product = if (v == Double.PositiveInfinity || gaussian.v == Double.PositiveInfinity) this else {
-      val newM = (m * gaussian.v + gaussian.m * v) / (v + gaussian.v)
-      val newV = (v * gaussian.v) / (v + gaussian.v)
-      Gaussian(newM, newV)
-    }
+    val product =
+      if (gaussian.v == Double.PositiveInfinity) this
+      else if (v == Double.PositiveInfinity) gaussian
+      else {
+        val newM = (m * gaussian.v + gaussian.m * v) / (v + gaussian.v)
+        val newV = (v * gaussian.v) / (v + gaussian.v)
+        Gaussian(newM, newV)
+      }
 
     product
+
   }
 
   /**
@@ -93,7 +101,7 @@ case class Gaussian(m: Double, v: Double) {
     else {
       val newPrecision = (1 / v - 1 / gaussian.v)
       val newV = if (abs(newPrecision) > minPrecision) 1 / newPrecision else Double.PositiveInfinity
-      val newM = if (newV.isPosInfinity) Double.NaN else newV * (m / v - gaussian.m / gaussian.v)
+      val newM = if (newV.isPosInfinity) 0 else newV * (m / v - gaussian.m / gaussian.v)
       Gaussian(newM, newV)
     }
   }

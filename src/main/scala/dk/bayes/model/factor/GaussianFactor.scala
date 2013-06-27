@@ -15,6 +15,9 @@ import dk.bayes.gaussian.Gaussian
  */
 case class GaussianFactor(varId: Int, m: Double, v: Double) extends Factor {
 
+  require(!m.isNaN(), "GaussianFactor mean is NaN")
+  require(!v.isNaN(), "GaussianFactor variance is NaN")
+
   def getVariableIds(): Seq[Int] = Vector(varId)
 
   def marginal(marginalVarId: Int): GaussianFactor = {
@@ -58,10 +61,16 @@ case class GaussianFactor(varId: Int, m: Double, v: Double) extends Factor {
   }
 
   def equals(that: Factor, threshold: Double): Boolean = {
+
+    val thesame = that match {
+      case gaussianFactor: GaussianFactor => {
+        (abs(m - gaussianFactor.m) < threshold && (abs(v - gaussianFactor.v) < threshold) || (v.isPosInfinity && gaussianFactor.v.isPosInfinity))
+      }
+      case _ => false
+    }
+
     val gaussianFactor = that.asInstanceOf[GaussianFactor]
 
-    val thesame = (abs(m - gaussianFactor.m) < threshold && abs(v - gaussianFactor.v) < threshold) ||
-      (m.isNaN() && gaussianFactor.m.isNaN() && v.isPosInfinity && gaussianFactor.v.isPosInfinity)
     thesame
   }
 

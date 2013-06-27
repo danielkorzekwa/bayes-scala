@@ -21,6 +21,11 @@ trait FactorGraph {
   def getNodes(): Seq[Node]
 
   /**
+   * Returns all factor nodes in a factor graph.
+   */
+  def getFactorNodes(): Seq[FactorNode]
+
+  /**
    * Returns factor node.
    */
   def getFactorNode(varIds: Seq[Int]): FactorNode
@@ -29,5 +34,16 @@ trait FactorGraph {
    * Returns variable node.
    */
   def getVariableNode(varId: Int): VarNode
+
+  /**
+   *  Returns the list of variables in a factor graph.
+   */
+  def getVariables(): Seq[Int]
+
+  /**
+   * Merges this and that factor graphs, putting all factors,
+   * variables and factor gates from both factor graphs into the new factor graph.
+   */
+  def merge(that: FactorGraph): FactorGraph
 
 }
