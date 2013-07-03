@@ -2,7 +2,7 @@ package dk.bayes.infer.ep.util
 
 import dk.bayes.model.factorgraph.FactorGraph
 import dk.bayes.model.factorgraph.GenericFactorGraph
-import dk.bayes.model.factor.TableFactor
+import dk.bayes.model.factor.SingleTableFactor
 import dk.bayes.model.factor.GaussianFactor
 import dk.bayes.model.factor.LinearGaussianFactor
 import scala.math._

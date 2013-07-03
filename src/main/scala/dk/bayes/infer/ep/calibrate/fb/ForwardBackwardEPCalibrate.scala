@@ -7,6 +7,8 @@ import dk.bayes.model.factorgraph.VarNode
 import com.typesafe.scalalogging.slf4j.Logger
 import org.slf4j.LoggerFactory
 import dk.bayes.model.factorgraph.Node
+import dk.bayes.model.factor.Factor
+import dk.bayes.model.factor.SingleFactor
 
 /**
  * Calibrates factor graph with forward-backward passes over all factor and variable nodes.
@@ -35,11 +37,12 @@ case class ForwardBackwardEPCalibrate(factorGraph: FactorGraph, threshold: Doubl
 
     var currIter = 0
     var calibrated = false
+
+    val nodes = factorGraph.getNodes()
+    val orderedNodes = nodes ++ nodes.reverse
+
     while (!calibrated && currIter < maxIter) {
       currIterProgress(currIter)
-
-      val nodes = factorGraph.getNodes()
-      val orderedNodes = nodes ++ nodes.reverse
 
       calibrateIteration(orderedNodes, nextMsgIndex)
 
@@ -57,43 +60,64 @@ case class ForwardBackwardEPCalibrate(factorGraph: FactorGraph, threshold: Doubl
    */
   private def calibrateIteration(nodes: Seq[Node], newMsgIndex: () => Long) {
 
-    for (node <- nodes) {
-      node match {
+    val nodesNum = nodes.size
+
+    var i = 0
+    while (i < nodesNum) {
+      nodes(i) match {
         case node: FactorNode => sendFactorMessage(node, newMsgIndex)
         case node: VarNode => sendVariableMessage(node, newMsgIndex)
       }
+      i += 1
     }
   }
 
   private def sendFactorMessage(factorNode: FactorNode, newMsgIndex: () => Long) {
 
-    val inMsgs = factorNode.getGates().map(g => g.getEndGate.getMessage())
-    for (gate <- factorNode.getGates()) {
+    var i = 0
+    val gatesNum = factorNode.getGates().size
+    val inMsgs = new Array[SingleFactor](gatesNum)
+    while (i < gatesNum) {
+      inMsgs(i) = factorNode.getGates()(i).getEndGate.getMessage()
+      i += 1
+    }
 
-      val marginalVarId = gate.getMessage.getVariableIds.head
+    i = 0
+    while (i < gatesNum) {
+      val gate = factorNode.getGates()(i)
+
+      val marginalVarId = gate.getMessage.getVariableId
       val marginalNode = factorNode.getFactor().productMarginal(marginalVarId, inMsgs)
       val newMessage = marginalNode / gate.getEndGate.getMessage
 
       gate.setMessage(newMessage, newMsgIndex())
       logger.debug("from: %s\t to: %s\t\t msg: %s".format(factorNode.getFactor().getVariableIds.mkString("f(", ",", ")"), gate.getEndGate.varNode.varId, newMessage))
+
+      i += 1
     }
 
   }
 
   /**Returns the number of messages sent.*/
-  private def sendVariableMessage(varNode: VarNode, newMsgIndex: () => Long) = {
+  private def sendVariableMessage(varNode: VarNode, newMsgIndex: () => Long) {
 
-    val inMsgs = varNode.getGates().map(g => g.getEndGate.getMessage())
+    var marginalFactor = varNode.getGates()(0).getEndGate.getMessage()
+    var i = 1
+    val gatesNum = varNode.getGates().size
+    while (i < gatesNum) {
+      marginalFactor = marginalFactor * varNode.getGates()(i).getEndGate.getMessage()
+      i += 1
+    }
 
-    val marginalFactor = inMsgs.reduceLeft((msg1, msg2) => msg1 * msg2)
-    for (gate <- varNode.getGates()) {
-
+    i = 0
+    while (i < gatesNum) {
+      val gate = varNode.getGates()(i)
       val newMessage = marginalFactor / gate.getEndGate.getMessage
       gate.setMessage(newMessage, newMsgIndex())
 
       logger.debug("from: %s\t\t to: %s\t msg: %s".format(varNode.varId, gate.getEndGate.factorNode.getFactor().getVariableIds.mkString("f(", ",", ")"), newMessage))
+      i += 1
     }
-
   }
 
   /**

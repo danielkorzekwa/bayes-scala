@@ -47,8 +47,8 @@ class TrueSkillDBNTennisEPTest {
 
     val tennisFactorGraph = createTennisFactorGraph()
     val ep = GenericEP(tennisFactorGraph)
-    ep.setEvidence(match1v2Time0VarId, 0)
-    ep.setEvidence(match2v3Time1VarId, 0)
+    ep.setEvidence(match1v2Time0VarId, true)
+    ep.setEvidence(match2v3Time1VarId, true)
 
     val epCalibrate = ForwardBackwardEPCalibrate(tennisFactorGraph)
     assertEquals(EPSummary(7, 1876), epCalibrate.calibrate(50, progress))

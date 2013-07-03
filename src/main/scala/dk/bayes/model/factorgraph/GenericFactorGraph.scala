@@ -1,8 +1,9 @@
 package dk.bayes.model.factorgraph
 
 import scala.collection._
-import scala.collection.mutable.ListBuffer
 import dk.bayes.model.factor.Factor
+import scala.collection.mutable.ArrayBuffer
+import scala.collection.mutable.ListBuffer
 
 /**
  * Default implementation of a FactorGraph.
@@ -11,7 +12,7 @@ import dk.bayes.model.factor.Factor
  */
 case class GenericFactorGraph extends FactorGraph {
 
-  private val allNodes = ListBuffer[Node]()
+  private val allNodes = ArrayBuffer[Node]()
   private val varNodes: mutable.Map[Int, VarNode] = mutable.Map[Int, VarNode]()
   private val factorNodes: mutable.Map[Seq[Int], FactorNode] = mutable.Map[Seq[Int], FactorNode]()
 
@@ -47,7 +48,7 @@ case class GenericFactorGraph extends FactorGraph {
 
   }
 
-  def getNodes(): Seq[Node] = allNodes
+  def getNodes(): IndexedSeq[Node] = allNodes
 
   def getFactorNodes(): Seq[FactorNode] = factorNodes.values.toList
 

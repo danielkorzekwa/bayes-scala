@@ -2,6 +2,7 @@ package dk.bayes.model.factorgraph
 
 import dk.bayes.model.factor.Factor
 import dk.bayes.model.factor.GaussianFactor
+import dk.bayes.model.factor.SingleFactor
 
 /**
  * This class represents an outgoing gate from a factor/variable node in a factor graph.
@@ -16,8 +17,8 @@ sealed abstract class Gate {
 
   private var endGate: Option[END_GATE] = None
 
-  private var message: Option[Factor] = None
-  private var oldMessage: Option[Factor] = None
+  private var message: Option[SingleFactor] = None
+  private var oldMessage: Option[SingleFactor] = None
 
   /**Allows for comparing the age between different messages and finding the message that was updated least recently.*/
   private var msgIndex: Long = -1
@@ -25,7 +26,7 @@ sealed abstract class Gate {
   def setEndGate(gate: END_GATE) { endGate = Some(gate) }
   def getEndGate(): END_GATE = endGate.get
 
-  def setMessage(newMessage: Factor, msgIndex: Long) {
+  def setMessage(newMessage: SingleFactor, msgIndex: Long) {
     message match {
       case None => {
         oldMessage = Some(newMessage)
@@ -40,8 +41,8 @@ sealed abstract class Gate {
   }
 
   def getMsgIndex(): Long = msgIndex
-  def getMessage(): Factor = message.get
-  def getOldMessage(): Factor = oldMessage.get
+  def getMessage(): SingleFactor = message.get
+  def getOldMessage(): SingleFactor = oldMessage.get
 }
 
 case class FactorGate(factorNode: FactorNode) extends Gate {

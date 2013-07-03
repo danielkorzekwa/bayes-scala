@@ -18,7 +18,7 @@ trait FactorGraph {
   /**
    * Returns all nodes (factors and variables) in a graph.
    */
-  def getNodes(): Seq[Node]
+  def getNodes(): IndexedSeq[Node]
 
   /**
    * Returns all factor nodes in a factor graph.

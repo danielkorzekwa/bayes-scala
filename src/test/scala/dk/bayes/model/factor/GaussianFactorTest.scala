@@ -61,7 +61,7 @@ class GaussianFactorTest {
 
   @Test(expected = classOf[IllegalArgumentException]) def product_with_non_gaussian_factor {
     val f1 = GaussianFactor(varId = 1, m = 5, v = 7)
-    val f2 = TableFactor(variableIds = List(1), variableDims = List(2), valueProbs = Array(0.7, 0.3))
+    val f2 = SingleTableFactor(1, 2, valueProbs = Array(0.7, 0.3))
     f1 * f2
   }
 
@@ -83,7 +83,7 @@ class GaussianFactorTest {
 
   @Test(expected = classOf[IllegalArgumentException]) def divide_with_non_gaussian_factor {
     val f1 = GaussianFactor(varId = 1, m = 5, v = 7)
-    val f2 = TableFactor(variableIds = List(1), variableDims = List(2), valueProbs = Array(0.7, 0.3))
+    val f2 = SingleTableFactor(1, 2, valueProbs = Array(0.7, 0.3))
     f1 / f2
   }
 

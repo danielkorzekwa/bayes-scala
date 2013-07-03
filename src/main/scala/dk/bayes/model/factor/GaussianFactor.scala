@@ -13,10 +13,12 @@ import dk.bayes.gaussian.Gaussian
  * @param m Mean
  * @param v Variance
  */
-case class GaussianFactor(varId: Int, m: Double, v: Double) extends Factor {
+case class GaussianFactor(varId: Int, m: Double, v: Double) extends SingleFactor {
 
   require(!m.isNaN(), "GaussianFactor mean is NaN")
   require(!v.isNaN(), "GaussianFactor variance is NaN")
+
+  def getVariableId(): Int = varId
 
   def getVariableIds(): Seq[Int] = Vector(varId)
 

@@ -12,9 +12,9 @@ case class BivariateGaussianFactor(parentVarId: Int, varId: Int, mean: Matrix, v
 
   def getVariableIds(): Seq[Int] = Vector(parentVarId, varId)
 
-  def marginal(varId: Int): Factor = throw new UnsupportedOperationException("Not implemented yet")
+  def marginal(varId: Int): SingleFactor = throw new UnsupportedOperationException("Not implemented yet")
 
-  def productMarginal(varId: Int, factors: Seq[Factor]): Factor = throw new UnsupportedOperationException("Not implemented yet")
+  def productMarginal(varId: Int, factors: Seq[Factor]): SingleFactor = throw new UnsupportedOperationException("Not implemented yet")
 
   def withEvidence(varId: Int, varValue: AnyVal): Factor = throw new UnsupportedOperationException("Not implemented yet")
 

@@ -76,7 +76,7 @@ class TrueSkillOnlineTennisEPTest {
     val tennisFactorGraph = createTennisFactorGraph()
 
     val ep = GenericEP(tennisFactorGraph)
-    ep.setEvidence(outcomeVarId, 0)
+    ep.setEvidence(outcomeVarId, true)
 
     val epCalibrate = ForwardBackwardEPCalibrate(tennisFactorGraph)
     assertEquals(EPSummary(2, 88), epCalibrate.calibrate(70, progress))
@@ -99,7 +99,7 @@ class TrueSkillOnlineTennisEPTest {
 
     val tennisFactorGraph = createTennisFactorGraphAfterPlayer1Won()
     val ep = GenericEP(tennisFactorGraph)
-    ep.setEvidence(outcomeVarId, 1)
+    ep.setEvidence(outcomeVarId, false)
 
     val epCalibrate = ForwardBackwardEPCalibrate(tennisFactorGraph)
     assertEquals(EPSummary(2, 88), epCalibrate.calibrate(100, progress))
@@ -161,7 +161,7 @@ class TrueSkillOnlineTennisEPTest {
   @Test def factor_marginal_player1_wins {
     val tennisFactorGraph = createTennisFactorGraph()
     val ep = GenericEP(tennisFactorGraph)
-    ep.setEvidence(outcomeVarId, 0)
+    ep.setEvidence(outcomeVarId, true)
 
     val epCalibrate = ForwardBackwardEPCalibrate(tennisFactorGraph)
     assertEquals(EPSummary(2, 88), epCalibrate.calibrate(70, progress))
@@ -181,7 +181,7 @@ class TrueSkillOnlineTennisEPTest {
 
     val tennisFactorGraph = createTennisFactorGraphAfterPlayer1Won()
     val ep = GenericEP(tennisFactorGraph)
-    ep.setEvidence(outcomeVarId, 1)
+    ep.setEvidence(outcomeVarId, false)
 
     val epCalibrate = ForwardBackwardEPCalibrate(tennisFactorGraph)
     assertEquals(EPSummary(2, 88), epCalibrate.calibrate(100, progress))

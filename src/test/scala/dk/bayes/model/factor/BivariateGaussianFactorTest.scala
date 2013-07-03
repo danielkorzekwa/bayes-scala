@@ -13,7 +13,7 @@ class BivariateGaussianFactorTest {
   }
 
   @Test(expected = classOf[IllegalArgumentException]) def product_with_table_factor {
-    val tableFactor = TableFactor(List(1), List(2), Array(0.6, 0.4))
+    val tableFactor = SingleTableFactor(1, 2, Array(0.6, 0.4))
     bivariateGaussianFactor * tableFactor
   }
 

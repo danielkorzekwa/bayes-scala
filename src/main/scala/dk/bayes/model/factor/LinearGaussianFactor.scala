@@ -22,7 +22,7 @@ case class LinearGaussianFactor(parentVarId: Int, varId: Int, a: Double, b: Doub
 
   def getVariableIds(): Seq[Int] = Vector(parentVarId, varId)
 
-  def marginal(varId: Int): Factor = GaussianFactor(varId, 0, Double.PositiveInfinity)
+  def marginal(varId: Int): GaussianFactor = GaussianFactor(varId, 0, Double.PositiveInfinity)
 
   def productMarginal(marginalVarId: Int, factors: Seq[Factor]): GaussianFactor = {
 

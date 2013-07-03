@@ -1,7 +1,7 @@
 package dk.bayes.model.factorgraph
 
 import dk.bayes.model.factor.Factor
-import scala.collection.mutable.ListBuffer
+import scala.collection.mutable.ArrayBuffer
 
 /**
  * This class represents a node in a factor graph, either Factor or Variable.
@@ -12,7 +12,7 @@ import scala.collection.mutable.ListBuffer
 sealed abstract class Node {
 
   type GATE <: Gate
-  private var gates = ListBuffer[GATE]()
+  private var gates = ArrayBuffer[GATE]()
 
   /**
    * Adds an outgoing gate to a node.
@@ -22,7 +22,7 @@ sealed abstract class Node {
   /**
    * Returns outgoing gates for a node.
    */
-  def getGates(): Seq[GATE] = gates
+  def getGates(): IndexedSeq[GATE] = gates
 }
 
 /**
