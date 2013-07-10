@@ -39,12 +39,13 @@ case class Gaussian(m: Double, v: Double) {
     val truncatedGaussian = upperTail match {
       case true => {
         def lambda(alpha: Double): Double = stdPdf(alpha) / (1 - stdCdf(alpha))
-        def delta(alpha: Double): Double = lambda(alpha) * (lambda(alpha) - alpha)
+        def delta(alpha: Double,lambdaValue:Double): Double = lambdaValue * (lambdaValue - alpha)
 
         val alpha = (x - m) / sd
-
-        val truncatedMean = m + sd * lambda(alpha)
-        val truncatedVariance = v * (1 - delta(alpha))
+        val lambdaValue = lambda(alpha)
+        
+        val truncatedMean = m + sd * lambdaValue
+        val truncatedVariance = v * (1 - delta(alpha,lambdaValue))
 
         Gaussian(truncatedMean, truncatedVariance)
       }

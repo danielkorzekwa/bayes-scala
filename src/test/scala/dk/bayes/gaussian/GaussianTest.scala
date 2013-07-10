@@ -11,13 +11,13 @@ class GaussianTest {
   /**
    * Tests for constructor.
    */
-  @Test(expected=classOf[IllegalArgumentException]) def constructor_variance_is_NaN {
-    Gaussian(0,Double.NaN)
+  @Test(expected = classOf[IllegalArgumentException]) def constructor_variance_is_NaN {
+    Gaussian(0, Double.NaN)
   }
-   @Test(expected=classOf[IllegalArgumentException]) def constructor_mean_is_NaN {
-    Gaussian(Double.NaN,2)
+  @Test(expected = classOf[IllegalArgumentException]) def constructor_mean_is_NaN {
+    Gaussian(Double.NaN, 2)
   }
-  
+
   @Test def pdf {
 
     assertEquals(0.398942, Gaussian(0, 1).pdf(0), 0.0001)
@@ -42,12 +42,13 @@ class GaussianTest {
 
   }
 
-   @Test def truncateGaussianWithInfiniteVariance {
-     assertEquals(2, Gaussian(2, Double.PositiveInfinity).truncate(0.5, true).m, 0.0001)
-     assertEquals(Double.PositiveInfinity, Gaussian(2, Double.PositiveInfinity).truncate(0.5, true).v, 0.0001)
-   }
-  
+  @Test def truncateGaussianWithInfiniteVariance {
+    assertEquals(2, Gaussian(2, Double.PositiveInfinity).truncate(0.5, true).m, 0.0001)
+    assertEquals(Double.PositiveInfinity, Gaussian(2, Double.PositiveInfinity).truncate(0.5, true).v, 0.0001)
+  }
+
   @Test def truncateUpperTail {
+
     assertEquals(1.141, Gaussian(0, 1).truncate(0.5, true).m, 0.0001)
     assertEquals(0.2685, Gaussian(0, 1).truncate(0.5, true).v, 0.0001)
 
