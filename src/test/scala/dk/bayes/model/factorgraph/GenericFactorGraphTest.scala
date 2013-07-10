@@ -63,7 +63,7 @@ class GenericFactorGraphTest {
     assertEquals(GaussianFactor(varId = 10, m = 0, v = 1), mergedFactorGraph.getNodes()(0).asInstanceOf[FactorNode].getFactor())
     assertEquals(VarNode(10), mergedFactorGraph.getNodes()(1))
 
-    assertEquals(FactorNode(LinearGaussianFactor(parentVarId = 10, varId = 20, a = 1, b = 0, v = 2)), mergedFactorGraph.getNodes()(2).asInstanceOf[FactorNode])
+    assertEquals(LinearGaussianFactor(parentVarId = 10, varId = 20, a = 1, b = 0, v = 2), mergedFactorGraph.getNodes()(2).asInstanceOf[FactorNode].getFactor)
     assertEquals(VarNode(20), mergedFactorGraph.getNodes()(3))
 
   }
