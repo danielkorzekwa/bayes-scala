@@ -2,21 +2,24 @@ package dk.bayes.model.factor
 
 import dk.bayes.gaussian.Linear._
 import dk.bayes.gaussian.CanonicalGaussian
+import dk.bayes.model.factor.api.DoubleFactor
+import dk.bayes.model.factor.api.Factor
+import dk.bayes.model.factor.api.SingleFactor
 
 /**
  * This class represents bivariate Gaussian Factor.
  *
  * @author Daniel Korzekwa
  */
-case class BivariateGaussianFactor(parentVarId: Int, varId: Int, mean: Matrix, variance: Matrix) extends Factor {
+case class BivariateGaussianFactor(parentVarId: Int, varId: Int, mean: Matrix, variance: Matrix) extends DoubleFactor {
 
   def getVariableIds(): Seq[Int] = Vector(parentVarId, varId)
 
   def marginal(varId: Int): SingleFactor = throw new UnsupportedOperationException("Not implemented yet")
 
-  def productMarginal(varId: Int, factors: Seq[Factor]): SingleFactor = throw new UnsupportedOperationException("Not implemented yet")
+  def productMarginal(varId: Int, factor1: Factor, factor2: Factor): SingleFactor = throw new UnsupportedOperationException("Not implemented yet")
 
-  def withEvidence(varId: Int, varValue: AnyVal): Factor = throw new UnsupportedOperationException("Not implemented yet")
+  def withEvidence(varId: Int, varValue: AnyVal): BivariateGaussianFactor = throw new UnsupportedOperationException("Not implemented yet")
 
   def getValue(assignment: (Int, AnyVal)*): Double = throw new UnsupportedOperationException("Not implemented yet")
 
@@ -36,7 +39,7 @@ case class BivariateGaussianFactor(parentVarId: Int, varId: Int, mean: Matrix, v
     }
   }
 
-  def /(factor: Factor): Factor = throw new UnsupportedOperationException("Not implemented yet")
+  def /(factor: Factor): BivariateGaussianFactor = throw new UnsupportedOperationException("Not implemented yet")
 
   def equals(that: Factor, threshold: Double): Boolean = throw new UnsupportedOperationException("Not implemented yet")
 

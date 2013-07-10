@@ -2,6 +2,10 @@ package dk.bayes.model.factor
 
 import dk.bayes.gaussian._
 import dk.bayes.model.factor._
+import dk.bayes.model.factor.GaussianFactor
+import dk.bayes.model.factor.api.Factor
+import dk.bayes.model.factor.api.SingleFactor
+import dk.bayes.model.factor.api.TripleFactor
 
 /**
  * This class represents a factor for the difference of two Gaussian distributions.
@@ -14,13 +18,42 @@ import dk.bayes.model.factor._
  * @param gaussian2VarId
  * @param diffGaussianVarId
  */
-case class DiffGaussianFactor(gaussian1VarId: Int, gaussian2VarId: Int, diffGaussianVarId: Int) extends Factor {
+case class DiffGaussianFactor(gaussian1VarId: Int, gaussian2VarId: Int, diffGaussianVarId: Int) extends TripleFactor {
 
   require(gaussian1VarId != gaussian2VarId && gaussian2VarId != diffGaussianVarId, "DiffGaussian variable ids are not unique")
 
   def getVariableIds(): Seq[Int] = Vector(gaussian1VarId, gaussian2VarId, diffGaussianVarId)
 
   def marginal(varId: Int): GaussianFactor = GaussianFactor(varId, 0, Double.PositiveInfinity)
+
+  def productMarginal(varId: Int, factor1: Factor, factor2: Factor, factor3: Factor): SingleFactor = {
+
+    val gaussianFactor1 = factor1.asInstanceOf[GaussianFactor]
+    val gaussianFactor2 = factor2.asInstanceOf[GaussianFactor]
+    val diffFactor = factor3.asInstanceOf[GaussianFactor]
+
+    val marginalFactor = varId match {
+
+      case `gaussian1VarId` => {
+        val sumGaussian = (Gaussian(diffFactor.m, diffFactor.v) + Gaussian(gaussianFactor2.m, gaussianFactor2.v)) * Gaussian(gaussianFactor1.m, gaussianFactor1.v)
+        GaussianFactor(varId, sumGaussian.m, sumGaussian.v)
+      }
+
+      case `gaussian2VarId` => {
+        val diffGaussian = (Gaussian(gaussianFactor1.m, gaussianFactor1.v) - Gaussian(diffFactor.m, diffFactor.v)) * Gaussian(gaussianFactor2.m, gaussianFactor2.v)
+        GaussianFactor(varId, diffGaussian.m, diffGaussian.v)
+      }
+
+      case `diffGaussianVarId` => {
+        val diffGaussian = (Gaussian(gaussianFactor1.m, gaussianFactor1.v) - Gaussian(gaussianFactor2.m, gaussianFactor2.v)) * Gaussian(diffFactor.m, diffFactor.v)
+        GaussianFactor(varId, diffGaussian.m, diffGaussian.v)
+      }
+
+      case _ => throw new IllegalArgumentException("Incorrect marginal variable id")
+    }
+
+    marginalFactor
+  }
 
   def productMarginal(varId: Int, factors: Seq[Factor]): GaussianFactor = {
     factors.foreach(f => require(f.isInstanceOf[GaussianFactor], "DiffGaussian factor cannot be multiplied by non gaussian factor:" + f))
@@ -57,9 +90,9 @@ case class DiffGaussianFactor(gaussian1VarId: Int, gaussian2VarId: Int, diffGaus
 
   def getValue(assignment: (Int, AnyVal)*): Double = throw new UnsupportedOperationException("Not implemented yet")
 
-  def *(factor: Factor): Factor = throw new UnsupportedOperationException("Not implemented yet")
+  def *(factor: Factor): DiffGaussianFactor = throw new UnsupportedOperationException("Not implemented yet")
 
-  def /(that: Factor): Factor = throw new UnsupportedOperationException("Not implemented yet")
+  def /(that: Factor): DiffGaussianFactor = throw new UnsupportedOperationException("Not implemented yet")
 
   def equals(that: Factor, threshold: Double): Boolean = throw new UnsupportedOperationException("Not implemented yet")
 }

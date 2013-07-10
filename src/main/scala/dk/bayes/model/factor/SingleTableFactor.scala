@@ -1,6 +1,8 @@
 package dk.bayes.model.factor
 
 import scala.math._
+import dk.bayes.model.factor.api.Factor
+import dk.bayes.model.factor.api.SingleFactor
 
 /**
  * This class represents a multinomial probability distribution over a single discrete variable.

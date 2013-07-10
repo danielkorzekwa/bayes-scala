@@ -6,6 +6,10 @@ import dk.bayes.gaussian.Linear._
 import dk.bayes.gaussian.CanonicalGaussianMultiply
 import dk.bayes.gaussian.LinearGaussian
 import dk.bayes.gaussian.Gaussian
+import dk.bayes.model.factor.BivariateGaussianFactor
+import dk.bayes.model.factor.GaussianFactor
+import dk.bayes.model.factor.api.Factor
+import dk.bayes.model.factor.api.DoubleFactor
 
 /**
  * This class represents a factor for a Linear Gaussian Distribution. N(ax + b,v)
@@ -18,47 +22,45 @@ import dk.bayes.gaussian.Gaussian
  * @param b Mean term of N(ax + b,v)
  * @param v Variance term of N(ax + b,v)
  */
-case class LinearGaussianFactor(parentVarId: Int, varId: Int, a: Double, b: Double, v: Double) extends Factor {
+case class LinearGaussianFactor(parentVarId: Int, varId: Int, a: Double, b: Double, v: Double) extends DoubleFactor {
 
   def getVariableIds(): Seq[Int] = Vector(parentVarId, varId)
 
   def marginal(varId: Int): GaussianFactor = GaussianFactor(varId, 0, Double.PositiveInfinity)
 
-  def productMarginal(marginalVarId: Int, factors: Seq[Factor]): GaussianFactor = {
+  def productMarginal(marginalVarId: Int, factor1: Factor, factor2: Factor): GaussianFactor = {
 
-    factors match {
-      case Seq(GaussianFactor(`parentVarId`, g1m, g1v), GaussianFactor(`varId`, g2m, g2v)) => {
+    val parentFactor = factor1.asInstanceOf[GaussianFactor]
+    val childFactor = factor2.asInstanceOf[GaussianFactor]
 
-        val marginalGaussian = marginalVarId match {
-          case `parentVarId` => {
+    val marginalGaussian = marginalVarId match {
+      case `parentVarId` => {
 
-            if (!g2m.isNaN && !g2v.isPosInfinity) {
-              if (a == 1 && b == 0) Gaussian(g2m, g2v + v) * Gaussian(g1m, g1v)
-              else {
-                val linearCanonGaussian = CanonicalGaussian(Array(parentVarId, varId), Matrix(a), b, v)
-                val productCanonGaussian = CanonicalGaussianMultiply.*(linearCanonGaussian.varIds, linearCanonGaussian, CanonicalGaussian(varId, g2m, g2v)).marginalise(varId).toGaussian()
-                val marginal = productCanonGaussian * Gaussian(g1m, g1v)
-                marginal
-              }
-
-            } else if (!g1m.isNaN && !g1v.isPosInfinity) {
-              val marginal = (LinearGaussian(a, b, v) * Gaussian(g1m, g1v)).marginalise(1).toGaussian()
-              marginal
-            } else Gaussian(0, Double.PositiveInfinity)
-
-          }
-          case `varId` => {
-            val marginal = (LinearGaussian(a, b, v) * Gaussian(g1m, g1v)).marginalise(0).toGaussian() * Gaussian(g2m, g2v)
+        if (!childFactor.m.isNaN && !childFactor.v.isPosInfinity) {
+          if (a == 1 && b == 0) Gaussian(childFactor.m, childFactor.v + v) * Gaussian(parentFactor.m, parentFactor.v)
+          else {
+            val linearCanonGaussian = CanonicalGaussian(Array(parentVarId, varId), Matrix(a), b, v)
+            val productCanonGaussian = CanonicalGaussianMultiply.*(linearCanonGaussian.varIds, linearCanonGaussian, CanonicalGaussian(varId, childFactor.m, childFactor.v)).marginalise(varId).toGaussian()
+            val marginal = productCanonGaussian * Gaussian(parentFactor.m, parentFactor.v)
             marginal
           }
-          case _ => throw new IllegalArgumentException("Incorrect marginal variable id")
-        }
 
-        val marginalFactor = GaussianFactor(marginalVarId, marginalGaussian.m, marginalGaussian.v)
-        marginalFactor
+        } else if (!parentFactor.m.isNaN && !parentFactor.v.isPosInfinity) {
+          val marginal = (LinearGaussian(a, b, v) * Gaussian(parentFactor.m, parentFactor.v)).marginalise(1).toGaussian()
+          marginal
+        } else Gaussian(0, Double.PositiveInfinity)
+
       }
-      case _ => throw new IllegalArgumentException("LinearGaussianFactor can be multiplied by exactly two gaussians only, one for each of parentVarId and varId variables")
+      case `varId` => {
+        val marginal = if (a == 1 && b == 0) Gaussian(parentFactor.m, parentFactor.v + v) * Gaussian(childFactor.m, childFactor.v)
+        else (LinearGaussian(a, b, v) * Gaussian(parentFactor.m, parentFactor.v)).marginalise(0).toGaussian() * Gaussian(childFactor.m, childFactor.v)
+        marginal
+      }
+      case _ => throw new IllegalArgumentException("Incorrect marginal variable id")
     }
+
+    val marginalFactor = GaussianFactor(marginalVarId, marginalGaussian.m, marginalGaussian.v)
+    marginalFactor
 
   }
 
@@ -83,7 +85,7 @@ case class LinearGaussianFactor(parentVarId: Int, varId: Int, a: Double, b: Doub
     }
   }
 
-  def /(that: Factor): Factor = throw new UnsupportedOperationException("Not implemented yet")
+  def /(that: Factor): LinearGaussianFactor = throw new UnsupportedOperationException("Not implemented yet")
 
   def equals(that: Factor, threshold: Double): Boolean = throw new UnsupportedOperationException("Not implemented yet")
 }

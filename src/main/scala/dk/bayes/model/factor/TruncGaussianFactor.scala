@@ -1,6 +1,10 @@
 package dk.bayes.model.factor
 
 import dk.bayes.gaussian.Gaussian
+import dk.bayes.model.factor.GaussianFactor
+import dk.bayes.model.factor.api.Factor
+import dk.bayes.model.factor.api.DoubleFactor
+import dk.bayes.model.factor.api.SingleFactor
 
 /**
  * This factor represents a truncated Gaussian distribution.
@@ -14,7 +18,7 @@ import dk.bayes.gaussian.Gaussian
  *        Its value is true when the Gaussian variable value is bigger than the truncValue, and it's false if it is lower than the truncValue.
  *        It's not defined if there is no evidence observed
  */
-case class TruncGaussianFactor(gaussianVarId: Int, truncVarId: Int, truncValue: Double, truncVarEvidence: Option[Boolean] = None) extends Factor {
+case class TruncGaussianFactor(gaussianVarId: Int, truncVarId: Int, truncValue: Double, truncVarEvidence: Option[Boolean] = None) extends DoubleFactor {
 
   private val ZERO_PROBABILITY = 1.0E-20
 
@@ -38,47 +42,41 @@ case class TruncGaussianFactor(gaussianVarId: Int, truncVarId: Int, truncValue: 
     marginalFactor
   }
 
-  def productMarginal(varId: Int, factors: Seq[Factor]): SingleFactor = {
+  def productMarginal(varId: Int, factor1: Factor, factor2: Factor): SingleFactor = {
+    val gaussianFactor = factor1.asInstanceOf[GaussianFactor]
+    val tableFactor = factor2.asInstanceOf[SingleTableFactor]
+    require(gaussianFactor.varId == gaussianVarId)
+    require(tableFactor.varId == truncVarId && tableFactor.variableDim == 2)
 
-    factors match {
-      case Seq(gaussianFactor: GaussianFactor, tableFactor: SingleTableFactor) if (gaussianFactor.varId == gaussianVarId) &&
-        tableFactor.varId == truncVarId &&
-        tableFactor.variableDim == 2 => {
+    val marginalFactor = varId match {
+      case `gaussianVarId` => {
 
-        val marginalFactor = varId match {
-          case `gaussianVarId` => {
-
-            val marginalGaussian = truncVarEvidence match {
-              case None => Gaussian(gaussianFactor.m, gaussianFactor.v)
-              case Some(true) => Gaussian(gaussianFactor.m, gaussianFactor.v).truncate(truncValue, true)
-              case Some(false) => Gaussian(gaussianFactor.m, gaussianFactor.v).truncate(truncValue, false)
-            }
-
-            GaussianFactor(varId, marginalGaussian.m, marginalGaussian.v)
-
-          }
-          case `truncVarId` => {
-
-            truncVarEvidence match {
-              case None => {
-                val value0Prob = 1 - Gaussian(gaussianFactor.m, gaussianFactor.v).cdf(truncValue)
-                val value1Prob = 1 - value0Prob
-                val valueProbs = Array(value0Prob, value1Prob)
-
-                SingleTableFactor(varId, 2, valueProbs)
-              }
-              case Some(truncVarEvidence) => outcomeMarginal(truncVarEvidence)
-            }
-          }
-          case _ => throw new IllegalArgumentException("Incorrect marginal variable id")
+        val marginalGaussian = truncVarEvidence match {
+          case None => Gaussian(gaussianFactor.m, gaussianFactor.v)
+          case Some(true) => Gaussian(gaussianFactor.m, gaussianFactor.v).truncate(truncValue, true)
+          case Some(false) => Gaussian(gaussianFactor.m, gaussianFactor.v).truncate(truncValue, false)
         }
 
-        marginalFactor
+        GaussianFactor(varId, marginalGaussian.m, marginalGaussian.v)
 
       }
-      case _ => throw new IllegalArgumentException("TruncGaussianFactor can be multiplied by exactly two factors only, GaussianFactor and TableFactor")
+      case `truncVarId` => {
+
+        truncVarEvidence match {
+          case None => {
+            val value0Prob = 1 - Gaussian(gaussianFactor.m, gaussianFactor.v).cdf(truncValue)
+            val value1Prob = 1 - value0Prob
+            val valueProbs = Array(value0Prob, value1Prob)
+
+            SingleTableFactor(varId, 2, valueProbs)
+          }
+          case Some(truncVarEvidence) => outcomeMarginal(truncVarEvidence)
+        }
+      }
+      case _ => throw new IllegalArgumentException("Incorrect marginal variable id")
     }
 
+    marginalFactor
   }
 
   def withEvidence(varId: Int, varValue: AnyVal): TruncGaussianFactor = {
@@ -92,9 +90,9 @@ case class TruncGaussianFactor(gaussianVarId: Int, truncVarId: Int, truncValue: 
 
   def getValue(assignment: (Int, AnyVal)*): Double = throw new UnsupportedOperationException("Not implemented yet")
 
-  def *(factor: Factor): Factor = throw new UnsupportedOperationException("Not implemented yet")
+  def *(factor: Factor): TruncGaussianFactor = throw new UnsupportedOperationException("Not implemented yet")
 
-  def /(that: Factor): Factor = throw new UnsupportedOperationException("Not implemented yet")
+  def /(that: Factor): TruncGaussianFactor = throw new UnsupportedOperationException("Not implemented yet")
 
   def equals(that: Factor, threshold: Double): Boolean = throw new UnsupportedOperationException("Not implemented yet")
 

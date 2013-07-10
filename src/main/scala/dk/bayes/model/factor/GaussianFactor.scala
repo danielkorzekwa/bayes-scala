@@ -1,8 +1,9 @@
 package dk.bayes.model.factor
 
 import scala.math.abs
-
 import dk.bayes.gaussian.Gaussian
+import dk.bayes.model.factor.api.Factor
+import dk.bayes.model.factor.api.SingleFactor
 
 /**
  * This class represents a factor for a Univariate Gaussian Distribution.
@@ -51,15 +52,21 @@ case class GaussianFactor(varId: Int, m: Double, v: Double) extends SingleFactor
   }
 
   def /(factor: Factor): GaussianFactor = {
+
     factor match {
       case factor: GaussianFactor => {
+
         require(factor.varId == varId, "Can't divide two gaussian factors: Factor variable ids do not match")
+
         val divideGaussian = Gaussian(m, v) / Gaussian(factor.m, factor.v)
+
         val divideFactor = GaussianFactor(varId, divideGaussian.m, divideGaussian.v)
+
         divideFactor
       }
       case _ => throw new IllegalArgumentException("Gaussian factor cannot be divided by a factor that is non gaussian")
     }
+
   }
 
   def equals(that: Factor, threshold: Double): Boolean = {
