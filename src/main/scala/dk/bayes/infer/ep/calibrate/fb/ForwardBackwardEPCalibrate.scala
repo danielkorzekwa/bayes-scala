@@ -7,8 +7,14 @@ import dk.bayes.model.factorgraph.VarNode
 import com.typesafe.scalalogging.slf4j.Logger
 import org.slf4j.LoggerFactory
 import dk.bayes.model.factorgraph.Node
-import dk.bayes.model.factor.Factor
-import dk.bayes.model.factor.SingleFactor
+import dk.bayes.model.factor.api.Factor
+import dk.bayes.model.factor.api.SingleFactor
+import dk.bayes.model.factorgraph.GenericFactorGraph
+import dk.bayes.model.factorgraph.TripleFactorNode
+import dk.bayes.model.factor.api.TripleFactor
+import dk.bayes.model.factorgraph.DoubleFactorNode
+import dk.bayes.model.factorgraph.SingleFactorNode
+import dk.bayes.model.factor.api.DoubleFactor
 
 /**
  * Calibrates factor graph with forward-backward passes over all factor and variable nodes.
@@ -74,27 +80,67 @@ case class ForwardBackwardEPCalibrate(factorGraph: FactorGraph, threshold: Doubl
 
   private def sendFactorMessage(factorNode: FactorNode, newMsgIndex: () => Long) {
 
-    var i = 0
-    val gatesNum = factorNode.getGates().size
-    val inMsgs = new Array[SingleFactor](gatesNum)
-    while (i < gatesNum) {
-      inMsgs(i) = factorNode.getGates()(i).getEndGate.getMessage()
-      i += 1
+    factorNode match {
+      case factorNode: SingleFactorNode => sendFactorMessage(factorNode, newMsgIndex)
+      case factorNode: DoubleFactorNode => sendFactorMessage(factorNode, newMsgIndex)
+      case factorNode: TripleFactorNode => sendFactorMessage(factorNode, newMsgIndex)
     }
 
-    i = 0
-    while (i < gatesNum) {
-      val gate = factorNode.getGates()(i)
+  }
 
-      val marginalVarId = gate.getMessage.getVariableId
-      val marginalNode = factorNode.getFactor().productMarginal(marginalVarId, inMsgs)
-      val newMessage = marginalNode / gate.getEndGate.getMessage
+  private def sendFactorMessage(factorNode: SingleFactorNode, newMsgIndex: () => Long) {
+    val newMessage = factorNode.getFactor().asInstanceOf[SingleFactor]
+    factorNode.gate.setMessage(newMessage, newMsgIndex())
 
-      gate.setMessage(newMessage, newMsgIndex())
-      logger.debug("from: %s\t to: %s\t\t msg: %s".format(factorNode.getFactor().getVariableIds.mkString("f(", ",", ")"), gate.getEndGate.varNode.varId, newMessage))
+    logger.debug("from: %s\t to: %s\t\t msg: %s".format(factorNode.getFactor().getVariableIds.mkString("f(", ",", ")"), factorNode.gate.getEndGate.varNode.varId, newMessage))
 
-      i += 1
-    }
+  }
+
+  private def sendFactorMessage(factorNode: DoubleFactorNode, newMsgIndex: () => Long) {
+
+    val gate1MsgIn = factorNode.gate1.getEndGate.getMessage
+    val gate2MsgIn = factorNode.gate2.getEndGate.getMessage
+
+    val factor = factorNode.getFactor().asInstanceOf[DoubleFactor]
+
+    val marginalNodeGate1 = factor.productMarginal(factorNode.gate1.getMessage.getVariableId, gate1MsgIn, gate2MsgIn)
+    val marginalNodeGate2 = factor.productMarginal(factorNode.gate2.getMessage.getVariableId, gate1MsgIn, gate2MsgIn)
+
+    val newMessageGate1 = marginalNodeGate1 / gate1MsgIn
+    val newMessageGate2 = marginalNodeGate2 / gate2MsgIn
+
+    factorNode.gate1.setMessage(newMessageGate1, newMsgIndex())
+    logger.debug("from: %s\t to: %s\t\t msg: %s".format(factorNode.getFactor().getVariableIds.mkString("f(", ",", ")"), factorNode.gate1.getEndGate.varNode.varId, newMessageGate1))
+
+    factorNode.gate2.setMessage(newMessageGate2, newMsgIndex())
+    logger.debug("from: %s\t to: %s\t\t msg: %s".format(factorNode.getFactor().getVariableIds.mkString("f(", ",", ")"), factorNode.gate2.getEndGate.varNode.varId, newMessageGate2))
+
+  }
+
+  private def sendFactorMessage(factorNode: TripleFactorNode, newMsgIndex: () => Long) {
+
+    val gate1MsgIn = factorNode.gate1.getEndGate.getMessage
+    val gate2MsgIn = factorNode.gate2.getEndGate.getMessage
+    val gate3MsgIn = factorNode.gate3.getEndGate.getMessage
+
+    val factor = factorNode.getFactor().asInstanceOf[TripleFactor]
+
+    val marginalNodeGate1 = factor.productMarginal(factorNode.gate1.getMessage.getVariableId, gate1MsgIn, gate2MsgIn, gate3MsgIn)
+    val marginalNodeGate2 = factor.productMarginal(factorNode.gate2.getMessage.getVariableId, gate1MsgIn, gate2MsgIn, gate3MsgIn)
+    val marginalNodeGate3 = factor.productMarginal(factorNode.gate3.getMessage.getVariableId, gate1MsgIn, gate2MsgIn, gate3MsgIn)
+
+    val newMessageGate1 = marginalNodeGate1 / gate1MsgIn
+    val newMessageGate2 = marginalNodeGate2 / gate2MsgIn
+    val newMessageGate3 = marginalNodeGate3 / gate3MsgIn
+
+    factorNode.gate1.setMessage(newMessageGate1, newMsgIndex())
+    logger.debug("from: %s\t to: %s\t\t msg: %s".format(factorNode.getFactor().getVariableIds.mkString("f(", ",", ")"), factorNode.gate1.getEndGate.varNode.varId, newMessageGate1))
+
+    factorNode.gate2.setMessage(newMessageGate2, newMsgIndex())
+    logger.debug("from: %s\t to: %s\t\t msg: %s".format(factorNode.getFactor().getVariableIds.mkString("f(", ",", ")"), factorNode.gate2.getEndGate.varNode.varId, newMessageGate2))
+
+    factorNode.gate3.setMessage(newMessageGate3, newMsgIndex())
+    logger.debug("from: %s\t to: %s\t\t msg: %s".format(factorNode.getFactor().getVariableIds.mkString("f(", ",", ")"), factorNode.gate3.getEndGate.varNode.varId, newMessageGate3))
 
   }
 
@@ -115,7 +161,7 @@ case class ForwardBackwardEPCalibrate(factorGraph: FactorGraph, threshold: Doubl
       val newMessage = marginalFactor / gate.getEndGate.getMessage
       gate.setMessage(newMessage, newMsgIndex())
 
-      logger.debug("from: %s\t\t to: %s\t msg: %s".format(varNode.varId, gate.getEndGate.factorNode.getFactor().getVariableIds.mkString("f(", ",", ")"), newMessage))
+      logger.debug("from: %s\t\t to: %s\t msg: %s".format(varNode.varId, gate.getEndGate.getFactorNode().getFactor().getVariableIds.mkString("f(", ",", ")"), newMessage))
       i += 1
     }
   }
@@ -125,10 +171,7 @@ case class ForwardBackwardEPCalibrate(factorGraph: FactorGraph, threshold: Doubl
    */
   private def isCalibrated(): Boolean = {
 
-    val notCalibratedNode = factorGraph.getNodes().find { node =>
-      val notCalibratedGate = node.getGates.find(g => !g.getMessage().equals(g.getOldMessage(), threshold))
-      notCalibratedGate.isDefined
-    }
+    val notCalibratedNode = factorGraph.getNodes().find { node => !node.isCalibrated(threshold) }
     notCalibratedNode.isEmpty
   }
 

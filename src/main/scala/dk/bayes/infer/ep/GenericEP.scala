@@ -4,7 +4,7 @@ import org.slf4j.LoggerFactory
 
 import com.typesafe.scalalogging.slf4j.Logger
 
-import dk.bayes.model.factor.Factor
+import dk.bayes.model.factor.api.Factor
 import dk.bayes.model.factorgraph.FactorGraph
 import dk.bayes.model.factorgraph.FactorNode
 
@@ -50,8 +50,7 @@ case class GenericEP(factorGraph: FactorGraph, threshold: Double = 0.00001) exte
       case _ => {
         val allVarIds = variableId :: variablesIds.toList
         val factorNode = factorGraph.getFactorNode(allVarIds)
-        val inMsgs = factorNode.getGates().map(g => g.getEndGate().getMessage())
-        val factorMarginal = inMsgs.foldLeft(factorNode.getFactor())((product, msg) => product * msg)
+        val factorMarginal = factorNode.factorMarginal()
         factorMarginal
       }
     }

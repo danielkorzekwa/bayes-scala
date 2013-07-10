@@ -1,6 +1,6 @@
 package dk.bayes.infer.ep
 
-import dk.bayes.model.factor.Factor
+import dk.bayes.model.factor.api.Factor
 import dk.bayes.infer.ep.calibrate.fb.EPSummary
 
 
