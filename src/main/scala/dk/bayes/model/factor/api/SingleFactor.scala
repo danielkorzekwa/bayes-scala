@@ -1,4 +1,4 @@
-package dk.bayes.model.factor
+package dk.bayes.model.factor.api
 
 /**
  * Single variable factor.
@@ -7,12 +7,11 @@ package dk.bayes.model.factor
  */
 trait SingleFactor extends Factor {
 
+ type FACTOR_TYPE = SingleFactor
+  
   /**
    * Returns factor variable identifier.
    */
   def getVariableId(): Int
 
-  override def *(factor: Factor): SingleFactor
-
-  override def /(factor: Factor): SingleFactor
 }

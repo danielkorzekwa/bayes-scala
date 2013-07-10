@@ -1,4 +1,4 @@
-package dk.bayes.model.factor
+package dk.bayes.model.factor.api
 
 /**
  * Represents a probability distribution over a set of variables in a factor graph.
@@ -6,6 +6,8 @@ package dk.bayes.model.factor
  * @author Daniel Korzekwa
  */
 trait Factor {
+  
+  type FACTOR_TYPE <: Factor
   
   /**
    * Returns factor variable identifiers.
@@ -16,19 +18,14 @@ trait Factor {
    * Returns marginal factor for a given variable id.
    */
   def marginal(varId: Int): SingleFactor
-
-  /**
-   * Returns a marginal for a given variable from a product of this and other factors.
-   */
-  def productMarginal(varId: Int, factors: Seq[Factor]): SingleFactor
-
+  
   /**
    * Returns new factor with a given evidence.
    *
    * @param varId  Variable id
    * @param varValue Variable value
    */
-  def withEvidence(varId: Int, varValue: AnyVal): Factor
+  def withEvidence(varId: Int, varValue: AnyVal): FACTOR_TYPE
   
   /**
    * Returns the factor value for a given assignment to all factor variables.
@@ -40,13 +37,13 @@ trait Factor {
   /**
    * Returns the product of this and that factor.
    */
-  def *(factor: Factor): Factor
+  def *(factor: Factor): FACTOR_TYPE
 
   /**
    * Divides this factor by that factor.
    *
    */
-  def /(factor: Factor): Factor
+  def /(factor: Factor): FACTOR_TYPE
   
   /**
    * Returns true if this and that factors are the same
