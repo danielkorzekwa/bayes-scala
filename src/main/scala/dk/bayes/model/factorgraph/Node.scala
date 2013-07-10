@@ -14,8 +14,6 @@ import dk.bayes.model.factor.api.DoubleFactor
  */
 sealed abstract class Node {
 
-  type GATE <: Gate
-
   /**
    * Returns true if the node is calibrated
    *
@@ -30,8 +28,6 @@ sealed abstract class Node {
  * @param factor Factor associated with a factor node
  */
 sealed abstract class FactorNode(factor: Factor) extends Node {
-
-  type GATE = FactorGate
 
   private var _factor: Factor = factor
 
@@ -98,19 +94,18 @@ case class TripleFactorNode(factor: TripleFactor, gate1: FactorGate, gate2: Fact
  * @param varId Unique variable id
  */
 case class VarNode(varId: Int) extends Node {
-  type GATE = VarGate
-
-  private var gates = ArrayBuffer[GATE]()
+ 
+  private var gates = ArrayBuffer[VarGate]()
 
   /**
    * Adds an outgoing gate to a node.
    */
-  def addGate(gate: GATE) = gates += gate
+  def addGate(gate: VarGate) = gates += gate
 
   /**
    * Returns outgoing gates for a node.
    */
-  def getGates(): IndexedSeq[GATE] = gates
+  def getGates(): IndexedSeq[VarGate] = gates
 
   def isCalibrated(threshold: Double): Boolean = {
     val notCalibratedGate = getGates.find(g => !g.getMessage().equals(g.getOldMessage(), threshold))
