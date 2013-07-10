@@ -6,8 +6,6 @@ import dk.bayes.gaussian.Linear._
 import dk.bayes.gaussian.CanonicalGaussianMultiply
 import dk.bayes.gaussian.LinearGaussian
 import dk.bayes.gaussian.Gaussian
-import dk.bayes.model.factor.BivariateGaussianFactor
-import dk.bayes.model.factor.GaussianFactor
 import dk.bayes.model.factor.api.Factor
 import dk.bayes.model.factor.api.DoubleFactor
 
