@@ -1,9 +1,12 @@
 package dk.bayes.model.factorgraph
 
 import scala.collection._
-import dk.bayes.model.factor.Factor
+import dk.bayes.model.factor.api.Factor
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.ListBuffer
+import dk.bayes.model.factor.api.TripleFactor
+import dk.bayes.model.factor.api.DoubleFactor
+import dk.bayes.model.factor.api.SingleFactor
 
 /**
  * Default implementation of a FactorGraph.
@@ -18,33 +21,42 @@ case class GenericFactorGraph extends FactorGraph {
 
   def addFactor(factor: Factor) = {
 
-    val factorNode = new FactorNode(factor)
-    allNodes += factorNode
-    factorNodes += factorNode.getFactor.getVariableIds() -> factorNode
+    val missingVars = ArrayBuffer[VarNode]()
 
-    //Add missing variable nodes
+    //Get factor variable nodes and build the list of missing variable nodes
     val factorVarNodes = factor.getVariableIds().map(varId => varNodes.getOrElseUpdate(varId, {
       val varNode = VarNode(varId)
-      allNodes += varNode
+      missingVars += varNode
       varNode
     }))
 
     //Connect factor with variables using gates
-    factorVarNodes.foreach { varNode =>
+    val factorGates = factorVarNodes.map { varNode =>
 
       val initialMsg = factor.marginal(varNode.varId)
 
-      val factorGate = FactorGate(factorNode)
-      factorGate.setMessage(initialMsg, -1)
-      val varGate = VarGate(varNode)
-      varGate.setMessage(initialMsg, -1)
-
+      val factorGate = FactorGate(initialMsg) 
+      val varGate = VarGate(initialMsg,varNode)
+   
       factorGate.setEndGate(varGate)
       varGate.setEndGate(factorGate)
 
-      factorNode.addGate(factorGate)
       varNode.addGate(varGate)
+
+      factorGate
+    }.toVector
+
+    val factorNode = factor match {
+       case factor: SingleFactor if factorGates.size==1 => new SingleFactorNode(factor, factorGates(0))
+       case factor: DoubleFactor if factorGates.size==2 => new DoubleFactorNode(factor, factorGates(0), factorGates(1))
+      case factor: TripleFactor if factorGates.size==3 => new TripleFactorNode(factor, factorGates(0), factorGates(1), factorGates(2))
     }
+    factorGates.foreach(g => g.setFactorNode(factorNode))
+
+    allNodes += factorNode
+    factorNodes += factorNode.getFactor.getVariableIds() -> factorNode
+
+    missingVars.foreach(v => allNodes += v)
 
   }
 
@@ -63,8 +75,8 @@ case class GenericFactorGraph extends FactorGraph {
 
     val mergedFactorGraph = GenericFactorGraph()
 
-    this.getFactorNodes().foreach(n => mergedFactorGraph.addFactor(n.factor))
-    that.getFactorNodes().foreach(n => mergedFactorGraph.addFactor(n.factor))
+    this.getFactorNodes().foreach(n => mergedFactorGraph.addFactor(n.getFactor()))
+    that.getFactorNodes().foreach(n => mergedFactorGraph.addFactor(n.getFactor()))
 
     mergedFactorGraph
   }

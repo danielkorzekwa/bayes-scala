@@ -1,8 +1,8 @@
 package dk.bayes.model.factorgraph
 
-import dk.bayes.model.factor.Factor
+import dk.bayes.model.factor.api.Factor
 import dk.bayes.model.factor.GaussianFactor
-import dk.bayes.model.factor.SingleFactor
+import dk.bayes.model.factor.api.SingleFactor
 
 /**
  * This class represents an outgoing gate from a factor/variable node in a factor graph.
@@ -11,14 +11,14 @@ import dk.bayes.model.factor.SingleFactor
  *
  * @param message The initial outgoing message sent through the gate
  */
-sealed abstract class Gate {
+sealed abstract class Gate(initialMsg: SingleFactor) {
 
   type END_GATE <: Gate
 
   private var endGate: Option[END_GATE] = None
 
-  private var message: Option[SingleFactor] = None
-  private var oldMessage: Option[SingleFactor] = None
+  private var message: SingleFactor = initialMsg
+  private var oldMessage: SingleFactor = initialMsg
 
   /**Allows for comparing the age between different messages and finding the message that was updated least recently.*/
   private var msgIndex: Long = -1
@@ -27,27 +27,27 @@ sealed abstract class Gate {
   def getEndGate(): END_GATE = endGate.get
 
   def setMessage(newMessage: SingleFactor, msgIndex: Long) {
-    message match {
-      case None => {
-        oldMessage = Some(newMessage)
-        message = Some(newMessage)
-      }
-      case Some(msg) => {
-        oldMessage = message
-        message = Some(newMessage)
-      }
-    }
+    oldMessage = message
+    message = newMessage
+
     this.msgIndex = msgIndex
   }
 
   def getMsgIndex(): Long = msgIndex
-  def getMessage(): SingleFactor = message.get
-  def getOldMessage(): SingleFactor = oldMessage.get
+  def getMessage(): SingleFactor = message
+  def getOldMessage(): SingleFactor = oldMessage
 }
 
-case class FactorGate(factorNode: FactorNode) extends Gate {
+case class FactorGate(initialMsg: SingleFactor) extends Gate(initialMsg) {
+
   type END_GATE = VarGate
+
+  var _factorNode: Option[FactorNode] = None
+
+  def setFactorNode(factorNode: FactorNode) = _factorNode = Some(factorNode)
+  def getFactorNode() = _factorNode.get
+
 }
-case class VarGate(varNode: VarNode) extends Gate {
+case class VarGate(initialMsg: SingleFactor, varNode: VarNode) extends Gate(initialMsg) {
   type END_GATE = FactorGate
 }

@@ -1,6 +1,6 @@
 package dk.bayes.model.factorgraph
 
-import dk.bayes.model.factor.Factor
+import dk.bayes.model.factor.api.Factor
 
 /**
  * Represents joined probability distribution as a factor graph.
