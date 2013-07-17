@@ -19,11 +19,7 @@ case class BivariateGaussianFactor(parentVarId: Int, varId: Int, mean: Matrix, v
 
   def productMarginal(varId: Int, factor1: Factor, factor2: Factor): SingleFactor = throw new UnsupportedOperationException("Not implemented yet")
 
-  def withEvidence(varId: Int, varValue: AnyVal): BivariateGaussianFactor = throw new UnsupportedOperationException("Not implemented yet")
-
-  def getValue(assignment: (Int, AnyVal)*): Double = throw new UnsupportedOperationException("Not implemented yet")
-
-  def *(factor: Factor): BivariateGaussianFactor = {
+  override def *(factor: Factor): BivariateGaussianFactor = {
     factor match {
       case factor: GaussianFactor => {
         val gaussianFactor = factor.asInstanceOf[GaussianFactor]
@@ -38,9 +34,5 @@ case class BivariateGaussianFactor(parentVarId: Int, varId: Int, mean: Matrix, v
       case _ => throw new IllegalArgumentException("BivariateGaussian factor cannot be multiplied by a factor that is non gaussian")
     }
   }
-
-  def /(factor: Factor): BivariateGaussianFactor = throw new UnsupportedOperationException("Not implemented yet")
-
-  def equals(that: Factor, threshold: Double): Boolean = throw new UnsupportedOperationException("Not implemented yet")
 
 }

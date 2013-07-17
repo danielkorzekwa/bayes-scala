@@ -33,11 +33,7 @@ case class GaussianFactor(varId: Int, m: Double, v: Double) extends SingleFactor
     factors.foldLeft(this)((f1, f2) => f1 * f2)
   }
 
-  def withEvidence(varId: Int, varValue: AnyVal): GaussianFactor = throw new UnsupportedOperationException("Not implemented yet")
-
-  def getValue(assignment: (Int, AnyVal)*): Double = throw new UnsupportedOperationException("Not implemented yet")
-
-  def *(factor: Factor): GaussianFactor = {
+  override def *(factor: Factor): GaussianFactor = {
 
     factor match {
       case factor: GaussianFactor => {
@@ -51,7 +47,7 @@ case class GaussianFactor(varId: Int, m: Double, v: Double) extends SingleFactor
 
   }
 
-  def /(factor: Factor): GaussianFactor = {
+  override def /(factor: Factor): GaussianFactor = {
 
     factor match {
       case factor: GaussianFactor => {
@@ -69,7 +65,7 @@ case class GaussianFactor(varId: Int, m: Double, v: Double) extends SingleFactor
 
   }
 
-  def equals(that: Factor, threshold: Double): Boolean = {
+  override def equals(that: Factor, threshold: Double): Boolean = {
 
     val thesame = that match {
       case gaussianFactor: GaussianFactor => {
@@ -77,8 +73,6 @@ case class GaussianFactor(varId: Int, m: Double, v: Double) extends SingleFactor
       }
       case _ => false
     }
-
-    val gaussianFactor = that.asInstanceOf[GaussianFactor]
 
     thesame
   }

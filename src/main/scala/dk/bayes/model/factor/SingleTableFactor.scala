@@ -23,7 +23,7 @@ case class SingleTableFactor(varId: Int, variableDim: Int, valueProbs: Array[Dou
 
   def productMarginal(varId: Int, factors: Seq[Factor]): SingleTableFactor = throw new UnsupportedOperationException("Not implemented yet")
 
-  def withEvidence(varId: Int, varValue: AnyVal): SingleTableFactor = {
+  override def withEvidence(varId: Int, varValue: AnyVal): SingleTableFactor = {
 
     def withEvidenceForSingleFactor(evidenceVarId: Int, varValue: Int): SingleTableFactor = {
       require(evidenceVarId == varId, "Variable not found:" + evidenceVarId)
@@ -38,7 +38,7 @@ case class SingleTableFactor(varId: Int, variableDim: Int, valueProbs: Array[Dou
 
   }
 
-  def getValue(assignment: (Int, AnyVal)*): Double = {
+  override def getValue(assignment: (Int, AnyVal)*): Double = {
 
     def getValueForSingleFactor(assignment: Seq[Tuple2[Int, Int]]): Double = {
       val value = assignment match {
@@ -51,7 +51,7 @@ case class SingleTableFactor(varId: Int, variableDim: Int, valueProbs: Array[Dou
     getValueForSingleFactor(assignment.asInstanceOf[Seq[Tuple2[Int, Int]]])
   }
 
-  def *(factor: Factor): SingleTableFactor = {
+  override def *(factor: Factor): SingleTableFactor = {
 
     def productForSingleFactor(factor: SingleTableFactor): SingleTableFactor = {
       require(varId == factor.varId, "Variable ids for product factors are not the same")
@@ -71,7 +71,7 @@ case class SingleTableFactor(varId: Int, variableDim: Int, valueProbs: Array[Dou
     productForSingleFactor(factor.asInstanceOf[SingleTableFactor])
   }
 
-  def /(that: Factor): SingleTableFactor = {
+  override def /(that: Factor): SingleTableFactor = {
 
     def divideForSingleFactor(factor: SingleTableFactor): SingleTableFactor = {
       require(varId == factor.varId, "Variable ids for quotient factors are not the same")
@@ -92,7 +92,7 @@ case class SingleTableFactor(varId: Int, variableDim: Int, valueProbs: Array[Dou
     divideForSingleFactor(that.asInstanceOf[SingleTableFactor])
   }
 
-  def equals(that: Factor, threshold: Double): Boolean = {
+  override def equals(that: Factor, threshold: Double): Boolean = {
     val tableFactor = that.asInstanceOf[SingleTableFactor]
     val notTheSame = valueProbs.zip(tableFactor.valueProbs).find { case (thisVal, thatVal) => thisVal.isNaN || thatVal.isNaN || abs(thisVal - thatVal) > threshold }
     notTheSame.isEmpty

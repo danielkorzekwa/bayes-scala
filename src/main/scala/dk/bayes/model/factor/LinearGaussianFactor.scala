@@ -62,11 +62,7 @@ case class LinearGaussianFactor(parentVarId: Int, varId: Int, a: Double, b: Doub
 
   }
 
-  def withEvidence(varId: Int, varValue: AnyVal): LinearGaussianFactor = throw new UnsupportedOperationException("Not implemented yet")
-
-  def getValue(assignment: (Int, AnyVal)*): Double = throw new UnsupportedOperationException("Not implemented yet")
-
-  def *(factor: Factor): BivariateGaussianFactor = {
+  override def *(factor: Factor): BivariateGaussianFactor = {
 
     factor match {
       case factor: GaussianFactor => {
@@ -83,7 +79,4 @@ case class LinearGaussianFactor(parentVarId: Int, varId: Int, a: Double, b: Doub
     }
   }
 
-  def /(that: Factor): LinearGaussianFactor = throw new UnsupportedOperationException("Not implemented yet")
-
-  def equals(that: Factor, threshold: Double): Boolean = throw new UnsupportedOperationException("Not implemented yet")
 }

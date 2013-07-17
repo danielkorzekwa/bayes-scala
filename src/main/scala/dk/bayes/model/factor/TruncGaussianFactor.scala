@@ -78,7 +78,7 @@ case class TruncGaussianFactor(gaussianVarId: Int, truncVarId: Int, truncValue: 
     marginalFactor
   }
 
-  def withEvidence(varId: Int, varValue: AnyVal): TruncGaussianFactor = {
+  override def withEvidence(varId: Int, varValue: AnyVal): TruncGaussianFactor = {
     varId match {
       case `gaussianVarId` => throw new UnsupportedOperationException("Setting the evidence value for the gaussian variable of TruncGaussianFactor is not supported")
       case `truncVarId` => {
@@ -86,14 +86,6 @@ case class TruncGaussianFactor(gaussianVarId: Int, truncVarId: Int, truncValue: 
       }
     }
   }
-
-  def getValue(assignment: (Int, AnyVal)*): Double = throw new UnsupportedOperationException("Not implemented yet")
-
-  def *(factor: Factor): TruncGaussianFactor = throw new UnsupportedOperationException("Not implemented yet")
-
-  def /(that: Factor): TruncGaussianFactor = throw new UnsupportedOperationException("Not implemented yet")
-
-  def equals(that: Factor, threshold: Double): Boolean = throw new UnsupportedOperationException("Not implemented yet")
 
   private def outcomeMarginal(truncVarEvidence: Boolean): SingleTableFactor = {
     truncVarEvidence match {
