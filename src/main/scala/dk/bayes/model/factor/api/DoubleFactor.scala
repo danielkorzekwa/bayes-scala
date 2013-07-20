@@ -8,10 +8,8 @@ package dk.bayes.model.factor.api
 trait DoubleFactor extends Factor {
 
   type FACTOR_TYPE = DoubleFactor
-
-  /**
-   * Returns a marginal for a given variable of a product of this and other factors.
-   */
-  def productMarginal(varId: Int, factor1: Factor, factor2: Factor): SingleFactor
+  
+  /**Returns outgoing messages to factor variables. Tuple2[var1 msg, var2 msg]*/
+  def outgoingMessages(factor1: Factor, factor2: Factor):Tuple2[SingleFactor,SingleFactor]
 
 }

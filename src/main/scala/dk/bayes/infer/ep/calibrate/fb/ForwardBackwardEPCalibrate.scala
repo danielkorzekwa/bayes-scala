@@ -102,12 +102,7 @@ case class ForwardBackwardEPCalibrate(factorGraph: FactorGraph, threshold: Doubl
     val gate2MsgIn = factorNode.gate2.getEndGate.getMessage
 
     val factor = factorNode.getFactor().asInstanceOf[DoubleFactor]
-
-    val marginalNodeGate1 = factor.productMarginal(factorNode.gate1.getMessage.getVariableId, gate1MsgIn, gate2MsgIn)
-    val marginalNodeGate2 = factor.productMarginal(factorNode.gate2.getMessage.getVariableId, gate1MsgIn, gate2MsgIn)
-
-    val newMessageGate1 = marginalNodeGate1 / gate1MsgIn
-    val newMessageGate2 = marginalNodeGate2 / gate2MsgIn
+    val (newMessageGate1, newMessageGate2) = factor.outgoingMessages(gate1MsgIn, gate2MsgIn)
 
     factorNode.gate1.setMessage(newMessageGate1, newMsgIndex())
     logger.debug("from: %s\t to: %s\t\t msg: %s".format(factorNode.getFactor().getVariableIds.mkString("f(", ",", ")"), factorNode.gate1.getEndGate.varNode.varId, newMessageGate1))
@@ -124,14 +119,7 @@ case class ForwardBackwardEPCalibrate(factorGraph: FactorGraph, threshold: Doubl
     val gate3MsgIn = factorNode.gate3.getEndGate.getMessage
 
     val factor = factorNode.getFactor().asInstanceOf[TripleFactor]
-
-    val marginalNodeGate1 = factor.productMarginal(factorNode.gate1.getMessage.getVariableId, gate1MsgIn, gate2MsgIn, gate3MsgIn)
-    val marginalNodeGate2 = factor.productMarginal(factorNode.gate2.getMessage.getVariableId, gate1MsgIn, gate2MsgIn, gate3MsgIn)
-    val marginalNodeGate3 = factor.productMarginal(factorNode.gate3.getMessage.getVariableId, gate1MsgIn, gate2MsgIn, gate3MsgIn)
-
-    val newMessageGate1 = marginalNodeGate1 / gate1MsgIn
-    val newMessageGate2 = marginalNodeGate2 / gate2MsgIn
-    val newMessageGate3 = marginalNodeGate3 / gate3MsgIn
+    val (newMessageGate1, newMessageGate2, newMessageGate3) = factor.outgoingMessages(gate1MsgIn, gate2MsgIn, gate3MsgIn)
 
     factorNode.gate1.setMessage(newMessageGate1, newMsgIndex())
     logger.debug("from: %s\t to: %s\t\t msg: %s".format(factorNode.getFactor().getVariableIds.mkString("f(", ",", ")"), factorNode.gate1.getEndGate.varNode.varId, newMessageGate1))

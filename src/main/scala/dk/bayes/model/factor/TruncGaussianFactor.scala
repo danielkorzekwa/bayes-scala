@@ -41,41 +41,30 @@ case class TruncGaussianFactor(gaussianVarId: Int, truncVarId: Int, truncValue: 
     marginalFactor
   }
 
-  def productMarginal(varId: Int, factor1: Factor, factor2: Factor): SingleFactor = {
-    val gaussianFactor = factor1.asInstanceOf[GaussianFactor]
-    val tableFactor = factor2.asInstanceOf[SingleTableFactor]
-    require(gaussianFactor.varId == gaussianVarId)
-    require(tableFactor.varId == truncVarId && tableFactor.variableDim == 2)
+  def outgoingMessages(factor1: Factor, factor2: Factor): Tuple2[GaussianFactor, SingleTableFactor] = {
+    outgoingMessagesInternal(factor1.asInstanceOf[GaussianFactor], factor2.asInstanceOf[SingleTableFactor])
+  }
+  private def outgoingMessagesInternal(gaussianFactor: GaussianFactor, tableFactor: SingleTableFactor): Tuple2[GaussianFactor, SingleTableFactor] = {
 
-    val marginalFactor = varId match {
-      case `gaussianVarId` => {
+    val gaussian = truncVarEvidence match {
+      case None => Gaussian(0,Double.PositiveInfinity)
+      case Some(true) => Gaussian(gaussianFactor.m, gaussianFactor.v).truncate(truncValue, true) / Gaussian(gaussianFactor.m, gaussianFactor.v)
+      case Some(false) => Gaussian(gaussianFactor.m, gaussianFactor.v).truncate(truncValue, false) / Gaussian(gaussianFactor.m, gaussianFactor.v)
+    }
+    val gaussianMsg = GaussianFactor(gaussianVarId, gaussian.m, gaussian.v)
 
-        val marginalGaussian = truncVarEvidence match {
-          case None => Gaussian(gaussianFactor.m, gaussianFactor.v)
-          case Some(true) => Gaussian(gaussianFactor.m, gaussianFactor.v).truncate(truncValue, true)
-          case Some(false) => Gaussian(gaussianFactor.m, gaussianFactor.v).truncate(truncValue, false)
-        }
+    val truncMsg = truncVarEvidence match {
+      case None => {
+        val value0Prob = 1 - Gaussian(gaussianFactor.m, gaussianFactor.v).cdf(truncValue)
+        val value1Prob = 1 - value0Prob
+        val valueProbs = Array(value0Prob, value1Prob)
 
-        GaussianFactor(varId, marginalGaussian.m, marginalGaussian.v)
-
+        SingleTableFactor(truncVarId, 2, valueProbs) / tableFactor
       }
-      case `truncVarId` => {
-
-        truncVarEvidence match {
-          case None => {
-            val value0Prob = 1 - Gaussian(gaussianFactor.m, gaussianFactor.v).cdf(truncValue)
-            val value1Prob = 1 - value0Prob
-            val valueProbs = Array(value0Prob, value1Prob)
-
-            SingleTableFactor(varId, 2, valueProbs)
-          }
-          case Some(truncVarEvidence) => outcomeMarginal(truncVarEvidence)
-        }
-      }
-      case _ => throw new IllegalArgumentException("Incorrect marginal variable id")
+      case Some(truncVarEvidence) => outcomeMarginal(truncVarEvidence) / tableFactor
     }
 
-    marginalFactor
+    Tuple2(gaussianMsg, truncMsg)
   }
 
   override def withEvidence(varId: Int, varValue: AnyVal): TruncGaussianFactor = {

@@ -25,64 +25,22 @@ case class DiffGaussianFactor(gaussian1VarId: Int, gaussian2VarId: Int, diffGaus
 
   def marginal(varId: Int): GaussianFactor = GaussianFactor(varId, 0, Double.PositiveInfinity)
 
-  def productMarginal(varId: Int, factor1: Factor, factor2: Factor, factor3: Factor): SingleFactor = {
-
-    val gaussianFactor1 = factor1.asInstanceOf[GaussianFactor]
-    val gaussianFactor2 = factor2.asInstanceOf[GaussianFactor]
-    val diffFactor = factor3.asInstanceOf[GaussianFactor]
-
-    val marginalFactor = varId match {
-
-      case `gaussian1VarId` => {
-        val sumGaussian = (Gaussian(diffFactor.m, diffFactor.v) + Gaussian(gaussianFactor2.m, gaussianFactor2.v)) * Gaussian(gaussianFactor1.m, gaussianFactor1.v)
-        GaussianFactor(varId, sumGaussian.m, sumGaussian.v)
-      }
-
-      case `gaussian2VarId` => {
-        val diffGaussian = (Gaussian(gaussianFactor1.m, gaussianFactor1.v) - Gaussian(diffFactor.m, diffFactor.v)) * Gaussian(gaussianFactor2.m, gaussianFactor2.v)
-        GaussianFactor(varId, diffGaussian.m, diffGaussian.v)
-      }
-
-      case `diffGaussianVarId` => {
-        val diffGaussian = (Gaussian(gaussianFactor1.m, gaussianFactor1.v) - Gaussian(gaussianFactor2.m, gaussianFactor2.v)) * Gaussian(diffFactor.m, diffFactor.v)
-        GaussianFactor(varId, diffGaussian.m, diffGaussian.v)
-      }
-
-      case _ => throw new IllegalArgumentException("Incorrect marginal variable id")
-    }
-
-    marginalFactor
+  def outgoingMessages(factor1: Factor, factor2: Factor, factor3: Factor): Tuple3[GaussianFactor, GaussianFactor, GaussianFactor] = {
+    outgoingMessagesInternal(factor1.asInstanceOf[GaussianFactor], factor2.asInstanceOf[GaussianFactor], factor3.asInstanceOf[GaussianFactor])
   }
 
-  def productMarginal(varId: Int, factors: Seq[Factor]): GaussianFactor = {
-    factors.foreach(f => require(f.isInstanceOf[GaussianFactor], "DiffGaussian factor cannot be multiplied by non gaussian factor:" + f))
-    require(factors.size == 3, "DiffGaussianFactor can be only multiplied by exactly three gaussian factors, one for each DiffGaussianFactor variable")
+  private def outgoingMessagesInternal(gaussianFactor1: GaussianFactor, gaussianFactor2: GaussianFactor, diffFactor: GaussianFactor): Tuple3[GaussianFactor, GaussianFactor, GaussianFactor] = {
 
-    val gaussianFactor1 = factors.asInstanceOf[Seq[GaussianFactor]].find(f => f.varId == gaussian1VarId).get
-    val gaussianFactor2 = factors.asInstanceOf[Seq[GaussianFactor]].find(f => f.varId == gaussian2VarId).get
-    val diffFactor = factors.asInstanceOf[Seq[GaussianFactor]].find(f => f.varId == diffGaussianVarId).get
+    val var1Gaussian = (Gaussian(diffFactor.m, diffFactor.v) + Gaussian(gaussianFactor2.m, gaussianFactor2.v))
+    val var1Msg = GaussianFactor(gaussian1VarId, var1Gaussian.m, var1Gaussian.v)
 
-    val marginalFactor = varId match {
+    val var2Gaussian = (Gaussian(gaussianFactor1.m, gaussianFactor1.v) - Gaussian(diffFactor.m, diffFactor.v))
+    val var2Msg = GaussianFactor(gaussian2VarId, var2Gaussian.m, var2Gaussian.v)
 
-      case `gaussian1VarId` => {
-        val sumGaussian = (Gaussian(diffFactor.m, diffFactor.v) + Gaussian(gaussianFactor2.m, gaussianFactor2.v)) * Gaussian(gaussianFactor1.m, gaussianFactor1.v)
-        GaussianFactor(varId, sumGaussian.m, sumGaussian.v)
-      }
+    val diffGaussian = (Gaussian(gaussianFactor1.m, gaussianFactor1.v) - Gaussian(gaussianFactor2.m, gaussianFactor2.v))
+    val diffMsg = GaussianFactor(diffGaussianVarId, diffGaussian.m, diffGaussian.v)
 
-      case `gaussian2VarId` => {
-        val diffGaussian = (Gaussian(gaussianFactor1.m, gaussianFactor1.v) - Gaussian(diffFactor.m, diffFactor.v)) * Gaussian(gaussianFactor2.m, gaussianFactor2.v)
-        GaussianFactor(varId, diffGaussian.m, diffGaussian.v)
-      }
-
-      case `diffGaussianVarId` => {
-        val diffGaussian = (Gaussian(gaussianFactor1.m, gaussianFactor1.v) - Gaussian(gaussianFactor2.m, gaussianFactor2.v)) * Gaussian(diffFactor.m, diffFactor.v)
-        GaussianFactor(varId, diffGaussian.m, diffGaussian.v)
-      }
-
-      case _ => throw new IllegalArgumentException("Incorrect marginal variable id")
-    }
-
-    marginalFactor
+    Tuple3(var1Msg, var2Msg, diffMsg)
   }
 
 }

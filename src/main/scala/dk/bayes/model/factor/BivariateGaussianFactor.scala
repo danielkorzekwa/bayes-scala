@@ -17,8 +17,8 @@ case class BivariateGaussianFactor(parentVarId: Int, varId: Int, mean: Matrix, v
 
   def marginal(varId: Int): SingleFactor = throw new UnsupportedOperationException("Not implemented yet")
 
-  def productMarginal(varId: Int, factor1: Factor, factor2: Factor): SingleFactor = throw new UnsupportedOperationException("Not implemented yet")
-
+  def outgoingMessages(factor1: Factor, factor2: Factor): Tuple2[SingleFactor, SingleFactor] = throw new UnsupportedOperationException("Not implemented yet")
+  
   override def *(factor: Factor): BivariateGaussianFactor = {
     factor match {
       case factor: GaussianFactor => {
