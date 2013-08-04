@@ -1,6 +1,7 @@
 package dk.bayes.learn.lds
 
 import scala.math._
+import dk.bayes.model.factor.BivariateGaussianFactor
 
 /**
  * Learning parameters in Linear Dynamic Systems.
@@ -16,13 +17,22 @@ trait LDSLearn {
    */
 
   /**
-   * @param latentVariables The temporal sequence  of sequences of latent variables from time 1 (prior state) till time N
+   * @param sStats Sufficient statistics, marginals of transition factors (time t-1, time t)
    */
-  def newA(latentVariables: Seq[Seq[LatentVariable]]): Double
+  def newA(sStats: IndexedSeq[TransitionStat]): Double
 
   /**
-   * @param latentVariables The temporal sequence  of sequences of latent variables from time 1 (prior state) till time N
+   * @param sStats Sufficient statistics, marginals of transition factors (time t-1, time t)
    */
-  def newQ(latentVariables: Seq[Seq[LatentVariable]]): Double
+  def newQ(sStats: IndexedSeq[TransitionStat]): Double
 
+  /**
+   * @param sStats Sufficient statistics, marginals of prior factors
+   */
+  def newPi(sStats: IndexedSeq[PriorStat]): Double
+
+  /**
+   * @param sStats Sufficient statistics, marginals of prior factors
+   */
+  def newV(sStats: IndexedSeq[PriorStat]): Double
 }
