@@ -8,4 +8,4 @@ Expectation Propagation for the Clutter Problem
 
 **Scala code example**
 
-* [Expectation Propagation for the Clutter Problem](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/gaussian/ep/ClutterProblemEPTest.scala)
+* [Expectation Propagation for the Clutter Problem](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/math/gaussian/ep/ClutterProblemEPTest.scala)

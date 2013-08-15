@@ -1,6 +1,6 @@
 package dk.bayes.model.factor
 
-import dk.bayes.gaussian._
+import dk.bayes.math.gaussian._
 import dk.bayes.model.factor._
 import dk.bayes.model.factor.api.Factor
 import dk.bayes.model.factor.api.SingleFactor

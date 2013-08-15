@@ -2,7 +2,7 @@ package dk.bayes.model.factor
 
 import org.junit._
 import Assert._
-import dk.bayes.gaussian.Linear._
+import dk.bayes.math.gaussian.Linear._
 
 class BivariateGaussianFactorTest {
 

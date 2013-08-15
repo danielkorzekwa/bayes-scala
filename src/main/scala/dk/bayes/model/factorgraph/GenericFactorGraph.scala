@@ -35,9 +35,9 @@ case class GenericFactorGraph extends FactorGraph {
 
       val initialMsg = factor.marginal(varNode.varId)
 
-      val factorGate = FactorGate(initialMsg) 
-      val varGate = VarGate(initialMsg,varNode)
-   
+      val factorGate = FactorGate(initialMsg)
+      val varGate = VarGate(initialMsg, varNode)
+
       factorGate.setEndGate(varGate)
       varGate.setEndGate(factorGate)
 
@@ -47,9 +47,9 @@ case class GenericFactorGraph extends FactorGraph {
     }.toVector
 
     val factorNode = factor match {
-       case factor: SingleFactor if factorGates.size==1 => new SingleFactorNode(factor, factorGates(0))
-       case factor: DoubleFactor if factorGates.size==2 => new DoubleFactorNode(factor, factorGates(0), factorGates(1))
-      case factor: TripleFactor if factorGates.size==3 => new TripleFactorNode(factor, factorGates(0), factorGates(1), factorGates(2))
+      case factor: SingleFactor if factorGates.size == 1 => new SingleFactorNode(factor, factorGates(0))
+      case factor: DoubleFactor if factorGates.size == 2 => new DoubleFactorNode(factor, factorGates(0), factorGates(1))
+      case factor: TripleFactor if factorGates.size == 3 => new TripleFactorNode(factor, factorGates(0), factorGates(1), factorGates(2))
     }
     factorGates.foreach(g => g.setFactorNode(factorNode))
 

@@ -12,4 +12,4 @@ Gaussian approximation with moment matching, aka proj() operator in Expectation 
 
 [pdf]: https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/moment_matching/moment_matching.pdf
 [latex]: https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/moment_matching/latex/moment_matching.lyx
-[scala_code]: https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/gaussian/ep/MomentMatchingTest.scala
+[scala_code]: https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/math/gaussian/ep/MomentMatchingTest.scala

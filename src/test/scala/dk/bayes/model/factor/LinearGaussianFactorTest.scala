@@ -2,7 +2,7 @@ package dk.bayes.model.factor
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import dk.bayes.gaussian.Linear.Matrix
+import dk.bayes.math.gaussian.Linear.Matrix
 
 class LinearGaussianFactorTest {
 

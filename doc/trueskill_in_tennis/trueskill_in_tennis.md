@@ -8,4 +8,4 @@ TrueSkill - Updating player skills in tennis with Expectation Propagation infere
 
 **Scala code example**
 
-* [TrueSkill for a two-person game](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/gaussian/ep/TrueSkillTwoPersonGameEPTest.scala)
+* [TrueSkill for a two-person game](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/math/gaussian/ep/TrueSkillTwoPersonGameEPTest.scala)

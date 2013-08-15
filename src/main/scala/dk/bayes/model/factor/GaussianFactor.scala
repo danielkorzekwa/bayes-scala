@@ -1,7 +1,7 @@
 package dk.bayes.model.factor
 
 import scala.math.abs
-import dk.bayes.gaussian.Gaussian
+import dk.bayes.math.gaussian.Gaussian
 import dk.bayes.model.factor.api.Factor
 import dk.bayes.model.factor.api.SingleFactor
 

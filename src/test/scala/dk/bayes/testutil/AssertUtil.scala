@@ -3,7 +3,7 @@ package dk.bayes.testutil
 import org.junit._
 import Assert._
 import dk.bayes.model.clustergraph.factor._
-import dk.bayes.gaussian.Gaussian
+import dk.bayes.math.gaussian.Gaussian
 
 object AssertUtil {
 

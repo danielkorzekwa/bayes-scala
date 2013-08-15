@@ -4,7 +4,7 @@ import org.junit.Assert._
 import dk.bayes.infer.ep.util.TennisFactorGraph._
 import org.junit.Assert._
 import dk.bayes.model.factor.GaussianFactor
-import dk.bayes.gaussian.Linear._
+import dk.bayes.math.gaussian.Linear._
 import dk.bayes.model.factor.BivariateGaussianFactor
 import dk.bayes.infer.ep.GenericEP
 
