@@ -88,13 +88,21 @@ case class TripleFactorNode(factor: TripleFactor, gate1: FactorGate, gate2: Fact
 
 }
 
+case class GenericFactorNode(factor: Factor, gates: Seq[FactorGate]) extends FactorNode(factor) {
+  def isCalibrated(threshold: Double): Boolean = {
+    val notCalibratedGate = gates.find(g => !g.getMessage().equals(g.getOldMessage(), threshold))
+    notCalibratedGate.isEmpty
+  }
+  def factorMarginal() = throw new UnsupportedOperationException("Not implemented")
+}
+
 /**
  * This class represents a variable node in a factor graph.
  *
  * @param varId Unique variable id
  */
 case class VarNode(varId: Int) extends Node {
- 
+
   private var gates = ArrayBuffer[VarGate]()
 
   /**

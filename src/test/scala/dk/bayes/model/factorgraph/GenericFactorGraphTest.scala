@@ -4,8 +4,26 @@ import org.junit._
 import Assert._
 import dk.bayes.model.factor.GaussianFactor
 import dk.bayes.model.factor.LinearGaussianFactor
+import dk.bayes.model.factor.api.Factor
+import dk.bayes.model.factor.api.SingleFactor
+import GenericFactorGraphTest._
+import dk.bayes.model.factor.api.GenericFactor
 
 class GenericFactorGraphTest {
+
+  /**
+   * Tests for addFactor
+   */
+
+  @Test def add_generic_factor {
+    val factorGraph = GenericFactorGraph()
+
+    val factor = TestGenericFactor(varIds = List(1, 2, 3))
+
+    factorGraph.addFactor(factor)
+
+    assertEquals(List(1, 2, 3), factorGraph.getVariables().sorted)
+  }
 
   /**
    * Tests for getVariables()
@@ -102,4 +120,17 @@ class GenericFactorGraphTest {
     assertEquals(VarNode(20), mergedFactorGraph.getNodes()(3))
   }
 
+}
+
+object GenericFactorGraphTest {
+
+  case class TestGenericFactor(varIds: Seq[Int]) extends GenericFactor {
+
+    def getVariableIds(): Seq[Int] = varIds
+
+    def marginal(marginalVarId: Int): SingleFactor = new GaussianFactor(marginalVarId, 0, 1)
+
+    def outgoingMessages(msgsIn: Seq[SingleFactor]): Seq[SingleFactor] = throw new UnsupportedOperationException("Not implemented")
+
+  }
 }

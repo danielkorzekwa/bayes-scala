@@ -52,8 +52,10 @@ case class Gaussian(m: Double, v: Double) {
       case false => {
         val beta = (x - m) / sd
 
-        val truncatedMean = m - sd * (stdPdf(beta) / stdCdf(beta))
-        val truncatedVariance = v * (1 - beta * (stdPdf(beta) / stdCdf(beta)) - pow(stdPdf(beta) / stdCdf(beta), 2))
+        val pdfVal = stdPdf(beta)
+        val cdfVal = stdCdf(beta)
+        val truncatedMean = m - sd * (pdfVal / cdfVal)
+        val truncatedVariance = v * (1 - beta * (pdfVal / cdfVal) - pow(pdfVal / cdfVal, 2))
 
         Gaussian(truncatedMean, truncatedVariance)
       }

@@ -41,6 +41,20 @@ object TennisFactorGraph {
     factorGraph
   }
   
+    def createTennisFactorGraphWithGenFactor(): FactorGraph = {
+    val factorGraph = GenericFactorGraph()
+
+    factorGraph.addFactor(skill1Factor)
+    factorGraph.addFactor(skill2Factor)
+    factorGraph.addFactor(perf1Factor)
+    factorGraph.addFactor(perf2Factor)
+    factorGraph.addFactor(GenericDiffGaussianFactor(List(perf1VarId, perf2VarId, perfDiffVarId)))
+    factorGraph.addFactor(outcomeFactor)
+
+    factorGraph
+  }
+  
+  
    def createTennisFactorGraphAfterPlayer1Won(): FactorGraph = {
     val factorGraph = GenericFactorGraph()
 

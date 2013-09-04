@@ -3,8 +3,6 @@ package dk.bayes.math.gaussian
 import org.junit.Assert._
 import org.junit.Test
 
-import dk.bayes.math.gaussian.KalmanFilter;
-
 class KalmanFilterTest {
 
   /**

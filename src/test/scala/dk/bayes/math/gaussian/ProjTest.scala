@@ -1,8 +1,6 @@
 package dk.bayes.math.gaussian
 
 import org.junit._
-
-import dk.bayes.math.gaussian.Proj;
 import Assert._
 
 class ProjTest {

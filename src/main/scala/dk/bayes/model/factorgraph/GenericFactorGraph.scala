@@ -7,6 +7,7 @@ import scala.collection.mutable.ListBuffer
 import dk.bayes.model.factor.api.TripleFactor
 import dk.bayes.model.factor.api.DoubleFactor
 import dk.bayes.model.factor.api.SingleFactor
+import dk.bayes.model.factor.api.GenericFactor
 
 /**
  * Default implementation of a FactorGraph.
@@ -50,6 +51,7 @@ case class GenericFactorGraph extends FactorGraph {
       case factor: SingleFactor if factorGates.size == 1 => new SingleFactorNode(factor, factorGates(0))
       case factor: DoubleFactor if factorGates.size == 2 => new DoubleFactorNode(factor, factorGates(0), factorGates(1))
       case factor: TripleFactor if factorGates.size == 3 => new TripleFactorNode(factor, factorGates(0), factorGates(1), factorGates(2))
+      case factor: GenericFactor => new GenericFactorNode(factor, factorGates)
     }
     factorGates.foreach(g => g.setFactorNode(factorNode))
 

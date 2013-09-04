@@ -15,6 +15,8 @@ import dk.bayes.model.factor.api.TripleFactor
 import dk.bayes.model.factorgraph.DoubleFactorNode
 import dk.bayes.model.factorgraph.SingleFactorNode
 import dk.bayes.model.factor.api.DoubleFactor
+import dk.bayes.model.factorgraph.GenericFactorNode
+import dk.bayes.model.factor.api.GenericFactor
 
 /**
  * Calibrates factor graph with forward-backward passes over all factor and variable nodes.
@@ -84,6 +86,7 @@ case class ForwardBackwardEPCalibrate(factorGraph: FactorGraph, threshold: Doubl
       case factorNode: SingleFactorNode => sendFactorMessage(factorNode, newMsgIndex)
       case factorNode: DoubleFactorNode => sendFactorMessage(factorNode, newMsgIndex)
       case factorNode: TripleFactorNode => sendFactorMessage(factorNode, newMsgIndex)
+      case factorNode: GenericFactorNode => sendFactorMessage(factorNode, newMsgIndex)
     }
 
   }
@@ -129,6 +132,21 @@ case class ForwardBackwardEPCalibrate(factorGraph: FactorGraph, threshold: Doubl
 
     factorNode.gate3.setMessage(newMessageGate3, newMsgIndex())
     logger.debug("from: %s\t to: %s\t\t msg: %s".format(factorNode.getFactor().getVariableIds.mkString("f(", ",", ")"), factorNode.gate3.getEndGate.varNode.varId, newMessageGate3))
+
+  }
+
+  private def sendFactorMessage(factorNode: GenericFactorNode, newMsgIndex: () => Long) {
+    val msgsIn = factorNode.gates.map(g => g.getEndGate.getMessage())
+    val factor = factorNode.getFactor().asInstanceOf[GenericFactor]
+
+    val newMsgsOut = factor.outgoingMessages(msgsIn)
+
+    newMsgsOut.zip(factorNode.gates).foreach {
+      case (msg, gate) =>
+        gate.setMessage(msg, newMsgIndex())
+
+        logger.debug("from: %s\t to: %s\t\t msg: %s".format(factorNode.getFactor().getVariableIds.mkString("f(", ",", ")"), gate.getEndGate.varNode.varId, msg))
+    }
 
   }
 

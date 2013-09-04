@@ -196,4 +196,24 @@ class TrueSkillOnlineTennisEPTest {
     assertEquals(39.9735, player1PerfMarginal.v, 0.0001)
   }
 
+  /**
+   * Testing inference including GenericFactor
+   */
+  @Test def genericfactor_test_factor_marginal_player1_wins {
+    val tennisFactorGraph = createTennisFactorGraphWithGenFactor()
+    val ep = GenericEP(tennisFactorGraph)
+    ep.setEvidence(outcomeVarId, true)
+
+    val epCalibrate = ForwardBackwardEPCalibrate(tennisFactorGraph)
+    assertEquals(EPSummary(2, 88), epCalibrate.calibrate(70, progress))
+
+    val perfFactorMarginal = ep.marginal(skill1VarId, perf1VarId).asInstanceOf[BivariateGaussianFactor]
+    assertEquals(Vector(1, 3), perfFactorMarginal.getVariableIds())
+    assertEquals(Matrix(27.174, 32.142).toString, perfFactorMarginal.mean.toString)
+    assertEquals(Matrix(2, 2, Array(37.497, 28.173, 28.173, 34.212)).toString, perfFactorMarginal.variance.toString)
+
+    val player1PerfMarginal = ep.marginal(perf1VarId).asInstanceOf[GaussianFactor]
+    assertEquals(32.1415, player1PerfMarginal.m, 0.0001)
+    assertEquals(34.2117, player1PerfMarginal.v, 0.0001)
+  }
 }
