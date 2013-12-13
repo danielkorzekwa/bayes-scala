@@ -42,6 +42,18 @@ class GaussianTest {
 
   }
 
+  @Test def invcdf {
+
+    assertEquals(0, Gaussian(0, 1).invcdf(0.5), 0.0001)
+    assertEquals(0.4998, Gaussian(0, 1).invcdf(0.6914), 0.0001)
+    assertEquals(-0.5001, Gaussian(0, 1).invcdf(0.3085), 0.0001)
+
+    assertEquals(2, Gaussian(2, 3.5).invcdf(0.5), 0.0001)
+    assertEquals(0.4997, Gaussian(2, 3.5).invcdf(0.2113), 0.0001)
+    assertEquals(-0.5002, Gaussian(2, 3.5).invcdf(0.0907), 0.0001)
+
+  }
+
   @Test def truncateGaussianWithInfiniteVariance {
     assertEquals(2, Gaussian(2, Double.PositiveInfinity).truncate(0.5, true).m, 0.0001)
     assertEquals(Double.PositiveInfinity, Gaussian(2, Double.PositiveInfinity).truncate(0.5, true).v, 0.0001)

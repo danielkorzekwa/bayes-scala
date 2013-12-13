@@ -13,7 +13,7 @@
 
 	<!-- Properties -->
 	<properties>
-		<scala.version>2.10.0</scala.version>
+		<scala.version>2.10.3</scala.version>
 		<junit.version>4.4</junit.version>
 	</properties>
 

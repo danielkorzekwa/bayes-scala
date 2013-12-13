@@ -23,6 +23,7 @@ case class Gaussian(m: Double, v: Double) {
 
   def cdf(x: Double) = Gaussian.cdf(x, m, v)
 
+  def invcdf(x: Double) = Gaussian.invcdf(x, m, v)
   /**
    * Returns upper/lower tail gaussian truncation.
    * http://en.wikipedia.org/wiki/Truncated_normal_distribution
@@ -33,19 +34,19 @@ case class Gaussian(m: Double, v: Double) {
   def truncate(x: Double, upperTail: Boolean): Gaussian = {
 
     if (v.isPosInfinity) return this
-    
+
     val sd = sqrt(v)
 
     val truncatedGaussian = upperTail match {
       case true => {
         def lambda(alpha: Double): Double = stdPdf(alpha) / (1 - stdCdf(alpha))
-        def delta(alpha: Double,lambdaValue:Double): Double = lambdaValue * (lambdaValue - alpha)
+        def delta(alpha: Double, lambdaValue: Double): Double = lambdaValue * (lambdaValue - alpha)
 
         val alpha = (x - m) / sd
         val lambdaValue = lambda(alpha)
-        
+
         val truncatedMean = m + sd * lambdaValue
-        val truncatedVariance = v * (1 - delta(alpha,lambdaValue))
+        val truncatedVariance = v * (1 - delta(alpha, lambdaValue))
 
         Gaussian(truncatedMean, truncatedVariance)
       }
@@ -56,7 +57,6 @@ case class Gaussian(m: Double, v: Double) {
         val cdfVal = stdCdf(beta)
         val truncatedMean = m - sd * (pdfVal / cdfVal)
         val truncatedVariance = v * (1 - beta * (pdfVal / cdfVal) - pow(pdfVal / cdfVal, 2))
-
         Gaussian(truncatedMean, truncatedVariance)
       }
     }
@@ -173,6 +173,15 @@ object Gaussian {
    * @param v Variance
    */
   def cdf(x: Double, m: Double, v: Double): Double = new NormalDistribution(m, sqrt(v)).cumulativeProbability(x)
+
+  /**
+   * Returns the value of inverse cumulative distribution function (quantile function)
+   *
+   * @param x The cdf function is evaluated at the value of x
+   * @param m Mean
+   * @param v Variance
+   */
+  def invcdf(x: Double, m: Double, v: Double): Double = new NormalDistribution(m, sqrt(v)).inverseCumulativeProbability(x)
 
   /**
    * Returns the value of cumulative distribution function of the standard normal distribution.
