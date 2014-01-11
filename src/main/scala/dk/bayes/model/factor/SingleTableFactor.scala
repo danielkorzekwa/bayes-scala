@@ -14,9 +14,7 @@ import dk.bayes.model.factor.api.SingleFactor
  * @param values Factor values
  */
 case class SingleTableFactor(varId: Int, variableDim: Int, valueProbs: Array[Double]) extends SingleFactor {
-
-  def getVariableIds(): Seq[Int] = Vector(varId)
-
+  
   def getVariableId(): Int = varId
 
   def marginal(varId: Int): SingleTableFactor = throw new UnsupportedOperationException("Not implemented yet")

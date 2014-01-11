@@ -3,11 +3,11 @@ package dk.bayes.model.factor
 import dk.bayes.math.gaussian.CanonicalGaussian
 import dk.bayes.math.gaussian.CanonicalGaussian
 import dk.bayes.math.gaussian.Linear._
-import dk.bayes.math.gaussian.CanonicalGaussianMultiply
 import dk.bayes.math.gaussian.LinearGaussian
 import dk.bayes.math.gaussian.Gaussian
 import dk.bayes.model.factor.api.Factor
 import dk.bayes.model.factor.api.DoubleFactor
+import dk.bayes.math.gaussian.CanonicalGaussianOps
 
 /**
  * This class represents a factor for a Linear Gaussian Distribution. N(ax + b,v)
@@ -35,7 +35,7 @@ case class LinearGaussianFactor(parentVarId: Int, varId: Int, a: Double, b: Doub
       if (a == 1 && b == 0) Gaussian(childFactor.m, childFactor.v + v)
       else {
         val linearCanonGaussian = CanonicalGaussian(Array(parentVarId, varId), Matrix(a), b, v)
-        val msg = CanonicalGaussianMultiply.*(linearCanonGaussian.varIds, linearCanonGaussian, CanonicalGaussian(varId, childFactor.m, childFactor.v)).marginalise(varId).toGaussian()
+        val msg = CanonicalGaussianOps.*(linearCanonGaussian.varIds, linearCanonGaussian, CanonicalGaussian(varId, childFactor.m, childFactor.v)).marginalise(varId).toGaussian()
         msg
       }
     } else Gaussian(0, Double.PositiveInfinity)

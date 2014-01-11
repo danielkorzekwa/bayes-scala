@@ -14,6 +14,8 @@ object Linear {
   case class LinearDouble(d: Double) {
     def *(m: Matrix): Matrix = m * d
   }
+  
+  def identity(width:Int):Matrix = new Matrix(SimpleMatrix.identity(width)) 
 
   case class Matrix(matrix: SimpleMatrix) {
 

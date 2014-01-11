@@ -21,8 +21,6 @@ case class GaussianFactor(varId: Int, m: Double, v: Double) extends SingleFactor
 
   def getVariableId(): Int = varId
 
-  def getVariableIds(): Seq[Int] = Vector(varId)
-
   def marginal(marginalVarId: Int): GaussianFactor = {
     require(marginalVarId == varId, "Incorrect variable id")
     this.copy()

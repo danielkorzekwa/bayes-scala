@@ -37,7 +37,12 @@ case class CanonicalGaussian(varIds: Array[Int], k: Matrix, h: Matrix, g: Double
   /**
    * Returns product of multiplying two canonical gausssians
    */
-  def *(gaussian: CanonicalGaussian) = CanonicalGaussianMultiply.*(this, gaussian)
+  def *(gaussian: CanonicalGaussian) = CanonicalGaussianOps.*(this, gaussian)
+  
+   /**
+   * Returns quotient of two canonical gausssians
+   */
+  def /(gaussian: CanonicalGaussian) = CanonicalGaussianOps./(this, gaussian)
 
   /**
    * Returns gaussian integral marginalising out a given variable

@@ -7,7 +7,7 @@ import Linear._
  *
  * @author Daniel Korzekwa
  */
-object CanonicalGaussianMultiply {
+object CanonicalGaussianOps {
 
   def *(gaussian1: CanonicalGaussian, gaussian2: CanonicalGaussian): CanonicalGaussian = {
 
@@ -21,6 +21,22 @@ object CanonicalGaussianMultiply {
     val newK = extendedScopeK(commonVariableIds, gaussian1.varIds, gaussian1.k) + extendedScopeK(commonVariableIds, gaussian2.varIds, gaussian2.k)
     val newH = extendedScopeH(commonVariableIds, gaussian1.varIds, gaussian1.h) + extendedScopeH(commonVariableIds, gaussian2.varIds, gaussian2.h)
     val newG = gaussian1.g + gaussian2.g
+
+    CanonicalGaussian(commonVariableIds, newK, newH, newG)
+  }
+  
+   def /(gaussian1: CanonicalGaussian, gaussian2: CanonicalGaussian): CanonicalGaussian = {
+
+    val commonVariableIds = gaussian1.varIds.union(gaussian2.varIds).distinct
+
+    /(commonVariableIds, gaussian1, gaussian2)
+  }
+
+  def /(commonVariableIds: Array[Int], gaussian1: CanonicalGaussian, gaussian2: CanonicalGaussian): CanonicalGaussian = {
+
+    val newK = extendedScopeK(commonVariableIds, gaussian1.varIds, gaussian1.k) - extendedScopeK(commonVariableIds, gaussian2.varIds, gaussian2.k)
+    val newH = extendedScopeH(commonVariableIds, gaussian1.varIds, gaussian1.h) - extendedScopeH(commonVariableIds, gaussian2.varIds, gaussian2.h)
+    val newG = gaussian1.g - gaussian2.g
 
     CanonicalGaussian(commonVariableIds, newK, newH, newG)
   }
