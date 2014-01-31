@@ -14,8 +14,8 @@ object Linear {
   case class LinearDouble(d: Double) {
     def *(m: Matrix): Matrix = m * d
   }
-  
-  def identity(width:Int):Matrix = new Matrix(SimpleMatrix.identity(width)) 
+
+  def identity(width: Int): Matrix = new Matrix(SimpleMatrix.identity(width))
 
   case class Matrix(matrix: SimpleMatrix) {
 
@@ -55,6 +55,10 @@ object Linear {
       val copy = matrix.copy()
       copy.reshape(row, col)
       Matrix(copy)
+    }
+
+    def combine(insertRow: Int, insertCol: Int, m: Matrix):Matrix ={
+      Matrix(this.matrix.combine(insertRow, insertCol, m.matrix))
     }
 
     def filterNotRow(rowIndex: Int): Matrix = {
@@ -116,7 +120,9 @@ object Linear {
      */
     def apply(d: Double*): Matrix = Matrix(new SimpleMatrix(Array(d.toArray)).transpose())
 
-    def apply(numRows: Int, numCols: Int): Matrix = Matrix(new SimpleMatrix(numRows, numCols))
+    def zeros(numRows: Int, numCols: Int): Matrix = {
+      Matrix(new SimpleMatrix(numRows, numCols))
+    }
 
     /**
      * @param numRows
@@ -124,6 +130,11 @@ object Linear {
      * @param values Values are encoded in a row-major format
      */
     def apply(numRows: Int, numCols: Int, values: Array[Double]): Matrix = Matrix(new SimpleMatrix(numRows, numCols, true, values: _*))
+
+    def apply(numRows: Int, numCols: Int, cell: (Int, Int) => Double): Matrix = {
+      val values = for (row <- 0 until numRows; col <- 0 until numCols) yield cell(row, col)
+      Matrix(new SimpleMatrix(numRows, numCols, true, values: _*))
+    }
 
   }
 }

@@ -67,7 +67,7 @@ case class Gaussian(m: Double, v: Double) {
   def *(linearGaussian: LinearGaussian): MultivariateGaussian = {
     val m = Matrix(this.m, linearGaussian.a * this.m + linearGaussian.b)
 
-    val R = Matrix(2, 2)
+    val R = Matrix.zeros(2, 2)
     R.set(0, 0, 1 / this.v + pow(linearGaussian.a, 2) * (1 / linearGaussian.v))
     R.set(0, 1, -linearGaussian.a * (1 / linearGaussian.v))
     R.set(1, 0, (-1 / linearGaussian.v) * linearGaussian.a)

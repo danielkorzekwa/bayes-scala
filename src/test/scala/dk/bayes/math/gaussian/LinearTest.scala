@@ -142,7 +142,7 @@ class LinearTest {
   @Test def matrix_foreach {
     val m = Matrix(3, 2, Array(0.5, 1.2, 3, 4, -5, -6))
 
-    val newM = Matrix(3, 2)
+    val newM = Matrix.zeros(3, 2)
     m.foreach((rowId, colId) => newM.set(rowId, colId, m(rowId, colId)))
 
     assertEquals(newM.toString, m.toString)
@@ -202,6 +202,7 @@ class LinearTest {
     assertEquals(Matrix(2.3).toString, Matrix(Array(2.3)).toString)
     assertEquals(Matrix(2.3, 4.5).toString, Matrix(Array(2.3, 4.5)).toString)
     assertEquals(Matrix(2.3, 4.5).toString, Matrix(2, 1, Array(2.3, 4.5)).toString)
-    assertEquals(Matrix(2, 2, Array(0d, 0, 0, 0)).toString, Matrix(2, 2).toString)
+    assertEquals(Matrix(2, 2, Array(0d, 0, 0, 0)).toString, Matrix.zeros(2, 2).toString)
+      assertEquals(Matrix(2, 2, Array(0d, 0, 0, 1)).toString, Matrix(2, 2,(row:Int,col:Int)=> row*col).toString)
   }
 }

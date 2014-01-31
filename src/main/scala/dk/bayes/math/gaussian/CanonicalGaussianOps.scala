@@ -24,8 +24,8 @@ object CanonicalGaussianOps {
 
     CanonicalGaussian(commonVariableIds, newK, newH, newG)
   }
-  
-   def /(gaussian1: CanonicalGaussian, gaussian2: CanonicalGaussian): CanonicalGaussian = {
+
+  def /(gaussian1: CanonicalGaussian, gaussian2: CanonicalGaussian): CanonicalGaussian = {
 
     val commonVariableIds = gaussian1.varIds.union(gaussian2.varIds).distinct
 
@@ -43,8 +43,13 @@ object CanonicalGaussianOps {
 
   private def extendedScopeK(newVarIds: Array[Int], kVarIds: Array[Int], k: Matrix): Matrix = {
 
-    val extendedK = if (newVarIds.sameElements(kVarIds)) k else {
-      val kMatrix = Matrix(newVarIds.size, newVarIds.size)
+    val extendedK = if (newVarIds.sameElements(kVarIds)) k
+    else if (newVarIds.startsWith(kVarIds)) {
+      val kMatrix = Matrix.zeros(newVarIds.size, newVarIds.size)
+      kMatrix.insertIntoThis(0, 0, k)
+      kMatrix
+    } else {
+      val kMatrix = Matrix.zeros(newVarIds.size, newVarIds.size)
 
       k.foreach { (rowId, colId) =>
         val cellValue = k(rowId, colId)
@@ -62,8 +67,13 @@ object CanonicalGaussianOps {
 
   private def extendedScopeH(newVarIds: Array[Int], hVarIds: Array[Int], h: Matrix): Matrix = {
 
-    val extendedH = if (newVarIds.sameElements(hVarIds)) h else {
-      val hMatrix = Matrix(newVarIds.size, 1)
+    val extendedH = if (newVarIds.sameElements(hVarIds)) h
+    else if (newVarIds.startsWith(hVarIds)) {
+      val hMatrix = Matrix.zeros(newVarIds.size, 1)
+      hMatrix.insertIntoThis(0, 0, h)
+      hMatrix
+    } else {
+      val hMatrix = Matrix.zeros(newVarIds.size, 1)
 
       h.foreach { (rowId, colId) =>
         val cellValue = h(rowId, colId)

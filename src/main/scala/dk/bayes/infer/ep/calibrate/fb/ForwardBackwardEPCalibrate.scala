@@ -93,6 +93,7 @@ case class ForwardBackwardEPCalibrate(factorGraph: FactorGraph, threshold: Doubl
 
   private def sendFactorMessage(factorNode: SingleFactorNode, newMsgIndex: () => Long) {
     val newMessage = factorNode.getFactor().asInstanceOf[SingleFactor]
+   
     factorNode.gate.setMessage(newMessage, newMsgIndex())
 
     logger.debug("from: %s\t to: %s\t\t msg: %s".format(factorNode.getFactor().getVariableIds.mkString("f(", ",", ")"), factorNode.gate.getEndGate.varNode.varId, newMessage))

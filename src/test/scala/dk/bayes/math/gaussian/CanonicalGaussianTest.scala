@@ -20,7 +20,7 @@ object CanonicalGaussianTest {
 class CanonicalGaussianTest {
 
   /**
-   * Tests for class constructor
+   * Tests for class constructor - illegal arguments
    */
 
   @Test(expected = classOf[IllegalArgumentException]) def constructor_empty_variables {
@@ -28,7 +28,7 @@ class CanonicalGaussianTest {
   }
 
   @Test(expected = classOf[IllegalArgumentException]) def constructor_wrong_number_of_variables {
-    new CanonicalGaussian(Array(1), Matrix(2, 2, Array(0d, 0, 0, 0)), Matrix(0, 0), 0)
+    new CanonicalGaussian(Array(1), Matrix(2, 2, Array(0d, 0, 0, 0)), Matrix.zeros(0, 0), 0)
   }
 
   @Test(expected = classOf[IllegalArgumentException]) def constructor_wrong_dimensions_of_k_and_h {
@@ -41,6 +41,24 @@ class CanonicalGaussianTest {
 
   @Test(expected = classOf[IllegalArgumentException]) def constructor_h_matrix_is_not_column_vector {
     CanonicalGaussian(Array(1, 2), Matrix(2, 2, Array(0d, 0, 0, 0)), Matrix(1, 3, Array(0d, 0, 0)))
+  }
+
+  /**
+   * Tests for class constructor - linear gaussian
+   */
+
+  @Test def constructor_linear_gaussian {
+    val gaussian1 = CanonicalGaussian(Array(1, 2), a = Matrix(0.7), b = 1.5, v = 2)
+    val gaussian2 = CanonicalGaussian(Array(1, 2), a = Matrix(0.7), b = Matrix(1.5), v = Matrix(2))
+
+    assertGaussian(gaussian1, gaussian2)
+  }
+
+  @Test def constructor_linear_gaussian_multivariate {
+
+    val gaussian = CanonicalGaussian(Array(1, 2, 3, 4), a = Matrix(2, 2, Array(1d, 0.2, 0.4, 1)), b = Matrix(0.4, 0.7), v = Matrix(2, 2, Array(1.2, 0.4, 5, 2.3)))
+    assertEquals(Matrix(0.539, 0.123, 0.946, 1.812).toString, gaussian.getMean.toString)
+    assertEquals(Matrix(4, 4, Array(0, 0.057, 0.029, -0.286, 0.458, -0.801, 1.745, 0.1, -0.458, -0.229, 0.744, -0.343, -0.000, -0.458, 2.06, -0.458)).toString, gaussian.getVariance.toString)
   }
 
   /**
@@ -148,6 +166,21 @@ class CanonicalGaussianTest {
   }
 
   /**
+   * Tests for marginal()
+   */
+  @Test def marginal {
+    val y = CanonicalGaussian(yId, 3, 1.5)
+
+    val yGivenx = CanonicalGaussian(Array(xId, yId), Matrix(1), 0.4, 0.5)
+
+    val expectedMarginalX = (yGivenx * y).marginalise(yId)
+    val actualMarginalY = (yGivenx * y).marginal(xId)
+
+    assertArrayEquals(expectedMarginalX.varIds, actualMarginalY.varIds)
+    assertEquals(expectedMarginalX.toGaussian.m, actualMarginalY.toGaussian.m, 0.0001)
+    assertEquals(expectedMarginalX.toGaussian.v, actualMarginalY.toGaussian.v, 0.0001)
+  }
+  /**
    * Tests for withEvidence() method
    */
   @Test def withEvidence_marginal_y {
@@ -204,6 +237,16 @@ class CanonicalGaussianTest {
     val gaussian = CanonicalGaussian(Array(1), Matrix(1.65), Matrix(0.5))
     assertEquals(Matrix(1.65).toString(), gaussian.getMean().toString())
     assertEquals(Matrix(0.5).toString(), gaussian.getVariance().toString())
+
+    val (mean, variance) = gaussian.getMeanAndVariance()
+    assertEquals(Matrix(1.65).toString(), mean.toString())
+    assertEquals(Matrix(0.5).toString(), variance.toString())
+  }
+
+  private def assertGaussian(expected: CanonicalGaussian, actual: CanonicalGaussian) {
+    assertEquals(expected.k.toString, actual.k.toString)
+    assertEquals(expected.h.toString, actual.h.toString)
+    assertEquals(expected.g.toString, actual.g.toString)
   }
 
 }
