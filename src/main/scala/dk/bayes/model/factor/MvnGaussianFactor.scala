@@ -44,7 +44,9 @@ case class MvnGaussianFactor(varId: Int, canonGaussian: CanonicalGaussian) exten
 
     val thesame = that match {
       case gaussianFactor: MvnGaussianFactor => {
-        ((canonGaussian.getMean() - gaussianFactor.canonGaussian.getMean()).matrix.elementMaxAbs() < threshold && ((canonGaussian.getVariance() - gaussianFactor.canonGaussian.getVariance()).matrix.elementMaxAbs() < threshold))
+        (canonGaussian.k.matrix.isIdentical(gaussianFactor.canonGaussian.k.matrix, threshold) &&
+          canonGaussian.h.matrix.isIdentical(gaussianFactor.canonGaussian.h.matrix, threshold)) 
+          
       }
       case _ => false
     }

@@ -102,11 +102,11 @@ class TrueSkillTwoPersonGameEPTest {
 
     //backward messages for player 1
     val m_f6_to_f2 = m_f7_to_f6 + m_f5_to_f6
-    val m_f2_to_f1 = (performanceFactor.toCanonical(xId = 1, yId = 2) * m_f6_to_f2.toCanonical(varId = 2)).marginalise(2).toGaussian()
+    val m_f2_to_f1 = (performanceFactor.toCanonical() * m_f6_to_f2.toCanonical().extend(2,1)).marginalise(1).toGaussian()
 
     //backward messages for player 2
     val m_f6_to_f5 = m_f2_to_f6 - m_f7_to_f6
-    val m_f5_to_f4 = (performanceFactor.toCanonical(xId = 1, yId = 2) * m_f6_to_f5.toCanonical(varId = 2)).marginalise(2).toGaussian()
+    val m_f5_to_f4 = (performanceFactor.toCanonical() * m_f6_to_f5.toCanonical().extend(2,1)).marginalise(1).toGaussian()
 
     val s1Marginal = m_f2_to_f1 * m_f1_to_f2
     val s2Marginal = m_f5_to_f4 * m_f4_to_f5

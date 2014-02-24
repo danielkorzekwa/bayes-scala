@@ -136,9 +136,8 @@ case class Gaussian(m: Double, v: Double) {
   /**
    * Converts Gaussian to Canonical Gaussian.
    *
-   * @param varId Unique id of a Gaussian variable in a canonical space.
    */
-  def toCanonical(varId: Int): CanonicalGaussian = CanonicalGaussian(varId, m, v)
+  def toCanonical(): CanonicalGaussian = CanonicalGaussian(m, v)
 }
 
 object Gaussian {

@@ -6,12 +6,9 @@ import Linear._
 
 class CanonicalGaussianOpsTest {
 
-  val xId = 1
-  val yId = 2
-
-  val x = CanonicalGaussian(Array(xId), Matrix(3), Matrix(1.5))
-  val y = CanonicalGaussian(Array(yId), Matrix(5), Matrix(2.5))
-  val yGivenx = CanonicalGaussian(Array(xId, yId), Matrix(-0.1), 2, 0.5)
+  val x = CanonicalGaussian(Matrix(3), Matrix(1.5))
+  val y = CanonicalGaussian(Matrix(5), Matrix(2.5))
+  val yGivenx = CanonicalGaussian(Matrix(-0.1), 2, 0.5)
 
   /**
    * tests for multiply
@@ -19,9 +16,8 @@ class CanonicalGaussianOpsTest {
 
   @Test def product_xy {
 
-    val jointGaussian = x * yGivenx
+    val jointGaussian = x.extend(2, 0) * yGivenx
 
-    assertArrayEquals(Array(xId, yId), jointGaussian.varIds)
     assertEquals(Matrix(Array(3, 1.7)).toString(), jointGaussian.getMean().toString())
     assertEquals(Matrix(2, 2, Array(1.5, -0.15, -0.15, 0.515)).toString(), jointGaussian.getVariance().toString())
 
@@ -31,9 +27,8 @@ class CanonicalGaussianOpsTest {
 
   @Test def product_yx {
 
-    val jointGaussian = yGivenx * x
+    val jointGaussian = yGivenx * x.extend(2, 0)
 
-    assertArrayEquals(Array(xId, yId), jointGaussian.varIds)
     assertEquals(Matrix(Array(3, 1.7)).toString(), jointGaussian.getMean().toString())
     assertEquals(Matrix(2, 2, Array(1.5, -0.15, -0.15, 0.515)).toString(), jointGaussian.getVariance().toString())
 
@@ -43,9 +38,8 @@ class CanonicalGaussianOpsTest {
 
   @Test def product_yGivenx_and_y {
 
-    val jointGaussian = yGivenx * y
+    val jointGaussian = yGivenx * y.extend(2, 1)
 
-    assertArrayEquals(Array(xId, yId), jointGaussian.varIds)
     assertEquals(Matrix(Array(-30d, 5)).toString(), jointGaussian.getMean().toString())
     assertEquals(Matrix(2, 2, Array(300, -25, -25, 2.5)).toString(), jointGaussian.getVariance().toString())
 
@@ -56,8 +50,8 @@ class CanonicalGaussianOpsTest {
    */
 
   @Test def divide_multiply {
-    val gaussian1 = CanonicalGaussian(Array(xId, yId), Matrix(1.5, 2), Matrix(2, 2, Array(1, 0.7, 0.3, 1.2)))
-    val gaussian2 = CanonicalGaussian(Array(xId, yId), Matrix(1.9, 2.6), Matrix(2, 2, Array(1.1, 0.4, 0.6, 1.65)))
+    val gaussian1 = CanonicalGaussian(Matrix(1.5, 2), Matrix(2, 2, Array(1, 0.7, 0.3, 1.2)))
+    val gaussian2 = CanonicalGaussian(Matrix(1.9, 2.6), Matrix(2, 2, Array(1.1, 0.4, 0.6, 1.65)))
 
     val newGaussian = (gaussian1 / gaussian2) * gaussian2
 
@@ -66,8 +60,8 @@ class CanonicalGaussianOpsTest {
   }
 
   @Test def multiply_divide {
-    val gaussian1 = CanonicalGaussian(Array(xId, yId), Matrix(1.5, 2), Matrix(2, 2, Array(1, 0.7, 0.3, 1.2)))
-    val gaussian2 = CanonicalGaussian(Array(xId, yId), Matrix(1.9, 2.6), Matrix(2, 2, Array(1.1, 0.4, 0.6, 1.65)))
+    val gaussian1 = CanonicalGaussian(Matrix(1.5, 2), Matrix(2, 2, Array(1, 0.7, 0.3, 1.2)))
+    val gaussian2 = CanonicalGaussian(Matrix(1.9, 2.6), Matrix(2, 2, Array(1.1, 0.4, 0.6, 1.65)))
 
     val newGaussian = (gaussian1 * gaussian2) / gaussian2
 
@@ -76,8 +70,8 @@ class CanonicalGaussianOpsTest {
   }
 
   @Test def divide_mvn {
-    val gaussian1 = CanonicalGaussian(Array(xId, yId), Matrix(1.5, 2), Matrix(2, 2, Array(1, 0.7, 0.3, 1.2)))
-    val gaussian2 = CanonicalGaussian(Array(xId, yId), Matrix(1.9, 2.6), Matrix(2, 2, Array(1.1, 0.4, 0.6, 1.65)))
+    val gaussian1 = CanonicalGaussian(Matrix(1.5, 2), Matrix(2, 2, Array(1, 0.7, 0.3, 1.2)))
+    val gaussian2 = CanonicalGaussian(Matrix(1.9, 2.6), Matrix(2, 2, Array(1.1, 0.4, 0.6, 1.65)))
 
     val newGaussian = (gaussian1 * gaussian2)
 
@@ -86,8 +80,8 @@ class CanonicalGaussianOpsTest {
   }
 
   @Test def divide_univariate {
-    val gaussian1 = CanonicalGaussian(xId, 1.5, 3.4)
-    val gaussian2 = CanonicalGaussian(xId, 1.9, 2.1)
+    val gaussian1 = CanonicalGaussian(1.5, 3.4)
+    val gaussian2 = CanonicalGaussian(1.9, 2.1)
 
     val newGaussian = (gaussian1 / gaussian2)
     val expectedGaussian = gaussian1.toGaussian / gaussian2.toGaussian

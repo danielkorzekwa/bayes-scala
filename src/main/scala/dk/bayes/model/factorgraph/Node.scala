@@ -59,6 +59,7 @@ case class DoubleFactorNode(factor: DoubleFactor, gate1: FactorGate, gate2: Fact
 
   def isCalibrated(threshold: Double): Boolean = {
     val notCalibratedGate = Vector(gate1, gate2).find(g => !g.getMessage().equals(g.getOldMessage(), threshold))
+   
     notCalibratedGate.isEmpty
   }
 
@@ -117,6 +118,7 @@ case class VarNode(varId: Int) extends Node {
 
   def isCalibrated(threshold: Double): Boolean = {
     val notCalibratedGate = getGates.find(g => !g.getMessage().equals(g.getOldMessage(), threshold))
+   
     notCalibratedGate.isEmpty
   }
 }

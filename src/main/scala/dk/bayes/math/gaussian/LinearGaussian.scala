@@ -19,8 +19,6 @@ case class LinearGaussian(a: Double, b: Double, v: Double) {
   /**
    * Converts Linear Gaussian to a canonical form.
    *
-   * @param xId Unique id of variable x in a canonical form,  where y ~ Normal(ax+b,v)
-   * @param yId Unique id of variable y in a canonical form,  where y ~ Normal(ax+b,v)
    */
-  def toCanonical(xId: Int, yId: Int): CanonicalGaussian = CanonicalGaussian(Array(xId, yId), Matrix(a), b, v)
+  def toCanonical(): CanonicalGaussian = CanonicalGaussian(Matrix(a), b, v)
 }

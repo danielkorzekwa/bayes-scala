@@ -30,7 +30,7 @@ case class MvnLinearGaussianFactor(parentVarId: Int, varId: Int, a: Matrix, b: D
 
   def marginal(varId: Int): SingleFactor = varId match {
     case `parentVarId` =>
-      MvnGaussianFactor(varId, CanonicalGaussian((1 to a.size).toArray, Matrix(a.size, 1), Matrix(a.size, a.size, (row: Int, col: Int) => Double.PositiveInfinity)))
+      MvnGaussianFactor(varId, CanonicalGaussian(Matrix(a.size, 1), Matrix(a.size, a.size, (row: Int, col: Int) => Double.PositiveInfinity)))
     case `varId` =>
       GaussianFactor(varId, 0, Double.PositiveInfinity)
   }
@@ -40,10 +40,12 @@ case class MvnLinearGaussianFactor(parentVarId: Int, varId: Int, a: Matrix, b: D
   }
   private def outgoingMessagesInternal(parentFactor: MvnGaussianFactor, childFactor: GaussianFactor): Tuple2[MvnGaussianFactor, GaussianFactor] = {
 
-    val linearCanonGaussian = CanonicalGaussian((1 to a.size + 1).toArray, a, b, v)
-    val childFactorCanon = CanonicalGaussian(a.size + 1, childFactor.m, childFactor.v)
+    throw new UnsupportedOperationException("TODO: Scope of mvn variables is not extended")
 
-    val parentMsg = CanonicalGaussianOps.*(linearCanonGaussian.varIds, linearCanonGaussian, childFactorCanon).marginalise(a.size + 1)
+    val linearCanonGaussian = CanonicalGaussian(a, b, v)
+    val childFactorCanon = CanonicalGaussian(childFactor.m, childFactor.v)
+
+    val parentMsg = (linearCanonGaussian * childFactorCanon).marginalise(a.size)
 
     //  val childMsg = CanonicalGaussianOps.*(linearCanonGaussian.varIds, parentFactor.canonGaussian, linearCanonGaussian).marginal(a.size + 1).toGaussian
     //  val childMsgMu = childMsg.m

@@ -34,8 +34,8 @@ case class LinearGaussianFactor(parentVarId: Int, varId: Int, a: Double, b: Doub
     val parentMsg = if (!childFactor.m.isNaN && !childFactor.v.isPosInfinity) {
       if (a == 1 && b == 0) Gaussian(childFactor.m, childFactor.v + v)
       else {
-        val linearCanonGaussian = CanonicalGaussian(Array(parentVarId, varId), Matrix(a), b, v)
-        val msg = CanonicalGaussianOps.*(linearCanonGaussian.varIds, linearCanonGaussian, CanonicalGaussian(varId, childFactor.m, childFactor.v)).marginalise(varId).toGaussian()
+        val linearCanonGaussian = CanonicalGaussian(Matrix(a), b, v)
+        val msg = (linearCanonGaussian * CanonicalGaussian(childFactor.m, childFactor.v).extend(2, 1)).marginalise(varId).toGaussian()
         msg
       }
     } else Gaussian(0, Double.PositiveInfinity)
@@ -53,10 +53,13 @@ case class LinearGaussianFactor(parentVarId: Int, varId: Int, a: Double, b: Doub
         val gaussianFactor = factor.asInstanceOf[GaussianFactor]
         require(gaussianFactor.varId == parentVarId || gaussianFactor.varId == varId, "Incorrect gaussian variable id")
 
-        val linearCanonGaussian = CanonicalGaussian(Array(parentVarId, varId), Matrix(a), b, v)
+        val linearCanonGaussian = CanonicalGaussian(Matrix(a), b, v)
 
-        val productGaussian = linearCanonGaussian * CanonicalGaussian(gaussianFactor.varId, gaussianFactor.m, gaussianFactor.v)
-        val bivariateGaussianFactor = BivariateGaussianFactor(productGaussian.varIds(0), productGaussian.varIds(1), productGaussian.getMean(), productGaussian.getVariance())
+        val extendedGaussianFactor = if (gaussianFactor.varId == parentVarId) CanonicalGaussian(gaussianFactor.m, gaussianFactor.v).extend(2, 0)
+        else CanonicalGaussian(gaussianFactor.m, gaussianFactor.v).extend(2, 1)
+        
+        val productGaussian = linearCanonGaussian * extendedGaussianFactor
+        val bivariateGaussianFactor = BivariateGaussianFactor(parentVarId, varId, productGaussian.getMean(), productGaussian.getVariance())
         bivariateGaussianFactor
       }
       case _ => throw new IllegalArgumentException("LinearGaussian factor cannot be multiplied by a factor that is non gaussian")

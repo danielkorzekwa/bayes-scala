@@ -14,13 +14,10 @@ class StaticLocalisationCanonicalGaussianTest {
 
   @Test def single_observation {
 
-    val locationId = 1
-    val observationId = 2
+    val location = priorProb.toCanonical()
+    val observation = emissionProb.toCanonical()
 
-    val location = priorProb.toCanonical(locationId)
-    val observation = emissionProb.toCanonical(locationId, observationId)
-
-    val locationPosterior = (location * observation).withEvidence(observationId, 0.6)
+    val locationPosterior = (location.extend(2, 0) * observation).withEvidence(1, 0.6)
 
     assertEquals(1.5, locationPosterior.getMean.at(0), 0.001)
     assertEquals(0.5625, locationPosterior.getVariance.at(0), 0.001)
@@ -29,17 +26,13 @@ class StaticLocalisationCanonicalGaussianTest {
 
   @Test def two_observations {
 
-    val locationId = 1
-    val observation1Id = 2
-    val observation2Id = 3
+    val location = priorProb.toCanonical()
 
-    val location = priorProb.toCanonical(locationId)
+    val observation1 = emissionProb.toCanonical()
+    val observation2 = emissionProb.toCanonical()
 
-    val observation1 = emissionProb.toCanonical(locationId, observation1Id)
-    val observation2 = emissionProb.toCanonical(locationId, observation2Id)
-
-    val jointProb = location * observation1 * observation2
-    val locationPosterior = jointProb.withEvidence(observation1Id, 0.6).withEvidence(observation2Id, 0.62)
+    val jointProb = location * observation1.withEvidence(1, 0.6) * observation2.withEvidence(1, 0.62)
+    val locationPosterior = jointProb
 
     //Alternative approach - applying evidence in a serial order
     //val locationPosterior = (location * observation1).withEvidence(observation1Id, 0.6) * observation2.withEvidence(observation2Id, 0.62)
@@ -51,14 +44,11 @@ class StaticLocalisationCanonicalGaussianTest {
 
   @Test def multiple_100K_observations {
 
-    val locationId = 1
-    val observationId = 2
-
-    val location = priorProb.toCanonical(locationId)
-    val observation = emissionProb.toCanonical(locationId, observationId)
+    val location = priorProb.toCanonical()
+    val observation = emissionProb.toCanonical()
 
     val lastLocation = (1 to 100).foldLeft(location) { (currLocation, i) =>
-      (currLocation * observation).withEvidence(observationId, 0.6)
+      (currLocation.extend(2, 0) * observation).withEvidence(1, 0.6)
     }
 
     assertEquals(0.614, lastLocation.getMean.at(0), 0.001)

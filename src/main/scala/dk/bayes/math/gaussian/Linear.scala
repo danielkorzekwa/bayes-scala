@@ -57,7 +57,7 @@ object Linear {
       Matrix(copy)
     }
 
-    def combine(insertRow: Int, insertCol: Int, m: Matrix):Matrix ={
+    def combine(insertRow: Int, insertCol: Int, m: Matrix): Matrix = {
       Matrix(this.matrix.combine(insertRow, insertCol, m.matrix))
     }
 
@@ -123,6 +123,8 @@ object Linear {
     def zeros(numRows: Int, numCols: Int): Matrix = {
       Matrix(new SimpleMatrix(numRows, numCols))
     }
+
+    def diag(d: Double*): Matrix = Matrix(SimpleMatrix.diag(d: _*))
 
     /**
      * @param numRows

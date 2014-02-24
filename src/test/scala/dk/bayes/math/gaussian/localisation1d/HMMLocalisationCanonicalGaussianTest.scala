@@ -15,16 +15,12 @@ class HMMLocalisationCanonicalGaussianTest {
 
   @Test def single_observation {
 
-    val location1Id = 1
-    val location2Id = 2
-    val observationId = 3
+    val location1 = priorProb.toCanonical()
+    val location2 = transitionProb.toCanonical()
+    val observation =emissionProb.toCanonical()
 
-    val location1 = priorProb.toCanonical(location1Id)
-    val location2 = transitionProb.toCanonical(location1Id, location2Id)
-    val observation =emissionProb.toCanonical(location2Id, observationId)
-
-    val location2Marginal = (location1 * location2).marginalise(location1Id)
-    val location2Posterior = (location2Marginal * observation).withEvidence(observationId, 0.6)
+    val location2Marginal = (location1.extend(2, 0) * location2).marginalise(0)
+    val location2Posterior = (location2Marginal.extend(2, 0) * observation).withEvidence(1, 0.6)
 
     assertEquals(1.430, location2Posterior.getMean.at(0), 0.001)
     assertEquals(0.588, location2Posterior.getVariance.at(0), 0.001)

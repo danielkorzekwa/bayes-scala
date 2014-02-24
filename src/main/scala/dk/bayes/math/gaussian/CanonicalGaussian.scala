@@ -19,11 +19,10 @@ import Linear._
  * @param h See Canonical Gaussian definition
  * @param g See Canonical Gaussian definition
  */
-case class CanonicalGaussian(varIds: Array[Int], k: Matrix, h: Matrix, g: Double) {
+case class CanonicalGaussian(k: Matrix, h: Matrix, g: Double) {
 
   private lazy val kinv = k.inv
 
-  require(varIds.size == k.numRows, "varIds array doesn't match the dimensions of k matrix")
   require(k.numRows == k.numCols && k.numRows == h.numRows && h.numCols == 1, "k and(or) h matrices are incorrect")
 
   /**
@@ -47,13 +46,9 @@ case class CanonicalGaussian(varIds: Array[Int], k: Matrix, h: Matrix, g: Double
   def /(gaussian: CanonicalGaussian) = if (gaussian.g.isNaN()) this else CanonicalGaussianOps./(this, gaussian)
 
   /**
-   * Returns gaussian integral marginalising out a given variable
+   * Returns gaussian integral marginalising out the variable at a given index
    */
-  def marginalise(varId: Int): CanonicalGaussian = {
-
-    val varIndex = varIds.indexOf(varId)
-
-    val newVarIds = varIds.filter(vId => vId != varId)
+  def marginalise(varIndex: Int): CanonicalGaussian = {
 
     val kXX = k.filterNot(varIndex, varIndex)
     val kXY = k.column(varIndex).filterNotRow(varIndex)
@@ -64,33 +59,33 @@ case class CanonicalGaussian(varIds: Array[Int], k: Matrix, h: Matrix, g: Double
     val newH = hX - kXY * (1d / k(varIndex, varIndex)) * h(varIndex)
     val newG = g + 0.5 * (log(abs(2 * Pi * (1d / k(varIndex, varIndex)))) + h(varIndex) * (1d / k(varIndex, varIndex)) * h(varIndex))
 
-    CanonicalGaussian(newVarIds, newK, newH, newG)
+    CanonicalGaussian(newK, newH, newG)
   }
 
   /**
-   * Marginalise out all variables except of varId
+   * Marginalise out all variables except of the variable at a given index
    */
-  def marginal(varId: Int): CanonicalGaussian = {
-    //    val filteredVarIds = varIds.filter(v => v != varId)
-    //    val headVarId = filteredVarIds.head
-    //    val marginal = filteredVarIds.tail.foldLeft(this.marginalise(headVarId))((marginal, nextVarId) => marginal.marginalise(nextVarId))
-    //    marginal
-
+  def marginal(varIndex: Int): CanonicalGaussian = {
     val mean = this.getMean()
     val variance = this.getVariance()
-    val varIndex = varIds.indexOf(varId)
     val marginalMean = mean(varIndex)
     val marginalVariance = variance(varIndex, varIndex)
-    CanonicalGaussian(varId, marginalMean, marginalVariance)
+    CanonicalGaussian(marginalMean, marginalVariance)
+  }
+
+  /**
+   * Marginalise out all variables except of the variables at given indexes
+   */
+  def marginal(varIndexes: Int*): CanonicalGaussian = {
+    val filteredVarIndexes = (0 until h.size).filter(v => !varIndexes.contains(v)).reverse
+    val headVarIndex = filteredVarIndexes.head
+    val marginal = filteredVarIndexes.tail.foldLeft(this.marginalise(headVarIndex))((marginal, nextVarIndex) => marginal.marginalise(nextVarIndex))
+    marginal
   }
   /**
    * Returns canonical gaussian given evidence.
    */
-  def withEvidence(varId: Int, varValue: Double): CanonicalGaussian = {
-
-    val varIndex = varIds.indexOf(varId)
-
-    val newVarIds = varIds.filter(vId => vId != varId)
+  def withEvidence(varIndex: Int, varValue: Double): CanonicalGaussian = {
 
     val kXY = k.column(varIndex).filterNotRow(varIndex)
     val hX = h.filterNotRow(varIndex)
@@ -99,7 +94,7 @@ case class CanonicalGaussian(varIds: Array[Int], k: Matrix, h: Matrix, g: Double
     val newH = hX - kXY * varValue
     val newG = g + h(varIndex, 0) * varValue - 0.5 * varValue * k(varIndex, varIndex) * varValue
 
-    CanonicalGaussian(newVarIds, newK, newH, newG)
+    CanonicalGaussian(newK, newH, newG)
   }
 
   def getMean(): Matrix = getMeanAndVariance._1
@@ -112,10 +107,10 @@ case class CanonicalGaussian(varIds: Array[Int], k: Matrix, h: Matrix, g: Double
   def getMeanAndVariance(): Tuple2[Matrix, Matrix] = {
 
     val mean = if (!g.isNaN) kinv * h
-    else Matrix(List.fill(varIds.size)(Double.NaN).toArray)
+    else Matrix(List.fill(h.size)(Double.NaN).toArray)
 
     val variance = if (!g.isNaN) kinv
-    else Matrix(varIds.size, varIds.size, List.fill(pow(varIds.size, 2).toInt)(Double.NaN).toArray)
+    else Matrix(h.size, h.size, List.fill(h.size * h.size)(Double.NaN).toArray)
 
     (mean, variance)
 
@@ -140,38 +135,44 @@ case class CanonicalGaussian(varIds: Array[Int], k: Matrix, h: Matrix, g: Double
   }
 
   private def exp(m: Matrix) = scala.math.exp(m(0))
+
+  /**
+   * Extends the scope of Gaussian.
+   * It is useful for * and / operations on Gaussians with different variables.
+   *
+   * @param size The size of extended Gaussian
+   * @param startIndex The position of this Gaussian in the new extended Gaussian
+   */
+  def extend(size: Int, startIndex: Int): CanonicalGaussian = CanonicalGaussianOps.extend(this, size, startIndex)
 }
 
 object CanonicalGaussian {
 
   /**
-   * @param varId Unique variable id
    * @param m Mean
    * @param v Variance
    */
-  def apply(varId: Int, m: Double, v: Double): CanonicalGaussian = apply(Array(varId), Matrix(m), Matrix(v))
+  def apply(m: Double, v: Double): CanonicalGaussian = apply(Matrix(m), Matrix(v))
 
   /**
-   * @param varIds Unique variable ids
    * @param m Mean
    * @param v Variance
    */
-  def apply(varIds: Array[Int], m: Matrix, v: Matrix): CanonicalGaussian = {
+  def apply(m: Matrix, v: Matrix): CanonicalGaussian = {
     val k = v.inv
     val h = k * m
     val g = -0.5 * m.transpose * k * m - log(pow(2d * Pi, m.numRows.toDouble / 2d) * pow(v.det, 0.5))
-    new CanonicalGaussian(varIds, k, h, g(0))
+    new CanonicalGaussian(k, h, g(0))
   }
 
   /**
    * Creates Canonical Gaussian from Linear Gaussian N(a * x + b, v)
    *
-   * @param varIds Unique variable ids
    * @param a Term of m = (ax+b)
    * @param b Term of m = (ax+b)
    * @param v Variance
    */
-  def apply(varIds: Array[Int], a: Matrix, b: Double, v: Double): CanonicalGaussian = {
+  def apply(a: Matrix, b: Double, v: Double): CanonicalGaussian = {
 
     val kMatrix = Matrix.zeros(a.numRows() + 1, a.numRows() + 1)
 
@@ -190,24 +191,23 @@ object CanonicalGaussian {
 
     val g = -0.5 * (pow(b, 2) / v) - 0.5 * log(2 * Pi * v)
 
-    new CanonicalGaussian(varIds, k, h, g)
+    new CanonicalGaussian(k, h, g)
   }
 
   /**
    * Creates Canonical Gaussian from Linear Gaussian N(a * x + b, v)
    *
-   * @param varIds Unique variable ids
    * @param a Term of m = (ax+b)
    * @param b Term of m = (ax+b)
    * @param v Variance
    */
-  def apply(varIds: Array[Int], a: Matrix, b: Matrix, v: Matrix): CanonicalGaussian = {
+  def apply(a: Matrix, b: Matrix, v: Matrix): CanonicalGaussian = {
 
     val vInv = v.inv
 
-    val k00 = a * vInv * a.transpose
-    val k01 = a.negative * vInv
-    val k10 = vInv.negative * a.transpose
+    val k00 = a.transpose * vInv * a
+    val k01 = a.transpose.negative * vInv
+    val k10 = vInv.negative * a
     val k11 = vInv
 
     var k = k00.combine(0, k00.numCols, k01)
@@ -219,8 +219,8 @@ object CanonicalGaussian {
     val h = h00.combine(h00.numRows, 0, h01)
 
     val g = -0.5 * b.transpose * v.inv * b + log(C(v))
-   
-    new CanonicalGaussian(varIds, k, h, g(0))
+
+    new CanonicalGaussian(k, h, g(0))
   }
 
   private def C(v: Matrix): Double = {
