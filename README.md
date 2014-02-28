@@ -1,5 +1,6 @@
 Bayesian Networks in Scala
 ===========
+Collection of Bayesian algorithms for model representation, inference and learning.
 
 **Major features**
 
@@ -12,14 +13,14 @@ Bayesian Networks in Scala
   * Loopy Belief Propagation in a cluster graph
   * Expectation Propagation on a factor graph
   * Manual inference using supported factor operations (product, divide, marginal, evidence)
-* Learning parameters (discrete Bayesian Networks)
-  * Expectation Maximisation - CPT Factors, Complete/Incomplete data, BN and Unrolled DBN
-
+  * Gaussian Process Regression (Gaussian likelihood and zero mean functions only)
+* Learning parameters
+  * Expectation Maximisation - Discrete Bayesian Networks. CPT Factors, Complete/Incomplete data, BN and Unrolled DBN
+  * Learning parameters of Linear Dynamical Systems
+  
 **Roadmap**
 
-*   Improve the performance of calibrating factor graph with Expectation Propagation 
-*   Learning parameters in LG-SSM models
-*   Conditional Bayesian Networks (CPD as a Bayesian Network with input variables X, output variables Y, and internal variables Z)
+None
 
 **Documenation**
 
@@ -35,7 +36,11 @@ Bayesian Networks in Scala
     * [TrueSkill - Updating player skills in tennis with Expectation Propagation inference algorithm](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/trueskill_in_tennis/trueskill_in_tennis.md)
     * [TrueSkill on a factor graph in Tennis] (https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/trueskill_in_tennis_factor_graph/trueskill_in_tennis_factor_graph.md)
     * [TrueSkill on a factor graph in Tennis (Dynamic Bayesian Network for 3 players with 6 games over 3 time slices)] (https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/trueskill_in_tennis_factor_graph_dbn/trueskill_in_tennis_factor_graph_dbn.md)
+* 
 *   Others
+    * [Example: Linear Dynamical Systems M-step (prior mean, emission variance, transition variance)](https://raw.github.com/danielkorzekwa/bayes-scala/src/test/scala/dk/bayes/learn/lds/GenericLDSMStepTest.scala)
+    * [Example: Linear Dynamical Systems EM (learning prior mean and emission variance only from multiple data sequences)](https://raw.github.com/danielkorzekwa/bayes-scala/src/test/scala/dk/bayes/learn/lds/GenericLDSEMTest.scala)
+    * [Example: Gaussian Process regression](https://raw.github.com/danielkorzekwa/bayes-scala/src/test/scala/dk/bayes/infer/gp/GenericGPRegressionTest.scala)
     * [Plotting gaussians](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/plotting_gaussian/plotting_gaussian.md)
     * [Resources for Bayesian Networks](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/bn_resources/bn_resources.md)
 

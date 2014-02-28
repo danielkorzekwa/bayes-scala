@@ -22,11 +22,11 @@ class HMMLocalisationCanonicalGaussianTest {
     val location2Marginal = (location1.extend(2, 0) * location2).marginalise(0)
     val location2Posterior = (location2Marginal.extend(2, 0) * observation).withEvidence(1, 0.6)
 
-    assertEquals(1.430, location2Posterior.getMean.at(0), 0.001)
-    assertEquals(0.588, location2Posterior.getVariance.at(0), 0.001)
+    assertEquals(1.430, location2Posterior.mean.at(0), 0.001)
+    assertEquals(0.588, location2Posterior.variance.at(0), 0.001)
 
-    assertEquals(3, location2Marginal.getMean.at(0), 0.001)
-    assertEquals(1.7, location2Marginal.getVariance.at(0), 0.001)
+    assertEquals(3, location2Marginal.mean.at(0), 0.001)
+    assertEquals(1.7, location2Marginal.variance.at(0), 0.001)
 
   }
 }

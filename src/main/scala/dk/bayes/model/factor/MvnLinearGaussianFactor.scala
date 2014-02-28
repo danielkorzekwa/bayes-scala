@@ -51,7 +51,7 @@ case class MvnLinearGaussianFactor(parentVarId: Int, varId: Int, a: Matrix, b: D
     //  val childMsgMu = childMsg.m
     //   val childMsgVariance = childMsg.v
 
-    val (parentMean, parentVariance) = parentFactor.canonGaussian.getMeanAndVariance()
+    val (parentMean, parentVariance) = parentFactor.canonGaussian.meanAndVariance()
     val childMsgMu = (a.transpose * parentMean)(0) + b
     val childMsgVariance = v + (a.transpose * parentVariance * a)(0)
     Tuple2(MvnGaussianFactor(parentVarId, parentMsg), GaussianFactor(varId, childMsgMu, childMsgVariance))

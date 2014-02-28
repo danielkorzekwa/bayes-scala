@@ -18,8 +18,8 @@ class CanonicalGaussianOpsTest {
 
     val jointGaussian = x.extend(2, 0) * yGivenx
 
-    assertEquals(Matrix(Array(3, 1.7)).toString(), jointGaussian.getMean().toString())
-    assertEquals(Matrix(2, 2, Array(1.5, -0.15, -0.15, 0.515)).toString(), jointGaussian.getVariance().toString())
+    assertEquals(Matrix(Array(3, 1.7)).toString(), jointGaussian.mean().toString())
+    assertEquals(Matrix(2, 2, Array(1.5, -0.15, -0.15, 0.515)).toString(), jointGaussian.variance().toString())
 
     assertEquals(0.0111, jointGaussian.pdf(Matrix(Array(3.5, 0))), 0.0001d)
     assertEquals(0.1679, jointGaussian.pdf(Matrix(Array(3d, 2))), 0.0001d)
@@ -29,8 +29,8 @@ class CanonicalGaussianOpsTest {
 
     val jointGaussian = yGivenx * x.extend(2, 0)
 
-    assertEquals(Matrix(Array(3, 1.7)).toString(), jointGaussian.getMean().toString())
-    assertEquals(Matrix(2, 2, Array(1.5, -0.15, -0.15, 0.515)).toString(), jointGaussian.getVariance().toString())
+    assertEquals(Matrix(Array(3, 1.7)).toString(), jointGaussian.mean().toString())
+    assertEquals(Matrix(2, 2, Array(1.5, -0.15, -0.15, 0.515)).toString(), jointGaussian.variance().toString())
 
     assertEquals(0.0111, jointGaussian.pdf(Matrix(Array(3.5, 0))), 0.0001d)
     assertEquals(0.1679, jointGaussian.pdf(Matrix(Array(3d, 2))), 0.0001d)
@@ -40,8 +40,8 @@ class CanonicalGaussianOpsTest {
 
     val jointGaussian = yGivenx * y.extend(2, 1)
 
-    assertEquals(Matrix(Array(-30d, 5)).toString(), jointGaussian.getMean().toString())
-    assertEquals(Matrix(2, 2, Array(300, -25, -25, 2.5)).toString(), jointGaussian.getVariance().toString())
+    assertEquals(Matrix(Array(-30d, 5)).toString(), jointGaussian.mean().toString())
+    assertEquals(Matrix(2, 2, Array(300, -25, -25, 2.5)).toString(), jointGaussian.variance().toString())
 
   }
 
@@ -55,8 +55,8 @@ class CanonicalGaussianOpsTest {
 
     val newGaussian = (gaussian1 / gaussian2) * gaussian2
 
-    assertEquals(Matrix(Array(1.5, 2)).toString(), newGaussian.getMean().toString())
-    assertEquals(Matrix(2, 2, Array(1, 0.7, 0.3, 1.2)).toString(), newGaussian.getVariance().toString())
+    assertEquals(Matrix(Array(1.5, 2)).toString(), newGaussian.mean().toString())
+    assertEquals(Matrix(2, 2, Array(1, 0.7, 0.3, 1.2)).toString(), newGaussian.variance().toString())
   }
 
   @Test def multiply_divide {
@@ -65,8 +65,8 @@ class CanonicalGaussianOpsTest {
 
     val newGaussian = (gaussian1 * gaussian2) / gaussian2
 
-    assertEquals(Matrix(Array(1.5, 2)).toString(), newGaussian.getMean().toString())
-    assertEquals(Matrix(2, 2, Array(1, 0.7, 0.3, 1.2)).toString(), newGaussian.getVariance().toString())
+    assertEquals(Matrix(Array(1.5, 2)).toString(), newGaussian.mean().toString())
+    assertEquals(Matrix(2, 2, Array(1, 0.7, 0.3, 1.2)).toString(), newGaussian.variance().toString())
   }
 
   @Test def divide_mvn {
@@ -75,8 +75,8 @@ class CanonicalGaussianOpsTest {
 
     val newGaussian = (gaussian1 * gaussian2)
 
-    assertEquals(Matrix(Array(1.722, 2.245)).toString(), newGaussian.getMean().toString())
-    assertEquals(Matrix(2, 2, Array(0.533, 0.3, 0.214, 0.705)).toString(), newGaussian.getVariance().toString())
+    assertEquals(Matrix(Array(1.722, 2.245)).toString(), newGaussian.mean().toString())
+    assertEquals(Matrix(2, 2, Array(0.533, 0.3, 0.214, 0.705)).toString(), newGaussian.variance().toString())
   }
 
   @Test def divide_univariate {

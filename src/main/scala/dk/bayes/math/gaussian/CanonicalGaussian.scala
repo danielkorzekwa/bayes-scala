@@ -21,7 +21,7 @@ import Linear._
  */
 case class CanonicalGaussian(k: Matrix, h: Matrix, g: Double) {
 
-  private lazy val kinv = k.inv
+  private lazy val kinv = {k.inv }
 
   require(k.numRows == k.numCols && k.numRows == h.numRows && h.numCols == 1, "k and(or) h matrices are incorrect")
 
@@ -66,21 +66,48 @@ case class CanonicalGaussian(k: Matrix, h: Matrix, g: Double) {
    * Marginalise out all variables except of the variable at a given index
    */
   def marginal(varIndex: Int): CanonicalGaussian = {
-    val mean = this.getMean()
-    val variance = this.getVariance()
+    val mean = this.mean()
+    val variance = this.variance()
     val marginalMean = mean(varIndex)
     val marginalVariance = variance(varIndex, varIndex)
     CanonicalGaussian(marginalMean, marginalVariance)
   }
 
   /**
+   * Marginalise out all variables except of the variables at a given indexes
+   */
+  def marginal(varIndex1: Int, varIndex2: Int): CanonicalGaussian = {
+    val mean = this.mean()
+    val variance = this.variance()
+
+    val marginalMean = Matrix(mean(varIndex1), mean(varIndex2))
+
+    val v11 = variance(varIndex1, varIndex1)
+    val v12 = variance(varIndex1, varIndex2)
+    val v21 = variance(varIndex2, varIndex1)
+    val v22 = variance(varIndex2, varIndex2)
+    val marginalVariance = Matrix(2, 2, Array(v11, v12, v21, v22))
+
+    val marginal = CanonicalGaussian(marginalMean, marginalVariance)
+    marginal
+  }
+
+  /**
    * Marginalise out all variables except of the variables at given indexes
    */
   def marginal(varIndexes: Int*): CanonicalGaussian = {
-    val filteredVarIndexes = (0 until h.size).filter(v => !varIndexes.contains(v)).reverse
-    val headVarIndex = filteredVarIndexes.head
-    val marginal = filteredVarIndexes.tail.foldLeft(this.marginalise(headVarIndex))((marginal, nextVarIndex) => marginal.marginalise(nextVarIndex))
-    marginal
+
+    varIndexes match {
+      case Seq(varIndex) => marginal(varIndex)
+      case Seq(varIndex1, varIndex2) => marginal(varIndex1, varIndex2)
+      case _ => {
+        val filteredVarIndexes = (0 until h.size).filter(v => !varIndexes.contains(v)).reverse
+        val headVarIndex = filteredVarIndexes.head
+        val marginal = filteredVarIndexes.tail.foldLeft(this.marginalise(headVarIndex))((marginal, nextVarIndex) => marginal.marginalise(nextVarIndex))
+        marginal
+      }
+    }
+
   }
   /**
    * Returns canonical gaussian given evidence.
@@ -97,14 +124,15 @@ case class CanonicalGaussian(k: Matrix, h: Matrix, g: Double) {
     CanonicalGaussian(newK, newH, newG)
   }
 
-  def getMean(): Matrix = getMeanAndVariance._1
+  def mean(): Matrix = meanAndVariance._1
+  def mean(row:Int): Double = meanAndVariance._1(row)
 
-  def getVariance(): Matrix = getMeanAndVariance._2
-
+  def variance(): Matrix = meanAndVariance._2
+  def variance(row: Int, col: Int): Double = meanAndVariance._2(row, col)
   /**
    * @returns (mean,variance)
    */
-  def getMeanAndVariance(): Tuple2[Matrix, Matrix] = {
+  def meanAndVariance(): Tuple2[Matrix, Matrix] = {
 
     val mean = if (!g.isNaN) kinv * h
     else Matrix(List.fill(h.size)(Double.NaN).toArray)
@@ -117,8 +145,8 @@ case class CanonicalGaussian(k: Matrix, h: Matrix, g: Double) {
   }
 
   def toGaussian(): Gaussian = {
-    val m = getMean()
-    val v = getVariance()
+    val m = mean()
+    val v = variance()
 
     require(m.size == 1 && v.size == 1, "Multivariate gaussian cannot be transformed into univariate gaussian")
 
@@ -129,7 +157,7 @@ case class CanonicalGaussian(k: Matrix, h: Matrix, g: Double) {
    * Returns logarithm of normalisation constant.
    */
   def getLogP(): Double = {
-    val m = getMean()
+    val m = mean()
     val logP = g + (0.5 * m.transpose * k * m)(0)
     logP
   }

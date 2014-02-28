@@ -1,6 +1,7 @@
 package dk.bayes.math.gaussian
 import org.ejml.simple.SimpleMatrix
 import org.ejml.ops.CommonOps
+import scala.collection.JavaConversions._
 
 /**
  * Linear Algebra.
@@ -14,8 +15,6 @@ object Linear {
   case class LinearDouble(d: Double) {
     def *(m: Matrix): Matrix = m * d
   }
-
-  def identity(width: Int): Matrix = new Matrix(SimpleMatrix.identity(width))
 
   case class Matrix(matrix: SimpleMatrix) {
 
@@ -36,6 +35,7 @@ object Linear {
     }
 
     def transpose(): Matrix = Matrix(matrix.transpose())
+    def t(): Matrix = Matrix(matrix.transpose())
     def inv(): Matrix = Matrix(matrix.invert())
     def det(): Double = matrix.determinant()
     def negative(): Matrix = Matrix(matrix.negative())
@@ -60,6 +60,9 @@ object Linear {
     def combine(insertRow: Int, insertCol: Int, m: Matrix): Matrix = {
       Matrix(this.matrix.combine(insertRow, insertCol, m.matrix))
     }
+
+    def extractMatrix(y0: Int, y1: Int, x0: Int, x1: Int) = Matrix(this.matrix.extractMatrix(y0, y1, x0, x1))
+    def extractDiag() = Matrix(this.matrix.extractDiag)
 
     def filterNotRow(rowIndex: Int): Matrix = {
 
@@ -104,6 +107,8 @@ object Linear {
       for (rowId <- 0 until numRows; colId <- 0 until numCols) f(rowId, colId)
     }
 
+    def toArray(): Array[Double] = matrix.getMatrix().getData()
+
     override def toString(): String = matrix.toString
   }
 
@@ -126,12 +131,16 @@ object Linear {
 
     def diag(d: Double*): Matrix = Matrix(SimpleMatrix.diag(d: _*))
 
+    def identity(width: Int): Matrix = new Matrix(SimpleMatrix.identity(width))
+
     /**
      * @param numRows
      * @param numCols
      * @param values Values are encoded in a row-major format
      */
     def apply(numRows: Int, numCols: Int, values: Array[Double]): Matrix = Matrix(new SimpleMatrix(numRows, numCols, true, values: _*))
+    
+    def apply(values : Array[Array[Double]]): Matrix = Matrix(new SimpleMatrix(values))
 
     def apply(numRows: Int, numCols: Int, cell: (Int, Int) => Double): Matrix = {
       val values = for (row <- 0 until numRows; col <- 0 until numCols) yield cell(row, col)

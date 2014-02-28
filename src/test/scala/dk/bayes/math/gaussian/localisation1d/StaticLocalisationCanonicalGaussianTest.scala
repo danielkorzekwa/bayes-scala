@@ -19,8 +19,8 @@ class StaticLocalisationCanonicalGaussianTest {
 
     val locationPosterior = (location.extend(2, 0) * observation).withEvidence(1, 0.6)
 
-    assertEquals(1.5, locationPosterior.getMean.at(0), 0.001)
-    assertEquals(0.5625, locationPosterior.getVariance.at(0), 0.001)
+    assertEquals(1.5, locationPosterior.mean.at(0), 0.001)
+    assertEquals(0.5625, locationPosterior.variance.at(0), 0.001)
 
   }
 
@@ -37,8 +37,8 @@ class StaticLocalisationCanonicalGaussianTest {
     //Alternative approach - applying evidence in a serial order
     //val locationPosterior = (location * observation1).withEvidence(observation1Id, 0.6) * observation2.withEvidence(observation2Id, 0.62)
 
-    assertEquals(1.161, locationPosterior.getMean.at(0), 0.001)
-    assertEquals(0.346, locationPosterior.getVariance.at(0), 0.001)
+    assertEquals(1.161, locationPosterior.mean.at(0), 0.001)
+    assertEquals(0.346, locationPosterior.variance.at(0), 0.001)
 
   }
 
@@ -51,7 +51,7 @@ class StaticLocalisationCanonicalGaussianTest {
       (currLocation.extend(2, 0) * observation).withEvidence(1, 0.6)
     }
 
-    assertEquals(0.614, lastLocation.getMean.at(0), 0.001)
-    assertEquals(0.008, lastLocation.getVariance.at(0), 0.001)
+    assertEquals(0.614, lastLocation.mean.at(0), 0.001)
+    assertEquals(0.008, lastLocation.variance.at(0), 0.001)
   }
 }

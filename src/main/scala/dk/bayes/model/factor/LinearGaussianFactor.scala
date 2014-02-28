@@ -20,7 +20,7 @@ import dk.bayes.math.gaussian.CanonicalGaussianOps
  * @param b Mean term of N(ax + b,v)
  * @param v Variance term of N(ax + b,v)
  */
-case class LinearGaussianFactor(parentVarId: Int, varId: Int, a: Double, b: Double, v: Double) extends DoubleFactor {
+case class LinearGaussianFactor(parentVarId: Int, varId: Int, a: Double, b: Double, v: Double, evidence: Option[Double] = None) extends DoubleFactor {
 
   def getVariableIds(): Seq[Int] = Vector(parentVarId, varId)
 
@@ -31,18 +31,30 @@ case class LinearGaussianFactor(parentVarId: Int, varId: Int, a: Double, b: Doub
   }
   private def outgoingMessagesInternal(parentFactor: GaussianFactor, childFactor: GaussianFactor): Tuple2[GaussianFactor, GaussianFactor] = {
 
-    val parentMsg = if (!childFactor.m.isNaN && !childFactor.v.isPosInfinity) {
-      if (a == 1 && b == 0) Gaussian(childFactor.m, childFactor.v + v)
-      else {
+    val parentMsg = evidence match {
+      case Some(evidence) => {
         val linearCanonGaussian = CanonicalGaussian(Matrix(a), b, v)
-        val msg = (linearCanonGaussian * CanonicalGaussian(childFactor.m, childFactor.v).extend(2, 1)).marginalise(varId).toGaussian()
-        msg
+        val msg = (linearCanonGaussian * CanonicalGaussian(childFactor.m, childFactor.v).extend(2, 1)).withEvidence(1, evidence)
+        msg.toGaussian
       }
-    } else Gaussian(0, Double.PositiveInfinity)
-
-    val childMsg = if (a == 1 && b == 0) Gaussian(parentFactor.m, parentFactor.v + v)
-    else (LinearGaussian(a, b, v) * Gaussian(parentFactor.m, parentFactor.v)).marginalise(0).toGaussian()
-
+      case _ => {
+        if (!childFactor.m.isNaN && !childFactor.v.isPosInfinity) {
+          if (a == 1 && b == 0) Gaussian(childFactor.m, childFactor.v + v)
+          else {
+            val linearCanonGaussian = CanonicalGaussian(Matrix(a), b, v)
+            val msg = (linearCanonGaussian * CanonicalGaussian(childFactor.m, childFactor.v).extend(2, 1)).marginalise(varId).toGaussian()
+            msg
+          }
+        } else Gaussian(0, Double.PositiveInfinity)
+      }
+    }
+    val childMsg = evidence match {
+      case Some(evidence) => Gaussian(evidence, 0)
+      case _ => {
+        if (a == 1 && b == 0) Gaussian(parentFactor.m, parentFactor.v + v)
+        else (LinearGaussian(a, b, v) * Gaussian(parentFactor.m, parentFactor.v)).marginalise(0).toGaussian()
+      }
+    }
     Tuple2(GaussianFactor(parentVarId, parentMsg.m, parentMsg.v), GaussianFactor(varId, childMsg.m, childMsg.v))
   }
 
@@ -57,9 +69,9 @@ case class LinearGaussianFactor(parentVarId: Int, varId: Int, a: Double, b: Doub
 
         val extendedGaussianFactor = if (gaussianFactor.varId == parentVarId) CanonicalGaussian(gaussianFactor.m, gaussianFactor.v).extend(2, 0)
         else CanonicalGaussian(gaussianFactor.m, gaussianFactor.v).extend(2, 1)
-        
+
         val productGaussian = linearCanonGaussian * extendedGaussianFactor
-        val bivariateGaussianFactor = BivariateGaussianFactor(parentVarId, varId, productGaussian.getMean(), productGaussian.getVariance())
+        val bivariateGaussianFactor = BivariateGaussianFactor(parentVarId, varId, productGaussian.mean(), productGaussian.variance())
         bivariateGaussianFactor
       }
       case _ => throw new IllegalArgumentException("LinearGaussian factor cannot be multiplied by a factor that is non gaussian")
