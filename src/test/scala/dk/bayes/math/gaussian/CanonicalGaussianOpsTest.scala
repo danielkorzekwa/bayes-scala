@@ -2,7 +2,7 @@ package dk.bayes.math.gaussian
 
 import org.junit._
 import Assert._
-import Linear._
+import dk.bayes.math.linear._
 
 class CanonicalGaussianOpsTest {
 

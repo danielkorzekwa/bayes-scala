@@ -1,9 +1,9 @@
 package dk.bayes.math.gaussian
 
 import scala.math._
-import dk.bayes.math.gaussian.Linear.Matrix
 import org.apache.commons.math3.distribution.NormalDistribution
 import Gaussian._
+import dk.bayes.math.linear._
 
 /**
  * Univariate Gaussian Distribution.

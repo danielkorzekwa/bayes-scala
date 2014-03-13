@@ -1,20 +1,6 @@
-package dk.bayes.math.gaussian
+package dk.bayes.math.linear
+
 import org.ejml.simple.SimpleMatrix
-import org.ejml.ops.CommonOps
-import scala.collection.JavaConversions._
-
-/**
- * Linear Algebra.
- *
- * @author Daniel Korzekwa
- */
-object Linear {
-
-  implicit def doubleToLinearDouble(d: Double): LinearDouble = LinearDouble(d)
-
-  case class LinearDouble(d: Double) {
-    def *(m: Matrix): Matrix = m * d
-  }
 
   case class Matrix(matrix: SimpleMatrix) {
 
@@ -148,4 +134,3 @@ object Linear {
     }
 
   }
-}

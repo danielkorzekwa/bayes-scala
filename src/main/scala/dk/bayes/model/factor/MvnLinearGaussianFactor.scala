@@ -2,15 +2,15 @@ package dk.bayes.model.factor
 
 import dk.bayes.math.gaussian.CanonicalGaussian
 import dk.bayes.math.gaussian.CanonicalGaussian
-import dk.bayes.math.gaussian.Linear._
+import dk.bayes.math.linear._
 import dk.bayes.math.gaussian.LinearGaussian
 import dk.bayes.math.gaussian.Gaussian
 import dk.bayes.model.factor.api.Factor
 import dk.bayes.model.factor.api.DoubleFactor
 import dk.bayes.math.gaussian.CanonicalGaussianOps
-import dk.bayes.math.gaussian.Linear._
+import dk.bayes.math.linear._
 import dk.bayes.model.factor.api.SingleFactor
-import dk.bayes.math.gaussian.Linear
+import dk.bayes.math.linear._
 import dk.bayes.math.gaussian.CanonicalGaussian
 
 /**

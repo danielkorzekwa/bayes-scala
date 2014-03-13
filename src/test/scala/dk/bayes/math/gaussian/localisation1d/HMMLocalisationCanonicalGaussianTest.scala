@@ -3,7 +3,7 @@ package dk.bayes.math.gaussian.localisation1d
 import org.junit.Assert._
 import org.junit.Test
 import dk.bayes.math.gaussian.CanonicalGaussian
-import dk.bayes.math.gaussian.Linear.Matrix
+import dk.bayes.math.linear._
 import dk.bayes.math.gaussian.Gaussian
 import dk.bayes.math.gaussian.LinearGaussian
 

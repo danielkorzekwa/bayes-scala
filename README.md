@@ -38,7 +38,7 @@ None
     * [TrueSkill on a factor graph in Tennis (Dynamic Bayesian Network for 3 players with 6 games over 3 time slices)] (https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/trueskill_in_tennis_factor_graph_dbn/trueskill_in_tennis_factor_graph_dbn.md)
 * Code examples only
     * [Linear Dynamical Systems M-step (prior mean, emission variance, transition variance)](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/learn/lds/GenericLDSMStepTest.scala)
-    * [Linear Dynamical Systems EM (learning prior mean and emission variance only from multiple data sequences)](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/learn/lds/GenericLDSMStepTest.scala)
+    * [Linear Dynamical Systems EM (learning prior mean and emission variance only from multiple data sequences)](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/learn/lds/GenericLDSEMTest.scala)
     * [Gaussian Process regression](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/infer/gp/GenericGPRegressionTest.scala)
                                  
 *   Others 

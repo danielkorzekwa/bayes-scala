@@ -1,6 +1,6 @@
 package dk.bayes.math.gaussian
 
-import Linear._
+import dk.bayes.math.linear._
 
 /**
  *  Multiples two canonical gaussians.

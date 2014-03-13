@@ -5,7 +5,7 @@ import org.ejml.simple.SimpleMatrix
 import org.ejml.simple.SimpleMatrix
 import org.ejml.ops.CommonOps
 import scala.collection.JavaConversions._
-import Linear._
+import dk.bayes.math.linear._
 
 /**
  * Canonical Gaussian following:
@@ -21,7 +21,7 @@ import Linear._
  */
 case class CanonicalGaussian(k: Matrix, h: Matrix, g: Double) {
 
-  private lazy val kinv = {k.inv }
+  private lazy val kinv = { k.inv }
 
   require(k.numRows == k.numCols && k.numRows == h.numRows && h.numCols == 1, "k and(or) h matrices are incorrect")
 
@@ -125,7 +125,7 @@ case class CanonicalGaussian(k: Matrix, h: Matrix, g: Double) {
   }
 
   def mean(): Matrix = meanAndVariance._1
-  def mean(row:Int): Double = meanAndVariance._1(row)
+  def mean(row: Int): Double = meanAndVariance._1(row)
 
   def variance(): Matrix = meanAndVariance._2
   def variance(row: Int, col: Int): Double = meanAndVariance._2(row, col)
@@ -172,6 +172,8 @@ case class CanonicalGaussian(k: Matrix, h: Matrix, g: Double) {
    * @param startIndex The position of this Gaussian in the new extended Gaussian
    */
   def extend(size: Int, startIndex: Int): CanonicalGaussian = CanonicalGaussianOps.extend(this, size, startIndex)
+
+
 }
 
 object CanonicalGaussian {

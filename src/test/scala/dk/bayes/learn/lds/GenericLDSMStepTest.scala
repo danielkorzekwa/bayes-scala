@@ -3,7 +3,7 @@ package dk.bayes.learn.lds
 import org.junit._
 import Assert._
 import dk.bayes.model.factor.BivariateGaussianFactor
-import dk.bayes.math.gaussian.Linear._
+import dk.bayes.math.linear._
 import dk.bayes.math.gaussian.CanonicalGaussian
 
 class GenericLDSMStepTest {

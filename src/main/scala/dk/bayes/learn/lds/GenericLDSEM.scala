@@ -21,7 +21,7 @@ object GenericLDSEM extends LDSEM with Logging {
       val stats: Seq[Stats] = data.map(d => eStep(currPriorMean, currEmissionVar, d))
       val (newPriorMean, newEmissionVar) = mStep(stats)
 
-      logger.info(s"New lds parameters: ${newPriorMean}, ${newEmissionVar}")
+      logger.info(s"New lds parameters (iter=${currIter}: ${newPriorMean}, ${newEmissionVar}")
       if (currIter < iterNum) emIteration(newPriorMean, newEmissionVar, currIter + 1)
       else EMSummary(newPriorMean, newEmissionVar, currIter)
     }

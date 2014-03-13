@@ -1,6 +1,6 @@
 package dk.bayes.math.gaussian
 
-import dk.bayes.math.gaussian.Linear._
+import dk.bayes.math.linear._
 import scala.math._
 
 /**

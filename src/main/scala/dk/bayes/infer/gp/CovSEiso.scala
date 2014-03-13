@@ -1,6 +1,6 @@
 package dk.bayes.infer.gp
 
-import dk.bayes.math.gaussian.Linear._
+import dk.bayes.math.linear._
 import scala.math._
 
 /**
@@ -15,13 +15,16 @@ import scala.math._
  * variance.
  *
  * Copyright (c) by Carl Edward Rasmussen and Hannes Nickisch, 2010-09-10.
+ *
+ * @param sf - signal standard deviation
+ * @param ell - length scale standard deviation
  */
 
 case class CovSEiso(sf: Double, ell: Double) extends CovFunc {
 
   def cov(x1: Matrix, x2: Matrix): Double = {
     require(x1.size == x2.size, "Vectors x1 and x2 have different sizes")
-    
+
     val Pinv = (ell * ell * Matrix.identity(x1.size)).inv
 
     val expArg = -((x1 - x2).t * Pinv * (x1 - x2))(0) / 2

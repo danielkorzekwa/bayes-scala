@@ -1,6 +1,6 @@
 package dk.bayes.infer.gp
 
-import dk.bayes.math.gaussian.Linear._
+import dk.bayes.math.linear._
 
 trait GPRegression {
 

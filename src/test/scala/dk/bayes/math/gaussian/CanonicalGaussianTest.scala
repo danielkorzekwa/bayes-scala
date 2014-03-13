@@ -3,7 +3,7 @@ package dk.bayes.math.gaussian
 import org.junit._
 import Assert._
 import org.ejml.simple.SimpleMatrix
-import Linear._
+import dk.bayes.math.linear._
 import CanonicalGaussianTest._
 
 object CanonicalGaussianTest {

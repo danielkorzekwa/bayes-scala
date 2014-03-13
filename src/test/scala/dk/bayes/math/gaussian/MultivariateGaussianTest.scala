@@ -2,8 +2,7 @@ package dk.bayes.math.gaussian
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
-
-import dk.bayes.math.gaussian.Linear.Matrix;
+import dk.bayes.math.linear._
 
 class MultivariateGaussianTest {
 
