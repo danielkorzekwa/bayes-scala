@@ -34,4 +34,10 @@ package object linear {
 
     Matrix(rowNum, colNum, data)
   }
+  /**
+   * http://en.wikipedia.org/wiki/Woodbury_matrix_identity
+   */
+  def woodbury(Ainv:Matrix,U:Matrix,Cinv:Matrix,V:Matrix):Matrix = {
+    Ainv - Ainv*U*(Cinv + V*Ainv*U).inv*(V*Ainv)
+  }
 }

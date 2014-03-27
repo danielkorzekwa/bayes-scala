@@ -28,4 +28,16 @@ object KalmanFilter {
     val v = x.v * zVar / (x.v + zVar)
     Gaussian(m, v)
   }
+
+   /**
+   * Returns posterior for x given the observed value of z: P(x|z) = N(m,v)
+   *
+   *  @param x P(x) = N(m,v)
+   *  @param zVar Variance for conditional observation variable: P(z|x) N(x,zV)
+   *  @param evidence Observed values for z
+   *
+   */
+  def posterior(x: Gaussian, zVar: Double, evidence: Seq[Double]): Gaussian = {
+    evidence.foldLeft(x)((mean, value) => KalmanFilter.posterior(mean, zVar, value))
+  }
 }

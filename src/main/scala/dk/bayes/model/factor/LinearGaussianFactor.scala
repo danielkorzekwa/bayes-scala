@@ -71,7 +71,7 @@ case class LinearGaussianFactor(parentVarId: Int, varId: Int, a: Double, b: Doub
         else CanonicalGaussian(gaussianFactor.m, gaussianFactor.v).extend(2, 1)
 
         val productGaussian = linearCanonGaussian * extendedGaussianFactor
-        val bivariateGaussianFactor = BivariateGaussianFactor(parentVarId, varId, productGaussian.mean(), productGaussian.variance())
+        val bivariateGaussianFactor = BivariateGaussianFactor(parentVarId, varId, productGaussian.mean, productGaussian.variance)
         bivariateGaussianFactor
       }
       case _ => throw new IllegalArgumentException("LinearGaussian factor cannot be multiplied by a factor that is non gaussian")

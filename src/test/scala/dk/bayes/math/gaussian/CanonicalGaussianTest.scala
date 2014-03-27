@@ -83,31 +83,31 @@ class CanonicalGaussianTest {
 
     val marginalX = (x.extend(2, 0) * yGivenx).marginalise(1)
 
-    assertEquals(Matrix(3).toString(), marginalX.mean().toString())
-    assertEquals(Matrix(1.5).toString(), marginalX.variance().toString())
+    assertEquals(Matrix(3).toString(), marginalX.mean.toString())
+    assertEquals(Matrix(1.5).toString(), marginalX.variance.toString())
   }
 
   @Test def marginalise_y_from_gaussian_cpd {
 
     val marginalX = (yGivenx).marginalise(1)
 
-    assertEquals(Matrix(Double.NaN).toString(), marginalX.mean().toString())
-    assertEquals(Matrix(Double.PositiveInfinity).toString(), marginalX.variance().toString())
+    assertEquals(Matrix(Double.NaN).toString(), marginalX.mean.toString())
+    assertEquals(Matrix(Double.PositiveInfinity).toString(), marginalX.variance.toString())
   }
 
   @Test def marginalise_x_from_gaussian_cpd {
 
     val marginalY = (yGivenx).marginalise(0)
 
-    assertEquals(Matrix(Double.NaN).toString(), marginalY.mean().toString())
-    assertEquals(Matrix(Double.PositiveInfinity).toString(), marginalY.variance().toString())
+    assertEquals(Matrix(Double.NaN).toString(), marginalY.mean.toString())
+    assertEquals(Matrix(Double.PositiveInfinity).toString(), marginalY.variance.toString())
   }
   @Test def marginalise_x {
 
-    val marginalY = (x.extend(2,0) * yGivenx).marginalise(0)
+    val marginalY = (x.extend(2, 0) * yGivenx).marginalise(0)
 
-    assertEquals(Matrix(1.7).toString(), marginalY.mean().toString())
-    assertEquals(Matrix(0.515).toString(), marginalY.variance().toString())
+    assertEquals(Matrix(1.7).toString(), marginalY.mean.toString())
+    assertEquals(Matrix(0.515).toString(), marginalY.variance.toString())
     assertEquals(0.03360, marginalY.pdf(Matrix(0)), 0.0001)
   }
 
@@ -116,7 +116,7 @@ class CanonicalGaussianTest {
 
     val yGivenx = CanonicalGaussian(Matrix(1), 0, 0.5)
 
-    val marginalX = (yGivenx * y.extend(2,1)).marginalise(1)
+    val marginalX = (yGivenx * y.extend(2, 1)).marginalise(1)
 
     assertEquals(3, marginalX.toGaussian.m, 0)
     assertEquals(2, marginalX.toGaussian.v, 0)
@@ -128,7 +128,7 @@ class CanonicalGaussianTest {
 
     val yGivenx = CanonicalGaussian(Matrix(2), 0, 0.5)
 
-    val marginalX = (yGivenx * y.extend(2,1)).marginalise(1)
+    val marginalX = (yGivenx * y.extend(2, 1)).marginalise(1)
 
     assertEquals(1.5, marginalX.toGaussian.m, 0)
     assertEquals(0.5, marginalX.toGaussian.v, 0)
@@ -140,7 +140,7 @@ class CanonicalGaussianTest {
 
     val yGivenx = CanonicalGaussian(Matrix(1), 0.4, 0.5)
 
-    val marginalX = (yGivenx * y.extend(2,1)).marginalise(1)
+    val marginalX = (yGivenx * y.extend(2, 1)).marginalise(1)
 
     assertEquals(2.6, marginalX.toGaussian.m, 0.0001)
     assertEquals(2, marginalX.toGaussian.v, 0.0001)
@@ -155,10 +155,10 @@ class CanonicalGaussianTest {
     val a = Matrix(2, 3, Array(1d, 0, 0, 0, 0, 1))
     val linear = CanonicalGaussian(a, b = Matrix(0d, 0), v = Matrix(2, 2, Array(1d, 0.1, 0.2, 2)))
 
-    val marginal = (gaussian.extend(5,0) * linear).marginal(3, 4)
+    val marginal = (gaussian.extend(5, 0) * linear).marginal(3, 4)
 
-    assertEquals(Matrix(0.1, 0.3).toString(), marginal.mean().toString())
-    assertEquals(Matrix(2, 2, Array(2, 0.3, 0.7, 5)).toString(), marginal.variance().toString())
+    assertEquals(Matrix(0.1, 0.3).toString(), marginal.mean.toString())
+    assertEquals(Matrix(2, 2, Array(2, 0.3, 0.7, 5)).toString(), marginal.variance.toString())
   }
 
   /**
@@ -169,21 +169,21 @@ class CanonicalGaussianTest {
 
     val yGivenx = CanonicalGaussian(Matrix(1), 0.4, 0.5)
 
-    val expectedMarginalX = (yGivenx * y.extend(2,1)).marginalise(1)
-    val actualMarginalY = (yGivenx * y.extend(2,1)).marginal(0)
+    val expectedMarginalX = (yGivenx * y.extend(2, 1)).marginalise(1)
+    val actualMarginalY = (yGivenx * y.extend(2, 1)).marginal(0)
 
     assertEquals(expectedMarginalX.toGaussian.m, actualMarginalY.toGaussian.m, 0.0001)
     assertEquals(expectedMarginalX.toGaussian.v, actualMarginalY.toGaussian.v, 0.0001)
   }
-  
-   @Test def marginal_two_variables_from_3d_Gaussian {
-  
-    val gaussian = CanonicalGaussian(Matrix(1,2,3), Matrix(3,3,Array(1,0.6,0.8,0.4,2,0.5,0.2,0.25,3)))
 
-   val marginal = gaussian.marginal(0,2)
+  @Test def marginal_two_variables_from_3d_Gaussian {
 
-    assertEquals(Matrix(1, 3).toString(), marginal.mean().toString())
-    assertEquals(Matrix(2, 2, Array(1,0.8,0.2,3)).toString(), marginal.variance().toString())
+    val gaussian = CanonicalGaussian(Matrix(1, 2, 3), Matrix(3, 3, Array(1, 0.6, 0.8, 0.4, 2, 0.5, 0.2, 0.25, 3)))
+
+    val marginal = gaussian.marginal(0, 2)
+
+    assertEquals(Matrix(1, 3).toString(), marginal.mean.toString())
+    assertEquals(Matrix(2, 2, Array(1, 0.8, 0.2, 3)).toString(), marginal.variance.toString())
   }
   /**
    * Tests for withEvidence() method
@@ -193,52 +193,52 @@ class CanonicalGaussianTest {
     val marginalY = yGivenx.withEvidence(0, 3.5)
 
     assertEquals(0.03707, marginalY.pdf(Matrix(0)), 0.0001)
-    assertEquals(Matrix(1.65).toString(), marginalY.mean().toString())
-    assertEquals(Matrix(0.5).toString(), marginalY.variance().toString())
+    assertEquals(Matrix(1.65).toString(), marginalY.mean.toString())
+    assertEquals(Matrix(0.5).toString(), marginalY.variance.toString())
   }
 
   @Test def withEvidence_marginal_y_given_x {
 
-    val marginalY = (x.extend(2,0) * yGivenx).withEvidence(0, 3.5) //CanonicalGaussian(Array(xId, yId), Matrix(Array(3, 1.7)), Matrix(2, 2, Array(1.5, -0.15, -0.15, 0.515))).withEvidence(xId, 3.5)
+    val marginalY = (x.extend(2, 0) * yGivenx).withEvidence(0, 3.5) //CanonicalGaussian(Array(xId, yId), Matrix(Array(3, 1.7)), Matrix(2, 2, Array(1.5, -0.15, -0.15, 0.515))).withEvidence(xId, 3.5)
 
-    assertEquals(Matrix(1.65).toString(), marginalY.mean().toString())
-    assertEquals(Matrix(0.5).toString(), marginalY.variance().toString())
+    assertEquals(Matrix(1.65).toString(), marginalY.mean.toString())
+    assertEquals(Matrix(0.5).toString(), marginalY.variance.toString())
     assertEquals(0.0111, marginalY.pdf(Matrix(0)), 0.0001d)
   }
 
   @Test def withEvidence_marginal_x_given_y {
 
-    val marginalX = (x.extend(2,0) * yGivenx).withEvidence(1, 2.5)
+    val marginalX = (x.extend(2, 0) * yGivenx).withEvidence(1, 2.5)
 
-    assertEquals(Matrix(2.7669).toString(), marginalX.mean().toString())
-    assertEquals(Matrix(1.4563).toString(), marginalX.variance().toString())
+    assertEquals(Matrix(2.7669).toString(), marginalX.mean.toString())
+    assertEquals(Matrix(1.4563).toString(), marginalX.variance.toString())
     assertEquals(0.00712, marginalX.pdf(Matrix(0)), 0.0001d)
   }
 
   @Test def withEvidence_marginal_x_given_y_version2 {
 
-    val marginalX = ((x.extend(2,0) * yGivenx).withEvidence(1, 2.5))
+    val marginalX = ((x.extend(2, 0) * yGivenx).withEvidence(1, 2.5))
 
-    assertEquals(Matrix(2.7669).toString(), marginalX.mean().toString())
-    assertEquals(Matrix(1.4563).toString(), marginalX.variance().toString())
+    assertEquals(Matrix(2.7669).toString(), marginalX.mean.toString())
+    assertEquals(Matrix(1.4563).toString(), marginalX.variance.toString())
     assertEquals(0.00712, marginalX.pdf(Matrix(0)), 0.0001d)
   }
 
   @Test def withEvidence_marginal_x_given_y_version3 {
 
-    val marginalX = (yGivenx * x.extend(2,0)).withEvidence(1, 2.5)
-    assertEquals(Matrix(2.7669).toString(), marginalX.mean().toString())
-    assertEquals(Matrix(1.4563).toString(), marginalX.variance().toString())
+    val marginalX = (yGivenx * x.extend(2, 0)).withEvidence(1, 2.5)
+    assertEquals(Matrix(2.7669).toString(), marginalX.mean.toString())
+    assertEquals(Matrix(1.4563).toString(), marginalX.variance.toString())
 
     assertEquals(0.00712, marginalX.pdf(Matrix(0)), 0.0001d)
   }
 
   @Test def getMu_getSigma {
     val gaussian = CanonicalGaussian(Matrix(1.65), Matrix(0.5))
-    assertEquals(Matrix(1.65).toString(), gaussian.mean().toString())
-    assertEquals(Matrix(0.5).toString(), gaussian.variance().toString())
+    assertEquals(Matrix(1.65).toString(), gaussian.mean.toString())
+    assertEquals(Matrix(0.5).toString(), gaussian.variance.toString())
 
-    val (mean, variance) = gaussian.meanAndVariance()
+    val (mean, variance) = (gaussian.mean, gaussian.variance)
     assertEquals(Matrix(1.65).toString(), mean.toString())
     assertEquals(Matrix(0.5).toString(), variance.toString())
   }

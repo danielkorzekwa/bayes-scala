@@ -21,7 +21,15 @@ import dk.bayes.math.linear._
  */
 case class CanonicalGaussian(k: Matrix, h: Matrix, g: Double) {
 
-  private lazy val kinv = { k.inv }
+  private lazy val kinv = k.inv
+
+  lazy val mean = {
+    if (!k.matrix.hasUncountable()) kinv * h
+    else Matrix(List.fill(h.size)(Double.NaN).toArray)
+  }
+
+  lazy val variance = if (!k.matrix.hasUncountable()) kinv
+  else Matrix(h.size, h.size, List.fill(h.size * h.size)(Double.NaN).toArray)
 
   require(k.numRows == k.numCols && k.numRows == h.numRows && h.numCols == 1, "k and(or) h matrices are incorrect")
 
@@ -66,8 +74,6 @@ case class CanonicalGaussian(k: Matrix, h: Matrix, g: Double) {
    * Marginalise out all variables except of the variable at a given index
    */
   def marginal(varIndex: Int): CanonicalGaussian = {
-    val mean = this.mean()
-    val variance = this.variance()
     val marginalMean = mean(varIndex)
     val marginalVariance = variance(varIndex, varIndex)
     CanonicalGaussian(marginalMean, marginalVariance)
@@ -77,8 +83,6 @@ case class CanonicalGaussian(k: Matrix, h: Matrix, g: Double) {
    * Marginalise out all variables except of the variables at a given indexes
    */
   def marginal(varIndex1: Int, varIndex2: Int): CanonicalGaussian = {
-    val mean = this.mean()
-    val variance = this.variance()
 
     val marginalMean = Matrix(mean(varIndex1), mean(varIndex2))
 
@@ -124,41 +128,19 @@ case class CanonicalGaussian(k: Matrix, h: Matrix, g: Double) {
     CanonicalGaussian(newK, newH, newG)
   }
 
-  def mean(): Matrix = meanAndVariance._1
-  def mean(row: Int): Double = meanAndVariance._1(row)
-
-  def variance(): Matrix = meanAndVariance._2
-  def variance(row: Int, col: Int): Double = meanAndVariance._2(row, col)
-  /**
-   * @returns (mean,variance)
-   */
-  def meanAndVariance(): Tuple2[Matrix, Matrix] = {
-
-    val mean = if (!g.isNaN) kinv * h
-    else Matrix(List.fill(h.size)(Double.NaN).toArray)
-
-    val variance = if (!g.isNaN) kinv
-    else Matrix(h.size, h.size, List.fill(h.size * h.size)(Double.NaN).toArray)
-
-    (mean, variance)
-
-  }
-
   def toGaussian(): Gaussian = {
-    val m = mean()
-    val v = variance()
+    
 
-    require(m.size == 1 && v.size == 1, "Multivariate gaussian cannot be transformed into univariate gaussian")
+    require(mean.size == 1 && variance.size == 1, "Multivariate gaussian cannot be transformed into univariate gaussian")
 
-    Gaussian(m(0), v(0))
+    Gaussian(mean(0), variance(0))
   }
 
   /**
    * Returns logarithm of normalisation constant.
    */
   def getLogP(): Double = {
-    val m = mean()
-    val logP = g + (0.5 * m.transpose * k * m)(0)
+    val logP = g + (0.5 * mean.transpose * k * mean)(0)
     logP
   }
 
@@ -172,7 +154,6 @@ case class CanonicalGaussian(k: Matrix, h: Matrix, g: Double) {
    * @param startIndex The position of this Gaussian in the new extended Gaussian
    */
   def extend(size: Int, startIndex: Int): CanonicalGaussian = CanonicalGaussianOps.extend(this, size, startIndex)
-
 
 }
 
