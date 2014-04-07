@@ -20,6 +20,8 @@ case class Matrix(matrix: SimpleMatrix) {
     Matrix(matrix.minus(dMatrix))
   }
 
+  def :*(m: Matrix) = Matrix(this.matrix.elementMult(m.matrix))
+
   def transpose(): Matrix = Matrix(matrix.transpose())
   def t(): Matrix = Matrix(matrix.transpose())
   def inv(): Matrix = Matrix(matrix.invert())
@@ -50,6 +52,9 @@ case class Matrix(matrix: SimpleMatrix) {
   def extractMatrix(y0: Int, y1: Int, x0: Int, x1: Int) = Matrix(this.matrix.extractMatrix(y0, y1, x0, x1))
   def extractDiag() = Matrix(this.matrix.extractDiag)
 
+  def extractRow(rowIndex: Int) = Matrix(this.matrix.extractVector(true, rowIndex))
+  def extractColumn(colIndex: Int) = Matrix(this.matrix.extractVector(false, colIndex))
+  
   /**
    * Returns svd [U,W,V, rank] matrix decomposition.
    */

@@ -2,6 +2,8 @@ package dk.bayes.math
 
 import scala.io.Source
 import java.io.InputStream
+import org.ejml.ops.CommonOps
+import org.ejml.simple.SimpleMatrix
 
 package object linear {
 
@@ -9,6 +11,9 @@ package object linear {
   class LinearDouble(d: Double) {
     def *(m: Matrix): Matrix = m * d
   }
+  
+  def sumRows(m:Matrix):Matrix = Matrix(new SimpleMatrix(CommonOps.sumRows(m.matrix.getMatrix(),null)))
+  
 
   def loadCSV(inputStream: InputStream, skipLinesNum: Int): Matrix = {
     loadCSV(Source.fromInputStream(inputStream), skipLinesNum)
