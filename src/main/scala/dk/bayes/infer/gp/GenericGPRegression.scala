@@ -3,24 +3,47 @@ package dk.bayes.infer.gp
 import dk.bayes.math.linear._
 import scala.math._
 
-object GenericGPRegression extends GPRegression {
+/**
+ * Gaussian Process Regression. It uses Gaussian likelihood and zero mean functions.
+ *
+ * @param x Inputs. [NxD] matrix, where N - number of training examples, D - dimensionality of input space
+ * @param y Targets. [Nx1] matrix, where N - number of training examples
+ * @param covFunc Covariance function
+ * @param noiseStdDev Log of noise standard deviation of Gaussian likelihood function
+ *
+ */
+case class GenericGPRegression(x: Matrix, y: Matrix, covFunc: CovFunc, noiseStdDev: Double) extends GPRegression {
 
-  def predict(x: Matrix, y: Matrix, z: Matrix, covFunc: CovFunc, noiseVar: Double): Matrix = {
+  private val kXX = cov(x)
+  private val kXXInv = kXX.inv
 
-    val xz = x.combine(x.numRows, 0, z)
+  /**
+   * @param z Inputs for making predictions. [NxD] matrix. N - number of test points, D - dimensionality of input space
+   * @return Predicted targets.[mean variance]
+   */
+  def predict(z: Matrix): Matrix = {
 
-    val k = Matrix(xz.numRows, xz.numRows, (rowIndex: Int, colIndex: Int) => covFunc.cov(xz.row(rowIndex).t, xz.row(colIndex).t)) + noiseVar * Matrix.identity(xz.numRows)
+    val kXZ = cov(x, z)
+    val kZZ = cov(z)
 
-    val kXX = k.extractMatrix(0, x.numRows, 0, x.numRows)
-
-    val kXZ = k.extractMatrix(0, x.numRows, x.numRows, k.numCols)
-
-    val kZZ = k.extractMatrix(x.numRows, k.numRows, x.numRows, k.numCols)
-
-    val kXXInv = kXX.inv
     val predMean = kXZ.t * (kXXInv * y)
     val predVar = kZZ - kXZ.t * kXXInv * kXZ
 
     predMean.combine(0, 1, predVar.extractDiag)
+  }
+
+  /**
+   * @param v [N x D] vector
+   * @return [N x N] covariance matrix
+   */
+  private def cov(v: Matrix): Matrix = covFunc.cov(v) + exp(2*noiseStdDev) * Matrix.identity(v.numRows)
+
+  /**
+   * @param x [N x D] vector
+   * @param z [M x D] vector
+   * @return [N x M] covariance matrix
+   */
+  private def cov(x: Matrix, z: Matrix): Matrix = {
+    Matrix(x.numRows, z.numRows, (rowIndex, colIndex) => covFunc.cov(x.row(rowIndex).t, z.row(colIndex).t))
   }
 }

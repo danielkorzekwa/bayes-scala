@@ -7,13 +7,8 @@ trait GPRegression {
   /**
    * Gaussian Process Regression. It uses Gaussian likelihood and zero mean functions.
    *
-   * @param x Inputs. [NxD] matrix, where N - number of training examples, D - dimensionality of input space
-   * @param y Targets. [Nx1] matrix, where N - number of training examples
-   * @param z Inputs for making predictions. [Nx1] matrix
-   * @param covFunc Covariance function
-   * @param noiseVar Noise variance of Gaussian likelihood function
-   *
+   * @param z Inputs for making predictions. [NxD] matrix. N - number of test points, D - dimensionality of input space
    * @return Predicted targets.[mean variance]
    */
-  def predict(x: Matrix, y: Matrix, z: Matrix, covFunc: CovFunc, noiseVar: Double): Matrix
+  def predict(z: Matrix): Matrix
 }

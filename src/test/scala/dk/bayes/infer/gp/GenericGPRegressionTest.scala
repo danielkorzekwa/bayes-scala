@@ -7,16 +7,27 @@ import scala.math._
 
 class GenericGPRegressionTest {
 
+  private val covFunc = CovSEiso(sf = log(7.5120), ell = log(2.1887))
+  private val noiseStdDev = log(0.81075)
+
   @Test def test_1d_inputs {
 
     val x = Matrix(1, 2, 3)
     val y = Matrix(1, 4, 9)
     val z = Matrix(1, 2, 3, 4, 50)
 
-    def covFunc = CovSEiso(sf = 7.5120, ell = 2.1887)
-
-    val prediction = GenericGPRegression.predict(x, y, z, covFunc, noiseVar = pow(0.81075, 2))
+    val prediction = GenericGPRegression(x, y, covFunc, noiseStdDev).predict(z)
     assertEquals(Matrix(5, 2, Array(0.878, 1.246, 4.407, 1.123, 8.614, 1.246, 10.975, 6.063, 0, 57.087)).toString, prediction.toString)
+  }
+
+  @Test def test_perf_test {
+
+    val x = Matrix((1d to 20 by 0.1): _*)
+    val y = 2 * x
+    val z = Matrix(3)
+
+    val gp = GenericGPRegression(x, y, covFunc, noiseStdDev)
+    for (i <- 1 to 100) gp.predict(z)
   }
 
   @Test def test_2d_inputs {
@@ -34,9 +45,7 @@ class GenericGPRegressionTest {
       Array(4d, 5),
       Array(50d, 51)))
 
-    def covFunc = CovSEiso(sf = 7.5120, ell = 2.1887)
-
-    val prediction = GenericGPRegression.predict(x, y, z, covFunc, noiseVar = pow(0.81075, 2))
+    val prediction = GenericGPRegression(x, y, covFunc, noiseStdDev).predict(z)
     assertEquals(Matrix(5, 2, Array(0.93507, 1.28129, 4.18751, 1.23829, 8.77379, 1.28129, 9.62865, 11.226, 0, 57.087)).toString, prediction.toString)
   }
 }

@@ -16,8 +16,8 @@ import scala.math._
  *
  * Copyright (c) by Carl Edward Rasmussen and Hannes Nickisch, 2010-09-10.
  *
- * @param sf - signal standard deviation
- * @param ell - length scale standard deviation
+ * @param sf - log of signal standard deviation
+ * @param ell - log of length scale standard deviation
  */
 
 case class CovSEiso(sf: Double, ell: Double) extends CovFunc {
@@ -25,11 +25,59 @@ case class CovSEiso(sf: Double, ell: Double) extends CovFunc {
   def cov(x1: Matrix, x2: Matrix): Double = {
     require(x1.size == x2.size, "Vectors x1 and x2 have different sizes")
 
-    val Pinv = (ell * ell * Matrix.identity(x1.size)).inv
-
-    val expArg = -((x1 - x2).t * Pinv * (x1 - x2))(0) / 2
-    val covVal = sf * sf * exp(expArg)
-
-    covVal
+    val expArg = -0.5 * ((x1 - x2).t * M(x1.size) * (x1 - x2))(0)
+    exp(2 * sf) * exp(expArg)
   }
+
+  /**
+   * Returns covariance matrix of element wise partial derivatives with respect to sf
+   *
+   * @param x [N x D] vector, N - number of random variables, D - dimensionality of random variable
+   *
+   */
+  def df_dSf(x: Matrix): Matrix =
+    Matrix(x.numRows, x.numRows, (rowIndex: Int, colIndex: Int) => df_dSf(x.row(rowIndex).t, x.row(colIndex).t))
+
+  /**
+   * Returns derivative of similarity between two vectors with respect to sf.
+   *
+   * @param x1 [Dx1] vector
+   * @param x2 [Dx1] vector
+   */
+  def df_dSf(x1: Matrix, x2: Matrix): Double = {
+    require(x1.size == x2.size, "Vectors x1 and x2 have different sizes")
+
+    val expArg = -0.5 * ((x1 - x2).t * M(x1.size) * (x1 - x2))(0)
+    2 * exp(2 * sf) * exp(expArg)
+  }
+
+  /**
+   * Returns covariance matrix of element wise partial derivatives with respect to ell
+   *
+   * @param x [N x D] vector, N - number of random variables, D - dimensionality of random variable
+   *
+   */
+  def df_dEll(x: Matrix): Matrix =
+    Matrix(x.numRows, x.numRows, (rowIndex: Int, colIndex: Int) => df_dEll(x.row(rowIndex).t, x.row(colIndex).t))
+
+  /**
+   * Returns derivative of similarity between two vectors with respect to ell.
+   *
+   * @param x1 [Dx1] vector
+   * @param x2 [Dx1] vector
+   */
+  def df_dEll(x1: Matrix, x2: Matrix): Double = {
+    require(x1.size == x2.size, "Vectors x1 and x2 have different sizes")
+
+    val Mval = M(x1.size)
+    val expArg = -0.5 * ((x1 - x2).t * Mval * (x1 - x2))(0)
+
+    val elemWiseD = 2 * exp(2 * ell) * Matrix.identity(x1.size)
+    val d = -0.5 * ((x1 - x2).t * (-1 * Mval * elemWiseD * Mval) * (x1 - x2))(0)
+
+    exp(2 * sf) * exp(expArg) * d
+  }
+
+  private def M(size: Int): Matrix = (exp(2 * ell) * Matrix.identity(size)).inv
+
 }

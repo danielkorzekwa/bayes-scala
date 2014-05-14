@@ -17,6 +17,7 @@ Collection of Bayesian algorithms for model representation, inference and learni
 * Learning parameters
   * Expectation Maximisation - Discrete Bayesian Networks. CPT Factors, Complete/Incomplete data, BN and Unrolled DBN
   * Learning parameters of Linear Dynamical Systems
+  * Gaussian Process Regression (Gaussian likelihood and zero mean functions only, maximising marginal likelihood)
   
 **Roadmap**
 
@@ -39,7 +40,8 @@ None
 * Code examples only
     * [Linear Dynamical Systems M-step (prior mean, emission variance, transition variance)](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/learn/lds/GenericLDSMStepTest.scala)
     * [Linear Dynamical Systems EM (learning prior mean and emission variance only from multiple data sequences)](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/learn/lds/GenericLDSEMTest.scala)
-    * [Gaussian Process regression](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/infer/gp/GenericGPRegressionTest.scala)
+    * [Inference in Gaussian Process regression](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/infer/gp/GenericGPRegressionTest.scala)
+    * [Parameters learning in Gaussian Process regression](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/learn/gp/GpmlRegressionLearnTest.scala)
                                  
 *   Others 
     * [Plotting gaussians](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/plotting_gaussian/plotting_gaussian.md)
