@@ -2,6 +2,8 @@ package dk.bayes.infer.gp
 
 import dk.bayes.math.linear._
 import scala.math._
+import breeze.linalg.trace
+import breeze.linalg.DenseMatrix
 
 /**
  * Gaussian Process Regression. It uses Gaussian likelihood and zero mean functions.
@@ -32,11 +34,23 @@ case class GenericGPRegression(x: Matrix, y: Matrix, covFunc: CovFunc, noiseStdD
     predMean.combine(0, 1, predVar.extractDiag)
   }
 
+  //e.q. 5.8 from page 114, Carl Edward Rasmussen and Christopher K. I. Williams, The MIT Press, 2006
+  def loglik(): Double = {
+    (-0.5 * y.t * kXXInv * y - 0.5 * log(kXX.det) - 0.5 * x.numRows.toDouble * log(2 * Pi)).at(0)
+  }
+
+  //e.q. 5.9 from page 114, Carl Edward Rasmussen and Christopher K. I. Williams, The MIT Press, 2006
+  def loglikD(covElemWiseD: Matrix): Double = {
+    val d: DenseMatrix[Double] = covElemWiseD
+    val a = kXXInv * y
+    0.5 * trace((a * a.t - kXXInv) * d)
+  }
+
   /**
    * @param v [N x D] vector
    * @return [N x N] covariance matrix
    */
-  private def cov(v: Matrix): Matrix = covFunc.cov(v) + exp(2*noiseStdDev) * Matrix.identity(v.numRows)
+  private def cov(v: Matrix): Matrix = covFunc.cov(v) + exp(2 * noiseStdDev) * Matrix.identity(v.numRows)
 
   /**
    * @param x [N x D] vector
@@ -45,5 +59,9 @@ case class GenericGPRegression(x: Matrix, y: Matrix, covFunc: CovFunc, noiseStdD
    */
   private def cov(x: Matrix, z: Matrix): Matrix = {
     Matrix(x.numRows, z.numRows, (rowIndex, colIndex) => covFunc.cov(x.row(rowIndex).t, z.row(colIndex).t))
+  }
+
+  private implicit def toDenseMatrix(m: Matrix): DenseMatrix[Double] = {
+    DenseMatrix(m.toArray).reshape(m.numRows, m.numCols)
   }
 }

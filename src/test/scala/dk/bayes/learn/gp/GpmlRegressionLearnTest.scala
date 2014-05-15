@@ -28,6 +28,10 @@ class GpmlRegressionLearnTest {
     val optimizer = new LBFGS[DenseVector[Double]](maxIter = 100, m = 3, tolerance = 1.0E-6)
     val newParams = optimizer.minimize(diffFunction, initialParams)
 
+    //assert -negative log likelihood
+    assertEquals(154.0689, diffFunction.calculate(initialParams)._1, 0.0001)
+    assertEquals(14.1310, diffFunction.calculate(newParams)._1, 0.0001)
+
     assertEquals(0.68594, newParams(0), 0.0001)
     assertEquals(-0.99340, newParams(1), 0.0001)
     assertEquals(-1.9025, newParams(2), 0.0001)
