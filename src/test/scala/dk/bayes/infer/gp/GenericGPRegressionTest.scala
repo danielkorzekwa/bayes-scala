@@ -4,6 +4,7 @@ import org.junit._
 import Assert._
 import dk.bayes.math.linear._
 import scala.math._
+import dk.bayes.infer.gp.cov.CovSEiso
 
 class GenericGPRegressionTest {
 

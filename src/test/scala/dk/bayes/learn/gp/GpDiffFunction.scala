@@ -4,8 +4,8 @@ import breeze.optimize.DiffFunction
 import breeze.linalg.DenseVector
 import dk.bayes.math.linear._
 import breeze.linalg._
-import dk.bayes.infer.gp.CovFunc
-import dk.bayes.infer.gp.CovSEiso
+import dk.bayes.infer.gp.cov.CovFunc
+import dk.bayes.infer.gp.cov.CovSEiso
 import scala.math._
 import dk.bayes.math.linear.Matrix
 import dk.bayes.infer.gp.GenericGPRegression
@@ -13,7 +13,7 @@ import dk.bayes.infer.gp.GenericGPRegression
 case class GpDiffFunction(x: Matrix, y: Matrix) extends DiffFunction[DenseVector[Double]] {
 
   /**
-   * @param x Logarithm of [length-scale,signal standard deviation,likelihood noise standard deviation]
+   * @param x Logarithm of [signal standard deviation,length-scale,likelihood noise standard deviation]
    */
   def calculate(params: DenseVector[Double]): (Double, DenseVector[Double]) = {
     val (sf, ell, likStdDev) = (params(0), params(1), params(2))

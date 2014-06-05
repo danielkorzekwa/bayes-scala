@@ -8,6 +8,7 @@ import breeze.linalg._
 import breeze.optimize.LBFGS
 import dk.bayes.math.linear._
 import scala.math._
+import breeze.optimize.ApproximateGradientFunction
 
 /**
  * Learning gpml following http://www.gaussianprocess.org/gpml/code/matlab/doc/index.html regression example
@@ -26,8 +27,10 @@ class GpmlRegressionLearnTest {
     val diffFunction = GpDiffFunction(x, y)
 
     val optimizer = new LBFGS[DenseVector[Double]](maxIter = 100, m = 3, tolerance = 1.0E-6)
-    val newParams = optimizer.minimize(diffFunction, initialParams)
+    val optIterations = optimizer.iterations(diffFunction, initialParams).toList
+    assertEquals(15, optIterations.size)
 
+    val newParams = optIterations.last.x
     //assert -negative log likelihood
     assertEquals(154.0689, diffFunction.calculate(initialParams)._1, 0.0001)
     assertEquals(14.1310, diffFunction.calculate(newParams)._1, 0.0001)

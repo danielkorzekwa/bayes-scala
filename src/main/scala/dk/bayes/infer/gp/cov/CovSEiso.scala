@@ -1,4 +1,4 @@
-package dk.bayes.infer.gp
+package dk.bayes.infer.gp.cov
 
 import dk.bayes.math.linear._
 import scala.math._

@@ -17,7 +17,7 @@ Collection of Bayesian algorithms for model representation, inference and learni
 * Learning parameters
   * Expectation Maximisation - Discrete Bayesian Networks. CPT Factors, Complete/Incomplete data, BN and Unrolled DBN
   * Learning parameters of Linear Dynamical Systems
-  * Gaussian Process Regression (Gaussian likelihood and zero mean functions only, maximising marginal likelihood)
+  * Gaussian Process Regression (Gaussian likelihood only, hyper parameters learning with marginal likelihood maximisation)
   
 **Roadmap**
 
