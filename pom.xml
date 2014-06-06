@@ -15,7 +15,12 @@
 	<properties>
 		<scala.version>2.10.3</scala.version>
 		<junit.version>4.4</junit.version>
+		<maven-scala-plugin.version>2.15.2</maven-scala-plugin.version>
 	</properties>
+
+	<prerequisites>
+		<maven>2.2.1</maven>
+	</prerequisites>
 
 	<build>
 
@@ -59,6 +64,7 @@
 			<plugin>
 				<groupId>org.scala-tools</groupId>
 				<artifactId>maven-scala-plugin</artifactId>
+				<version>${maven-scala-plugin.version}</version>
 				<executions>
 					<execution>
 						<goals>
@@ -94,6 +100,7 @@
 			<plugin>
 				<groupId>org.scala-tools</groupId>
 				<artifactId>maven-scala-plugin</artifactId>
+				<version>${maven-scala-plugin.version}</version>
 			</plugin>
 		</plugins>
 	</reporting>
