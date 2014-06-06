@@ -13,6 +13,7 @@
 
 	<!-- Properties -->
 	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<scala.version>2.10.3</scala.version>
 		<junit.version>4.4</junit.version>
 		<maven-scala-plugin.version>2.15.2</maven-scala-plugin.version>
