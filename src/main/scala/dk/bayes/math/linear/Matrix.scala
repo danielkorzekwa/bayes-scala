@@ -1,6 +1,7 @@
 package dk.bayes.math.linear
 
 import org.ejml.simple.SimpleMatrix
+import org.ejml.ops.MatrixFeatures
 
 case class Matrix(matrix: SimpleMatrix) {
 
@@ -54,7 +55,7 @@ case class Matrix(matrix: SimpleMatrix) {
 
   def extractRow(rowIndex: Int) = Matrix(this.matrix.extractVector(true, rowIndex))
   def extractColumn(colIndex: Int) = Matrix(this.matrix.extractVector(false, colIndex))
-  
+
   /**
    * Returns svd [U,W,V, rank] matrix decomposition.
    */
@@ -112,6 +113,10 @@ case class Matrix(matrix: SimpleMatrix) {
   def toArray(): Array[Double] = matrix.getMatrix().getData()
 
   def copy(): Matrix = Matrix(matrix.copy())
+
+  def isIdentical(a: Matrix, tol: Double): Boolean = {
+    MatrixFeatures.isIdentical(matrix.getMatrix(), a.matrix.getMatrix(), tol);
+  }
 
   override def toString(): String = matrix.toString
 }

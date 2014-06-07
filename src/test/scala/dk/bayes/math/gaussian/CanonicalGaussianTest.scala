@@ -244,9 +244,9 @@ class CanonicalGaussianTest {
   }
 
   private def assertGaussian(expected: CanonicalGaussian, actual: CanonicalGaussian) {
-    assertEquals(expected.k.toString, actual.k.toString)
-    assertEquals(expected.h.toString, actual.h.toString)
-    assertEquals(expected.g.toString, actual.g.toString)
+    assertTrue(expected.k.isIdentical(actual.k, 0.0001))
+    assertTrue(expected.h.isIdentical(actual.h, 0.0001))
+    assertEquals(expected.g, actual.g, 0.0001)
   }
 
 }

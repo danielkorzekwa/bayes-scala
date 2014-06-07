@@ -129,7 +129,6 @@ case class CanonicalGaussian(k: Matrix, h: Matrix, g: Double) {
   }
 
   def toGaussian(): Gaussian = {
-    
 
     require(mean.size == 1 && variance.size == 1, "Multivariate gaussian cannot be transformed into univariate gaussian")
 
@@ -183,27 +182,7 @@ object CanonicalGaussian {
    * @param b Term of m = (ax+b)
    * @param v Variance
    */
-  def apply(a: Matrix, b: Double, v: Double): CanonicalGaussian = {
-
-    val kMatrix = Matrix.zeros(a.numRows() + 1, a.numRows() + 1)
-
-    kMatrix.insertIntoThis(0, 0, a * a.transpose)
-    kMatrix.insertIntoThis(0, kMatrix.numCols() - 1, a.negative())
-    kMatrix.insertIntoThis(kMatrix.numRows() - 1, 0, a.negative().transpose())
-    kMatrix.set(kMatrix.numRows() - 1, kMatrix.numCols() - 1, 1)
-
-    val k = (1d / v) * kMatrix
-
-    val hMatrix = Matrix.zeros(a.numRows() + 1, 1)
-    hMatrix.insertIntoThis(0, 0, a.negative)
-    hMatrix.set(hMatrix.numRows() - 1, 0, 1)
-
-    val h = (b / v) * hMatrix
-
-    val g = -0.5 * (pow(b, 2) / v) - 0.5 * log(2 * Pi * v)
-
-    new CanonicalGaussian(k, h, g)
-  }
+  def apply(a: Matrix, b: Double, v: Double): CanonicalGaussian = apply(a, Matrix(b), Matrix(v))
 
   /**
    * Creates Canonical Gaussian from Linear Gaussian N(a * x + b, v)
