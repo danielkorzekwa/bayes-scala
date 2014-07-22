@@ -39,8 +39,9 @@ class CanonicalGaussianTest {
   @Test def constructor_linear_gaussian {
     val gaussian1 = CanonicalGaussian(a = Matrix(0.7), b = 1.5, v = 2)
     val gaussian2 = CanonicalGaussian(a = Matrix(0.7), b = Matrix(1.5), v = Matrix(2))
-
     assertGaussian(gaussian1, gaussian2)
+
+    CanonicalGaussian(Matrix(1d, -1d).t, 0, 1e-12)
   }
 
   @Test def constructor_linear_gaussian_multivariate {

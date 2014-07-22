@@ -13,7 +13,7 @@ Collection of Bayesian algorithms for model representation, inference and learni
   * Loopy Belief Propagation in a cluster graph
   * Expectation Propagation on a factor graph
   * Manual inference using supported factor operations (product, divide, marginal, evidence)
-  * Gaussian Process Regression (Gaussian likelihood and zero mean functions only)
+  * Gaussian Process Regression (Gaussian likelihood only)
 * Learning parameters
   * Expectation Maximisation - Discrete Bayesian Networks. CPT Factors, Complete/Incomplete data, BN and Unrolled DBN
   * Learning parameters of Linear Dynamical Systems
