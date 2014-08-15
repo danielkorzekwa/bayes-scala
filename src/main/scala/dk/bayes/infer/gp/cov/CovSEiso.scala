@@ -23,6 +23,7 @@ import scala.math._
 case class CovSEiso(sf: Double, ell: Double) extends CovFunc {
 
   def cov(x1: Matrix, x2: Matrix): Double = {
+    
     require(x1.size == x2.size, "Vectors x1 and x2 have different sizes")
 
     val expArg = -0.5 * ((x1 - x2).t * M(x1.size) * (x1 - x2))(0)

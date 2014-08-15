@@ -75,6 +75,10 @@ class GaussianTest {
 
     assertEquals(2.2610, Gaussian(2, 3.5).truncate(-0.8, true).m, 0.0001)
     assertEquals(2.7008, Gaussian(2, 3.5).truncate(-0.8, true).v, 0.0001)
+
+    assertEquals(0, Gaussian(-0.009449899053606714, 1.2107926713467165E-6).truncate(0, true).m, 0.0001)
+    assertEquals(Double.PositiveInfinity, Gaussian(-0.009449899053606714, 1.2107926713467165E-6).truncate(0, true).v, 0.0001)
+
   }
 
   @Test def truncateLowerTail {
@@ -92,6 +96,10 @@ class GaussianTest {
 
     assertEquals(-1.6216, Gaussian(2, 3.5).truncate(-0.8, false).m, 0.0001)
     assertEquals(0.5243, Gaussian(2, 3.5).truncate(-0.8, false).v, 0.0001)
+
+    assertEquals(0, Gaussian(0.1, 0.0001).truncate(0, false).m, 0.0001)
+    assertEquals(Double.PositiveInfinity, Gaussian(0.1, 0.0001).truncate(0, false).v, 0.0001)
+
   }
 
   @Test def product_with_linear_gaussian {

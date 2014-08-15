@@ -14,10 +14,14 @@ import dk.bayes.math.linear._
  * @param v Variance
  */
 case class Gaussian(m: Double, v: Double) {
+
   require(!m.isNaN(), "Gaussian mean is NaN")
   require(!v.isNaN(), "Gaussian variance is NaN")
 
   private val minPrecision = 1e-7
+
+  def +(x: Double) = Gaussian(m + x, v)
+  def -(x: Double) = Gaussian(m - x, v)
 
   def pdf(x: Double): Double = Gaussian.pdf(x, m, v)
 
@@ -48,7 +52,9 @@ case class Gaussian(m: Double, v: Double) {
         val truncatedMean = m + sd * lambdaValue
         val truncatedVariance = v * (1 - delta(alpha, lambdaValue))
 
-        Gaussian(truncatedMean, truncatedVariance)
+        if (!truncatedMean.isInfinity)
+          Gaussian(truncatedMean, truncatedVariance)
+        else Gaussian(0, Double.PositiveInfinity)
       }
       case false => {
         val beta = (x - m) / sd
@@ -57,7 +63,10 @@ case class Gaussian(m: Double, v: Double) {
         val cdfVal = stdCdf(beta)
         val truncatedMean = m - sd * (pdfVal / cdfVal)
         val truncatedVariance = v * (1 - beta * (pdfVal / cdfVal) - pow(pdfVal / cdfVal, 2))
-        Gaussian(truncatedMean, truncatedVariance)
+
+        if (!truncatedMean.isInfinity)
+          Gaussian(truncatedMean, truncatedVariance)
+        else Gaussian(0, Double.PositiveInfinity)
       }
     }
     truncatedGaussian

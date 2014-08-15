@@ -130,9 +130,11 @@ case class CanonicalGaussian(k: Matrix, h: Matrix, g: Double) {
 
   def toGaussian(): Gaussian = {
 
-    require(mean.size == 1 && variance.size == 1, "Multivariate gaussian cannot be transformed into univariate gaussian")
+    require(h.size == 1 && k.size == 1, "Multivariate gaussian cannot be transformed into univariate gaussian")
 
-    Gaussian(mean(0), variance(0))
+    val variance = 1d/k(0)
+    val mean = variance*h(0)
+    Gaussian(mean, variance)
   }
 
   /**

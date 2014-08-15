@@ -11,6 +11,16 @@ import scala.math._
 case class MultivariateGaussian(m: Matrix, v: Matrix) {
 
   /**
+   * Returns Gaussian marginal for a random variable at a given position
+   */
+  def marginal(varIndex: Int): Gaussian = {
+    val mean = m(varIndex)
+    val variance = v(varIndex, varIndex)
+
+    Gaussian(mean, variance)
+  }
+
+  /**
    * Returns Gaussian, marginalising out given variable
    *
    * @param varIndex Index of a variable, which is marginalised out
@@ -64,7 +74,7 @@ case class MultivariateGaussian(m: Matrix, v: Matrix) {
 object MultivariateGaussian {
 
   implicit def toGaussian(mvnGaussian: MultivariateGaussian): Gaussian = mvnGaussian.toGaussian()
-  
+
   /**
    * @param m Mean
    * @param v Variance
