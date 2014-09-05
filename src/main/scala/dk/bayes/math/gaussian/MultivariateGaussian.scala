@@ -2,6 +2,10 @@ package dk.bayes.math.gaussian
 
 import dk.bayes.math.linear._
 import scala.math._
+import breeze.linalg.DenseVector
+import breeze.stats.distributions.Rand
+import breeze.linalg.DenseMatrix
+import breeze.stats.distributions.RandBasis
 
 /**
  * Multivariate Gaussian from the book 'Christopher M. Bishop. Pattern Recognition and Machine Learning (Information Science and Statistics), 2009'
@@ -9,6 +13,13 @@ import scala.math._
  * @author Daniel Korzekwa
  */
 case class MultivariateGaussian(m: Matrix, v: Matrix) {
+
+  def draw(): Array[Double] = {
+
+    breeze.stats.distributions.MultivariateGaussian(
+      DenseVector(m.toArray),
+      DenseMatrix(v.toArray).reshape(v.numRows, v.numCols)).draw().data
+  }
 
   /**
    * Returns Gaussian marginal for a random variable at a given position

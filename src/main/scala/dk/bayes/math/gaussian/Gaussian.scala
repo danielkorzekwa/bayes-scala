@@ -20,6 +20,7 @@ case class Gaussian(m: Double, v: Double) {
 
   private val minPrecision = 1e-7
 
+  def draw(): Double = breeze.stats.distributions.Gaussian(m, sqrt(v)).draw
   def +(x: Double) = Gaussian(m + x, v)
   def -(x: Double) = Gaussian(m - x, v)
 

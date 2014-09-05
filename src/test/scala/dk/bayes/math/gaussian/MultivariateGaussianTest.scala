@@ -14,6 +14,18 @@ class MultivariateGaussianTest {
   val gaussian = MultivariateGaussian(mean, variance)
 
   /**
+   * Tests for draw() sample
+   */
+  @Test def draw {
+
+    val mean = Matrix(0, 0)
+    val variance = Matrix(2, 2, Array(1d, 0.99, 0.99, 1))
+
+    val gaussian = MultivariateGaussian(mean, variance)
+    println("Sampling from mvn gaussian:" + gaussian.draw.toList)
+  }
+
+  /**
    * Tests for Gaussian marginalisation
    */
   @Test def marginalise_y {

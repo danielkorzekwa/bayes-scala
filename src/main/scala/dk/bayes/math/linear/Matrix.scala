@@ -2,6 +2,9 @@ package dk.bayes.math.linear
 
 import org.ejml.simple.SimpleMatrix
 import org.ejml.ops.MatrixFeatures
+import org.ejml.factory.CholeskyDecomposition
+import org.ejml.data.DenseMatrix64F
+import org.ejml.factory.DecompositionFactory
 
 case class Matrix(matrix: SimpleMatrix) {
 
@@ -67,6 +70,17 @@ case class Matrix(matrix: SimpleMatrix) {
       Matrix(svdMatrix.getV().asInstanceOf[SimpleMatrix]),
       svdMatrix.rank)
   }
+
+  def chol(): Matrix = {
+
+    val chol: CholeskyDecomposition[DenseMatrix64F] = DecompositionFactory.chol(this.matrix.numRows(), true)
+    if (!chol.decompose(this.matrix.getMatrix())) throw new RuntimeException("Cholesky failed!")
+
+    val L: SimpleMatrix = SimpleMatrix.wrap(chol.getT(null))
+
+    Matrix(L)
+  }
+
   def filterNotRow(rowIndex: Int): Matrix = {
 
     val newMatrix = rowIndex match {
