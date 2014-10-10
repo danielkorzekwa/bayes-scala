@@ -19,6 +19,17 @@ class KalmanFilterTest {
     assertEquals(2, marginalX1.v, 0)
     assertEquals(0.0297, marginalX1.pdf(0), 0.0001)
   }
+  
+   @Test def marginal_linear_transformation {
+    val x0 = Gaussian(3, 1.5)
+    val x1Variance = 0.5
+
+    val marginalX1 = KalmanFilter.marginal(x0, A=1.5,x1Variance)
+
+    assertEquals(4.5, marginalX1.m, 0)
+    assertEquals(3.875, marginalX1.v, 0)
+    assertEquals(0.0148, marginalX1.pdf(0), 0.0001)
+  }
 
   /**
    * Tests for posterior x: P(x|z)

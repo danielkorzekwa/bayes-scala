@@ -5,6 +5,7 @@ import Assert._
 import dk.bayes.math.linear._
 import dk.bayes.math.discretise.Histogram
 import dk.bayes.testutil.AssertUtil._
+import scala.math._
 
 class GaussianTest {
 
@@ -214,6 +215,34 @@ class GaussianTest {
 
     assertEquals(5, sum.m, 0.0001)
     assertEquals(0.7, sum.v, 0.0001)
+  }
+
+  @Test def multiply_by_a_constant {
+    val gaussian = Gaussian(0.3, pow(0.8, 2))
+
+    val multGaussian = gaussian * 4
+    assertEquals(1.2, multGaussian.m, 0.0001)
+    assertEquals(10.24, multGaussian.v, 0.0001)
+  }
+
+  @Test def productXY {
+
+    val x1 = Gaussian(0.3, pow(0.8, 2))
+    val x2 = Gaussian(0.5, pow(0.6, 2))
+    val x3 = Gaussian(0.8, pow(0.2, 2))
+
+    val x1x2 = x1.productXY(x2)
+    val x2x1 = x2.productXY(x1)
+    val x1x2x3 = x1.productXY(x2).productXY(x3)
+
+    assertEquals(0.15, x1x2.m, 0.0001)
+    assertEquals(0.4228, x1x2.v, 0.0001)
+
+    assertEquals(0.15, x2x1.m, 0.0001)
+    assertEquals(0.4228, x2x1.v, 0.0001)
+
+    assertEquals(0.12, x1x2x3.m, 0.0001)
+    assertEquals(0.2884, x1x2x3.v, 0.0001)
   }
 
   @Test def subtract {

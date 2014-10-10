@@ -21,8 +21,10 @@ case class Gaussian(m: Double, v: Double) {
   private val minPrecision = 1e-7
 
   def draw(): Double = breeze.stats.distributions.Gaussian(m, sqrt(v)).draw
-  def +(x: Double) = Gaussian(m + x, v)
-  def -(x: Double) = Gaussian(m - x, v)
+  def +(x: Double): Gaussian = Gaussian(m + x, v)
+  def -(x: Double): Gaussian = Gaussian(m - x, v)
+
+  def *(x: Double): Gaussian = Gaussian(x * m, pow(x, 2) * v)
 
   def pdf(x: Double): Double = Gaussian.pdf(x, m, v)
 
@@ -86,6 +88,17 @@ case class Gaussian(m: Double, v: Double) {
     val v = R.inv
 
     MultivariateGaussian(m, v)
+  }
+
+  /**
+   * Gaussian distribution of Z = XY, where X and Y are independent normal random variables
+   * http://www.discuss.wmie.uz.zgora.pl/php/discuss3.php?ip=&url=pdf&nIdA=24307&nIdSesji=-1
+   */
+  def productXY(gaussian: Gaussian): Gaussian = {
+    val productM = m * gaussian.m
+    val productVar = pow(gaussian.m, 2) * v + (pow(m, 2) + v) * gaussian.v
+
+    Gaussian(productM, productVar)
   }
 
   /**

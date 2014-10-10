@@ -23,10 +23,9 @@ import scala.math._
 case class CovSEiso(sf: Double, ell: Double) extends CovFunc {
 
   def cov(x1: Matrix, x2: Matrix): Double = {
-    
-    require(x1.size == x2.size, "Vectors x1 and x2 have different sizes")
 
-    val expArg = -0.5 * ((x1 - x2).t * M(x1.size) * (x1 - x2))(0)
+    require(x1.size == x2.size, "Vectors x1 and x2 have different sizes")
+    val expArg = -0.5 * distance(x1.toArray, x2.toArray)
     exp(2 * sf) * exp(expArg)
   }
 
@@ -48,7 +47,7 @@ case class CovSEiso(sf: Double, ell: Double) extends CovFunc {
   def df_dSf(x1: Matrix, x2: Matrix): Double = {
     require(x1.size == x2.size, "Vectors x1 and x2 have different sizes")
 
-    val expArg = -0.5 * ((x1 - x2).t * M(x1.size) * (x1 - x2))(0)
+    val expArg = -0.5 * distance(x1.toArray, x2.toArray)
     2 * exp(2 * sf) * exp(expArg)
   }
 
@@ -71,7 +70,7 @@ case class CovSEiso(sf: Double, ell: Double) extends CovFunc {
     require(x1.size == x2.size, "Vectors x1 and x2 have different sizes")
 
     val Mval = M(x1.size)
-    val expArg = -0.5 * ((x1 - x2).t * Mval * (x1 - x2))(0)
+    val expArg = -0.5 * distance(x1.toArray,x2.toArray)
 
     val elemWiseD = 2 * exp(2 * ell) * Matrix.identity(x1.size)
     val d = -0.5 * ((x1 - x2).t * (-1 * Mval * elemWiseD * Mval) * (x1 - x2))(0)
@@ -80,5 +79,18 @@ case class CovSEiso(sf: Double, ell: Double) extends CovFunc {
   }
 
   private def M(size: Int): Matrix = (exp(2 * ell) * Matrix.identity(size)).inv
+
+  private def distance(x1: Array[Double], x2: Array[Double]): Double = {
+
+    var distance = 0d
+    var i = 0
+
+    while (i < x1.size) {
+      distance += pow(x1(i) - x2(i), 2) / exp(2 * ell)
+      i += 1
+    }
+
+    distance
+  }
 
 }
