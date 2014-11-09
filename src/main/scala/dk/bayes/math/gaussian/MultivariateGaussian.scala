@@ -6,6 +6,9 @@ import breeze.linalg.DenseVector
 import breeze.stats.distributions.Rand
 import breeze.linalg.DenseMatrix
 import breeze.stats.distributions.RandBasis
+import breeze.stats.distributions.ThreadLocalRandomGenerator
+import org.apache.commons.math3.random.{ MersenneTwister, RandomGenerator }
+import breeze.linalg.cholesky
 
 /**
  * Multivariate Gaussian from the book 'Christopher M. Bishop. Pattern Recognition and Machine Learning (Information Science and Statistics), 2009'
@@ -14,11 +17,16 @@ import breeze.stats.distributions.RandBasis
  */
 case class MultivariateGaussian(m: Matrix, v: Matrix) {
 
-  def draw(): Array[Double] = {
+  def draw(randSeed: Int): Array[Double] = {
 
-    breeze.stats.distributions.MultivariateGaussian(
-      DenseVector(m.toArray),
-      DenseMatrix(v.toArray).reshape(v.numRows, v.numCols)).draw().data
+    val mean = DenseVector(m.toArray)
+    val variance = DenseMatrix(v.toArray).reshape(v.numRows, v.numCols)
+    val randBasis = new RandBasis(new ThreadLocalRandomGenerator(new MersenneTwister(randSeed)))
+    val root: DenseMatrix[Double] = cholesky(variance)
+    val z: DenseVector[Double] = DenseVector.rand(mean.length, randBasis.gaussian(0, 1))
+
+    val sample = { root * z += mean }
+    sample.data
   }
 
   /**

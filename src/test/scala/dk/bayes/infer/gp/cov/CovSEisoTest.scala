@@ -10,7 +10,8 @@ class CovSEisoTest {
 
   private val covFunc = new CovSEiso(sf = log(2), log(10))
 
-  /**F
+  /**
+   * F
    * Tests for cov()
    */
 
@@ -23,6 +24,15 @@ class CovSEisoTest {
   }
 
   @Test def multi_dim_cov {
+
+    val x1 = Matrix(Array.fill(4)(1d))
+    val x2 = Matrix(Array.fill(4)(2d))
+
+    val covValue = covFunc.cov(x1, x2)
+    assertEquals(3.92079, covValue, 0.00001)
+  }
+
+  @Test def multi_dim_cov_2 {
     val rand = new Random(4656)
     val n = 2000
     val x1 = Array.fill(n)(rand.nextDouble)
@@ -83,12 +93,12 @@ class CovSEisoTest {
 
   @Test def multi_dim_df_dEll {
     val rand = new Random(4656)
-    val n = 200
+    val n = 2000
     val x1 = Array.fill(n)(rand.nextDouble)
     val x2 = Array.fill(n)(rand.nextDouble)
 
     val covValue = covFunc.df_dEll(Matrix(x1), Matrix(x2))
-    assertEquals(1.1520, covValue, 0.0001)
+    assertEquals(2.4590, covValue, 0.0001)
   }
 
   @Test def perf_test_1d_df_dEll {

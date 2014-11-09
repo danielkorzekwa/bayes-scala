@@ -22,7 +22,7 @@ class MultivariateGaussianTest {
     val variance = Matrix(2, 2, Array(1d, 0.99, 0.99, 1))
 
     val gaussian = MultivariateGaussian(mean, variance)
-    println("Sampling from mvn gaussian:" + gaussian.draw.toList)
+    println("Sampling from mvn gaussian:" + gaussian.draw(randSeed=98785454).toList)
   }
 
   /**

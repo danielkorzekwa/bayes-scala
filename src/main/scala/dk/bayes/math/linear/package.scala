@@ -7,6 +7,8 @@ import org.ejml.simple.SimpleMatrix
 
 package object linear {
 
+  implicit def arrayToMatrix(values: Array[Array[Double]]):Matrix = Matrix(values)
+  
   implicit def doubleToLinearDouble(d: Double): LinearDouble = new LinearDouble(d)
   class LinearDouble(d: Double) {
     def *(m: Matrix): Matrix = m * d
