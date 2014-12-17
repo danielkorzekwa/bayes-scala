@@ -35,6 +35,7 @@ case class LinearGaussianFactor(parentVarId: Int, varId: Int, a: Double, b: Doub
       case Some(evidence) => {
         val linearCanonGaussian = CanonicalGaussian(Matrix(a), b, v)
         val msg = (linearCanonGaussian * CanonicalGaussian(childFactor.m, childFactor.v).extend(2, 1)).withEvidence(1, evidence)
+
         msg.toGaussian
       }
       case _ => {

@@ -26,6 +26,8 @@ import dk.bayes.math.gaussian.CanonicalGaussian
  */
 case class MvnLinearGaussianFactor(parentVarId: Int, varId: Int, a: Matrix, b: Double, v: Double) extends DoubleFactor {
 
+  require(a.numRows == 1, "Only univariate child is supported")
+
   def getVariableIds(): Seq[Int] = Vector(parentVarId, varId)
 
   def marginal(varId: Int): SingleFactor = varId match {
@@ -40,20 +42,17 @@ case class MvnLinearGaussianFactor(parentVarId: Int, varId: Int, a: Matrix, b: D
   }
   private def outgoingMessagesInternal(parentFactor: MvnGaussianFactor, childFactor: GaussianFactor): Tuple2[MvnGaussianFactor, GaussianFactor] = {
 
-    throw new UnsupportedOperationException("TODO: Scope of mvn variables is not extended")
-
     val linearCanonGaussian = CanonicalGaussian(a, b, v)
     val childFactorCanon = CanonicalGaussian(childFactor.m, childFactor.v)
 
-    val parentMsg = (linearCanonGaussian * childFactorCanon).marginalise(a.size)
-
+    val parentMsg = (linearCanonGaussian * childFactorCanon.extend(a.numCols + a.numRows, a.numCols)).marginalise(a.numCols)
     //  val childMsg = CanonicalGaussianOps.*(linearCanonGaussian.varIds, parentFactor.canonGaussian, linearCanonGaussian).marginal(a.size + 1).toGaussian
     //  val childMsgMu = childMsg.m
     //   val childMsgVariance = childMsg.v
 
-    val (parentMean, parentVariance) = (parentFactor.canonGaussian.mean,parentFactor.canonGaussian.variance)
-    val childMsgMu = (a.transpose * parentMean)(0) + b
-    val childMsgVariance = v + (a.transpose * parentVariance * a)(0)
+    val (parentMean, parentVariance) = (parentFactor.canonGaussian.mean, parentFactor.canonGaussian.variance)
+    val childMsgMu = (a * parentMean)(0) + b
+    val childMsgVariance = v + (a * parentVariance * a.transpose)(0)
     Tuple2(MvnGaussianFactor(parentVarId, parentMsg), GaussianFactor(varId, childMsgMu, childMsgVariance))
   }
 

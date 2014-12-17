@@ -108,4 +108,15 @@ class CovSEisoTest {
     (1L to 200L * 50 * 50).foreach(_ => covFunc.df_dEll(x1, x2))
 
   }
+  
+  /**
+   * Perf test for cov(Double,Double)
+   */
+
+  @Test def perf_cov_Double_Double {
+    val x1=10
+    val x2=200
+    
+    for(i <- 1 to 4000000) covFunc.cov(x1,x2)
+  }
 }

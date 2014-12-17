@@ -4,6 +4,9 @@ import scala.math._
 import org.apache.commons.math3.distribution.NormalDistribution
 import Gaussian._
 import dk.bayes.math.linear._
+import breeze.stats.distributions.RandBasis
+import breeze.stats.distributions.ThreadLocalRandomGenerator
+import org.apache.commons.math3.random.MersenneTwister
 
 /**
  * Univariate Gaussian Distribution.
@@ -20,7 +23,15 @@ case class Gaussian(m: Double, v: Double) {
 
   private val minPrecision = 1e-7
 
-  def draw(): Double = breeze.stats.distributions.Gaussian(m, sqrt(v)).draw
+  def draw(randSeed: Int): Double = {
+    val randBasis = new RandBasis(new ThreadLocalRandomGenerator(new MersenneTwister(randSeed)))
+    breeze.stats.distributions.Gaussian(m, sqrt(v))(randBasis).draw()
+  }
+
+  def draw(): Double = {
+    breeze.stats.distributions.Gaussian(m, sqrt(v)).draw()
+  }
+
   def +(x: Double): Gaussian = Gaussian(m + x, v)
   def -(x: Double): Gaussian = Gaussian(m - x, v)
 

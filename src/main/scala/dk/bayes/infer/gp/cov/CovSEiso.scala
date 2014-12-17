@@ -78,8 +78,6 @@ case class CovSEiso(sf: Double, ell: Double) extends CovFunc {
     exp(2 * sf) * exp(expArg) * d
   }
 
-  private def M(size: Int): Matrix = (exp(2 * ell) * Matrix.identity(size)).inv
-
   private def distance(x1: Array[Double], x2: Array[Double], l: Double): Double = {
 
     var distance = 0d
