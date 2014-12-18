@@ -31,6 +31,10 @@ object MultivariateLinearGaussian {
       }
       require(!v.hasChildren, "Inference not supported")
 
+      /**
+       * Run the inference
+       */
+      
       val x = v.x
 
       val skillMean = v.a * x.m + v.b
