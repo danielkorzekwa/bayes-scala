@@ -32,6 +32,10 @@ object UnivariateGaussian {
       require(child.a == 1 && child.b == 0, "Inference not supported")
       require(child.value.isDefined, "Inference not supported")
 
+      /**
+       * Run the inference
+       */
+
       val posteriorVar = 1d / (1d / x.v + 1d / child.v)
       val posteriorMean = posteriorVar * ((1d / child.v) * child.value.get + (1d / x.v) * x.m)
       new UnivariateGaussian(posteriorMean, posteriorVar)
