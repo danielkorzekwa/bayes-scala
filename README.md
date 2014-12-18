@@ -27,7 +27,7 @@ Infer marginal for *grade* variable:
 ```
 
 Infer posterior for *grade* variable given *sat* is high:
-([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/dsl/demo/KalmanFilterTest))
+([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/dsl/demo/KalmanFilterTest.scala))
 
 
 ```scala
