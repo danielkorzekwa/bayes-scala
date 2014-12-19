@@ -8,7 +8,7 @@ package dk.bayes.dsl
  */
 object infer {
 
-  def apply[FROM, TO](x: FROM)(implicit inferEngines: Seq[InferEngine[FROM, TO]] = List[InferEngine[FROM, TO]]()): TO = {
+  def apply[FROM<:Variable, TO<:Variable](x: FROM)(implicit inferEngines: Seq[InferEngine[FROM, TO]] = List[InferEngine[FROM, TO]]()): TO = {
 
     val inferEngine = inferEngines.find(e => e.isSupported(x))
 

@@ -4,6 +4,7 @@ It is a Scala library for building Bayesian Networks with discrete/continuous va
 
 * Examples illustrating the usage of a high level API for building Bayesian Networks
   * [Student Bayesian Network](#student-bayesian-network) 
+  * [Monty Hall problem](#monty-hall-problem)
   * [TrueSkill](#trueskill)
   * [1D Kalman filter](#1d-kalman-filter)
 
@@ -39,6 +40,38 @@ Infer posterior for *grade* variable given *sat* is high
   sat.setValue(0)
 
   infer(grade) // List(0.2446, 0.3257, 0.4295)
+```
+
+### Monty Hall problem
+
+[Monty Hall problem] on wikipedia.
+
+![Student Bayesian Network](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/monty_hall_bn.png "Student Bayesian Network")
+
+Compute the probabilities of winning a car given a guest chooses door 1 and Monty opens door 2
+([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/dsl/demo/MontyHallProblemTest.scala)):
+
+```scala
+
+  val carDoor = Categorical(Vector(1d / 3, 1d / 3, 1d / 3))
+  val guestDoor = Categorical(Vector(1d / 3, 1d / 3, 1d / 3))
+
+  val montyDoor = Categorical(carDoor, guestDoor, Vector(
+    0, 0.5, 0.5,
+    0, 0, 1,
+    0, 1, 0,
+    0, 0, 1,
+    0.5, 0, 0.5,
+    1, 0, 0,
+    0, 1, 0,
+    1, 0, 0,
+    0.5, 0.5, 0))
+    
+    guestDoor.setValue(0) //Guest chooses door 0
+    montyDoor.setValue(1) //Monty opens door 1 
+    
+    infer(carDoor) //List(1/3,0,2/3)
+
 ```
 
 ### TrueSkill
@@ -79,3 +112,4 @@ Infer new gaussian state given noisy observation
 [Low level algorithms]: https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/lowlevel/README.md
 [SamIam]: http://reasoning.cs.ucla.edu/samiam/
 [TrueSkill]: http://research.microsoft.com/en-us/projects/trueskill/
+[Monty Hall problem]: http://en.wikipedia.org/wiki/Monty_Hall_problem
