@@ -18,8 +18,8 @@ Student model is borrowed from the book of *Daphne Koller, Nir Friedman. Probabi
 
 ![Student Bayesian Network](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/student_bn.png "Student Bayesian Network")
 
-Infer marginal for *grade* variable:
-([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/dsl/demo/StudentTest.scala))
+Infer marginal for *grade* variable
+([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/dsl/demo/StudentTest.scala)):
 
 ```scala
   val difficulty = Categorical(Vector(0.6, 0.4))
@@ -31,8 +31,8 @@ Infer marginal for *grade* variable:
   infer(grade) // List(0.3620, 0.2884, 0.3496)
 ```
 
-Infer posterior for *grade* variable given *sat* is high:
-([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/dsl/demo/KalmanFilterTest.scala))
+Infer posterior for *grade* variable given *sat* is high
+([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/dsl/demo/KalmanFilterTest.scala)):
 
 
 ```scala
@@ -47,6 +47,8 @@ Infer posterior for *grade* variable given *sat* is high:
 
 ![TrueSkill two players network](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/trueskill_in_tennis_factor_graph/tennis_trueskill_bn.png "TrueSkill two players network")
 
+Infer posterior for skill given player 1 is a winner
+([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/dsl/demo/TrueSkillTwoPlayersTest.scala)):
 
 ```scala
   val skill1 = Gaussian(4, 81)
@@ -61,6 +63,10 @@ Infer posterior for *grade* variable given *sat* is high:
   infer(skill1) // Gaussian(27.1744,37.4973)
 ```
 ### 1D Kalman filter
+
+Infer new gaussian state given noisy observation
+([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/dsl/demo/KalmanFilterTest)):
+
 
 ```scala
   val x = Gaussian(0.5, 2)
