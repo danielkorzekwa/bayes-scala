@@ -77,7 +77,7 @@ Compute the probabilities of winning a car given a guest chooses door 1 and Mont
 
 ### TrueSkill
 
-[TrueSkill] is a skill based probabilistic ranking system developed by Thore Graepel and Tom Minka at Microsoft Research Centre in Cambridge
+[TrueSkill] is a skill based probabilistic ranking system developed by Thore Graepel and Tom Minka at Microsoft Research Centre in Cambridge.
 
 ![TrueSkill two players network](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/trueskill_in_tennis_factor_graph/tennis_trueskill_bn.png "TrueSkill two players network")
 
