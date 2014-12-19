@@ -14,7 +14,7 @@ It is a Scala library for building Bayesian Networks with discrete/continuous va
 
 ### Student Bayesian Network
 
-Bayesian Networks diagram was created with the [SamIam] tool. 
+Bayesian Networks diagram is created with the [SamIam] tool. 
 Student model is borrowed from the book of *Daphne Koller, Nir Friedman. Probabilistic Graphical Models, Principles and Techniques, 2009, page 53*   
 
 ![Student Bayesian Network](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/student_bn.png "Student Bayesian Network")
@@ -45,6 +45,7 @@ Infer posterior for *grade* variable given *sat* is high
 ### Monty Hall problem
 
 [Monty Hall problem] on wikipedia.
+Bayesian Networks diagram is created with the [SamIam] tool. 
 
 ![Student Bayesian Network](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/monty_hall_bn.png "Student Bayesian Network")
 
