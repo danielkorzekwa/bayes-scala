@@ -13,9 +13,10 @@ It is a Scala library for building Bayesian Networks with discrete/continuous va
 
 ### Student Bayesian Network
 
-![Student Bayesian Network](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/student_bn.png "Student Bayesian Network")
+Bayesian Networks diagram was created with the [SamIam] tool. 
+Student model is borrowed from the book of *Daphne Koller, Nir Friedman. Probabilistic Graphical Models, Principles and Techniques, 2009, page 53*   
 
-Bayesian Networks diagram was created with the [SamIam] tool.
+![Student Bayesian Network](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/student_bn.png "Student Bayesian Network")
 
 Infer marginal for *grade* variable:
 ([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/dsl/demo/StudentTest.scala))
@@ -41,6 +42,8 @@ Infer posterior for *grade* variable given *sat* is high:
 ```
 
 ### TrueSkill
+
+[TrueSkill] is a skill based probabilistic ranking system developed by Thore Graepel and Tom Minka at Microsoft Research Centre in Cambridge
 
 ![TrueSkill two players network](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/trueskill_in_tennis_factor_graph/tennis_trueskill_bn.png "TrueSkill two players network")
 
@@ -69,3 +72,4 @@ Infer posterior for *grade* variable given *sat* is high:
 
 [Low level algorithms]: https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/lowlevel/README.md
 [SamIam]: http://reasoning.cs.ucla.edu/samiam/
+[TrueSkill]: http://research.microsoft.com/en-us/projects/trueskill/
