@@ -2,7 +2,11 @@
 
 It is a Scala library for building Bayesian Networks with discrete/continuous variables and running deterministic Bayesian inference.
 
-* [Scala code examples](#Examples) illustrating the usage of a high level API for building Bayesian Networks
+* Examples illustrating the usage of a high level API for building Bayesian Networks
+  * [Student Bayesian Network](#Student-Bayesian-Network) 
+  * [TrueSkill](#TrueSkill)
+  * [1D Kalman filter](#1D-Kalman-Filter)
+
 * [Low level algorithms] which are used under the scenes for Bayesian Inference, e.g. Loopy Belief Propagation, Expectation Propagation
 
 ## Examples
@@ -36,6 +40,23 @@ Infer posterior for *grade* variable given *sat* is high:
   infer(grade) // List(0.2446, 0.3257, 0.4295)
 ```
 
+### TrueSkill
+
+![TrueSkill two players network](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/trueskill_in_tennis_factor_graph/tennis_trueskill_bn.png "TrueSkill two players network")
+
+
+```scala
+  val skill1 = Gaussian(4, 81)
+  val skill2 = Gaussian(41, 25)
+
+  val perf1 = Gaussian(skill1, pow(25d / 6, 2))
+  val perf2 = Gaussian(skill2, pow(25d / 6, 2))
+
+  val perfDiff = Gaussian(A = Matrix(1.0, -1), Vector(perf1, perf2), v = 0.0)
+  val outcomeFactor = Categorical(perfDiff, cdfThreshold = 0, value = 0) //player 1 is a winner
+
+  infer(skill1) // Gaussian(27.1744,37.4973)
+```
 ### 1D Kalman filter
 
 ```scala
@@ -44,6 +65,7 @@ Infer posterior for *grade* variable given *sat* is high:
 
   infer(x) // Gaussian(0.69047,0.0952380)
 ```
+
 
 [Low level algorithms]: https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/lowlevel/README.md
 [SamIam]: http://reasoning.cs.ucla.edu/samiam/

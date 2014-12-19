@@ -8,6 +8,8 @@ import dk.bayes.infer.LoopyBP
 import dk.bayes.infer._
 import java.util.concurrent.atomic.AtomicInteger
 import dk.bayes.model.clustergraph.factor.Factor
+import dk.bayes.dsl.variable.categorical.CdfThresholdCategorical
+import dk.bayes.dsl.variable.categorical.infer.inferEngineCategorical
 
 /**
  * Categorical variable (http://en.wikipedia.org/wiki/Categorical_distribution)
@@ -21,11 +23,16 @@ class Categorical(val parents: Seq[Categorical], val cpd: Seq[Double]) extends V
   private var value: Option[Int] = None
 
   def setValue(v: Int) { value = Some(v) }
+  def getValue(): Option[Int] = value
 
   def getParents(): Seq[Categorical] = parents
 }
 
 object Categorical {
+
+  /**
+   * Constructors for categorical variables with categorical parents.
+   */
 
   def apply(cpd: Seq[Double]) = new Categorical(Vector(), cpd)
 
@@ -33,52 +40,18 @@ object Categorical {
 
   def apply(parent1: Categorical, parent2: Categorical, cpd: Seq[Double]): Categorical = new Categorical(Vector(parent1, parent2), cpd)
 
-  implicit val inferEngine = new InferEngine[Categorical, Categorical] {
+  /**
+   * Constructor for categorical variable with Gaussian parent
+   *
+   * P(y=1|x) = x_cdf(threshold)
+   * P(y=0|x) = 1 - P(y=1|x)
+   */
+  def apply(x: Gaussian, cdfThreshold: Double, value: Int): CdfThresholdCategorical = new CdfThresholdCategorical(x, cdfThreshold, Some(value))
+  def apply(x: Gaussian, cdfThreshold: Double): CdfThresholdCategorical = new CdfThresholdCategorical(x, cdfThreshold, None)
 
-    def infer(x: Categorical): Categorical = {
+  /**
+   * Set up the inference engine for Categorical variable.
+   */
+  implicit val inferEngine = Vector(inferEngineCategorical)
 
-      val variables = x.getAllVariables().map { v =>
-        require(v.isInstanceOf[Categorical], "Inference not supported")
-        v.asInstanceOf[Categorical]
-      }
-
-      //Create cluster graph variables
-      val nextVarId = new AtomicInteger(1)
-      val clusterGraphVarsMap: Map[Categorical, Var] = variables.map(v => v -> Var(nextVarId.getAndIncrement(), v.dim)).toMap
-
-      //Create factors
-      val factors = clusterGraphVarsMap.map {
-        case (v, clusterVar) =>
-          val factorParentVars = v.getParents().map(c => clusterGraphVarsMap(c.asInstanceOf[Categorical]))
-          val allVars = factorParentVars :+ clusterVar
-          Factor(allVars.toArray, v.cpd.toArray)
-      }
-
-      //Create factor graph and add clusters 
-      val clusterGraph = ClusterGraph()
-      factors.foreach(f => clusterGraph.addCluster(f.getVariables.last.id, f))
-
-      //Add edges between clusters
-      clusterGraphVarsMap.foreach {
-        case (v, clusterVar) =>
-          v.getParents.foreach(p => clusterGraph.addEdge(clusterVar.id, clusterGraphVarsMap(p).id))
-      }
-
-      //Create inference engine
-      val loopyBP = LoopyBP(clusterGraph)
-
-      //Set evidence
-      clusterGraphVarsMap.foreach {
-        case (v, clusterVar) if (v.value.isDefined) => loopyBP.setEvidence(clusterVar.id, v.value.get)
-        case _ => //do nothing
-      }
-
-      //Run the inference
-      loopyBP.calibrate()
-      val varId = clusterGraphVarsMap(x).id
-      val marginal = loopyBP.marginal(varId)
-
-      Categorical(marginal.getValues())
-    }
-  }
 }
