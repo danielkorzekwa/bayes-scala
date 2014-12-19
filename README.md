@@ -65,7 +65,7 @@ Infer posterior for skill given player 1 is a winner
 ### 1D Kalman filter
 
 Infer new gaussian state given noisy observation
-([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/dsl/demo/KalmanFilterTest)):
+([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/dsl/demo/KalmanFilterTest.scala)):
 
 
 ```scala
