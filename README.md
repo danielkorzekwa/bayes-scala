@@ -3,9 +3,9 @@
 It is a Scala library for building Bayesian Networks with discrete/continuous variables and running deterministic Bayesian inference.
 
 * Examples illustrating the usage of a high level API for building Bayesian Networks
-  * [Student Bayesian Network](#Student-Bayesian-Network) 
-  * [TrueSkill](#TrueSkill)
-  * [1D Kalman filter](#1D-Kalman-Filter)
+  * [Student Bayesian Network](#student-bayesian-network) 
+  * [TrueSkill](#trueskill)
+  * [1D Kalman filter](#1d-kalman-filter)
 
 * [Low level algorithms] which are used under the scenes for Bayesian Inference, e.g. Loopy Belief Propagation, Expectation Propagation
 
