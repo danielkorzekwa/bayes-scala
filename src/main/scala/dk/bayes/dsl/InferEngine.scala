@@ -5,7 +5,7 @@ package dk.bayes.dsl
  *
  * @author Daniel Korzekwa
  */
-trait InferEngine[FROM, TO] {
+trait InferEngine[FROM<:Variable, TO<:Variable] {
 
   def infer(x: FROM): TO
 

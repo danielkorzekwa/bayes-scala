@@ -2,7 +2,7 @@ package dk.bayes.dsl.variable.gaussian.infer
 
 import dk.bayes.dsl.InferEngine
 import dk.bayes.dsl.variable.gaussian.MultivariateLinearGaussian
-import dk.bayes.math.gaussian.MultivariateGaussian
+import dk.bayes.dsl.variable.gaussian.MultivariateGaussian
 
 object inferMultivariateGaussianMarginalSimplest extends InferEngine[MultivariateLinearGaussian, MultivariateGaussian] {
 
