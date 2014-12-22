@@ -8,7 +8,7 @@ It is a Scala library for building Bayesian Networks with discrete/continuous va
   * [TrueSkill](#trueskill)
   * [1D Kalman filter](#1d-kalman-filter)
 
-* [Low level algorithms] which are used under the scenes for Bayesian Inference, e.g. Loopy Belief Propagation, Expectation Propagation
+* [Low level algorithms] which are used behind the scenes for Bayesian Inference, e.g. Loopy Belief Propagation, Expectation Propagation
 
 ## Examples
 
