@@ -6,9 +6,10 @@ It is a Scala library for building Bayesian Networks with discrete/continuous va
   * [Student Bayesian Network](#student-bayesian-network) 
   * [Monty Hall problem](#monty-hall-problem)
   * [TrueSkill](#trueskill)
+  * [Clutter problem](#clutter-problem) 
   * [1D Kalman filter](#1d-kalman-filter)
 
-* [Low level algorithms] which are used behind the scenes for Bayesian Inference, e.g. Loopy Belief Propagation, Expectation Propagation
+* [Low level algorithms] which are used under the scenes for Bayesian Inference, e.g. Loopy Belief Propagation, Expectation Propagation
 
 ## Examples
 
@@ -96,25 +97,41 @@ Infer posterior for skill given player 1 is a winner
 
   infer(skill1) // Gaussian(27.1744,37.4973)
 ```
-### 1D Kalman filter
 
-Infer new gaussian state given noisy observation
-([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/dsl/demo/KalmanFilterTest.scala)):
+### Clutter Problem
 
+The clutter problem is concerned with estimating the state of gaussian variable from noisy obserations which are embedded in background clutter. This problem is used by Tom Minka is his [PhD thesis] to illustrate the Expectation Propagation algorithm.
+
+![Clutter problem](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/dsl_examples/clutter_problem.png "Clutter problem")
+
+Compute posterior of *x* given two noisy obserations
+([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/dsl/demo/ClutterProblemTest.scala)):
 
 ```scala
-  val x = Gaussian(0.5, 2)
-  val y = Gaussian(x, 0.1, value = 0.7)
+  val x = Gaussian(15, 100)
+  val y1 = ClutteredGaussian(x,w = 0.4, a = 10, value = 3)
+  val y2 = ClutteredGaussian(x,w = 0.4, a = 10, value = 5)
 
-  infer(x) // Gaussian(0.69047,0.0952380)
+  infer(x) // Gaussian(4.3431,4.3163)
 ```
 
+### 1D Kalman filter
+
+![Kalman 1d two obserations](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/dsl_examples/kalman_1d_two_obserations.png "Kalman 1d two obserations")
+
+Infer new gaussian state given two noisy observation
+([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/dsl/demo/KalmanFilterTwoObservationsTest)):
+
+```scala
+  val x = Gaussian(3, 1.5)
+  val y1 = Gaussian(x, v = 0.9, yValue = 0.6)
+  val y2 = Gaussian(x, v = 0.5, yValue = 0.62)
+
+  infer(x) // Gaussian(1.0341,0.2647)
+```
 
 [Low level algorithms]: https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/lowlevel/README.md
 [SamIam]: http://reasoning.cs.ucla.edu/samiam/
 [TrueSkill]: http://research.microsoft.com/en-us/projects/trueskill/
-<<<<<<< Upstream, based on origin/master
 [PhD thesis]: http://research.microsoft.com/en-us/um/people/minka/papers/ep/minka-thesis.pdf
-=======
->>>>>>> cfe25be .
 [Monty Hall problem]: http://en.wikipedia.org/wiki/Monty_Hall_problem
