@@ -127,6 +127,7 @@ class ClutterProblemEPTest {
     val projM = Proj.projMu(q, Z, dZ_m)
     val projV = Proj.projSigma(q, Z, dZ_m, dZ_v)
 
+    println( Gaussian(projM, projV))
     Gaussian(projM, projV)
   }
 }

@@ -44,10 +44,11 @@ object inferUnivariateGaussianFactorGraph extends InferEngine[UnivariateGaussian
 
   private def toFactor(v: Variable, factorGraphVarsMap: Map[Variable, Int]): Factor = {
 
+    try {
     val factorVarId = factorGraphVarsMap(v)
     val factor: Factor = v match {
       case v: UnivariateGaussian => GaussianFactor(factorVarId, v.m, v.v)
-      case v: UnivariateLinearGaussian if (v.x.size == 1) => {
+      case v: UnivariateLinearGaussian if (v.x.size == 1 && v.yValue.isEmpty) => {
         val parentVarId = factorGraphVarsMap(v.x.head)
         val varId = factorVarId
         LinearGaussianFactor(parentVarId, varId, a = v.a(0), b = v.b, v = v.v)
@@ -68,6 +69,10 @@ object inferUnivariateGaussianFactorGraph extends InferEngine[UnivariateGaussian
 
     }
     factor
+    }
+    catch {
+      case e:MatchError => throw new UnsupportedOperationException("Inference not supported")
+    }
   }
 
 }

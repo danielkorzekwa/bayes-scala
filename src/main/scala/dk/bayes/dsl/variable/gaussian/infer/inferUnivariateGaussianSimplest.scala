@@ -4,7 +4,7 @@ import dk.bayes.dsl.InferEngine
 import dk.bayes.dsl.variable.gaussian.UnivariateGaussian
 import dk.bayes.dsl.variable.gaussian.UnivariateLinearGaussian
 
-object inferUnivariateGaussianPosteriorSimplest extends InferEngine[UnivariateGaussian, UnivariateGaussian] {
+object inferUnivariateGaussianSimplest extends InferEngine[UnivariateGaussian, UnivariateGaussian] {
 
   def isSupported(x: UnivariateGaussian): Boolean = {
 

@@ -4,7 +4,7 @@ import dk.bayes.dsl.InferEngine
 import dk.bayes.dsl.variable.gaussian.MultivariateLinearGaussian
 import dk.bayes.dsl.variable.gaussian.MultivariateGaussian
 
-object inferMultivariateGaussianMarginalSimplest extends InferEngine[MultivariateLinearGaussian, MultivariateGaussian] {
+object inferMultivariateLinearGaussianSimplest extends InferEngine[MultivariateLinearGaussian, MultivariateGaussian] {
 
   /**
    * Supported model: x -> y

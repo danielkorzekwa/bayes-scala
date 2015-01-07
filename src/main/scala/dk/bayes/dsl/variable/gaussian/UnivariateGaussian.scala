@@ -4,7 +4,8 @@ import dk.bayes.dsl.Variable
 import dk.bayes.dsl.InferEngine
 import dk.bayes.dsl.variable.Gaussian
 import dk.bayes.dsl.variable.gaussian.infer.inferUnivariateGaussianFactorGraph
-import dk.bayes.dsl.variable.gaussian.infer.inferUnivariateGaussianPosteriorSimplest
+import dk.bayes.dsl.variable.gaussian.infer.inferUnivariateGaussianSimplest
+import dk.bayes.dsl.variable.gaussian.infer.inferUnivariateGaussianEPNaiveBayes
 
 /**
  * N(m,v)
@@ -19,7 +20,8 @@ class UnivariateGaussian(val m: Double, val v: Double) extends Gaussian {
 object UnivariateGaussian {
 
   implicit val inferEngine = Vector(
-    inferUnivariateGaussianPosteriorSimplest,
+    inferUnivariateGaussianSimplest,
+    inferUnivariateGaussianEPNaiveBayes,
     inferUnivariateGaussianFactorGraph)
 
 }

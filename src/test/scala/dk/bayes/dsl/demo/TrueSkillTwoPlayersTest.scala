@@ -22,7 +22,7 @@ class TrueSkillTwoPlayersTest {
   val outcomeFactor = Categorical(perfDiff, cdfThreshold = 0, value = 0) //player 1 is a winner
 
   @Test def test {
-
+    
     val skill1Marginal = infer(skill1)
     assertEquals(27.1744, skill1Marginal.m, 0.0001)
     assertEquals(37.4973, skill1Marginal.v, 0.0001)

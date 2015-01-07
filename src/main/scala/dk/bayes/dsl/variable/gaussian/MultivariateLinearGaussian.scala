@@ -4,7 +4,7 @@ import dk.bayes.math.linear.Matrix
 import dk.bayes.dsl.Variable
 import dk.bayes.dsl.InferEngine
 import dk.bayes.dsl.variable.Gaussian
-import dk.bayes.dsl.variable.gaussian.infer.inferMultivariateGaussianMarginalSimplest
+import dk.bayes.dsl.variable.gaussian.infer.inferMultivariateLinearGaussianSimplest
 
 /**
  * y = A*x + b + gaussian_noise
@@ -18,5 +18,5 @@ class MultivariateLinearGaussian(val a: Matrix, val x: MultivariateGaussian, val
 
 object MultivariateLinearGaussian {
 
-  implicit val inferEngine = Vector(inferMultivariateGaussianMarginalSimplest)
+  implicit val inferEngine = Vector(inferMultivariateLinearGaussianSimplest)
 }
