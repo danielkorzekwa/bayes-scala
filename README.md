@@ -120,7 +120,7 @@ Compute posterior of *x* given two noisy obserations
 ![Kalman 1d two obserations](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/dsl_examples/kalman_1d_two_obserations.png "Kalman 1d two obserations")
 
 Infer new gaussian state given two noisy observation
-([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/dsl/demo/KalmanFilterTwoObservationsTest)):
+([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/dsl/demo/KalmanFilterTwoObservationsTest.scala)):
 
 ```scala
   val x = Gaussian(3, 1.5)
