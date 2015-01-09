@@ -8,7 +8,7 @@ It is a Scala library for building Bayesian Networks with discrete/continuous va
   * [TrueSkill](#trueskill)
   * [Clutter problem](#clutter-problem) 
   * [Gaussian process regression](#gaussian-process-regression)
-  * [Gaussian process regression with cluttered Gaussian likelihood](#gaussian-process-regression)
+  * [Gaussian process regression with cluttered Gaussian likelihood](#gaussian-process-regression-with-cluttered-gaussian-likelihood)
   * [1D Kalman filter](#1d-kalman-filter)
 
 * [Low level algorithms] which are used behind the scenes for Bayesian Inference, e.g. Loopy Belief Propagation, Expectation Propagation
