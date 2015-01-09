@@ -141,6 +141,8 @@ Infer posterior of the latent variable *f* given observed values of *y*
 
 ### Gaussian process regression with cluttered Gaussian likelihood
 
+![Gaussian process regression with cluttered Gaussian likelihood](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/dsl_examples/gaussian_process_regression_cluttered_gaussian_likelihood.png "Gaussian process regression with cluttered Gaussian likelihood")
+
 Infer posterior of the latent variable *f* given observed values of *y*
 ([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/dsl/demo/GaussianProcessRegressionClutteredGaussianLikelihoodTest.scala)):
 
