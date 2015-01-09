@@ -4,13 +4,24 @@ import dk.bayes.math.linear.Matrix
 import dk.bayes.dsl.Variable
 import dk.bayes.dsl.InferEngine
 import dk.bayes.dsl.variable.Gaussian
+import dk.bayes.dsl.variable.gaussian.infer.inferMultivariateGaussianSimplest
+import dk.bayes.dsl.variable.gaussian.infer.inferMultivariateGaussianEPNaiveBayes
+import dk.bayes.dsl.variable.gaussian.infer.inferMultivariateGaussianEPNaiveBayes
 
 /**
  * N(m,v)
  *
  * @author Daniel Korzekwa
  */
-class MultivariateGaussian(val m: Matrix, val v: Matrix) extends Gaussian {
+case class MultivariateGaussian(val m: Matrix, val v: Matrix) extends Gaussian {
 
   def getParents(): Seq[Variable] = Nil
+}
+
+object MultivariateGaussian {
+
+  implicit var inferEngines = Vector(
+      inferMultivariateGaussianSimplest,
+      inferMultivariateGaussianEPNaiveBayes
+      )
 }

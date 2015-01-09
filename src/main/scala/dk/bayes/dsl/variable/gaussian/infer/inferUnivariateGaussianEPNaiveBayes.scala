@@ -18,7 +18,8 @@ object inferUnivariateGaussianEPNaiveBayes extends InferEngine[UnivariateGaussia
 
     !x.hasParents &&
       x.getChildren.size > 0 &&
-      x.getChildren.filter(c => c.hasChildren).size == 0
+      x.getChildren.filter(c => c.hasChildren).size == 0 &&
+      x.getChildren.filter(c => !c.isInstanceOf[DoubleFactor[_, _]]).size == 0
   }
 
   def infer(x: UnivariateGaussian): UnivariateGaussian = {
@@ -43,14 +44,15 @@ object inferUnivariateGaussianEPNaiveBayes extends InferEngine[UnivariateGaussia
       new UnivariateGaussian(product.m, product.v)
     }
 
-    def marginalX(x: UnivariateGaussian, y: DoubleFactor[UnivariateGaussian, _]): UnivariateGaussian = {
+    def calcMarginalX(x: UnivariateGaussian, y: DoubleFactor[UnivariateGaussian, _]): Option[UnivariateGaussian] = {
       val marginal = y.marginals(Some(x), None)._1.get
-      marginal
+
+      if (marginal.v > 0) Some(marginal) else None
     }
 
-    def isIdentical(x1: UnivariateGaussian, x2: UnivariateGaussian, threshold: Double): Boolean = {
-      abs(x1.m - x2.m) < threshold &&
-        abs(x1.v - x2.v) < threshold &&
+    def isIdentical(x1: UnivariateGaussian, x2: UnivariateGaussian, tolerance: Double): Boolean = {
+      abs(x1.m - x2.m) < tolerance &&
+        abs(x1.v - x2.v) < tolerance &&
         x1.v > 0 && x2.v > 0
     }
   }

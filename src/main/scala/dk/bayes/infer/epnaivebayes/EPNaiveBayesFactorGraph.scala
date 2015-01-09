@@ -40,18 +40,26 @@ case class EPNaiveBayesFactorGraph[X, Y](bn: EPBayesianNet[X, Y]) extends Loggin
 
     msgsUp = msgsUp.zip(bn.likelihoods).map {
       case (currMsgUp, llh) =>
-        val msgDown = bn.divide(posterior, currMsgUp)
-
+        val cavity = divide(posterior, currMsgUp)
         val newMsgUp = try {
-          posterior = marginalX(msgDown, llh)
-          val newMsgUp = divide(posterior, msgDown)
-          newMsgUp
+
+          val marginalX = calcMarginalX(cavity, llh)
+
+          marginalX match {
+            case Some(marginalX) => {
+              posterior = marginalX
+              divide(posterior, cavity)
+            }
+            case None => currMsgUp
+          }
+
         } catch {
           case e: Exception => {
-            logger.warn("Error computing newFactorUpMsg",e)
+            logger.warn("Error computing newFactorUpMsg", e)
             currMsgUp
           }
         }
+
         newMsgUp
     }
   }

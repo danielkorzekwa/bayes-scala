@@ -17,6 +17,7 @@ trait EPBayesianNet[X, Y] {
   /**
    * Returns integral p(x)*p(x|y) dy
    */
-  def marginalX(x: X, y: Y): X
-  def isIdentical(x1: X, x2: X, threshold: Double): Boolean
+  def calcMarginalX(x: X, y: Y): Option[X]
+
+  def isIdentical(x1: X, x2: X, tolerance: Double): Boolean
 }

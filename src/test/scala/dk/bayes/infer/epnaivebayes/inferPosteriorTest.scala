@@ -43,11 +43,11 @@ object inferPosteriorTest {
 
     def divide(x1: Gaussian, x2: Gaussian): Gaussian = x1 / x2
 
-    def marginalX(x: Gaussian, y: Double): Gaussian = {
+    def calcMarginalX(x: Gaussian, y: Double): Option[Gaussian] = {
       val xCanon = CanonicalGaussian(x.m, x.v)
       val yCanon = CanonicalGaussian(a = Matrix(1), b = 0, v = emissionVar)
       val marginal = (xCanon.extend(2, 0) * yCanon).withEvidence(1, y)
-      marginal.toGaussian
+      Some(marginal.toGaussian)
     }
 
     def isIdentical(x1: Gaussian, x2: Gaussian, threshold: Double): Boolean = {

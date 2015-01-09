@@ -8,13 +8,13 @@ package dk.bayes.dsl
  */
 object infer {
 
-  def apply[FROM<:Variable, TO<:Variable](x: FROM)(implicit inferEngines: Seq[InferEngine[FROM, TO]] = List[InferEngine[FROM, TO]]()): TO = {
+  def apply[FROM <: Variable, TO <: Variable](x: FROM)(implicit inferEngines: Seq[InferEngine[FROM, TO]] = List[InferEngine[FROM, TO]]()): TO = {
 
     val inferEngine = inferEngines.find(e => e.isSupported(x))
 
     val inferredVar = inferEngine match {
       case Some(inferEngine) => inferEngine.infer(x)
-      case _ => throw new UnsupportedOperationException("Inference not supported")
+      case _ => throw new UnsupportedOperationException("Suitable inference engine not found")
     }
 
     inferredVar

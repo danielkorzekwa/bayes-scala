@@ -12,14 +12,14 @@ import dk.bayes.dsl.variable.gaussian.infer.inferUnivariateGaussianEPNaiveBayes
  *
  * @author Daniel Korzekwa
  */
-class UnivariateGaussian(val m: Double, val v: Double) extends Gaussian {
+case class UnivariateGaussian(val m: Double, val v: Double) extends Gaussian {
 
   def getParents(): Seq[Variable] = Nil
 }
 
 object UnivariateGaussian {
 
-  implicit val inferEngine = Vector(
+  implicit val inferEngines = Vector(
     inferUnivariateGaussianSimplest,
     inferUnivariateGaussianEPNaiveBayes,
     inferUnivariateGaussianFactorGraph)

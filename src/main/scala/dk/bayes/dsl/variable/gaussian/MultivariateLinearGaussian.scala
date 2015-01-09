@@ -11,12 +11,12 @@ import dk.bayes.dsl.variable.gaussian.infer.inferMultivariateLinearGaussianSimpl
  *
  * @author Daniel Korzekwa
  */
-class MultivariateLinearGaussian(val a: Matrix, val x: MultivariateGaussian, val b: Matrix, val v: Matrix, val yValue: Option[Double]) extends Gaussian {
+class MultivariateLinearGaussian(val a: Matrix, val x: MultivariateGaussian, val b: Matrix, val v: Matrix, val yValue: Option[Matrix]) extends Gaussian {
 
   def getParents(): Seq[Variable] = List(x)
 }
 
 object MultivariateLinearGaussian {
 
-  implicit val inferEngine = Vector(inferMultivariateLinearGaussianSimplest)
+  implicit val inferEngines = Vector(inferMultivariateLinearGaussianSimplest)
 }

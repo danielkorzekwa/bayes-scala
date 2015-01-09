@@ -39,18 +39,22 @@ object Gaussian {
   /**
    * y = A*x + b + gaussian_noise
    */
-  def apply(A: Matrix, x: Seq[Gaussian], v: Double) = new UnivariateLinearGaussian(A, x, b=0, v, None)
+  def apply(A: Matrix, x: Seq[Gaussian], v: Double) = new UnivariateLinearGaussian(A, x, b = 0, v, None)
   def apply(A: Matrix, x: Seq[Gaussian], b: Double, v: Double, yValue: Double) = new UnivariateLinearGaussian(A, x, b, v, Some(yValue))
   def apply(A: Matrix, x: Seq[Gaussian], b: Double, v: Double) = new UnivariateLinearGaussian(A, x, b, v, None)
-  
 
   /**
    * Constructors for MultivariateLinearGaussian
    */
 
   /**
+   * y = x + gaussian_noise
+   */
+  def apply(x: MultivariateGaussian, v: Matrix, yValue: Matrix) = new MultivariateLinearGaussian(Matrix.identity(x.m.size), x, Matrix.zeros(x.m.size, 1), v, Some(yValue))
+  def apply(x: MultivariateGaussian, v: Matrix) = new MultivariateLinearGaussian(Matrix.identity(x.m.size), x, Matrix.zeros(x.m.size, 1), v, None)
+  /**
    * y = A*x + b + gaussian_noise
    */
-  def apply(A: Matrix, x: MultivariateGaussian, b: Matrix, v: Matrix, yValue: Double) = new MultivariateLinearGaussian(A, x, b, v, Some(yValue))
+  def apply(A: Matrix, x: MultivariateGaussian, b: Matrix, v: Matrix, yValue: Matrix) = new MultivariateLinearGaussian(A, x, b, v, Some(yValue))
   def apply(A: Matrix, x: MultivariateGaussian, b: Matrix, v: Matrix) = new MultivariateLinearGaussian(A, x, b, v, None)
 }

@@ -7,6 +7,8 @@ It is a Scala library for building Bayesian Networks with discrete/continuous va
   * [Monty Hall problem](#monty-hall-problem)
   * [TrueSkill](#trueskill)
   * [Clutter problem](#clutter-problem) 
+  * [Gaussian process regression](#gaussian-process-regression)
+  * [Gaussian process regression with cluttered Gaussian likelihood](#gaussian-process-regression)
   * [1D Kalman filter](#1d-kalman-filter)
 
 * [Low level algorithms] which are used behind the scenes for Bayesian Inference, e.g. Loopy Belief Propagation, Expectation Propagation
@@ -98,9 +100,9 @@ Infer posterior for skill given player 1 is a winner
   infer(skill1) // Gaussian(27.1744,37.4973)
 ```
 
-### Clutter Problem
+### Clutter problem
 
-The clutter problem is concerned with estimating the state of gaussian variable from noisy obserations which are embedded in background clutter. This problem is used by Tom Minka is his [PhD thesis] to illustrate the Expectation Propagation algorithm.
+The clutter problem is concerned with estimating the state of gaussian variable from noisy obserations which are embedded in background clutter. This problem is used by Tom Minka in his [PhD thesis] to illustrate the Expectation Propagation algorithm.
 
 ![Clutter problem](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/dsl_examples/clutter_problem.png "Clutter problem")
 
@@ -113,6 +115,47 @@ Compute posterior of *x* given two noisy obserations
   val y2 = ClutteredGaussian(x,w = 0.4, a = 10, value = 5)
 
   infer(x) // Gaussian(4.3431,4.3163)
+```
+
+### Gaussian process regression
+
+[Gaussian Processes book] by Carl Edward Rasmussen and Christopher K. I. Williams, The MIT Press, 2006. 
+
+![Gaussian process regression](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/dsl_examples/gaussian_process_regression.png "Gaussian process regression")
+
+Infer posterior of the latent variable *f* given observed values of y
+([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/dsl/demo/GaussianProcessRegressionTest)):
+
+```scala
+  val fMean = Matrix(0, 0, 0)
+  val x = Matrix(1, 2, 3)
+  val covFunc = CovSEiso(sf = log(7.5120), ell = log(2.1887))
+  val fVar = covFunc.cov(x)
+  val f = Gaussian(fMean, fVar) //f variable
+
+  val yVar = pow(0.81075, 2) * Matrix.identity(3)
+  val y = Gaussian(f, yVar, yValue = Matrix(1.0, 4, 9)) //y variable
+
+  val fPosterior = infer(f) // mean = (0.878, 4.407, 8.614)
+```
+
+### Gaussian process regression with cluttered Gaussian likelihood
+
+Infer posterior of the latent variable *f* given observed values of y
+([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/dsl/demo/GaussianProcessRegressionGaussianLikelihoodTest.scala)):
+
+```scala
+  val fMean = Matrix(0, 0, 0)
+  val x = Matrix(1, 2, 3)
+  val covFunc = CovSEiso(sf = log(7.5120), ell = log(2.1887))
+  val fVar = covFunc.cov(x)
+  val f = Gaussian(fMean, fVar) //f variable
+
+  val y0 = ClutteredGaussian(x = f, xIndex = 0, w = 0.4, a = 10, value = 1)
+  val y1 = ClutteredGaussian(x = f, xIndex = 1, w = 0.4, a = 10, value = 4)
+  val y2 = ClutteredGaussian(x = f, xIndex = 2, w = 0.4, a = 10, value = 9)
+
+  val fPosterior = infer(f) // mean = (0.972, 4.760, 8.386)
 ```
 
 ### 1D Kalman filter
@@ -135,3 +178,4 @@ Infer new gaussian state given two noisy observation
 [TrueSkill]: http://research.microsoft.com/en-us/projects/trueskill/
 [PhD thesis]: http://research.microsoft.com/en-us/um/people/minka/papers/ep/minka-thesis.pdf
 [Monty Hall problem]: http://en.wikipedia.org/wiki/Monty_Hall_problem
+[Gaussian Processes book]: http://www.gaussianprocess.org/gpml/
