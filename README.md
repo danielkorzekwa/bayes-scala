@@ -124,7 +124,7 @@ Compute posterior of *x* given two noisy obserations
 ![Gaussian process regression](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/dsl_examples/gaussian_process_regression.png "Gaussian process regression")
 
 Infer posterior of the latent variable *f* given observed values of y
-([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/dsl/demo/GaussianProcessRegressionTest)):
+([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/dsl/demo/GaussianProcessRegressionTest.test)):
 
 ```scala
   val fMean = Matrix(0, 0, 0)
