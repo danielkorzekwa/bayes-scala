@@ -123,7 +123,7 @@ Compute posterior of *x* given two noisy obserations
 
 ![Gaussian process regression](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/dsl_examples/gaussian_process_regression.png "Gaussian process regression")
 
-Infer posterior of the latent variable *f* given observed values of y
+Infer posterior of the latent variable *f* given observed values of *y*
 ([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/dsl/demo/GaussianProcessRegressionTest.scala)):
 
 ```scala
@@ -141,8 +141,8 @@ Infer posterior of the latent variable *f* given observed values of y
 
 ### Gaussian process regression with cluttered Gaussian likelihood
 
-Infer posterior of the latent variable *f* given observed values of y
-([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/dsl/demo/GaussianProcessRegressionGaussianLikelihoodTest.scala)):
+Infer posterior of the latent variable *f* given observed values of *y*
+([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/dsl/demo/GaussianProcessRegressionClutteredGaussianLikelihoodTest.scala)):
 
 ```scala
   val fMean = Matrix(0, 0, 0)
