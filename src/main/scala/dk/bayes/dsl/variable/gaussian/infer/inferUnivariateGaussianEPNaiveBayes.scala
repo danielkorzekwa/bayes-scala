@@ -40,14 +40,14 @@ object inferUnivariateGaussianEPNaiveBayes extends InferEngine[UnivariateGaussia
     }
 
     def divide(x1: UnivariateGaussian, x2: UnivariateGaussian): UnivariateGaussian = {
-      val product = Gaussian(x1.m, x1.v) / Gaussian(x2.m, x2.v)
-      new UnivariateGaussian(product.m, product.v)
+      val result = Gaussian(x1.m, x1.v) / Gaussian(x2.m, x2.v)
+      new UnivariateGaussian(result.m, result.v)
     }
 
-    def calcMarginalX(x: UnivariateGaussian, y: DoubleFactor[UnivariateGaussian, _]): Option[UnivariateGaussian] = {
-      val marginal = y.marginals(Some(x), None)._1.get
+    def calcYFactorMsgUp(x: UnivariateGaussian, oldFactorMsgUp: UnivariateGaussian, y: DoubleFactor[UnivariateGaussian, _]): Option[UnivariateGaussian] = {
 
-      if (marginal.v > 0) Some(marginal) else None
+      val newFactorMsgUp = y.calcYFactorMsgUp(x, oldFactorMsgUp)
+      newFactorMsgUp
     }
 
     def isIdentical(x1: UnivariateGaussian, x2: UnivariateGaussian, tolerance: Double): Boolean = {

@@ -7,6 +7,7 @@ import dk.bayes.dsl.variable.Gaussian
 import dk.bayes.dsl.variable.gaussian.infer.inferMultivariateGaussianSimplest
 import dk.bayes.dsl.variable.gaussian.infer.inferMultivariateGaussianEPNaiveBayes
 import dk.bayes.dsl.variable.gaussian.infer.inferMultivariateGaussianEPNaiveBayes
+import dk.bayes.dsl.variable.gaussian.infer.inferMultivariateGaussianSingleNode
 
 /**
  * N(m,v)
@@ -21,6 +22,7 @@ case class MultivariateGaussian(val m: Matrix, val v: Matrix) extends Gaussian {
 object MultivariateGaussian {
 
   implicit var inferEngines = Vector(
+      inferMultivariateGaussianSingleNode,
       inferMultivariateGaussianSimplest,
       inferMultivariateGaussianEPNaiveBayes
       )

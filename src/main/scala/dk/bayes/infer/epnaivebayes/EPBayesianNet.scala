@@ -15,9 +15,12 @@ trait EPBayesianNet[X, Y] {
   def divide(x1: X, x2: X): X
 
   /**
-   * Returns integral p(x)*p(x|y) dy
+   * @param x Marginal of variable x
+   * @param oldFactorMsgUp old message sent from factor y=f(x) to variable X
+   *
+   *  @returns New message from factor y=f(x) to variable X
    */
-  def calcMarginalX(x: X, y: Y): Option[X]
+  def calcYFactorMsgUp(x: X, oldFactorMsgUp: X, y: Y): Option[X]
 
   def isIdentical(x1: X, x2: X, tolerance: Double): Boolean
 }

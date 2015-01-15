@@ -8,9 +8,12 @@ import com.typesafe.scalalogging.slf4j.Logging
  *
  * It run Expectation Propagation algorithm. http://en.wikipedia.org/wiki/Expectation_propagation
  *
+ * @param bn
+ * @param paralllelMessagePassing If true then messages between X variable and Y variables are sent in parallel
+ *
  * @author Daniel Korzekwa
  */
-case class EPNaiveBayesFactorGraph[X, Y](bn: EPBayesianNet[X, Y]) extends Logging {
+case class EPNaiveBayesFactorGraph[X, Y](bn: EPBayesianNet[X, Y], paralllelMessagePassing: Boolean = false) extends Logging {
   import bn._
 
   private var msgsUp: Seq[X] = bn.likelihoods.map(l => bn.initFactorMsgUp)
@@ -22,12 +25,11 @@ case class EPNaiveBayesFactorGraph[X, Y](bn: EPBayesianNet[X, Y]) extends Loggin
 
     @tailrec
     def calibrateIter(currPosterior: X, iterNum: Int) {
-
       if (iterNum >= maxIter) {
         logger.warn(s"Factor graph did not converge in less than ${maxIter} iterations")
         return
       }
-      sendMsgs()
+      if (paralllelMessagePassing) sendMsgsParallel() else sendMsgsSerial()
 
       if (bn.isIdentical(posterior, currPosterior, threshold)) return
       else calibrateIter(posterior, iterNum + 1)
@@ -36,28 +38,34 @@ case class EPNaiveBayesFactorGraph[X, Y](bn: EPBayesianNet[X, Y]) extends Loggin
     calibrateIter(bn.prior, 1)
   }
 
-  private def sendMsgs() {
+  private def sendMsgsParallel() {
 
     msgsUp = msgsUp.zip(bn.likelihoods).map {
       case (currMsgUp, llh) =>
-        val cavity = divide(posterior, currMsgUp)
-        val newMsgUp = try {
 
-          val marginalX = calcMarginalX(cavity, llh)
+        val newMsgUp = calcYFactorMsgUp(posterior, currMsgUp, llh) match {
+          case Some(msg) => msg
+          case None => currMsgUp
+        }
 
-          marginalX match {
-            case Some(marginalX) => {
-              posterior = marginalX
-              divide(posterior, cavity)
-            }
-            case None => currMsgUp
+        newMsgUp
+    }
+
+    posterior = msgsUp.foldLeft(bn.prior)((posterior, msgUp) => product(posterior, msgUp))
+  }
+
+  private def sendMsgsSerial() {
+
+    msgsUp = msgsUp.zip(bn.likelihoods).map {
+      case (currMsgUp, llh) =>
+
+        val newMsgUp = calcYFactorMsgUp(posterior, currMsgUp, llh) match {
+          case Some(msg) => {
+            val cavity = divide(posterior, currMsgUp)
+            posterior = product(cavity, msg)
+            msg
           }
-
-        } catch {
-          case e: Exception => {
-            logger.warn("Error computing newFactorUpMsg", e)
-            currMsgUp
-          }
+          case None => currMsgUp
         }
 
         newMsgUp

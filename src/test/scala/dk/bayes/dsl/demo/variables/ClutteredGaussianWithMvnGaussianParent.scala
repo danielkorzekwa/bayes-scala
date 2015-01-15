@@ -24,25 +24,20 @@ trait ClutteredGaussianMvnParentFactor extends DoubleFactor[CanonicalGaussian, A
   val a: Double
   val value: Double
 
-  def marginals(x: Option[CanonicalGaussian], y: Option[Any]): (Option[CanonicalGaussian], Option[Any]) = {
-
-    require(x.isDefined, "Not supported")
-    require(y.isEmpty, "Not supported")
-
-    val fFactorMsgDown = x.get.marginal(xIndex).toGaussian
+  def calcYFactorMsgUp(x: CanonicalGaussian, oldFactorMsgUp: CanonicalGaussian): Option[CanonicalGaussian] = {
+    
+    val yVarMsgUp = new CanonicalGaussian(Matrix(oldFactorMsgUp.k(xIndex, xIndex)), Matrix(oldFactorMsgUp.h(xIndex)), oldFactorMsgUp.g)
+    val fFactorMsgDown = (x.marginal(xIndex) / (yVarMsgUp)).toGaussian
 
     val projValue = project(fFactorMsgDown, w, a, value)
     val clutterFactorMsgUp = CanonicalGaussian(projValue.m, projValue.v) / CanonicalGaussian(fFactorMsgDown.m, fFactorMsgDown.v)
 
-    val A = Matrix.zeros(x.get.h.size, 1).t
+    val A = Matrix.zeros(x.h.size, 1).t
     A.set(0, xIndex, 1)
     val fFactor = CanonicalGaussian(A, b = Matrix(0.0), v = Matrix(1e-9))
-    val fFactorMsgUp = (clutterFactorMsgUp.extend(x.get.h.size + 1, x.get.h.size) * fFactor).marginalise(x.get.h.size)
+    val newFactorMsgUp = (clutterFactorMsgUp.extend(x.h.size + 1, x.h.size) * fFactor).marginalise(x.h.size)
 
-    val fPosterior = fFactorMsgUp * x.get
-
-    (Some(fPosterior), None)
-
+   Some(newFactorMsgUp)
   }
 
 }

@@ -1,15 +1,17 @@
 package dk.bayes.dsl.factor
 
-
 /**
  * Factor for y = f(x)
- * 
+ *
  * @author Daniel Korzekwa
  */
 trait DoubleFactor[X, Y] {
 
   /**
-   * Returns (x,y) variable marginals for the product of x*factor*y
+   * @param x Marginal of variable x
+   * @param oldFactorMsgUp old message sent from factor y=f(x) to variable X
+   *
+   *  @returns New message from factor y=f(x) to variable X
    */
-  def marginals(x: Option[X], y: Option[Y]): (Option[X], Option[Y])
+  def calcYFactorMsgUp(x: X, oldFactorMsgUp: X): Option[X]
 }

@@ -71,7 +71,7 @@ object inferUnivariateGaussianFactorGraph extends InferEngine[UnivariateGaussian
     factor
     }
     catch {
-      case e:MatchError => throw new UnsupportedOperationException("Inference not supported")
+      case e:MatchError => throw new UnsupportedOperationException("Inference not supported",e)
     }
   }
 

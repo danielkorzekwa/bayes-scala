@@ -24,7 +24,7 @@ object inferMultivariateGaussianEPNaiveBayes extends InferEngine[MultivariateGau
     val likelihoods = prior.getChildren.map(c => c.asInstanceOf[DoubleFactor[CanonicalGaussian, _]])
     val bn = GaussianEPBayesianNet(CanonicalGaussian(prior.m, prior.v), likelihoods)
     
-    val posterior = inferPosterior(bn)
+    val posterior = inferPosterior(bn,paralllelMessagePassing=true)
     MultivariateGaussian(posterior.mean, posterior.variance)
   }
 
@@ -36,11 +36,11 @@ object inferMultivariateGaussianEPNaiveBayes extends InferEngine[MultivariateGau
     def product(x1: CanonicalGaussian, x2: CanonicalGaussian): CanonicalGaussian = x1*x2
 
     def divide(x1: CanonicalGaussian, x2: CanonicalGaussian):CanonicalGaussian= x1 / x2
+    
+     def calcYFactorMsgUp(x: CanonicalGaussian, oldFactorMsgUp: CanonicalGaussian, y: DoubleFactor[CanonicalGaussian, _]): Option[CanonicalGaussian] = {
 
-    def calcMarginalX(x: CanonicalGaussian, y: DoubleFactor[CanonicalGaussian, _]): Option[CanonicalGaussian] = {
-      val marginal = y.marginals(Some(x), None)._1.get
-
-      Some(marginal)
+      val newFactorMsgUp = y.calcYFactorMsgUp(x, oldFactorMsgUp)
+     newFactorMsgUp
     }
 
     def isIdentical(x1: CanonicalGaussian, x2: CanonicalGaussian, tolerance: Double): Boolean = {
