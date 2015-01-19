@@ -1,4 +1,4 @@
-package dk.bayes.dsl.variable.gaussian
+package dk.bayes.dsl.variable.gaussian.univariatelinear
 
 import dk.bayes.dsl.Variable
 import dk.bayes.math.linear.Matrix
@@ -14,6 +14,7 @@ class UnivariateLinearGaussian(val a: Matrix, val x: Seq[Gaussian], val b: Doubl
   with UnivariateLinearGaussianFactor {
 
   val variable = this
+  def getVar(): UnivariateLinearGaussian = this
 
   def getParents(): Seq[Variable] = x
 }

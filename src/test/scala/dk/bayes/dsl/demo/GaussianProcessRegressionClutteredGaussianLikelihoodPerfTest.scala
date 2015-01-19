@@ -23,17 +23,17 @@ class GaussianProcessRegressionClutteredGaussianLikelihoodPerfTest {
     val f = Gaussian(fMean, fVar) //f variable
 
     for (i <- 0 until n) {
-      ClutteredGaussian(x = f, xIndex = i, w = 0.4, a = 10, value = i/2)
+      ClutteredGaussian(x = f, xIndex = i, w = 0.4, a = 10, value = i / 2)
     }
     val fPosterior = infer(f)
 
     assertEquals(-0.121, fPosterior.m(0), 0.001)
-    assertEquals( 0.724, fPosterior.m(2), 0.001)
+    assertEquals(0.724, fPosterior.m(2), 0.001)
     assertEquals(1.752, fPosterior.m(4), 0.001)
 
     assertEquals(4.538, fPosterior.v(0, 0), 0.001)
     assertEquals(1.116, fPosterior.v(2, 2), 0.001)
-    assertEquals(0.858 , fPosterior.v(4, 4), 0.001)
+    assertEquals(0.858, fPosterior.v(4, 4), 0.001)
 
   }
 }

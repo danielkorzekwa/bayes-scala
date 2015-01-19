@@ -1,11 +1,9 @@
-package dk.bayes.dsl.variable.gaussian.infer
+package dk.bayes.dsl.variable.gaussian.univariate
 
 import dk.bayes.dsl.InferEngine
-import dk.bayes.dsl.variable.gaussian.UnivariateGaussian
 import java.util.concurrent.atomic.AtomicInteger
 import dk.bayes.dsl.Variable
 import dk.bayes.model.factor.GaussianFactor
-import dk.bayes.dsl.variable.gaussian.UnivariateLinearGaussian
 import dk.bayes.model.factor.LinearGaussianFactor
 import dk.bayes.model.factor.api.Factor
 import dk.bayes.dsl.variable.categorical.CdfThresholdCategorical
@@ -15,6 +13,7 @@ import dk.bayes.model.factor.DiffGaussianFactor
 import dk.bayes.model.factorgraph.GenericFactorGraph
 import dk.bayes.infer.ep.GenericEP
 import dk.bayes.infer.ep.calibrate.fb.ForwardBackwardEPCalibrate
+import dk.bayes.dsl.variable.gaussian.univariatelinear.UnivariateLinearGaussian
 
 object inferUnivariateGaussianFactorGraph extends InferEngine[UnivariateGaussian, UnivariateGaussian] {
 

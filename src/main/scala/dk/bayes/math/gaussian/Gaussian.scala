@@ -7,6 +7,7 @@ import dk.bayes.math.linear._
 import breeze.stats.distributions.RandBasis
 import breeze.stats.distributions.ThreadLocalRandomGenerator
 import org.apache.commons.math3.random.MersenneTwister
+import dk.bayes.math.numericops.NumericOps
 
 /**
  * Univariate Gaussian Distribution.
@@ -16,7 +17,9 @@ import org.apache.commons.math3.random.MersenneTwister
  * @param m Mean
  * @param v Variance
  */
-case class Gaussian(m: Double, v: Double) {
+case class Gaussian(m: Double, v: Double) extends NumericOps[Gaussian] {
+
+  def getThis() = this
 
   require(!m.isNaN(), "Gaussian mean is NaN")
   require(!v.isNaN(), "Gaussian variance is NaN")
@@ -115,37 +118,6 @@ case class Gaussian(m: Double, v: Double) {
   /**
    * P.A. Bromiley. Products and Convolutions of Gaussian Distributions, 2003
    */
-  def *(gaussian: Gaussian): Gaussian = {
-
-    val product =
-      if (gaussian.v == Double.PositiveInfinity) this
-      else if (v == Double.PositiveInfinity) gaussian
-      else {
-        val newM = (m * gaussian.v + gaussian.m * v) / (v + gaussian.v)
-        val newV = (v * gaussian.v) / (v + gaussian.v)
-        Gaussian(newM, newV)
-      }
-
-    product
-
-  }
-
-  /**
-   * Thomas Minka. EP: A quick reference, 2008
-   */
-  def /(gaussian: Gaussian): Gaussian = {
-    if (v == Double.PositiveInfinity || gaussian.v == Double.PositiveInfinity) this
-    else {
-      val newPrecision = (1 / v - 1 / gaussian.v)
-      val newV = if (abs(newPrecision) > minPrecision) 1 / newPrecision else Double.PositiveInfinity
-      val newM = if (newV.isPosInfinity) 0 else newV * (m / v - gaussian.m / gaussian.v)
-      Gaussian(newM, newV)
-    }
-  }
-
-  /**
-   * P.A. Bromiley. Products and Convolutions of Gaussian Distributions, 2003
-   */
   def +(gaussian: Gaussian): Gaussian = {
     val newM = m + gaussian.m
     val newV = v + gaussian.v
@@ -174,7 +146,7 @@ case class Gaussian(m: Double, v: Double) {
   def toCanonical(): CanonicalGaussian = CanonicalGaussian(m, v)
 }
 
-object Gaussian {
+object Gaussian extends GaussianNumericOps {
 
   private val standardNormal = new NormalDistribution(0, 1)
   /**

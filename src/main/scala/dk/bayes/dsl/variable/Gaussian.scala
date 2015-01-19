@@ -1,11 +1,12 @@
 package dk.bayes.dsl.variable
 
 import dk.bayes.math.linear.Matrix
-import dk.bayes.dsl.variable.gaussian.UnivariateGaussian
-import dk.bayes.dsl.variable.gaussian.UnivariateLinearGaussian
-import dk.bayes.dsl.variable.gaussian.MultivariateLinearGaussian
-import dk.bayes.dsl.variable.gaussian.MultivariateGaussian
 import dk.bayes.dsl.Variable
+import dk.bayes.dsl.variable.gaussian.univariate.UnivariateGaussian
+import dk.bayes.dsl.variable.gaussian.multivariate.MultivariateGaussian
+import dk.bayes.dsl.variable.gaussian.univariatelinear.UnivariateLinearGaussian
+import dk.bayes.dsl.variable.gaussian.univariatelinear.UnivariateLinearGaussian
+import dk.bayes.dsl.variable.gaussian.multivariatelinear.MultivariateLinearGaussian
 
 /**
  * N(m,v)

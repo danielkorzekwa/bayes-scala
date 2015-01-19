@@ -5,9 +5,11 @@ package dk.bayes.dsl.factor
  *
  * @author Daniel Korzekwa
  */
-trait DoubleFactor[X, Y] {
+trait DoubleFactor[X,Y] {
 
-  /**
+  val initFactorMsgUp: X
+  
+   /**
    * @param x Marginal of variable x
    * @param oldFactorMsgUp old message sent from factor y=f(x) to variable X
    *

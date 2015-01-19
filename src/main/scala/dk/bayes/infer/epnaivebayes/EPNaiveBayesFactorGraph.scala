@@ -2,6 +2,9 @@ package dk.bayes.infer.epnaivebayes
 
 import scala.annotation.tailrec
 import com.typesafe.scalalogging.slf4j.Logging
+import dk.bayes.dsl.factor.DoubleFactor
+import dk.bayes.dsl.factor.SingleFactor
+import dk.bayes.math.numericops._
 
 /**
  * Computes posterior of X for a naive bayes net. Variables: X, Y1|X, Y2|X,...Yn|X
@@ -13,11 +16,10 @@ import com.typesafe.scalalogging.slf4j.Logging
  *
  * @author Daniel Korzekwa
  */
-case class EPNaiveBayesFactorGraph[X, Y](bn: EPBayesianNet[X, Y], paralllelMessagePassing: Boolean = false) extends Logging {
-  import bn._
+case class EPNaiveBayesFactorGraph[X](prior: SingleFactor[X], likelihoods: Seq[DoubleFactor[X, _]], paralllelMessagePassing: Boolean = false)(implicit val multOp: multOp[X, X], val divideOp: divideOp[X, X], val isIdentical: isIdentical[X, X]) extends Logging {
 
-  private var msgsUp: Seq[X] = bn.likelihoods.map(l => bn.initFactorMsgUp)
-  private var posterior = msgsUp.foldLeft(bn.prior)((posterior, msgUp) => product(posterior, msgUp))
+  private var msgsUp: Seq[X] = likelihoods.map(l => l.initFactorMsgUp)
+  private var posterior = msgsUp.foldLeft(prior.factorMsgDown)((posterior, msgUp) => multOp(posterior, msgUp))
 
   def getPosterior(): X = posterior
 
@@ -31,38 +33,38 @@ case class EPNaiveBayesFactorGraph[X, Y](bn: EPBayesianNet[X, Y], paralllelMessa
       }
       if (paralllelMessagePassing) sendMsgsParallel() else sendMsgsSerial()
 
-      if (bn.isIdentical(posterior, currPosterior, threshold)) return
+      if (isIdentical(posterior, currPosterior, threshold)) return
       else calibrateIter(posterior, iterNum + 1)
     }
 
-    calibrateIter(bn.prior, 1)
+    calibrateIter(posterior, 1)
   }
 
   private def sendMsgsParallel() {
 
-    msgsUp = msgsUp.zip(bn.likelihoods).map {
+    msgsUp = msgsUp.zip(likelihoods).map {
       case (currMsgUp, llh) =>
 
-        val newMsgUp = calcYFactorMsgUp(posterior, currMsgUp, llh) match {
+        val newMsgUp = llh.calcYFactorMsgUp(posterior, currMsgUp) match {
           case Some(msg) => msg
-          case None => currMsgUp
+          case None      => currMsgUp
         }
 
         newMsgUp
     }
 
-    posterior = msgsUp.foldLeft(bn.prior)((posterior, msgUp) => product(posterior, msgUp))
+    posterior = msgsUp.foldLeft(prior.factorMsgDown)((posterior, msgUp) => multOp(posterior, msgUp))
   }
 
   private def sendMsgsSerial() {
 
-    msgsUp = msgsUp.zip(bn.likelihoods).map {
+    msgsUp = msgsUp.zip(likelihoods).map {
       case (currMsgUp, llh) =>
 
-        val newMsgUp = calcYFactorMsgUp(posterior, currMsgUp, llh) match {
+        val newMsgUp = llh.calcYFactorMsgUp(posterior, currMsgUp) match {
           case Some(msg) => {
-            val cavity = divide(posterior, currMsgUp)
-            posterior = product(cavity, msg)
+            val cavity = divideOp(posterior, currMsgUp)
+            posterior = multOp(cavity, msg)
             msg
           }
           case None => currMsgUp

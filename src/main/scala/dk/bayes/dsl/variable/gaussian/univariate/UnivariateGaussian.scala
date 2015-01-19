@@ -1,19 +1,18 @@
-package dk.bayes.dsl.variable.gaussian
+package dk.bayes.dsl.variable.gaussian.univariate
 
 import dk.bayes.dsl.Variable
 import dk.bayes.dsl.InferEngine
 import dk.bayes.dsl.variable.Gaussian
-import dk.bayes.dsl.variable.gaussian.infer.inferUnivariateGaussianFactorGraph
-import dk.bayes.dsl.variable.gaussian.infer.inferUnivariateGaussianSimplest
-import dk.bayes.dsl.variable.gaussian.infer.inferUnivariateGaussianEPNaiveBayes
 
 /**
  * N(m,v)
  *
  * @author Daniel Korzekwa
  */
-case class UnivariateGaussian(val m: Double, val v: Double) extends Gaussian {
+case class UnivariateGaussian(val m: Double, val v: Double) extends Gaussian with UnivariateGaussianFactor {
 
+  def getVar() = this
+  
   def getParents(): Seq[Variable] = Nil
 }
 

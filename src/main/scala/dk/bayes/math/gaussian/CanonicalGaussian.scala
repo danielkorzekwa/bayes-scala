@@ -6,6 +6,7 @@ import org.ejml.simple.SimpleMatrix
 import org.ejml.ops.CommonOps
 import scala.collection.JavaConversions._
 import dk.bayes.math.linear._
+import dk.bayes.math.numericops._
 
 /**
  * Canonical Gaussian following:
@@ -19,7 +20,9 @@ import dk.bayes.math.linear._
  * @param h See Canonical Gaussian definition
  * @param g See Canonical Gaussian definition
  */
-case class CanonicalGaussian(k: Matrix, h: Matrix, g: Double) {
+case class CanonicalGaussian(k: Matrix, h: Matrix, g: Double) extends NumericOps[CanonicalGaussian] {
+
+  def getThis() = this
 
   private lazy val kinv = k.inv
 
@@ -42,16 +45,6 @@ case class CanonicalGaussian(k: Matrix, h: Matrix, g: Double) {
    * Returns the value of probability density function for a given value of vector x.
    */
   def pdf(x: Matrix): Double = exp(-0.5 * x.transpose * k * x + h.transpose * x + g)
-
-  /**
-   * Returns product of multiplying two canonical gausssians
-   */
-  def *(gaussian: CanonicalGaussian) = if (gaussian.g.isNaN) this else CanonicalGaussianOps.*(this, gaussian)
-
-  /**
-   * Returns quotient of two canonical gausssians
-   */
-  def /(gaussian: CanonicalGaussian) = if (gaussian.g.isNaN()) this else CanonicalGaussianOps./(this, gaussian)
 
   /**
    * Returns gaussian integral marginalising out the variable at a given index
@@ -102,7 +95,7 @@ case class CanonicalGaussian(k: Matrix, h: Matrix, g: Double) {
   def marginal(varIndexes: Int*): CanonicalGaussian = {
 
     varIndexes match {
-      case Seq(varIndex) => marginal(varIndex)
+      case Seq(varIndex)             => marginal(varIndex)
       case Seq(varIndex1, varIndex2) => marginal(varIndex1, varIndex2)
       case _ => {
         val filteredVarIndexes = (0 until h.size).filter(v => !varIndexes.contains(v)).reverse
@@ -158,7 +151,7 @@ case class CanonicalGaussian(k: Matrix, h: Matrix, g: Double) {
 
 }
 
-object CanonicalGaussian {
+object CanonicalGaussian extends CanonicalGaussianNumericOps {
 
   /**
    * @param m Mean
@@ -221,4 +214,5 @@ object CanonicalGaussian {
   }
 
   implicit def toGaussian(mvnGaussian: CanonicalGaussian): Gaussian = mvnGaussian.toGaussian
+
 }

@@ -1,10 +1,10 @@
-package dk.bayes.dsl.variable.gaussian
+package dk.bayes.dsl.variable.gaussian.multivariatelinear
 
 import dk.bayes.math.linear.Matrix
 import dk.bayes.dsl.Variable
 import dk.bayes.dsl.InferEngine
 import dk.bayes.dsl.variable.Gaussian
-import dk.bayes.dsl.variable.gaussian.infer.inferMultivariateLinearGaussianSimplest
+import dk.bayes.dsl.variable.gaussian.multivariate.MultivariateGaussian
 
 /**
  * y = A*x + b + gaussian_noise

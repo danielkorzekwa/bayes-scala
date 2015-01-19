@@ -88,13 +88,13 @@ class TrueSkillTwoPersonGameEPTest {
 
     //forward messages for player 1
     val m_f0_to_f1 = player1Skill
-    val m_f1_to_f2 = (skillTransitionFactor * m_f0_to_f1).marginalise(0)
-    val m_f2_to_f6 = (performanceFactor * m_f1_to_f2).marginalise(0)
+    val m_f1_to_f2 = (skillTransitionFactor * m_f0_to_f1).marginalise(0).toGaussian
+    val m_f2_to_f6 = (performanceFactor * m_f1_to_f2).marginalise(0).toGaussian
     
     //forward messages for player 2
     val m_f3_to_f4 = player2Skill
-    val m_f4_to_f5 = (skillTransitionFactor * m_f3_to_f4).marginalise(0)
-    val m_f5_to_f6 = (performanceFactor * m_f4_to_f5).marginalise(0)
+    val m_f4_to_f5 = (skillTransitionFactor * m_f3_to_f4).marginalise(0).toGaussian
+    val m_f5_to_f6 = (performanceFactor * m_f4_to_f5).marginalise(0).toGaussian
 
     //forward-backward messages for performance difference
     val m_f6_to_f7 = m_f2_to_f6 - m_f5_to_f6

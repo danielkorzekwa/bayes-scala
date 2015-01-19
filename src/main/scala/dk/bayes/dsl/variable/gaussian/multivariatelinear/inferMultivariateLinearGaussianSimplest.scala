@@ -1,8 +1,7 @@
-package dk.bayes.dsl.variable.gaussian.infer
+package dk.bayes.dsl.variable.gaussian.multivariatelinear
 
 import dk.bayes.dsl.InferEngine
-import dk.bayes.dsl.variable.gaussian.MultivariateLinearGaussian
-import dk.bayes.dsl.variable.gaussian.MultivariateGaussian
+import dk.bayes.dsl.variable.gaussian.multivariate.MultivariateGaussian
 
 object inferMultivariateLinearGaussianSimplest extends InferEngine[MultivariateLinearGaussian, MultivariateGaussian] {
 
