@@ -1,14 +1,14 @@
-package dk.bayes.math.gaussian
+package dk.bayes.math.gaussian.canonical
 
 import org.junit._
-import Assert._
+import org.junit.Assert._
 import dk.bayes.math.linear._
 
-class CanonicalGaussianOpsTest {
+class DenseCanonicalGaussianOpsTest {
 
-  val x = CanonicalGaussian(Matrix(3), Matrix(1.5))
-  val y = CanonicalGaussian(Matrix(5), Matrix(2.5))
-  val yGivenx = CanonicalGaussian(Matrix(-0.1), 2, 0.5)
+  val x = DenseCanonicalGaussian(Matrix(3), Matrix(1.5))
+  val y = DenseCanonicalGaussian(Matrix(5), Matrix(2.5))
+  val yGivenx = DenseCanonicalGaussian(Matrix(-0.1), 2, 0.5)
 
   /**
    * tests for multiply
@@ -50,8 +50,8 @@ class CanonicalGaussianOpsTest {
    */
 
   @Test def divide_multiply {
-    val gaussian1 = CanonicalGaussian(Matrix(1.5, 2), Matrix(2, 2, Array(1, 0.7, 0.3, 1.2)))
-    val gaussian2 = CanonicalGaussian(Matrix(1.9, 2.6), Matrix(2, 2, Array(1.1, 0.4, 0.6, 1.65)))
+    val gaussian1 = DenseCanonicalGaussian(Matrix(1.5, 2), Matrix(2, 2, Array(1, 0.7, 0.3, 1.2)))
+    val gaussian2 = DenseCanonicalGaussian(Matrix(1.9, 2.6), Matrix(2, 2, Array(1.1, 0.4, 0.6, 1.65)))
 
     val newGaussian = (gaussian1 / gaussian2) * gaussian2
 
@@ -60,8 +60,8 @@ class CanonicalGaussianOpsTest {
   }
 
   @Test def multiply_divide {
-    val gaussian1 = CanonicalGaussian(Matrix(1.5, 2), Matrix(2, 2, Array(1, 0.7, 0.3, 1.2)))
-    val gaussian2 = CanonicalGaussian(Matrix(1.9, 2.6), Matrix(2, 2, Array(1.1, 0.4, 0.6, 1.65)))
+    val gaussian1 = DenseCanonicalGaussian(Matrix(1.5, 2), Matrix(2, 2, Array(1, 0.7, 0.3, 1.2)))
+    val gaussian2 = DenseCanonicalGaussian(Matrix(1.9, 2.6), Matrix(2, 2, Array(1.1, 0.4, 0.6, 1.65)))
 
     val newGaussian = (gaussian1 * gaussian2) / gaussian2
 
@@ -70,8 +70,8 @@ class CanonicalGaussianOpsTest {
   }
 
   @Test def divide_mvn {
-    val gaussian1 = CanonicalGaussian(Matrix(1.5, 2), Matrix(2, 2, Array(1, 0.7, 0.3, 1.2)))
-    val gaussian2 = CanonicalGaussian(Matrix(1.9, 2.6), Matrix(2, 2, Array(1.1, 0.4, 0.6, 1.65)))
+    val gaussian1 = DenseCanonicalGaussian(Matrix(1.5, 2), Matrix(2, 2, Array(1, 0.7, 0.3, 1.2)))
+    val gaussian2 = DenseCanonicalGaussian(Matrix(1.9, 2.6), Matrix(2, 2, Array(1.1, 0.4, 0.6, 1.65)))
 
     val newGaussian = (gaussian1 * gaussian2)
 
@@ -80,8 +80,8 @@ class CanonicalGaussianOpsTest {
   }
 
   @Test def divide_univariate {
-    val gaussian1 = CanonicalGaussian(1.5, 3.4)
-    val gaussian2 = CanonicalGaussian(1.9, 2.1)
+    val gaussian1 = DenseCanonicalGaussian(1.5, 3.4)
+    val gaussian2 = DenseCanonicalGaussian(1.9, 2.1)
 
     val newGaussian = (gaussian1 / gaussian2)
     val expectedGaussian = gaussian1.toGaussian / gaussian2.toGaussian

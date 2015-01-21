@@ -2,7 +2,8 @@ package dk.bayes.learn.lds
 
 import scala.math._
 import dk.bayes.model.factor.BivariateGaussianFactor
-import dk.bayes.math.gaussian.CanonicalGaussian
+import dk.bayes.math.gaussian.canonical.CanonicalGaussian
+import dk.bayes.math.gaussian.canonical.DenseCanonicalGaussian
 
 /**
  * Default implementation of GenericLDSMStep. It supports one dimensional linear dynamical system only, where both state and observations are 1-D real vectors.
@@ -15,7 +16,7 @@ object GenericLDSLearn extends LDSMStep {
    * M-step
    */
 
-  def newC(sStats: IndexedSeq[Tuple2[CanonicalGaussian, Double]]): Double = {
+  def newC(sStats: IndexedSeq[Tuple2[DenseCanonicalGaussian, Double]]): Double = {
 
     /**Sequence of observations. Tuple2(y * E[xGivenY], E[XX]), where X - prior mean, Y - observed value*/
     val expectations: Seq[Tuple2[Double, Double]] = sStats.map {
@@ -30,7 +31,7 @@ object GenericLDSLearn extends LDSMStep {
     yxSum / eXXSum
   }
 
-  def newR(sStats: IndexedSeq[Tuple2[CanonicalGaussian, Double]]): Double = {
+  def newR(sStats: IndexedSeq[Tuple2[DenseCanonicalGaussian, Double]]): Double = {
 
     val newC = this.newC(sStats)
 
@@ -41,7 +42,7 @@ object GenericLDSLearn extends LDSMStep {
 
   }
 
-  def newA(sStats: IndexedSeq[CanonicalGaussian]): Double = {
+  def newA(sStats: IndexedSeq[DenseCanonicalGaussian]): Double = {
     require(!sStats.isEmpty, "Sufficient statistics are empty")
 
     /**Sequences of expectations. Tuple2[E[XU],E[UU]], where X - current time slice, U - previous time slice */
@@ -58,7 +59,7 @@ object GenericLDSLearn extends LDSMStep {
     eXUSum / eUuSum
   }
 
-  def newQ(sStats: IndexedSeq[CanonicalGaussian]): Double = {
+  def newQ(sStats: IndexedSeq[DenseCanonicalGaussian]): Double = {
     require(!sStats.isEmpty, "Sufficient statistics are empty")
 
     val A = newA(sStats)
@@ -74,7 +75,7 @@ object GenericLDSLearn extends LDSMStep {
     Q
   }
 
-  def newPi(sStats: IndexedSeq[CanonicalGaussian]): Double = {
+  def newPi(sStats: IndexedSeq[DenseCanonicalGaussian]): Double = {
     require(!sStats.isEmpty, "Sufficient statistics are empty")
     sStats.map(s => s.m).sum / sStats.size
   }
@@ -82,7 +83,7 @@ object GenericLDSLearn extends LDSMStep {
   /**
    *  = E[x^2] - E[x]^2
    */
-  def newV(sStats: IndexedSeq[CanonicalGaussian]): Double = {
+  def newV(sStats: IndexedSeq[DenseCanonicalGaussian]): Double = {
     require(!sStats.isEmpty, "Sufficient statistics are empty")
 
     //computing E[xx]

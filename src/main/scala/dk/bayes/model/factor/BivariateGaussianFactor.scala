@@ -1,10 +1,11 @@
 package dk.bayes.model.factor
 
 import dk.bayes.math.linear._
-import dk.bayes.math.gaussian.CanonicalGaussian
+import dk.bayes.math.gaussian.canonical.CanonicalGaussian
 import dk.bayes.model.factor.api.DoubleFactor
 import dk.bayes.model.factor.api.Factor
 import dk.bayes.model.factor.api.SingleFactor
+import dk.bayes.math.gaussian.canonical.DenseCanonicalGaussian
 
 /**
  * This class represents bivariate Gaussian Factor.
@@ -25,10 +26,10 @@ case class BivariateGaussianFactor(parentVarId: Int, varId: Int, mean: Matrix, v
         val gaussianFactor = factor.asInstanceOf[GaussianFactor]
         require(gaussianFactor.varId == parentVarId || gaussianFactor.varId == varId, "Incorrect gaussian variable id.")
 
-        val canonGaussian = CanonicalGaussian(mean, variance)
+        val canonGaussian = DenseCanonicalGaussian(mean, variance)
 
-        val extendedGaussianFactor = if (gaussianFactor.varId == parentVarId) CanonicalGaussian(gaussianFactor.m, gaussianFactor.v).extend(2, 0)
-        else CanonicalGaussian(gaussianFactor.m, gaussianFactor.v).extend(2, 1)
+        val extendedGaussianFactor = if (gaussianFactor.varId == parentVarId) DenseCanonicalGaussian(gaussianFactor.m, gaussianFactor.v).extend(2, 0)
+        else DenseCanonicalGaussian(gaussianFactor.m, gaussianFactor.v).extend(2, 1)
         
         val productGaussian = canonGaussian * extendedGaussianFactor
         val bivariateGaussianFactor = BivariateGaussianFactor(parentVarId, varId, productGaussian.mean, productGaussian.variance)

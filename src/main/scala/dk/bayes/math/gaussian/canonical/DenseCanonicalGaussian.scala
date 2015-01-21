@@ -1,4 +1,4 @@
-package dk.bayes.math.gaussian
+package dk.bayes.math.gaussian.canonical
 
 import scala.math._
 import org.ejml.simple.SimpleMatrix
@@ -7,6 +7,7 @@ import org.ejml.ops.CommonOps
 import scala.collection.JavaConversions._
 import dk.bayes.math.linear._
 import dk.bayes.math.numericops._
+import dk.bayes.math.gaussian.Gaussian
 
 /**
  * Canonical Gaussian following:
@@ -20,10 +21,7 @@ import dk.bayes.math.numericops._
  * @param h See Canonical Gaussian definition
  * @param g See Canonical Gaussian definition
  */
-case class CanonicalGaussian(k: Matrix, h: Matrix, g: Double) extends NumericOps[CanonicalGaussian] {
-
-  def getThis() = this
-
+case class DenseCanonicalGaussian(k: Matrix, h: Matrix, g: Double) extends CanonicalGaussian with NumericOps[DenseCanonicalGaussian] {
   private lazy val kinv = k.inv
 
   lazy val mean = {
@@ -49,7 +47,7 @@ case class CanonicalGaussian(k: Matrix, h: Matrix, g: Double) extends NumericOps
   /**
    * Returns gaussian integral marginalising out the variable at a given index
    */
-  def marginalise(varIndex: Int): CanonicalGaussian = {
+  def marginalise(varIndex: Int): DenseCanonicalGaussian = {
 
     val kXX = k.filterNot(varIndex, varIndex)
     val kXY = k.column(varIndex).filterNotRow(varIndex)
@@ -60,22 +58,22 @@ case class CanonicalGaussian(k: Matrix, h: Matrix, g: Double) extends NumericOps
     val newH = hX - kXY * (1d / k(varIndex, varIndex)) * h(varIndex)
     val newG = g + 0.5 * (log(abs(2 * Pi * (1d / k(varIndex, varIndex)))) + h(varIndex) * (1d / k(varIndex, varIndex)) * h(varIndex))
 
-    CanonicalGaussian(newK, newH, newG)
+    DenseCanonicalGaussian(newK, newH, newG)
   }
 
   /**
    * Marginalise out all variables except of the variable at a given index
    */
-  def marginal(varIndex: Int): CanonicalGaussian = {
+  def marginal(varIndex: Int): DenseCanonicalGaussian = {
     val marginalMean = mean(varIndex)
     val marginalVariance = variance(varIndex, varIndex)
-    CanonicalGaussian(marginalMean, marginalVariance)
+    DenseCanonicalGaussian(marginalMean, marginalVariance)
   }
 
   /**
    * Marginalise out all variables except of the variables at a given indexes
    */
-  def marginal(varIndex1: Int, varIndex2: Int): CanonicalGaussian = {
+  def marginal(varIndex1: Int, varIndex2: Int): DenseCanonicalGaussian = {
 
     val marginalMean = Matrix(mean(varIndex1), mean(varIndex2))
 
@@ -85,14 +83,14 @@ case class CanonicalGaussian(k: Matrix, h: Matrix, g: Double) extends NumericOps
     val v22 = variance(varIndex2, varIndex2)
     val marginalVariance = Matrix(2, 2, Array(v11, v12, v21, v22))
 
-    val marginal = CanonicalGaussian(marginalMean, marginalVariance)
+    val marginal = DenseCanonicalGaussian(marginalMean, marginalVariance)
     marginal
   }
 
   /**
    * Marginalise out all variables except of the variables at given indexes
    */
-  def marginal(varIndexes: Int*): CanonicalGaussian = {
+  def marginal(varIndexes: Int*): DenseCanonicalGaussian = {
 
     varIndexes match {
       case Seq(varIndex)             => marginal(varIndex)
@@ -109,7 +107,7 @@ case class CanonicalGaussian(k: Matrix, h: Matrix, g: Double) extends NumericOps
   /**
    * Returns canonical gaussian given evidence.
    */
-  def withEvidence(varIndex: Int, varValue: Double): CanonicalGaussian = {
+  def withEvidence(varIndex: Int, varValue: Double): DenseCanonicalGaussian = {
 
     val kXY = k.column(varIndex).filterNotRow(varIndex)
     val hX = h.filterNotRow(varIndex)
@@ -118,7 +116,7 @@ case class CanonicalGaussian(k: Matrix, h: Matrix, g: Double) extends NumericOps
     val newH = hX - kXY * varValue
     val newG = g + h(varIndex, 0) * varValue - 0.5 * varValue * k(varIndex, varIndex) * varValue
 
-    CanonicalGaussian(newK, newH, newG)
+    DenseCanonicalGaussian(newK, newH, newG)
   }
 
   def toGaussian(): Gaussian = {
@@ -147,27 +145,27 @@ case class CanonicalGaussian(k: Matrix, h: Matrix, g: Double) extends NumericOps
    * @param size The size of extended Gaussian
    * @param startIndex The position of this Gaussian in the new extended Gaussian
    */
-  def extend(size: Int, startIndex: Int): CanonicalGaussian = CanonicalGaussianOps.extend(this, size, startIndex)
+  def extend(size: Int, startIndex: Int): DenseCanonicalGaussian = DenseCanonicalGaussianOps.extend(this, size, startIndex)
 
 }
 
-object CanonicalGaussian extends CanonicalGaussianNumericOps {
+object DenseCanonicalGaussian extends DenseCanonicalGaussianNumericOps {
 
   /**
    * @param m Mean
    * @param v Variance
    */
-  def apply(m: Double, v: Double): CanonicalGaussian = apply(Matrix(m), Matrix(v))
+  def apply(m: Double, v: Double): DenseCanonicalGaussian = apply(Matrix(m), Matrix(v))
 
   /**
    * @param m Mean
    * @param v Variance
    */
-  def apply(m: Matrix, v: Matrix): CanonicalGaussian = {
+  def apply(m: Matrix, v: Matrix): DenseCanonicalGaussian = {
     val k = v.inv
     val h = k * m
     val g = -0.5 * m.transpose * k * m - log(pow(2d * Pi, m.numRows.toDouble / 2d) * pow(v.det, 0.5))
-    new CanonicalGaussian(k, h, g(0))
+    new DenseCanonicalGaussian(k, h, g(0))
   }
 
   /**
@@ -177,7 +175,7 @@ object CanonicalGaussian extends CanonicalGaussianNumericOps {
    * @param b Term of m = (ax+b)
    * @param v Variance
    */
-  def apply(a: Matrix, b: Double, v: Double): CanonicalGaussian = apply(a, Matrix(b), Matrix(v))
+  def apply(a: Matrix, b: Double, v: Double): DenseCanonicalGaussian = apply(a, Matrix(b), Matrix(v))
 
   /**
    * Creates Canonical Gaussian from Linear Gaussian N(a * x + b, v)
@@ -186,7 +184,7 @@ object CanonicalGaussian extends CanonicalGaussianNumericOps {
    * @param b Term of m = (ax+b)
    * @param v Variance
    */
-  def apply(a: Matrix, b: Matrix, v: Matrix): CanonicalGaussian = {
+  def apply(a: Matrix, b: Matrix, v: Matrix): DenseCanonicalGaussian = {
 
     val vInv = v.inv
 
@@ -205,7 +203,7 @@ object CanonicalGaussian extends CanonicalGaussianNumericOps {
 
     val g = -0.5 * b.transpose * v.inv * b + log(C(v))
 
-    new CanonicalGaussian(k, h, g(0))
+    new DenseCanonicalGaussian(k, h, g(0))
   }
 
   private def C(v: Matrix): Double = {
@@ -213,6 +211,6 @@ object CanonicalGaussian extends CanonicalGaussianNumericOps {
     pow(2 * Pi, -n / 2) * pow(v.det, -0.5)
   }
 
-  implicit def toGaussian(mvnGaussian: CanonicalGaussian): Gaussian = mvnGaussian.toGaussian
+  implicit def toGaussian(mvnGaussian: DenseCanonicalGaussian): Gaussian = mvnGaussian.toGaussian
 
 }

@@ -8,10 +8,8 @@ import dk.bayes.math.gaussian.LinearGaussian
 import scala.math._
 import dk.bayes.math.gaussian.LinearGaussian
 import dk.bayes.math.gaussian.LinearGaussian
-import dk.bayes.math.gaussian.CanonicalGaussian
-import dk.bayes.math.gaussian.CanonicalGaussian
+import dk.bayes.math.gaussian.canonical.CanonicalGaussian
 import dk.bayes.math.linear._
-import dk.bayes.math.gaussian.CanonicalGaussian$
 
 /**
  * This is a test for a skill update with TrueSkill rating system in a two-person game, like Tennis.

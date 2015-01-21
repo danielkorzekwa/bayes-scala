@@ -4,7 +4,7 @@ import org.junit._
 import Assert._
 import dk.bayes.math.gaussian.LinearGaussian
 import scala.math._
-import dk.bayes.math.gaussian.CanonicalGaussian
+import dk.bayes.math.gaussian.canonical.CanonicalGaussian
 import dk.bayes.math.linear.Matrix
 import dk.bayes.dsl.variable.Gaussian
 

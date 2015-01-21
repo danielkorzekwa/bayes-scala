@@ -2,13 +2,14 @@ package dk.bayes.dsl.variable.gaussian.multivariate
 
 import dk.bayes.dsl.InferEngine
 import dk.bayes.math.linear.Matrix
-import dk.bayes.math.gaussian.CanonicalGaussian
+import dk.bayes.math.gaussian.canonical.CanonicalGaussian
 import scala.math._
 import dk.bayes.infer.epnaivebayes.inferPosterior
 import scala.reflect.runtime.universe._
 import scala.reflect.ClassTag
 import dk.bayes.dsl.factor.DoubleFactor
 import dk.bayes.infer.epnaivebayes.inferPosterior
+import dk.bayes.math.gaussian.canonical.DenseCanonicalGaussian
 
 object inferMultivariateGaussianEPNaiveBayes extends InferEngine[MultivariateGaussian, MultivariateGaussian] {
 
@@ -23,7 +24,7 @@ object inferMultivariateGaussianEPNaiveBayes extends InferEngine[MultivariateGau
   def infer(x: MultivariateGaussian): MultivariateGaussian = {
 
     val prior = x
-    val likelihoods = x.getChildren.map(c => c.asInstanceOf[DoubleFactor[CanonicalGaussian, _]])
+    val likelihoods = x.getChildren.map(c => c.asInstanceOf[DoubleFactor[DenseCanonicalGaussian, _]])
 
     val posterior = inferPosterior(prior, likelihoods, paralllelMessagePassing = true)
 

@@ -1,4 +1,4 @@
-package dk.bayes.math.gaussian
+package dk.bayes.math.gaussian.canonical
 
 import dk.bayes.math.linear._
 
@@ -7,24 +7,24 @@ import dk.bayes.math.linear._
  *
  * @author Daniel Korzekwa
  */
-object CanonicalGaussianOps {
+object DenseCanonicalGaussianOps {
 
-  def *(gaussian1: CanonicalGaussian, gaussian2: CanonicalGaussian): CanonicalGaussian = {
+  def *(gaussian1: DenseCanonicalGaussian, gaussian2: DenseCanonicalGaussian): DenseCanonicalGaussian = {
 
     val newK = gaussian1.k + gaussian2.k
     val newH = gaussian1.h + gaussian2.h
     val newG = gaussian1.g + gaussian2.g
 
-    CanonicalGaussian(newK, newH, newG)
+    DenseCanonicalGaussian(newK, newH, newG)
   }
 
-  def /(gaussian1: CanonicalGaussian, gaussian2: CanonicalGaussian): CanonicalGaussian = {
+  def /(gaussian1: DenseCanonicalGaussian, gaussian2: DenseCanonicalGaussian): DenseCanonicalGaussian = {
 
     val newK = gaussian1.k - gaussian2.k
     val newH = gaussian1.h - gaussian2.h
     val newG = gaussian1.g - gaussian2.g
 
-    CanonicalGaussian(newK, newH, newG)
+    DenseCanonicalGaussian(newK, newH, newG)
   }
 
   /**
@@ -35,7 +35,7 @@ object CanonicalGaussianOps {
    * @param size The size of extended Gaussian
    * @param startIndex The position of this Gaussian in the new extended Gaussian
    */
-  def extend(gaussian: CanonicalGaussian, size: Int, startIndex: Int): CanonicalGaussian = {
+  def extend(gaussian: DenseCanonicalGaussian, size: Int, startIndex: Int): DenseCanonicalGaussian = {
 
     val newK = extendedScopeK(size, startIndex, gaussian.k)
     val newH = extendedScopeH(size, startIndex, gaussian.h)

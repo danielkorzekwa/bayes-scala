@@ -1,17 +1,15 @@
 package dk.bayes.model.factor
 
-import dk.bayes.math.gaussian.CanonicalGaussian
-import dk.bayes.math.gaussian.CanonicalGaussian
 import dk.bayes.math.linear._
 import dk.bayes.math.gaussian.LinearGaussian
 import dk.bayes.math.gaussian.Gaussian
 import dk.bayes.model.factor.api.Factor
 import dk.bayes.model.factor.api.DoubleFactor
-import dk.bayes.math.gaussian.CanonicalGaussianOps
 import dk.bayes.math.linear._
 import dk.bayes.model.factor.api.SingleFactor
 import dk.bayes.math.linear._
-import dk.bayes.math.gaussian.CanonicalGaussian
+import dk.bayes.math.gaussian.canonical.CanonicalGaussian
+import dk.bayes.math.gaussian.canonical.DenseCanonicalGaussian
 
 /**
  * This class represents a factor for a Linear Gaussian Distribution. N(ax + b,v)
@@ -32,7 +30,7 @@ case class MvnLinearGaussianFactor(parentVarId: Int, varId: Int, a: Matrix, b: D
 
   def marginal(varId: Int): SingleFactor = varId match {
     case `parentVarId` =>
-      MvnGaussianFactor(varId, CanonicalGaussian(Matrix(a.size, 1), Matrix(a.size, a.size, (row: Int, col: Int) => Double.PositiveInfinity)))
+      MvnGaussianFactor(varId, DenseCanonicalGaussian(Matrix(a.size, 1), Matrix(a.size, a.size, (row: Int, col: Int) => Double.PositiveInfinity)))
     case `varId` =>
       GaussianFactor(varId, 0, Double.PositiveInfinity)
   }
@@ -42,8 +40,8 @@ case class MvnLinearGaussianFactor(parentVarId: Int, varId: Int, a: Matrix, b: D
   }
   private def outgoingMessagesInternal(parentFactor: MvnGaussianFactor, childFactor: GaussianFactor): Tuple2[MvnGaussianFactor, GaussianFactor] = {
 
-    val linearCanonGaussian = CanonicalGaussian(a, b, v)
-    val childFactorCanon = CanonicalGaussian(childFactor.m, childFactor.v)
+    val linearCanonGaussian = DenseCanonicalGaussian(a, b, v)
+    val childFactorCanon = DenseCanonicalGaussian(childFactor.m, childFactor.v)
 
     val parentMsg = (linearCanonGaussian * childFactorCanon.extend(a.numCols + a.numRows, a.numCols)).marginalise(a.numCols)
     //  val childMsg = CanonicalGaussianOps.*(linearCanonGaussian.varIds, parentFactor.canonGaussian, linearCanonGaussian).marginal(a.size + 1).toGaussian

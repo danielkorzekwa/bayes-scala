@@ -1,13 +1,12 @@
 package dk.bayes.model.factor
 
-import dk.bayes.math.gaussian.CanonicalGaussian
-import dk.bayes.math.gaussian.CanonicalGaussian
+import dk.bayes.math.gaussian.canonical.CanonicalGaussian
 import dk.bayes.math.linear._
 import dk.bayes.math.gaussian.LinearGaussian
 import dk.bayes.math.gaussian.Gaussian
 import dk.bayes.model.factor.api.Factor
 import dk.bayes.model.factor.api.DoubleFactor
-import dk.bayes.math.gaussian.CanonicalGaussianOps
+import dk.bayes.math.gaussian.canonical._
 
 /**
  * This class represents a factor for a Linear Gaussian Distribution. N(ax + b,v)
@@ -33,8 +32,8 @@ case class LinearGaussianFactor(parentVarId: Int, varId: Int, a: Double, b: Doub
 
     val parentMsg = evidence match {
       case Some(evidence) => {
-        val linearCanonGaussian = CanonicalGaussian(Matrix(a), b, v)
-        val msg = (linearCanonGaussian * CanonicalGaussian(childFactor.m, childFactor.v).extend(2, 1)).withEvidence(1, evidence)
+        val linearCanonGaussian = DenseCanonicalGaussian(Matrix(a), b, v)
+        val msg = (linearCanonGaussian * DenseCanonicalGaussian(childFactor.m, childFactor.v).extend(2, 1)).withEvidence(1, evidence)
 
         msg.toGaussian
       }
@@ -42,8 +41,8 @@ case class LinearGaussianFactor(parentVarId: Int, varId: Int, a: Double, b: Doub
         if (!childFactor.m.isNaN && !childFactor.v.isPosInfinity) {
           if (a == 1 && b == 0) Gaussian(childFactor.m, childFactor.v + v)
           else {
-            val linearCanonGaussian = CanonicalGaussian(Matrix(a), b, v)
-            val msg = (linearCanonGaussian * CanonicalGaussian(childFactor.m, childFactor.v).extend(2, 1)).marginalise(varId).toGaussian()
+            val linearCanonGaussian = DenseCanonicalGaussian(Matrix(a), b, v)
+            val msg = (linearCanonGaussian * DenseCanonicalGaussian(childFactor.m, childFactor.v).extend(2, 1)).marginalise(varId).toGaussian()
             msg
           }
         } else Gaussian(0, Double.PositiveInfinity)
@@ -66,10 +65,10 @@ case class LinearGaussianFactor(parentVarId: Int, varId: Int, a: Double, b: Doub
         val gaussianFactor = factor.asInstanceOf[GaussianFactor]
         require(gaussianFactor.varId == parentVarId || gaussianFactor.varId == varId, "Incorrect gaussian variable id")
 
-        val linearCanonGaussian = CanonicalGaussian(Matrix(a), b, v)
+        val linearCanonGaussian = DenseCanonicalGaussian(Matrix(a), b, v)
 
-        val extendedGaussianFactor = if (gaussianFactor.varId == parentVarId) CanonicalGaussian(gaussianFactor.m, gaussianFactor.v).extend(2, 0)
-        else CanonicalGaussian(gaussianFactor.m, gaussianFactor.v).extend(2, 1)
+        val extendedGaussianFactor = if (gaussianFactor.varId == parentVarId) DenseCanonicalGaussian(gaussianFactor.m, gaussianFactor.v).extend(2, 0)
+        else DenseCanonicalGaussian(gaussianFactor.m, gaussianFactor.v).extend(2, 1)
 
         val productGaussian = linearCanonGaussian * extendedGaussianFactor
         val bivariateGaussianFactor = BivariateGaussianFactor(parentVarId, varId, productGaussian.mean, productGaussian.variance)

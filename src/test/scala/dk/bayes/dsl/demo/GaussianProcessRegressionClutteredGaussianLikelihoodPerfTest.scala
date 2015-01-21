@@ -9,6 +9,22 @@ import scala.math._
 import dk.bayes.dsl.infer
 import dk.bayes.testutil.AssertUtil._
 import dk.bayes.dsl.demo.variables.ClutteredGaussian
+import dk.bayes.math.numericops.NumericOps
+import dk.bayes.math.numericops.multOp
+import dk.bayes.dsl.factor.SingleFactor
+import dk.bayes.math.gaussian.canonical.DenseCanonicalGaussian
+import dk.bayes.dsl.factor.DoubleFactor
+import dk.bayes.infer.epnaivebayes.inferPosterior
+import dk.bayes.math.gaussian.canonical.SparseCanonicalGaussian
+import dk.bayes.math.gaussian.canonical.CanonicalGaussian
+import dk.bayes.math.numericops._
+import dk.bayes.math.gaussian.canonical.SparseCanonicalGaussian
+import dk.bayes.math.gaussian.canonical.SparseCanonicalGaussian
+import dk.bayes.math.gaussian.canonical.SparseCanonicalGaussian
+import dk.bayes.math.gaussian.canonical.SparseCanonicalGaussian
+import dk.bayes.math.gaussian.canonical.SparseCanonicalGaussian
+import dk.bayes.math.gaussian.canonical.SparseCanonicalGaussian
+
 class GaussianProcessRegressionClutteredGaussianLikelihoodPerfTest {
 
   @Test def test {

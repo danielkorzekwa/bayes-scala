@@ -6,7 +6,7 @@ import dk.bayes.dsl.variable.gaussian._
 
 trait UnivariateGaussianFactor extends SingleFactor[Gaussian] {
 
-  def getVar():UnivariateGaussian
-  
-   val factorMsgDown: Gaussian = Gaussian(getVar().m,getVar().v)
+  this: UnivariateGaussian =>
+
+  val factorMsgDown: Gaussian = Gaussian(this.m, this.v)
 }

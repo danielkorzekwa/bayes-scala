@@ -3,10 +3,11 @@ package dk.bayes.model.factor
 import dk.bayes.model.factor.api.SingleFactor
 import dk.bayes.math.linear._
 import dk.bayes.model.factor.api.Factor
-import dk.bayes.math.gaussian.CanonicalGaussian
+import dk.bayes.math.gaussian.canonical.CanonicalGaussian
 import scala.math._
+import dk.bayes.math.gaussian.canonical.DenseCanonicalGaussian
 
-case class MvnGaussianFactor(varId: Int, canonGaussian: CanonicalGaussian) extends SingleFactor {
+case class MvnGaussianFactor(varId: Int, canonGaussian: DenseCanonicalGaussian) extends SingleFactor {
 
   def getVariableId(): Int = varId
 

@@ -1,11 +1,13 @@
 package dk.bayes.dsl.variable.gaussian.multivariate
 
 import dk.bayes.dsl.factor.SingleFactor
-import dk.bayes.math.gaussian.CanonicalGaussian
+import dk.bayes.math.gaussian.canonical.CanonicalGaussian
+import dk.bayes.math.gaussian.Gaussian
+import dk.bayes.math.gaussian.canonical.DenseCanonicalGaussian
 
- trait MultivariateGaussianFactor extends SingleFactor[CanonicalGaussian] {
+trait MultivariateGaussianFactor extends SingleFactor[DenseCanonicalGaussian] {
 
-  def getThis():MultivariateGaussian
-  
-  val factorMsgDown: CanonicalGaussian = CanonicalGaussian(getThis().m,getThis().v)
+  this: MultivariateGaussian =>
+
+  val factorMsgDown: DenseCanonicalGaussian = DenseCanonicalGaussian(this.m, this.v)
 }

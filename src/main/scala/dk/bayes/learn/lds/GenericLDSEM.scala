@@ -1,6 +1,6 @@
 package dk.bayes.learn.lds
 
-import dk.bayes.math.gaussian.CanonicalGaussian
+import dk.bayes.math.gaussian.canonical.CanonicalGaussian
 import dk.bayes.model.factor.LinearGaussianFactor
 import dk.bayes.model.factor.GaussianFactor
 import dk.bayes.model.factorgraph.GenericFactorGraph
@@ -10,6 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger
 import scala.annotation.tailrec
 import dk.bayes.math.gaussian.Gaussian
 import com.typesafe.scalalogging.slf4j.Logging
+import dk.bayes.math.gaussian.canonical.DenseCanonicalGaussian
 
 object GenericLDSEM extends LDSEM with Logging {
 
@@ -51,7 +52,7 @@ object GenericLDSEM extends LDSEM with Logging {
 
     val priorMeanMarginal = genericEP.marginal(priorMeanFactor.varId).asInstanceOf[GaussianFactor]
 
-    Stats(CanonicalGaussian(priorMeanMarginal.m, priorMeanMarginal.v), data)
+    Stats(DenseCanonicalGaussian(priorMeanMarginal.m, priorMeanMarginal.v), data)
   }
 
   /**
@@ -63,13 +64,13 @@ object GenericLDSEM extends LDSEM with Logging {
     val newPriorMean = GenericLDSLearn.newPi(priorMeanStats)
     val newPriorVariance = GenericLDSLearn.newV(priorMeanStats)
 
-    val emissionStats: IndexedSeq[Tuple2[CanonicalGaussian, Double]] = stats.flatMap(stat => stat.data.map(d => (stat.priorMean, d))).toIndexedSeq
+    val emissionStats: IndexedSeq[Tuple2[DenseCanonicalGaussian, Double]] = stats.flatMap(stat => stat.data.map(d => (stat.priorMean, d))).toIndexedSeq
     val newEmissionVariance = GenericLDSLearn.newR(emissionStats)
 
     (Gaussian(newPriorMean, newPriorVariance), newEmissionVariance)
   }
 
-  private case class Stats(priorMean: CanonicalGaussian, data: Array[Double])
+  private case class Stats(priorMean: DenseCanonicalGaussian, data: Array[Double])
 
 }
 

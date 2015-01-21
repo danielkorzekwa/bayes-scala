@@ -11,9 +11,7 @@ import dk.bayes.dsl.variable.Gaussian
  * @author Daniel Korzekwa
  */
 case class MultivariateGaussian(val m: Matrix, val v: Matrix) extends Gaussian with MultivariateGaussianFactor {
-  
-  def getThis() = this
-  
+   
   def getParents(): Seq[Variable] = Nil
 }
 

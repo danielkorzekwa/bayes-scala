@@ -10,8 +10,6 @@ import dk.bayes.dsl.variable.Gaussian
  * @author Daniel Korzekwa
  */
 case class UnivariateGaussian(val m: Double, val v: Double) extends Gaussian with UnivariateGaussianFactor {
-
-  def getVar() = this
   
   def getParents(): Seq[Variable] = Nil
 }

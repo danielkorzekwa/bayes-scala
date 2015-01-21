@@ -8,6 +8,8 @@ import breeze.stats.distributions.RandBasis
 import breeze.stats.distributions.ThreadLocalRandomGenerator
 import org.apache.commons.math3.random.MersenneTwister
 import dk.bayes.math.numericops.NumericOps
+import dk.bayes.math.gaussian.canonical.CanonicalGaussian
+import dk.bayes.math.gaussian.canonical.DenseCanonicalGaussian
 
 /**
  * Univariate Gaussian Distribution.
@@ -18,8 +20,6 @@ import dk.bayes.math.numericops.NumericOps
  * @param v Variance
  */
 case class Gaussian(m: Double, v: Double) extends NumericOps[Gaussian] {
-
-  def getThis() = this
 
   require(!m.isNaN(), "Gaussian mean is NaN")
   require(!v.isNaN(), "Gaussian variance is NaN")
@@ -143,7 +143,7 @@ case class Gaussian(m: Double, v: Double) extends NumericOps[Gaussian] {
    * Converts Gaussian to Canonical Gaussian.
    *
    */
-  def toCanonical(): CanonicalGaussian = CanonicalGaussian(m, v)
+  def toCanonical(): DenseCanonicalGaussian = DenseCanonicalGaussian(m, v)
 }
 
 object Gaussian extends GaussianNumericOps {

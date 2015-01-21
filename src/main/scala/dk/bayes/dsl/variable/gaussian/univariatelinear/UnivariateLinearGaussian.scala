@@ -12,9 +12,6 @@ import dk.bayes.dsl.variable.Gaussian
  */
 class UnivariateLinearGaussian(val a: Matrix, val x: Seq[Gaussian], val b: Double, val v: Double, val yValue: Option[Double] = None) extends Gaussian
   with UnivariateLinearGaussianFactor {
-
-  val variable = this
-  def getVar(): UnivariateLinearGaussian = this
-
+  
   def getParents(): Seq[Variable] = x
 }
