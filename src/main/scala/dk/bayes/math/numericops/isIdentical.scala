@@ -1,6 +1,6 @@
 package dk.bayes.math.numericops
 
-trait isIdentical[A,B] {
+trait isIdentical[X] {
 
-  def apply(a:A,b:B,tolerance:Double):Boolean
+  def apply(x1:X,x2:X,tolerance:Double):Boolean
 }

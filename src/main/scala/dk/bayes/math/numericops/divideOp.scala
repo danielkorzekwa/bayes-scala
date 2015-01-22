@@ -1,6 +1,7 @@
 package dk.bayes.math.numericops
 
-trait divideOp[A,B] {
+trait divideOp[X] {
 
-  def apply(a:A,b:B):A
+  def apply(x1: X, x2: X): X
+
 }

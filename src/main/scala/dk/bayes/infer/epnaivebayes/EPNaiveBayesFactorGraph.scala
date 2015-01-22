@@ -5,6 +5,9 @@ import com.typesafe.scalalogging.slf4j.Logging
 import dk.bayes.dsl.factor.DoubleFactor
 import dk.bayes.dsl.factor.SingleFactor
 import dk.bayes.math.numericops._
+import dk.bayes.math.gaussian.canonical.DenseCanonicalGaussian
+import dk.bayes.math.gaussian.canonical.SparseCanonicalGaussian
+import dk.bayes.math.gaussian.canonical.SparseCanonicalGaussian
 
 /**
  * Computes posterior of X for a naive bayes net. Variables: X, Y1|X, Y2|X,...Yn|X
@@ -16,10 +19,10 @@ import dk.bayes.math.numericops._
  *
  * @author Daniel Korzekwa
  */
-case class EPNaiveBayesFactorGraph[X](prior: SingleFactor[X], likelihoods: Seq[DoubleFactor[X, _]], paralllelMessagePassing: Boolean = false)(implicit val multOp: multOp[X, X], val divideOp: divideOp[X, X], val isIdentical: isIdentical[X, X]) extends Logging {
+case class EPNaiveBayesFactorGraph[X](prior: SingleFactor[X], likelihoods: Seq[DoubleFactor[X, _]], paralllelMessagePassing: Boolean = false)(implicit val multOp: multOp[X], val divideOp: divideOp[X], val isIdentical: isIdentical[X]) extends Logging {
 
   private var msgsUp: Seq[X] = likelihoods.map(l => l.initFactorMsgUp)
-  private var posterior = msgsUp.foldLeft(prior.factorMsgDown)((posterior, msgUp) => multOp(posterior, msgUp))
+  private var posterior = multOp(prior.factorMsgDown, multOp(msgsUp: _*))
 
   def getPosterior(): X = posterior
 
@@ -53,7 +56,7 @@ case class EPNaiveBayesFactorGraph[X](prior: SingleFactor[X], likelihoods: Seq[D
         newMsgUp
     }
 
-    posterior = msgsUp.foldLeft(prior.factorMsgDown)((posterior, msgUp) => multOp(posterior, msgUp))
+     posterior = multOp(prior.factorMsgDown, multOp(msgsUp: _*))
   }
 
   private def sendMsgsSerial() {

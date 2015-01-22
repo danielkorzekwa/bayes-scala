@@ -4,8 +4,8 @@ trait NumericOps[THIS] {
 
   this: THIS =>
 
-  def *[THAT](that: THAT)(implicit multOp: multOp[THIS, THAT]): THIS = multOp(this, that)
+  def *(that: THIS)(implicit multOp: multOp[THIS]): THIS = multOp(this, that)
 
-  def /[THAT](that: THAT)(implicit divideOp: divideOp[THIS, THAT]): THIS = divideOp(this, that)
+  def /(that: THIS)(implicit divideOp: divideOp[THIS]): THIS = divideOp(this, that)
 
 }

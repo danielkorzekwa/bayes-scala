@@ -17,7 +17,7 @@ object inferPosterior {
 
   
   def apply[X, Y](prior: SingleFactor[X], likelihoods: Seq[DoubleFactor[X,_]], paralllelMessagePassing: Boolean = false)
-  (implicit multOp: multOp[X, X], divideOp: divideOp[X, X], isIdentical: isIdentical[X, X]): X = {
+  (implicit multOp: multOp[X], divideOp: divideOp[X], isIdentical: isIdentical[X]): X = {
 
     val factorGraph = EPNaiveBayesFactorGraph(prior,likelihoods, paralllelMessagePassing)
     factorGraph.calibrate(100, 1e-5)

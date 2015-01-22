@@ -10,7 +10,17 @@ trait GaussianNumericOps {
   /**
    * P.A. Bromiley. Products and Convolutions of Gaussian Distributions, 2003
    */
-  implicit val multOp = new multOp[Gaussian, Gaussian] {
+  implicit val multOp = new multOp[Gaussian] {
+
+    def apply(a: Gaussian*): Gaussian = {
+
+      a match {
+        case Seq(a, b) => apply(a, b)
+        case a         => a.reduceLeft((total, b) => apply(total, b))
+      }
+
+    }
+
     def apply(a: Gaussian, b: Gaussian): Gaussian = {
 
       val product =
@@ -29,7 +39,7 @@ trait GaussianNumericOps {
   /**
    * Thomas Minka. EP: A quick reference, 2008
    */
-  implicit val divideOp = new divideOp[Gaussian, Gaussian] {
+  implicit val divideOp = new divideOp[Gaussian] {
     def apply(a: Gaussian, b: Gaussian): Gaussian = {
       if (a.v == Double.PositiveInfinity || b.v == Double.PositiveInfinity) a
       else {
@@ -41,7 +51,7 @@ trait GaussianNumericOps {
     }
   }
 
-  implicit val isIdentical = new isIdentical[Gaussian, Gaussian] {
+  implicit val isIdentical = new isIdentical[Gaussian] {
     def apply(x1: Gaussian, x2: Gaussian, tolerance: Double): Boolean = {
       abs(x1.m - x2.m) < tolerance &&
         abs(x1.v - x2.v) < tolerance &&

@@ -29,7 +29,7 @@ class GaussianProcessRegressionClutteredGaussianLikelihoodPerfTest {
 
   @Test def test {
 
-    val n = 200
+    val n = 400
 
     val fMean = Matrix.zeros(n, 1)
 

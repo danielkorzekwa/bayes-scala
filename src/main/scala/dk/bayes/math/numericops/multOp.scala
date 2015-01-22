@@ -1,5 +1,7 @@
 package dk.bayes.math.numericops
 
-trait multOp[A, B] {
-  def apply(a: A, b: B):A
+trait multOp[X] {
+
+  def apply(x1: X, x2: X): X
+  def apply(x: X*): X
 }
