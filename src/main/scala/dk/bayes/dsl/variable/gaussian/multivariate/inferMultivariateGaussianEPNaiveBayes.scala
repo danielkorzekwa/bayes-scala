@@ -24,9 +24,9 @@ object inferMultivariateGaussianEPNaiveBayes extends InferEngine[MultivariateGau
   def infer(x: MultivariateGaussian): MultivariateGaussian = {
 
     val prior = x
-    val likelihoods = x.getChildren.map(c => c.asInstanceOf[DoubleFactor[DenseCanonicalGaussian, _]])
+    val likelihoods = x.getChildren.map(c => c.asInstanceOf[DoubleFactor[CanonicalGaussian, _]])
 
-    val posterior = inferPosterior(prior, likelihoods, paralllelMessagePassing = true)
+    val posterior = inferPosterior(prior, likelihoods, paralllelMessagePassing = true).asInstanceOf[DenseCanonicalGaussian]
 
     MultivariateGaussian(posterior.mean, posterior.variance)
   }
