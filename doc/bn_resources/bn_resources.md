@@ -67,6 +67,11 @@ Exponential Family
 * [David M. Blei. Exponential Families](http://www.cs.princeton.edu/courses/archive/fall11/cos597C/lectures/exponential-families.pdf)
 * [Introduction to Gaussian distribution and Exponential family](http://enpub.fulton.asu.edu/cseml/summer07/slides/Ch2_Supplemental.pdf)
 
+Parameters learning
+-------------------
+* Optimizing hyperparams with hyperopt - http://fastml.com/optimizing-hyperparams-with-hyperopt/
+* Hyperparameter search, Bayesian optimization and related topics - http://nlpers.blogspot.com/2014/10/hyperparameter-search-bayesian.html
+
 Others
 ------
 
@@ -76,3 +81,6 @@ Others
 * Approximate Marginals in Latent Gaussian Models - http://jmlr.csail.mit.edu/papers/volume12/cseke11a/cseke11a.pdf
 * Dynamic Bayesian Networks Representation, Inference and Learning - http://cdn.preterhuman.net/texts/science_and_technology/artificial_intelligence/Dynamic%20Bayesian%20Networks%20Representation,%20Inference%20And%20Learning%20-%20Kevin%20Patrick%20Murphy.pdf
 * Conjugate Bayesian analysis of the Gaussian distribution - http://www.cs.ubc.ca/~murphyk/Papers/bayesGauss.pdf
+* Matrix cookbook - http://www.mit.edu/~wingated/stuff_i_use/matrix_cookbook.pdf
+* Kernel cookbook - http://mlg.eng.cam.ac.uk/duvenaud/cookbook/index.html
+* Visualizing Data using t-SNE - http://lvdmaaten.github.io/publications/papers/JMLR_2008.pdf

@@ -1,14 +1,12 @@
-package dk.bayes.learn.gp
+package dk.bayes.infer.gp.gpr
 
 import org.junit._
-import Assert._
+import org.junit.Assert._
 import breeze.linalg.DenseVector
-import breeze.optimize.DiffFunction
 import breeze.linalg._
 import breeze.optimize.LBFGS
 import dk.bayes.math.linear._
 import scala.math._
-import breeze.optimize.ApproximateGradientFunction
 
 /**
  * Learning gpml following http://www.gaussianprocess.org/gpml/code/matlab/doc/index.html regression example

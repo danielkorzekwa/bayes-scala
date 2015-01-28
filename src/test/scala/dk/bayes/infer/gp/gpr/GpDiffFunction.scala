@@ -1,14 +1,12 @@
-package dk.bayes.learn.gp
+package dk.bayes.infer.gp.gpr
 
 import breeze.optimize.DiffFunction
 import breeze.linalg.DenseVector
 import dk.bayes.math.linear._
 import breeze.linalg._
-import dk.bayes.infer.gp.cov.CovFunc
 import dk.bayes.infer.gp.cov.CovSEiso
 import scala.math._
 import dk.bayes.math.linear.Matrix
-import dk.bayes.infer.gp.GenericGPRegression
 
 case class GpDiffFunction(x: Matrix, y: Matrix) extends DiffFunction[DenseVector[Double]] {
 

@@ -1,4 +1,4 @@
-package dk.bayes.infer.gp
+package dk.bayes.infer.gp.gpr
 
 import dk.bayes.math.linear._
 

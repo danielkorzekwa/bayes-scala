@@ -1,4 +1,4 @@
-package dk.bayes.infer.gp
+package dk.bayes.infer.gp.gpr
 
 import org.junit._
 import Assert._

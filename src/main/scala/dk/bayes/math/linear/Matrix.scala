@@ -59,6 +59,7 @@ case class Matrix(matrix: SimpleMatrix) {
   def extractRow(rowIndex: Int) = Matrix(this.matrix.extractVector(true, rowIndex))
   def extractColumn(colIndex: Int) = Matrix(this.matrix.extractVector(false, colIndex))
 
+  def trace():Double = this.matrix.trace()
   /**
    * Returns svd [U,W,V, rank] matrix decomposition.
    */
