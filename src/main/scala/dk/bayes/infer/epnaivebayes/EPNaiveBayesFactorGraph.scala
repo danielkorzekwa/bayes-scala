@@ -8,6 +8,7 @@ import dk.bayes.math.numericops._
 import dk.bayes.math.gaussian.canonical.DenseCanonicalGaussian
 import dk.bayes.math.gaussian.canonical.SparseCanonicalGaussian
 import dk.bayes.math.gaussian.canonical.SparseCanonicalGaussian
+import dk.bayes.math.gaussian.Gaussian
 
 /**
  * Computes posterior of X for a naive bayes net. Variables: X, Y1|X, Y2|X,...Yn|X
@@ -26,12 +27,12 @@ case class EPNaiveBayesFactorGraph[X](prior: SingleFactor[X], likelihoods: Seq[D
 
   def getPosterior(): X = posterior
 
-  def calibrate(maxIter: Int = 100, threshold: Double = 1e-4) {
+  def calibrate(maxIter: Int = 100, threshold: Double = 1e-6) {
 
     @tailrec
     def calibrateIter(currPosterior: X, iterNum: Int) {
-      if (iterNum >= maxIter) {
-        logger.warn(s"Factor graph did not converge in less than ${maxIter} iterations")
+      if (iterNum >= maxIter) {      
+        logger.warn(s"Factor graph did not converge in less than ${maxIter} iterations. Prior=%s, Posterior=%s".format(prior, posterior))
         return
       }
       if (paralllelMessagePassing) sendMsgsParallel() else sendMsgsSerial()
@@ -56,7 +57,7 @@ case class EPNaiveBayesFactorGraph[X](prior: SingleFactor[X], likelihoods: Seq[D
         newMsgUp
     }
 
-     posterior = multOp(prior.factorMsgDown, multOp(msgsUp: _*))
+    posterior = multOp(prior.factorMsgDown, multOp(msgsUp: _*))
   }
 
   private def sendMsgsSerial() {

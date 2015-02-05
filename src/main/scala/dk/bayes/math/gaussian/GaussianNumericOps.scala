@@ -53,9 +53,11 @@ trait GaussianNumericOps {
 
   implicit val isIdentical = new isIdentical[Gaussian] {
     def apply(x1: Gaussian, x2: Gaussian, tolerance: Double): Boolean = {
-      abs(x1.m - x2.m) < tolerance &&
+      val theSame = abs(x1.m - x2.m) < tolerance &&
         abs(x1.v - x2.v) < tolerance &&
         x1.v > 0 && x2.v > 0
+        
+        theSame
     }
   }
 

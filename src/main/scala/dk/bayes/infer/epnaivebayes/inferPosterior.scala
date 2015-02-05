@@ -16,11 +16,11 @@ import dk.bayes.math.numericops._
 object inferPosterior {
 
   
-  def apply[X, Y](prior: SingleFactor[X], likelihoods: Seq[DoubleFactor[X,_]], paralllelMessagePassing: Boolean = false)
+  def apply[X, Y](prior: SingleFactor[X], likelihoods: Seq[DoubleFactor[X,_]], paralllelMessagePassing: Boolean = false,maxIter: Int = 100, threshold: Double = 1e-6)
   (implicit multOp: multOp[X], divideOp: divideOp[X], isIdentical: isIdentical[X]): X = {
 
     val factorGraph = EPNaiveBayesFactorGraph(prior,likelihoods, paralllelMessagePassing)
-    factorGraph.calibrate(100, 1e-5)
+    factorGraph.calibrate(maxIter,threshold)
 
     val posterior = factorGraph.getPosterior()
     posterior

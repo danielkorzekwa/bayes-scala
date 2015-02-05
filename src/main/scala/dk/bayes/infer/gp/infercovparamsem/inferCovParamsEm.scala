@@ -24,6 +24,7 @@ object inferCovParamsEm extends Logging {
    * @param eStep (params) => fPosterior
    * @param calcFPriorVar (params) => f prior variance
    * @param calcFPriorVarD (params => derivatives of f prior variance with respect to hyper parameters
+   * @param currentIterParams Learned parameters at the current iteration
    */
   def apply(initialParams: Array[Double],
             eStep: (Array[Double]) => MultivariateGaussian, calcFPriorVar: (Array[Double]) => Matrix, calcFPriorVarD: (Array[Double]) => Array[Matrix],
@@ -37,14 +38,15 @@ object inferCovParamsEm extends Logging {
         return currParams
       }
 
-      logger.info("Current params: " + currParams.toList)
-
       val fPosterior = eStep(currParams)
 
       val newParams = mStep(fPosterior, currParams, calcFPriorVar, calcFPriorVarD)
+      logger.info("Iter=%d, New params: %s".format(currIter, currParams.toList))
 
       if (isIdentical(newParams, currParams, tolerance)) return newParams else emIter(currIter + 1, newParams)
     }
+
+    logger.info("Initial params: %s".format(initialParams.toList))
 
     val finalParams = emIter(currIter = 0, initialParams)
 

@@ -9,6 +9,7 @@ import dk.bayes.math.gaussian.MultivariateGaussian
 import dk.bayes.infer.gp.cov.CovSEiso
 import dk.bayes.dsl.variable.Gaussian
 import dk.bayes.dsl.infer
+import dk.bayes.infer.gp.gpr.GenericGPRegression
 
 /**
  * Learning Gaussian Process covariance parameters by maximising variational lower bound:
@@ -51,6 +52,12 @@ class inferCovParamsEmTest extends Logging {
     val yVar = Gaussian(fVar, likVarMatrix, yValue = y)
 
     val fPosterior = infer(fVar)
+
+    //compute and print log likelihood for a given values of parameters
+    val Array(logSf, logEll) = params
+    val covFunc = CovSEiso(logSf, logEll)
+    val loglik = GenericGPRegression(x, y, covFunc, logLikStdDev).loglik()
+    logger.info("Loglik=%.2f".format(loglik))
 
     MultivariateGaussian(fPosterior.m, fPosterior.v)
   }

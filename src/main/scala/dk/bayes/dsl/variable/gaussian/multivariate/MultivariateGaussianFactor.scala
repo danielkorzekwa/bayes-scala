@@ -9,5 +9,5 @@ trait MultivariateGaussianFactor extends SingleFactor[DenseCanonicalGaussian] {
 
   this: MultivariateGaussian =>
 
-  val factorMsgDown: DenseCanonicalGaussian = DenseCanonicalGaussian(this.m, this.v)
+  def factorMsgDown(): DenseCanonicalGaussian = DenseCanonicalGaussian(this.m, this.v)
 }

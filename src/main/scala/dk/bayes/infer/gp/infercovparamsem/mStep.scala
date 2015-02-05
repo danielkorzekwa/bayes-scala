@@ -6,6 +6,8 @@ import breeze.optimize.DiffFunction
 import dk.bayes.math.linear.Matrix
 import breeze.optimize.LBFGS
 import scala.math._
+import breeze.linalg.logdet
+import breeze.linalg.DenseMatrix
 
 /**
  * Returns new values of f's covariance parameters, that maximise the value of variational lower bound
@@ -47,7 +49,7 @@ object mStep {
       val fPriorVarD = calcFPriorVarD(params.data)
 
       val f = -loglik(fPriorVar, fPriorVarInv)
-
+      
       //calculate partial derivatives
       val df = fPriorVarD.map(varD => -loglikD(fPriorVarInv, varD)).toArray
 
@@ -57,7 +59,10 @@ object mStep {
     /**
      * (http://mlg.eng.cam.ac.uk/zoubin/papers/ecml03.pdf, http://mlg.eng.cam.ac.uk/zoubin/papers/KimGha06-PAMI.pdf)
      */
-    private def loglik(fPriorVar: Matrix, fPriorVarInv: Matrix): Double = -0.5 * log(fPriorVar.det()) - 0.5 * (fPosterior.m.t * fPriorVar.inv * fPosterior.m)(0) - 0.5 * (fPriorVarInv * fPosterior.v).trace
+    private def loglik(fPriorVar: Matrix, fPriorVarInv: Matrix): Double = {
+      val logDet = logdet(new DenseMatrix(fPriorVar.numRows(),fPriorVar.numRows(),fPriorVar.toArray()))._2
+      -0.5 * logDet - 0.5 * (fPosterior.m.t * fPriorVar.inv * fPosterior.m)(0) - 0.5 * (fPriorVarInv * fPosterior.v).trace
+    }
 
     /**
      * @param covD element-wise matrix derivatives

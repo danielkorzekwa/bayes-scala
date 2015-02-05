@@ -83,10 +83,27 @@ object CanonicalGaussian {
   implicit val divideOp = new divideOp[CanonicalGaussian] {
     def apply(a: CanonicalGaussian, b: CanonicalGaussian): CanonicalGaussian = {
 
-      throw new UnsupportedOperationException("Not implemented yet")
+       val result = a match {
+        case a: DenseCanonicalGaussian => {
+          b match {
+            case b: DenseCanonicalGaussian  => a / b
+            case b: SparseCanonicalGaussian => denseDivideSparse(a, b)
+          }
+        }
+      }
+
+      result
     }
   }
 
+   private def denseDivideSparse(a: DenseCanonicalGaussian, b: SparseCanonicalGaussian): DenseCanonicalGaussian = {
+
+    val newK = a.k - Matrix(a.h.size, a.h.size, b.k.toDenseMatrix.data)
+    val newH = a.h - Matrix(b.h.toDenseVector.data)
+    val newG = a.g - b.g
+    new DenseCanonicalGaussian(newK, newH, newG)
+  }
+  
   implicit val isIdentical = new isIdentical[CanonicalGaussian] {
     def apply(x1: CanonicalGaussian, x2: CanonicalGaussian, tolerance: Double): Boolean = {
       val result = x1 match {

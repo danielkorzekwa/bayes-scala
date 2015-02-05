@@ -192,6 +192,11 @@ object Gaussian extends GaussianNumericOps {
    * Returns the value of cumulative distribution function of the standard normal distribution.
    */
   def stdCdf(x: Double): Double = standardNormal.cumulativeProbability(x)
+  
+   /**
+   * Returns the value of inverse cumulative distribution function of the standard normal distribution.
+   */
+  def stdInvCdf(x: Double): Double = standardNormal.inverseCumulativeProbability(x)
 
   /**
    * Projects histogram to Gaussian distribution by matching the mean and variance moments.
