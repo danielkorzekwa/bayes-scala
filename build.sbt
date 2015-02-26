@@ -16,7 +16,7 @@ lazy val root = (project in file(".")).
     libraryDependencies ++= Seq(
       "com.googlecode.efficient-java-matrix-library" % "ejml" % "0.20",
       "org.apache.commons" % "commons-math3" % "3.3",
-      "com.typesafe" %% "scalalogging-slf4j" % "1.0.1",
+      "com.typesafe.scala-logging" %% "scala-logging-slf4j" % "2.1.2",
       "org.scalanlp" %% "breeze" % "0.10",
       // test scoped
       "org.slf4j" % "slf4j-log4j12" % "1.7.2" % Test,

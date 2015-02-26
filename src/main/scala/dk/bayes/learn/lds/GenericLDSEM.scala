@@ -1,5 +1,6 @@
 package dk.bayes.learn.lds
 
+import com.typesafe.scalalogging.slf4j.LazyLogging
 import dk.bayes.math.gaussian.canonical.CanonicalGaussian
 import dk.bayes.model.factor.LinearGaussianFactor
 import dk.bayes.model.factor.GaussianFactor
@@ -9,10 +10,9 @@ import dk.bayes.infer.ep.calibrate.fb.ForwardBackwardEPCalibrate
 import java.util.concurrent.atomic.AtomicInteger
 import scala.annotation.tailrec
 import dk.bayes.math.gaussian.Gaussian
-import com.typesafe.scalalogging.slf4j.Logging
 import dk.bayes.math.gaussian.canonical.DenseCanonicalGaussian
 
-object GenericLDSEM extends LDSEM with Logging {
+object GenericLDSEM extends LDSEM with LazyLogging {
 
   def learn(data: Array[Array[Double]], priorMean: Gaussian, emissionVar: Double, iterNum: Int): EMSummary = {
 

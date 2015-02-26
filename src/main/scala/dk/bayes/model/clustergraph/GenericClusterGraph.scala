@@ -12,7 +12,7 @@ import scala.util.Random
  *
  * @author Daniel Korzekwa
  */
-case class GenericClusterGraph extends ClusterGraph {
+case class GenericClusterGraph() extends ClusterGraph {
 
   private var clusters: List[Cluster] = List()
 

@@ -2,7 +2,7 @@ package dk.bayes.infer.gp.infercovparamsem
 
 import org.junit._
 import Assert._
-import com.typesafe.scalalogging.slf4j.Logging
+import com.typesafe.scalalogging.slf4j.LazyLogging
 import dk.bayes.math.linear._
 import scala.math._
 import dk.bayes.math.gaussian.MultivariateGaussian
@@ -18,7 +18,7 @@ import dk.bayes.infer.gp.gpr.GenericGPRegression
  *
  *  @author Daniel Korzekwa
  */
-class inferCovParamsEmTest extends Logging {
+class inferCovParamsEmTest extends LazyLogging {
 
   //[x,y]
   private val data = loadCSV("src/test/resources/gpml/regression_data.csv", 1)

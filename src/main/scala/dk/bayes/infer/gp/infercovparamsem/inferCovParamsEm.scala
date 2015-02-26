@@ -1,6 +1,6 @@
 package dk.bayes.infer.gp.infercovparamsem
 
-import com.typesafe.scalalogging.slf4j.Logging
+import com.typesafe.scalalogging.slf4j.LazyLogging
 import dk.bayes.math.gaussian.MultivariateGaussian
 import dk.bayes.math.linear.Matrix
 import scala.math._
@@ -13,7 +13,7 @@ import scala.annotation.tailrec
  *
  *  @author Daniel Korzekwa
  */
-object inferCovParamsEm extends Logging {
+object inferCovParamsEm extends LazyLogging {
 
   /**
    * Returns learned parameters.
