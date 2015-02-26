@@ -159,11 +159,11 @@ case class LoopyBP(clusterGraph: ClusterGraph, threshold: Double = 0.00001) exte
 }
 
 object LoopyBP {
-  case class ForwardMsgOrder extends MessageOrder {
+  case class ForwardMsgOrder() extends MessageOrder {
     def ordered(clusters: Seq[Cluster]): Seq[Cluster] = clusters
   }
 
-  case class ForwardBackwardMsgOrder extends MessageOrder {
+  case class ForwardBackwardMsgOrder() extends MessageOrder {
     def ordered(clusters: Seq[Cluster]): Seq[Cluster] = clusters ++ clusters.reverse
   }
 

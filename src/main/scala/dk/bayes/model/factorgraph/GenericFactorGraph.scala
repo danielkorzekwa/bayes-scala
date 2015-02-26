@@ -14,7 +14,7 @@ import dk.bayes.model.factor.api.GenericFactor
  *
  * @author Daniel Korzekwa
  */
-case class GenericFactorGraph extends FactorGraph {
+case class GenericFactorGraph() extends FactorGraph {
 
   private val allNodes = ArrayBuffer[Node]()
   private val varNodes: mutable.Map[Int, VarNode] = mutable.Map[Int, VarNode]()
