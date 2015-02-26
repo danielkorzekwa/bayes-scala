@@ -1,5 +1,10 @@
 /target
+/project/target
 /.classpath
 /.project
 /.cache
 /.settings
+
+# intellij idea
+*.iml
+.idea
