@@ -1,7 +1,8 @@
 package dk.bayes.infer.epnaivebayes
 
+import com.typesafe.scalalogging.slf4j.LazyLogging
+
 import scala.annotation.tailrec
-import com.typesafe.scalalogging.slf4j.Logging
 import dk.bayes.dsl.factor.DoubleFactor
 import dk.bayes.dsl.factor.SingleFactor
 import dk.bayes.math.numericops._
@@ -20,7 +21,7 @@ import dk.bayes.math.gaussian.Gaussian
  *
  * @author Daniel Korzekwa
  */
-case class EPNaiveBayesFactorGraph[X](prior: SingleFactor[X], likelihoods: Seq[DoubleFactor[X, _]], paralllelMessagePassing: Boolean = false)(implicit val multOp: multOp[X], val divideOp: divideOp[X], val isIdentical: isIdentical[X]) extends Logging {
+case class EPNaiveBayesFactorGraph[X](prior: SingleFactor[X], likelihoods: Seq[DoubleFactor[X, _]], paralllelMessagePassing: Boolean = false)(implicit val multOp: multOp[X], val divideOp: divideOp[X], val isIdentical: isIdentical[X]) extends LazyLogging {
 
   private var msgsUp: Seq[X] = likelihoods.map(l => l.initFactorMsgUp)
   private var posterior = multOp(prior.factorMsgDown, multOp(msgsUp: _*))
