@@ -2,6 +2,42 @@
 
 It is a Scala library for building Bayesian Networks with discrete/continuous variables and running deterministic Bayesian inference.
 
+## How to uses it from sbt and maven?
+
+Snapshot artifact is build by a Travis CI and deploymet to Sonatype OSS Snapshots repository with every commit to Bayes-scala project. Released versions of Bayes-scala (non-snapshots) are not available at the moment.
+
+With sbt build tool, add to build.sbt config file:
+
+```
+libraryDependencies ++= Seq(
+  "com.github.danielkorzekwa" % "bayes-scala_2.10" % "0.5-SNAPSHOT"
+)
+
+resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
+```
+
+With maven build tool, add to pom.xml config file:
+
+```scala
+  <repositories>
+    <repository>
+      <id>oss-sonatype-snapshots</id>
+      <name>oss-sonatype-snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+    </repository>
+  </repositories>
+  
+  <dependencies>
+    <dependency>
+      <groupId>com.github.danielkorzekwa</groupId>
+      <artifactId>bayes-scala_2.10</artifactId>
+      <version>0.5-SNAPSHOT</version>
+    </dependency>
+  <dependencies>
+```
+
+## Examples
+
 * Examples illustrating the usage of a high level API for building Bayesian Networks
   * [Student Bayesian Network](#student-bayesian-network) 
   * [Monty Hall problem](#monty-hall-problem)
@@ -10,10 +46,6 @@ It is a Scala library for building Bayesian Networks with discrete/continuous va
   * [Gaussian process regression](#gaussian-process-regression)
   * [Gaussian process regression with cluttered Gaussian likelihood](#gaussian-process-regression-with-cluttered-gaussian-likelihood)
   * [1D Kalman filter](#1d-kalman-filter)
-
-* [Low level algorithms] which are used behind the scenes for Bayesian Inference, e.g. Loopy Belief Propagation, Expectation Propagation
-
-## Examples
 
 ### Student Bayesian Network
 
@@ -174,6 +206,10 @@ Infer new gaussian state given two noisy observation
 
   infer(x) // Gaussian(1.0341,0.2647)
 ```
+
+## Others
+
+* [Low level algorithms] which are used behind the scenes for Bayesian Inference, e.g. Loopy Belief Propagation, Expectation Propagation
 
 [Low level algorithms]: https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/lowlevel/README.md
 [SamIam]: http://reasoning.cs.ucla.edu/samiam/
