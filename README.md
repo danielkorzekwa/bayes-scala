@@ -2,9 +2,9 @@
 
 It is a Scala library for building Bayesian Networks with discrete/continuous variables and running deterministic Bayesian inference.
 
-## How to uses it from sbt and maven?
+## How to use it from sbt and maven?
 
-Snapshot artifact is build by a Travis CI and deploymet to Sonatype OSS Snapshots repository with every commit to Bayes-scala project. Released versions of Bayes-scala (non-snapshots) are not available at the moment.
+Snapshot artifact is build by a Travis CI and deployed to Sonatype OSS Snapshots repository with every commit to Bayes-scala project. Released versions of Bayes-scala (non-snapshots) are not available at the moment.
 
 With sbt build tool, add to build.sbt config file:
 
