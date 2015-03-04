@@ -4,14 +4,12 @@ It is a Scala library for building Bayesian Networks with discrete/continuous va
 
 ## How to use it from sbt and maven?
 
-Snapshot artifact is build by a Travis CI and deployed to Sonatype OSS Snapshots repository with every commit to Bayes-scala project. Released versions of Bayes-scala (non-snapshots) are not available at the moment.
+Snapshot artifact is built by a Travis CI and deployed to Sonatype OSS Snapshots repository with every commit to Bayes-scala project. Released versions of Bayes-scala (non-snapshots) are not available at the moment.
 
 With sbt build tool, add to build.sbt config file:
 
 ```
-libraryDependencies ++= Seq(
-  "com.github.danielkorzekwa" % "bayes-scala_2.10" % "0.5-SNAPSHOT"
-)
+libraryDependencies += "com.github.danielkorzekwa" % "bayes-scala_2.10" % "0.5-SNAPSHOT"  
 
 resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
 ```

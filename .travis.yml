@@ -1,7 +1,17 @@
 language: scala
+
 jdk:
-  - oraclejdk7
-  - oraclejdk8
+- oraclejdk7
+- oraclejdk8
+
 scala:
-  - 2.10.4
-  - 2.11.5
+- 2.10.4
+- 2.11.5
+
+after_success:
+- test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && sbt publish
+
+env:
+  global:
+  - secure: Je1QhsJGoxF/UNdlnp99wxlyau8GEvFs74U1rx8ZI8dlYP3t0VIsUJhYdAWB69yo9n2+AXpnIyoZEx7KS5LmYOdKq0+AE69DYgkNQQBWfFWTbCC5TCr4nACdnkgUQ4T6+au64DBxqvttAvw21+k85DAjf5y13UVzPcplMsQ1OTo=
+  - secure: BAJe05BL65jzvNwb1QHqgkN4pVNbLQTp6AGZOu3KvTggXtzFWLRwFBoaQKxNqI3v6i7kbCTqG5X//W8rPPSe0eo/CB6na6egQ0idfqYzor9CQlD0k7bfMQJ4nhoxGnM776I5U0h56oVSxOFi1K6rJRg3/itqXS+EXbyVZ3A0pNs=
