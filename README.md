@@ -8,7 +8,7 @@ Snapshot artifact is built by a Travis CI and deployed to Sonatype OSS Snapshots
 
 With sbt build tool, add to build.sbt config file:
 
-```
+```scala
 libraryDependencies += "com.github.danielkorzekwa" % "bayes-scala_2.10" % "0.5-SNAPSHOT"  
 
 resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
