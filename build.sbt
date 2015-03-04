@@ -12,7 +12,7 @@ lazy val root = (project in file(".")).
       "-Xfuture"
       //"-Ywarn-unused-import"     // 2.11 only
     ),
-    crossScalaVersions := Seq("2.10.4", "2.11.5"),
+   
     libraryDependencies ++= Seq(
       "com.googlecode.efficient-java-matrix-library" % "ejml" % "0.20",
       "org.apache.commons" % "commons-math3" % "3.3",
