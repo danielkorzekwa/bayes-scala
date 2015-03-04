@@ -12,7 +12,6 @@ lazy val root = (project in file(".")).
       "-Xfuture"
       //"-Ywarn-unused-import"     // 2.11 only
     ),
-   
     libraryDependencies ++= Seq(
       "com.googlecode.efficient-java-matrix-library" % "ejml" % "0.20",
       "org.apache.commons" % "commons-math3" % "3.3",
