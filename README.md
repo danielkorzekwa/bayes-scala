@@ -11,7 +11,7 @@ With sbt build tool, add to build.sbt config file:
 ```scala
 libraryDependencies += "com.github.danielkorzekwa" % "bayes-scala_2.10" % "0.5-SNAPSHOT"  
 
-resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
+resolvers += Resolver.sonatypeRepo("snapshots")
 ```
 
 With maven build tool, add to pom.xml config file:
@@ -66,7 +66,7 @@ Infer marginal for *grade* variable
 ```
 
 Infer posterior for *grade* variable given *sat* is high
-([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/dsl/demo/KalmanFilterTest.scala)):
+([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/dsl/demo/StudentTest.scala)):
 
 
 ```scala
