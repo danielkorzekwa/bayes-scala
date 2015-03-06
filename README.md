@@ -11,7 +11,7 @@ With sbt build tool, add to build.sbt config file:
 ```scala
 libraryDependencies += "com.github.danielkorzekwa" % "bayes-scala_2.10" % "0.5-SNAPSHOT"  
 
-resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
+resolvers += Resolver.sonatypeRepo("snapshots")
 ```
 
 With maven build tool, add to pom.xml config file:
