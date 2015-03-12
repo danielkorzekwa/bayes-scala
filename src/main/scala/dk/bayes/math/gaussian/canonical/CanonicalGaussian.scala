@@ -19,6 +19,7 @@ object CanonicalGaussian {
       a.head match {
         case head: SparseCanonicalGaussian => multiplySparse(a)
         case head: DenseCanonicalGaussian  => multiplyDense(a)
+        case _                             => throw new UnsupportedOperationException("Not supported")
       }
 
     }
@@ -83,7 +84,7 @@ object CanonicalGaussian {
   implicit val divideOp = new divideOp[CanonicalGaussian] {
     def apply(a: CanonicalGaussian, b: CanonicalGaussian): CanonicalGaussian = {
 
-       val result = a match {
+      val result = a match {
         case a: DenseCanonicalGaussian => {
           b match {
             case b: DenseCanonicalGaussian  => a / b
@@ -96,14 +97,14 @@ object CanonicalGaussian {
     }
   }
 
-   private def denseDivideSparse(a: DenseCanonicalGaussian, b: SparseCanonicalGaussian): DenseCanonicalGaussian = {
+  private def denseDivideSparse(a: DenseCanonicalGaussian, b: SparseCanonicalGaussian): DenseCanonicalGaussian = {
 
     val newK = a.k - Matrix(a.h.size, a.h.size, b.k.toDenseMatrix.data)
     val newH = a.h - Matrix(b.h.toDenseVector.data)
     val newG = a.g - b.g
     new DenseCanonicalGaussian(newK, newH, newG)
   }
-  
+
   implicit val isIdentical = new isIdentical[CanonicalGaussian] {
     def apply(x1: CanonicalGaussian, x2: CanonicalGaussian, tolerance: Double): Boolean = {
       val result = x1 match {
