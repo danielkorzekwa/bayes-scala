@@ -1,4 +1,6 @@
-# Bayesian Networks in Scala [![Build Status](https://travis-ci.org/danielkorzekwa/bayes-scala.svg)](https://travis-ci.org/danielkorzekwa/bayes-scala)
+# Bayesian Networks in Scala 
+[![Build Status](https://travis-ci.org/danielkorzekwa/bayes-scala.svg)](https://travis-ci.org/danielkorzekwa/bayes-scala)
+[![Codacy Badge](https://www.codacy.com/project/badge/2a48694cabbe4cd386af1be55602cbbf)](https://www.codacy.com/public/danielkorzekwa/bayes-scala)
 
 It is a Scala library for building Bayesian Networks with discrete/continuous variables and running deterministic Bayesian inference.
 
