@@ -5,9 +5,10 @@ jdk:
 
 scala:
 - 2.10.4
+- 2.11.6
 
 after_success:
-- test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && sbt publish
+- test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && sbt ++$TRAVIS_SCALA_VERSION publish
 
 env:
   global:
