@@ -57,16 +57,19 @@ Build Gaussian process model:
   
   val itemPopularityCovFunc = ItemPopularityCovFunc(
   brandLogSf = log(1), brandLogEll = log(1), modelLogSf = log(0.5),     modelLogEll = log(1))
+  
   val itemPopularityCov = itemPopularityCovFunc.covarianceMatrix(items)
   val itemPopularitiesVariable = MultivariateGaussian(itemPopularityMean, itemPopularityCov)
 
-    val convertionVariables = conversionRates.zipWithIndex.flatMap {
-      case (c, index) =>
+  val convertionVariables = conversionRates.zipWithIndex.flatMap {
+    case (c, index) =>
+      val converted = (1 to c.conversions).map { i => 
+        MvnGaussianThreshold(itemPopularitiesVariable, index, exceeds = Some(true)) }
+        
+      val landedOff = (1 to (c.clicks - c.conversions)).map { i => 
+        MvnGaussianThreshold(itemPopularitiesVariable, index, exceeds = Some(false)) }
 
-        val converted = (1 to c.conversions).map { i => MvnGaussianThreshold(itemPopularitiesVariable, index, exceeds = Some(true)) }
-        val landedOff = (1 to (c.clicks - c.conversions)).map { i => MvnGaussianThreshold(itemPopularitiesVariable, index, exceeds = Some(false)) }
-
-        List(converted, landedOff)
+      List(converted, landedOff)
     }
 ```
 
