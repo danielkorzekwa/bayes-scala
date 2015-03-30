@@ -15,7 +15,7 @@ It's not very convincing  that both *Butterfly/Grubba* and *Tibhar/Stratus* blad
 
 Bayesian model for predicting conversion rates:
 
-![Conversion rate gp model](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/dsl_examples/conversionrate/conversion_rate_gp_model "Convertion rate gp model")
+![Conversion rate gp model](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/dsl_examples/conversionrate/conversion_rate_gp_model.png "Convertion rate gp model")
 
 Model variables
 * x (observed) - Item (product) offered to customers, characterised by *brand* and *model* attributes.
