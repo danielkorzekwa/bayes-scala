@@ -11,7 +11,7 @@ Consider some Internet shop selling the following table tennis blades.
 
 In a pure form, **conversion rate** is defined as the proportion of customers who buy a product given they landed on its web page. For example, it would be 0.4 for *Butterfly/Maze blade*. 
 
-It's not very convincing  that both *Butterfly/Grubba* and *Tibhar/Stratus* blades have the same conversion rate of 1, especially if we assume that conversions rates for different items might be correlated across brands and models. Thinking in a more bayesian way, we might want to use a prior belief over possible conversion rates and then possibly end up with a much more plausible predictions.
+It's not very convincing  that both *Butterfly/Grubba* and *Tibhar/Stratus* blades have the same conversion rate of 1, especially if we assume that conversions rates for different items might be correlated across brands and models. Thinking in a more bayesian way, we might want to use some prior belief over possible conversion rates and then possibly end up with a much more plausible predictions.
 
 Bayesian model for predicting conversion rates:
 
@@ -80,6 +80,6 @@ Predict item similarities and conversion probabilities:
   //Predict item popularities
   val itemPopularitiesMarginal = infer(itemPopularitiesVariable)
 
-  //Predict conversion probability for item Butterfly/Maze item
+  //Predict conversion probability for Butterfly/Maze item
   infer(MvnGaussianThreshold(itemPopularitiesMarginal, 1)) //Gaussian(m=0.438,v=0.018)
 ```
