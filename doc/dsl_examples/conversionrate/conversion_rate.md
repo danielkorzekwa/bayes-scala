@@ -11,7 +11,7 @@ Consider some Internet shop selling the following table tennis blades.
 
 In a pure form, **conversion rate** is defined as the proportion of customers who buy a product given they landed on its web page. For example, it would be 0.4 for *Butterfly/Maze blade*. 
 
-It's not very convincing  that both *Butterfly/Grubba* and *Tibhar/Stratus* blades have the same conversion rate of 1, especially if we assume that conversions rates might be correlated across the same brands. Thinking in a more bayesian way, we might want to use a prior belief over possible conversion rates and then possibly end up with a much more plausible predictions.
+It's not very convincing  that both *Butterfly/Grubba* and *Tibhar/Stratus* blades have the same conversion rate of 1, especially if we assume that conversions rates might be correlated across brands and models. Thinking in a more bayesian way, we might want to use a prior belief over possible conversion rates and then possibly end up with a much more plausible predictions.
 
 Bayesian model for predicting conversion rates:
 
