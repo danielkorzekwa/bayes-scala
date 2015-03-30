@@ -40,7 +40,7 @@ Comparison between conversion rate estimated with two alternative approaches, si
 Create the data model (item conversion rates):
 
 ```scala
- val conversionRates = List(
+  val conversionRates = List(
     ConversionRate(Item("Butterfly", "Grubba"), 1, 1),
     ConversionRate(Item("Butterfly", "Maze"), 10, 4),
     ConversionRate(Item("Tibhar", "Samsonov"), 10, 1),
@@ -77,13 +77,6 @@ Predict item similarities and conversion probabilities:
   //Predict item popularities
   val itemPopularitiesMarginal = infer(itemPopularitiesVariable)
 
-  //Predict and print item conversion probabilities
-  println("brand,model,convertionRatio,convertionProbMean,convertionProbStdDev")
-  conversionRates.zipWithIndex.foreach { case (conversionRate, index) =>
-    val conversion = MvnGaussianThreshold(itemPopularitiesMarginal.copy(), index)
-    val conversionProb = infer(conversion)
-    println("%s,%s,%.2f,%.2f,%.2f".format(
-    conversionRate.item.brand, conversionRate.item.model, conversionRate.conversions.toDouble / conversionRate.clicks,
-    conversionProb.m, sqrt(conversionProb.v)))
-  }
+  //Predict conversion probability for item Butterfly/Maze item
+  infer(MvnGaussianThreshold(itemPopularitiesMarginal, 1)) //Gaussian(m=0.438,v=0.018)
 ```
