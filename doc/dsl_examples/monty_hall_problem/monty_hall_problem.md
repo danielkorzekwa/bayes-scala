@@ -31,4 +31,5 @@ Compute the probabilities of winning a car given a guest chooses door 1 and Mont
 
 ```
 
+[SamIam]: http://reasoning.cs.ucla.edu/samiam/
 [Monty Hall problem]: http://en.wikipedia.org/wiki/Monty_Hall_problem

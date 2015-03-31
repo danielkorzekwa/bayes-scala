@@ -2,7 +2,7 @@
 
 [Gaussian Processes book] by Carl Edward Rasmussen and Christopher K. I. Williams, The MIT Press, 2006. 
 
-![Gaussian process regression](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/dsl_examples/gaussian_process_regression.png "Gaussian process regression")
+![Gaussian process regression](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/dsl_examples/gaussian_process_regression/gaussian_process_regression.png "Gaussian process regression")
 
 Infer posterior of the latent variable *f* given observed values of *y*
 ([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/dsl/demo/GaussianProcessRegressionTest.scala)):

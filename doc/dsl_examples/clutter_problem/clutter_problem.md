@@ -2,7 +2,7 @@
 
 The clutter problem is concerned with estimating the state of gaussian variable from noisy obserations which are embedded in background clutter. This problem is used by Tom Minka in his [PhD thesis] to illustrate the Expectation Propagation algorithm.
 
-![Clutter problem](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/dsl_examples/clutter_problem.png "Clutter problem")
+![Clutter problem](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/dsl_examples/clutter_problem/clutter_problem.png "Clutter problem")
 
 Compute posterior of *x* given two noisy obserations
 ([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/dsl/demo/ClutterProblemTest.scala)):

@@ -2,7 +2,7 @@
 
 [Gaussian Processes book] by Carl Edward Rasmussen and Christopher K. I. Williams, The MIT Press, 2006. 
 
-![Gaussian process regression with cluttered Gaussian likelihood](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/dsl_examples/gaussian_process_regression_cluttered_gaussian_likelihood.png "Gaussian process regression with cluttered Gaussian likelihood")
+![Gaussian process regression with cluttered Gaussian likelihood](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/dsl_examples/gaussian_process_regression_cluttered_gaussian_likelihood/gaussian_process_regression_cluttered_gaussian_likelihood.png "Gaussian process regression with cluttered Gaussian likelihood")
 
 Infer posterior of the latent variable *f* given observed values of *y*
 ([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/dsl/demo/GaussianProcessRegressionClutteredGaussianLikelihoodTest.scala)):
