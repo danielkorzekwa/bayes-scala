@@ -61,13 +61,14 @@ Build Gaussian process model:
   val itemPopularityCov = itemPopularityCovFunc.covarianceMatrix(items)
   val itemPopularitiesVariable = MultivariateGaussian(itemPopularityMean, itemPopularityCov)
 
+  val conversionLikNoise = 1
   val conversionVariables = conversionRates.zipWithIndex.flatMap {
     case (c, index) =>
       val converted = (1 to c.conversions).map { i => 
-        MvnGaussianThreshold(itemPopularitiesVariable, index, exceeds = Some(true)) }
+        MvnGaussianThreshold(itemPopularitiesVariable, index, v = conversionLikNoise, exceeds = Some(true)) }
         
       val landedOff = (1 to (c.clicks - c.conversions)).map { i => 
-        MvnGaussianThreshold(itemPopularitiesVariable, index, exceeds = Some(false)) }
+        MvnGaussianThreshold(itemPopularitiesVariable, index, v = conversionLikNoise, exceeds = Some(false)) }
 
       List(converted, landedOff)
     }
@@ -81,5 +82,5 @@ Predict items popularities and conversion probabilities:
   val itemPopularitiesMarginal = infer(itemPopularitiesVariable)
 
   //Predict conversion probability for Butterfly/Maze item
-  infer(MvnGaussianThreshold(itemPopularitiesMarginal, 1)) //Gaussian(m=0.438,v=0.018)
+  infer(MvnGaussianThreshold(itemPopularitiesMarginal, 1, v = conversionLikNoise)) //Gaussian(m=0.438,v=0.018)
 ```
