@@ -46,6 +46,7 @@ With maven build tool, add to pom.xml config file:
   * [Gaussian process regression](#gaussian-process-regression)
   * [Gaussian process regression with cluttered Gaussian likelihood](#gaussian-process-regression-with-cluttered-gaussian-likelihood)
   * [1D Kalman filter](#1d-kalman-filter)
+  * [Conversion rate](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/dsl_examples/conversionrate/conversion_rate.md)
 
 ### Student Bayesian Network
 
