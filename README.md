@@ -45,8 +45,8 @@ With maven build tool, add to pom.xml config file:
   * [Clutter problem](#clutter-problem) 
   * [Gaussian process regression](#gaussian-process-regression)
   * [Gaussian process regression with cluttered Gaussian likelihood](#gaussian-process-regression-with-cluttered-gaussian-likelihood)
-  * [1D Kalman filter](#1d-kalman-filter)
-  * [Conversion rate](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/dsl_examples/conversionrate/conversion_rate.md)
+  * [1D Kalman filter] (https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/dsl_examples/1d_kalman_filter/1d_kalman_filter.md)
+  * [Conversion rate](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/dsl_examples/conversionrate/conversion_rate.md)
 
 ### Student Bayesian Network
 
@@ -191,21 +191,6 @@ Infer posterior of the latent variable *f* given observed values of *y*
   val y2 = ClutteredGaussian(x = f, xIndex = 2, w = 0.4, a = 10, value = 9)
 
   val fPosterior = infer(f) // mean = (0.972, 4.760, 8.386)
-```
-
-### 1D Kalman filter
-
-![Kalman 1d two obserations](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/dsl_examples/kalman_1d_two_obserations.png "Kalman 1d two obserations")
-
-Infer new gaussian state given two noisy observation
-([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/dsl/demo/KalmanFilterTwoObservationsTest.scala)):
-
-```scala
-  val x = Gaussian(3, 1.5)
-  val y1 = Gaussian(x, v = 0.9, yValue = 0.6)
-  val y2 = Gaussian(x, v = 0.5, yValue = 0.62)
-
-  infer(x) // Gaussian(1.0341,0.2647)
 ```
 
 ## Others
