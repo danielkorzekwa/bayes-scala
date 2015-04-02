@@ -17,7 +17,8 @@ lazy val root = (project in file(".")).
       "com.googlecode.efficient-java-matrix-library" % "ejml" % "0.20",
       "org.apache.commons" % "commons-math3" % "3.3",
       "com.typesafe.scala-logging" %% "scala-logging-slf4j" % "2.1.2",
-      "org.scalanlp" %% "breeze" % "0.10",
+      "org.scalanlp" %% "breeze" % "0.11.2",
+      "org.scalanlp" %% "breeze-natives" % "0.11.2",
       // test scoped
       "org.slf4j" % "slf4j-log4j12" % "1.7.2" % Test,
       "com.novocode" % "junit-interface" % "0.11" % Test
