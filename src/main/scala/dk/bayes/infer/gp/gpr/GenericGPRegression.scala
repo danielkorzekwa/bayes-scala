@@ -7,6 +7,7 @@ import breeze.linalg.DenseMatrix
 import dk.bayes.infer.gp.cov.CovFunc
 import dk.bayes.infer.gp.mean.MeanFunc
 import dk.bayes.infer.gp.mean.ZeroMean
+import breeze.linalg.logdet
 
 /**
  * Gaussian Process Regression. It uses Gaussian likelihood and zero mean functions.
@@ -46,7 +47,8 @@ case class GenericGPRegression(x: Matrix, y: Matrix, covFunc: CovFunc, noiseStdD
   def loglik(): Double = {
 
     val m = meanX
-    val loglikValue = (-0.5 * (y - m).t * kXXInv * (y - m) - 0.5 * log(kXX.det) - 0.5 * x.numRows.toDouble * log(2 * Pi)).at(0)
+    val logDet = logdet(new DenseMatrix(kXX.numRows(), kXX.numRows(), kXX.toArray()))._2
+    val loglikValue = (-0.5 * (y - m).t * kXXInv * (y - m) - 0.5 * logDet - 0.5 * x.numRows.toDouble * log(2 * Pi)).at(0)
     loglikValue
   }
 
