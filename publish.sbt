@@ -2,6 +2,8 @@ publishMavenStyle := true
 
 pomIncludeRepository := { _ => false }
 
+publishArtifact in Test := true
+
 publishTo := {
   val nexus = "https://oss.sonatype.org/"
   if (isSnapshot.value)
