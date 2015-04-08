@@ -39,7 +39,7 @@ case class CovSEiso(sf: Double, ell: Double) extends CovFunc {
    *
    */
   def df_dSf(x: Matrix): Matrix =
-    Matrix(x.numRows, x.numRows, (rowIndex: Int, colIndex: Int) => df_dSf(x.row(rowIndex).t, x.row(colIndex).t))
+    Matrix(x.numRows, x.numRows, (rowIndex: Int, colIndex: Int) => df_dSf(x.row(rowIndex).t.toArray, x.row(colIndex).t.toArray))
 
   /**
    * Returns derivative of similarity between two vectors with respect to sf.
@@ -47,10 +47,10 @@ case class CovSEiso(sf: Double, ell: Double) extends CovFunc {
    * @param x1 [Dx1] vector
    * @param x2 [Dx1] vector
    */
-  def df_dSf(x1: Matrix, x2: Matrix): Double = {
+  def df_dSf(x1: Array[Double], x2: Array[Double]): Double = {
     require(x1.size == x2.size, "Vectors x1 and x2 have different sizes")
 
-    val expArg = -0.5 * distance(x1.toArray, x2.toArray, exp(2 * ell))
+    val expArg = -0.5 * distance(x1, x2, exp(2 * ell))
     2 * exp(2 * sf) * exp(expArg)
   }
 
@@ -61,7 +61,7 @@ case class CovSEiso(sf: Double, ell: Double) extends CovFunc {
    *
    */
   def df_dEll(x: Matrix): Matrix =
-    Matrix(x.numRows, x.numRows, (rowIndex: Int, colIndex: Int) => df_dEll(x.row(rowIndex).t, x.row(colIndex).t))
+    Matrix(x.numRows, x.numRows, (rowIndex: Int, colIndex: Int) => df_dEll(x.row(rowIndex).t.toArray(), x.row(colIndex).t.toArray()))
 
   /**
    * Returns derivative of similarity between two vectors with respect to ell.
@@ -69,13 +69,17 @@ case class CovSEiso(sf: Double, ell: Double) extends CovFunc {
    * @param x1 [Dx1] vector
    * @param x2 [Dx1] vector
    */
-  def df_dEll(x1: Matrix, x2: Matrix): Double = {
+     def df_dEll(x1: Array[Double], x2: Array[Double]): Double = {
     require(x1.size == x2.size, "Vectors x1 and x2 have different sizes")
 
-    val expArg = -0.5 * distance(x1.toArray, x2.toArray, exp(2 * ell))
-    val d = -0.5 * distance(x1.toArray, x2.toArray, exp(2 * ell) / (-2d))
+    val expArg = -0.5 * distance(x1, x2, exp(2 * ell))
+    val d = -0.5 * distance(x1, x2, exp(2 * ell) / (-2d))
 
     exp(2 * sf) * exp(expArg) * d
+  }
+    
+  def df_dEll(x1: Double, x2: Double): Double = {
+    df_dEll(Array(x1), Array(x2))
   }
 
   private def distance(x1: Array[Double], x2: Array[Double], l: Double): Double = {
