@@ -59,7 +59,7 @@ case class Matrix(matrix: SimpleMatrix) {
   def extractRow(rowIndex: Int) = Matrix(this.matrix.extractVector(true, rowIndex))
   def extractColumn(colIndex: Int) = Matrix(this.matrix.extractVector(false, colIndex))
 
-  def trace():Double = this.matrix.trace()
+  def trace(): Double = this.matrix.trace()
   /**
    * Returns svd [U,W,V, rank] matrix decomposition.
    */
@@ -85,7 +85,7 @@ case class Matrix(matrix: SimpleMatrix) {
   def filterNotRow(rowIndex: Int): Matrix = {
 
     val newMatrix = rowIndex match {
-      case 0 => matrix.extractMatrix(1, matrix.numRows, 0, matrix.numCols)
+      case 0                              => matrix.extractMatrix(1, matrix.numRows, 0, matrix.numCols)
       case x if x == (matrix.numRows - 1) => matrix.extractMatrix(0, matrix.numRows - 1, 0, matrix.numCols)
       case _ => {
 
@@ -101,7 +101,7 @@ case class Matrix(matrix: SimpleMatrix) {
   def filterNotColumn(columnIndex: Int): Matrix = {
 
     val newMatrix = columnIndex match {
-      case 0 => matrix.extractMatrix(0, matrix.numRows, 1, matrix.numCols)
+      case 0                              => matrix.extractMatrix(0, matrix.numRows, 1, matrix.numCols)
       case x if x == (matrix.numCols - 1) => matrix.extractMatrix(0, matrix.numRows, 0, matrix.numCols - 1)
       case _ => {
 
@@ -167,8 +167,25 @@ object Matrix {
   def apply(values: Array[Array[Double]]): Matrix = Matrix(new SimpleMatrix(values))
 
   def apply(numRows: Int, numCols: Int, cell: (Int, Int) => Double): Matrix = {
-    val values = for (row <- 0 until numRows; col <- 0 until numCols) yield cell(row, col)
-    Matrix(new SimpleMatrix(numRows, numCols, true, values: _*))
+
+    val data = new Array[Array[Double]](numRows)
+
+    var rowIndex = 0
+    while (rowIndex < numRows) {
+
+      val rowVector = new Array[Double](numCols)
+
+      var colIndex = 0
+      while (colIndex < numCols) {
+        rowVector(colIndex) = cell(rowIndex, colIndex)
+        colIndex += 1
+      }
+
+      data(rowIndex) = rowVector
+      rowIndex += 1
+    }
+    Matrix(new SimpleMatrix(data))
+
   }
 
 }
