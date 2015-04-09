@@ -189,7 +189,7 @@ class MatrixTest {
   }
 
   @Test def apply_performance: Unit = {
-    val n = 3000
+    val n = 8000
     val x = Array.fill(n * n)(2)
     Matrix(n, n, (row: Int, col: Int) => x(row) * x(col))
   }

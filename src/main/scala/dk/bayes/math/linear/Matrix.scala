@@ -170,20 +170,16 @@ object Matrix {
 
     val data = new Array[Array[Double]](numRows)
 
-    var rowIndex = 0
-    while (rowIndex < numRows) {
-
+    for (rowIndex <- 0 until numRows) {
       val rowVector = new Array[Double](numCols)
 
-      var colIndex = 0
-      while (colIndex < numCols) {
+      for (colIndex <- 0 until numCols) {
         rowVector(colIndex) = cell(rowIndex, colIndex)
-        colIndex += 1
       }
 
       data(rowIndex) = rowVector
-      rowIndex += 1
     }
+
     Matrix(new SimpleMatrix(data))
 
   }
