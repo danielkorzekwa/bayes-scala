@@ -1,4 +1,6 @@
 # Bayesian Networks in Scala 
+
+[![Join the chat at https://gitter.im/danielkorzekwa/bayes-scala](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/danielkorzekwa/bayes-scala?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status](https://travis-ci.org/danielkorzekwa/bayes-scala.svg)](https://travis-ci.org/danielkorzekwa/bayes-scala)
 [![Codacy Badge](https://www.codacy.com/project/badge/2a48694cabbe4cd386af1be55602cbbf)](https://www.codacy.com/public/danielkorzekwa/bayes-scala)
 
