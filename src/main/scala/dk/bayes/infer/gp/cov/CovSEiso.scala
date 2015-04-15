@@ -60,8 +60,8 @@ case class CovSEiso(sf: Double, ell: Double) extends CovFunc {
    * @param x [N x D] vector, N - number of random variables, D - dimensionality of random variable
    *
    */
-  def df_dEll(x: Matrix): Matrix =
-    Matrix(x.numRows, x.numRows, (rowIndex: Int, colIndex: Int) => df_dEll(x.row(rowIndex).t.toArray(), x.row(colIndex).t.toArray()))
+  def df_dEll(x: Matrix): Matrix = Matrix(x.numRows, x.numRows, (rowIndex: Int, colIndex: Int) => df_dEll(x.row(rowIndex).t.toArray(), x.row(colIndex).t.toArray()))
+  def df_dEll(x: Array[Double]): Matrix = Matrix(x.size, x.size, (rowIndex: Int, colIndex: Int) => df_dEll(x(rowIndex), x(colIndex)))
 
   /**
    * Returns derivative of similarity between two vectors with respect to ell.
@@ -69,15 +69,19 @@ case class CovSEiso(sf: Double, ell: Double) extends CovFunc {
    * @param x1 [Dx1] vector
    * @param x2 [Dx1] vector
    */
-     def df_dEll(x1: Array[Double], x2: Array[Double]): Double = {
+  def df_dEll(x1: Array[Double], x2: Array[Double]): Double = {
     require(x1.size == x2.size, "Vectors x1 and x2 have different sizes")
 
-    val expArg = -0.5 * distance(x1, x2, exp(2 * ell))
-    val d = -0.5 * distance(x1, x2, exp(2 * ell) / (-2d))
+    val dfDEll = if (x1.size == 1 && x2.size == 1 && x1(0) == x2(0)) 0
+    else {
+      val expArg = -0.5 * distance(x1, x2, exp(2 * ell))
+      val d = -0.5 * distance(x1, x2, exp(2 * ell) / (-2d))
 
-    exp(2 * sf) * exp(expArg) * d
+      exp(2 * sf) * exp(expArg) * d
+    }
+    dfDEll
   }
-    
+
   def df_dEll(x1: Double, x2: Double): Double = {
     df_dEll(Array(x1), Array(x2))
   }
