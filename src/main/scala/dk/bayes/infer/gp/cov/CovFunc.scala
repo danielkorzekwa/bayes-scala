@@ -14,6 +14,9 @@ trait CovFunc {
    */
   def cov(x: Matrix): Matrix =
     Matrix(x.numRows, x.numRows, (rowIndex: Int, colIndex: Int) => cov(x.row(rowIndex).t, x.row(colIndex).t))
+    
+  def cov(x: Array[Double]): Matrix =
+    Matrix(x.size, x.size, (rowIndex: Int, colIndex: Int) => cov(x(rowIndex), x(colIndex)))
 
   /**
    * @param x [N x D] vector, N - number of random variables, D - dimensionality of random variable
