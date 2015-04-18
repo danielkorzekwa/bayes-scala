@@ -56,10 +56,10 @@ class CovSEisoTest {
    */
   @Test def test_1D_df_dSf = {
 
-    assertEquals(8, covFunc.df_dSf(Array(3), Array(3)), 0.0001)
-    assertEquals(7.6479, covFunc.df_dSf(Array(2), Array(5)), 0.0001)
-    assertEquals(5.8091, covFunc.df_dSf(Array(2), Array(10)), 0.0001)
-    assertEquals(2.6363, new CovSEiso(sf = log(2), log(200)).df_dSf(Array(2), Array(300)), 0.0001)
+    assertEquals(8, covFunc.df_dSf(Array(3d), Array(3d)), 0.0001)
+    assertEquals(7.6479, covFunc.df_dSf(Array(2d), Array(5d)), 0.0001)
+    assertEquals(5.8091, covFunc.df_dSf(Array(2d), Array(10d)), 0.0001)
+    assertEquals(2.6363, new CovSEiso(sf = log(2), log(200)).df_dSf(Array(2d), Array(300d)), 0.0001)
   }
 
   @Test def multi_dim_df_dSf = {

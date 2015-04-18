@@ -38,8 +38,8 @@ case class CovSEiso(sf: Double, ell: Double) extends CovFunc {
    * @param x [N x D] vector, N - number of random variables, D - dimensionality of random variable
    *
    */
-  def df_dSf(x: Matrix): Matrix =
-    Matrix(x.numRows, x.numRows, (rowIndex: Int, colIndex: Int) => df_dSf(x.row(rowIndex).t.toArray, x.row(colIndex).t.toArray))
+  def df_dSf(x: Matrix): Matrix = Matrix(x.numRows, x.numRows, (rowIndex: Int, colIndex: Int) => df_dSf(x.row(rowIndex).t.toArray, x.row(colIndex).t.toArray))
+  def df_dSf(x: Array[Double]): Matrix = Matrix(x.size, x.size, (rowIndex: Int, colIndex: Int) => df_dSf(x(rowIndex), x(colIndex)))
 
   /**
    * Returns derivative of similarity between two vectors with respect to sf.
@@ -53,7 +53,7 @@ case class CovSEiso(sf: Double, ell: Double) extends CovFunc {
     val expArg = -0.5 * distance(x1, x2, exp(2 * ell))
     2 * exp(2 * sf) * exp(expArg)
   }
-
+  def df_dSf(x1: Double, x2: Double): Double = df_dSf(Array(x1), Array(x2))
   /**
    * Returns covariance matrix of element wise partial derivatives with respect to ell
    *
