@@ -37,6 +37,8 @@ class StudentTest {
     assertVector(Array(1d, 0), infer(sat).cpd, 0.0001)
     assertVector(Array(0.58, 0.4199), infer(letter).cpd, 0.0001)
 
+    sat.clearValue()
+    assertVector(Array(0.3620, 0.2884, 0.3496), infer(grade).cpd, 0.0001)
   }
 
 }

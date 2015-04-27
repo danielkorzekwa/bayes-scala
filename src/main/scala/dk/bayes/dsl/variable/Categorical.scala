@@ -22,7 +22,8 @@ class Categorical(val parents: Seq[Categorical], val cpd: Seq[Double]) extends V
   val dim: Int = cpd.size / parents.map(p => p.dim).product
   private var value: Option[Int] = None
 
-  def setValue(v: Int) { value = Some(v) }
+  def clearValue() = { value = None }
+  def setValue(v: Int) = { value = Some(v) }
   def getValue(): Option[Int] = value
 
   def getParents(): Seq[Categorical] = parents
