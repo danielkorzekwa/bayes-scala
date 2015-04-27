@@ -2,7 +2,7 @@ lazy val root = (project in file(".")).
   settings(
     name := "bayes-scala",
     organization := "com.github.danielkorzekwa",
-    version := "0.5-SNAPSHOT",
+    version := "0.5",
     scalaVersion := "2.10.4",
     scalacOptions ++= Seq(
       "-feature",
