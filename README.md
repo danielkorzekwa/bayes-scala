@@ -8,9 +8,9 @@ It is a Scala library for building Bayesian Networks with discrete/continuous va
 
 ## How to use it from sbt and maven?
 
-Release and snaphots versions are available for Scala versions 2.10 and 2.11
+Release and snaphot versions are available for Scala versions 2.10 and 2.11
 
-### Released version
+### Release version
 
 SBT configuration: 
 
