@@ -8,7 +8,31 @@ It is a Scala library for building Bayesian Networks with discrete/continuous va
 
 ## How to use it from sbt and maven?
 
-Snapshot artifact is built by a Travis CI and deployed to Sonatype OSS Snapshots repository with every commit to Bayes-scala project. Released versions of Bayes-scala (non-snapshots) are not available at the moment.
+Release and snaphots versions are available for Scala versions 2.10 and 2.11
+
+### Released version
+
+SBT configuration: 
+
+```scala
+libraryDependencies += "com.github.danielkorzekwa" % "bayes-scala_2.10" % "0.5"  
+```
+
+Maven configuration:
+
+```scala  
+  <dependencies>
+    <dependency>
+      <groupId>com.github.danielkorzekwa</groupId>
+      <artifactId>bayes-scala_2.10</artifactId>
+      <version>0.5</version>
+    </dependency>
+  <dependencies>
+```
+
+### Snapshot version
+
+Snapshot artifact is built by a Travis CI and deployed to Sonatype OSS Snapshots repository with every commit to Bayes-scala project. 
 
 With sbt build tool, add to build.sbt config file:
 
@@ -33,7 +57,7 @@ With maven build tool, add to pom.xml config file:
     <dependency>
       <groupId>com.github.danielkorzekwa</groupId>
       <artifactId>bayes-scala_2.10</artifactId>
-      <version>0.5-SNAPSHOT</version>
+      <version>0.6-SNAPSHOT</version>
     </dependency>
   <dependencies>
 ```
@@ -55,5 +79,3 @@ With maven build tool, add to pom.xml config file:
 * [Low level algorithms] which are used behind the scenes for Bayesian Inference, e.g. Loopy Belief Propagation, Expectation Propagation, Variational Inference.
 
 [Low level algorithms]: https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/lowlevel/README.md
-
-

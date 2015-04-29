@@ -24,8 +24,10 @@ Infer posterior for *grade* variable given *sat* is high
 
 ```scala
   sat.setValue(0)
-
   infer(grade) // List(0.2446, 0.3257, 0.4295)
+  
+  sat.clearValue()
+  infer(grade) // List(0.3620, 0.2884, 0.3496)
 ```
 
 [SamIam]: http://reasoning.cs.ucla.edu/samiam/
