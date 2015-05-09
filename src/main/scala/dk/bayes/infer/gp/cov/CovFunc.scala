@@ -13,7 +13,7 @@ trait CovFunc {
    * @return [N x N] covariance matrix
    */
   def cov(x: Matrix): Matrix =
-    Matrix(x.numRows, x.numRows, (rowIndex: Int, colIndex: Int) => cov(x.row(rowIndex).t, x.row(colIndex).t))
+    Matrix(x.numRows, x.numRows, (rowIndex: Int, colIndex: Int) => cov(x.row(rowIndex).t.toArray, x.row(colIndex).t.toArray))
     
   def cov(x: Array[Double]): Matrix =
     Matrix(x.size, x.size, (rowIndex: Int, colIndex: Int) => cov(x(rowIndex), x(colIndex)))
@@ -24,7 +24,7 @@ trait CovFunc {
    * @return [N x M] covariance matrix
    */
   def covNM(x: Matrix, z: Matrix): Matrix =
-    Matrix(x.numRows, z.numRows, (rowIndex: Int, colIndex: Int) => cov(x.row(rowIndex).t, z.row(colIndex).t))
+    Matrix(x.numRows, z.numRows, (rowIndex: Int, colIndex: Int) => cov(x.row(rowIndex).t.toArray, z.row(colIndex).t.toArray))
 
   /**
    * Returns similarity between two vectors.
@@ -32,7 +32,7 @@ trait CovFunc {
    * @param x1 [Dx1] vector
    * @param x2 [Dx1] vector
    */
-  def cov(x1: Matrix, x2: Matrix): Double
+  def cov(x1: Array[Double], x2: Array[Double]): Double
 
-  def cov(x1: Double, x2: Double): Double = cov(Matrix(x1), Matrix(x2))
+  def cov(x1: Double, x2: Double): Double = cov(Array(x1), Array(x2))
 }

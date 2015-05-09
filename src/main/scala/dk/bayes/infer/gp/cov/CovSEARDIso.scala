@@ -29,7 +29,7 @@ case class CovSEARDIso(sf: Double, ell: Array[Double]) extends CovFunc {
    * @return ([N x N] covariance matrix, [N x N] partial derivatives matrix with respect to sf parameter, array of [NxN] partial derivative matrix with respect to ell parameters)
    */
   def covWithD(x: Matrix, computeDfDSf: Boolean = true, computeDfDell: Boolean = true): Tuple3[Matrix, Option[Matrix], Option[Array[Matrix]]] = {
-    val covariance = exp(2 * sf) * cov(x)
+    val covariance = cov(x)
     val covDfSF = if (computeDfDSf) Some(2 * covariance) else None
 
     val covDfDell = if (computeDfDell) {
@@ -51,7 +51,7 @@ case class CovSEARDIso(sf: Double, ell: Array[Double]) extends CovFunc {
     require(x1.size == x2.size, "Vectors x1 and x2 have different sizes")
 
     val expArg = -0.5 * distance(x1, x2)
-    exp(expArg)
+     exp(2 * sf) * exp(expArg)
   }
 
   private def distance(x1: Array[Double], x2: Array[Double]): Double = {

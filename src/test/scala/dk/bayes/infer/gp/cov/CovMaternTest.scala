@@ -9,14 +9,14 @@ class CovMaternTest {
 
   val covFunc = CovMatern52(sf = log(4), ell = log(10))
   @Test def cov {
-    assertEquals(14.8954, covFunc.cov(Matrix(7), Matrix(10)), 0.0001)
-    assertEquals(3.2947, covFunc.cov(Matrix(7), Matrix(24.3)), 0.0001)
+    assertEquals(14.8954, covFunc.cov(Array(7d), Array(10d)), 0.0001)
+    assertEquals(3.2947, covFunc.cov(Array(7d), Array(24.3)), 0.0001)
   }
 
   @Test def cov_df_dsf {
-    assertEquals(29.7908, covFunc.df_dSf(Matrix(7), Matrix(10)), 0.0001)
-    assertEquals(6.5895, covFunc.df_dSf(Matrix(7), Matrix(24.3)), 0.0001)
-    assertEquals(31.9999, covFunc.df_dSf(Matrix(7), Matrix(7)), 0.0001)
+    assertEquals(29.7908, covFunc.df_dSf(Array(7), Array(10)), 0.0001)
+    assertEquals(6.5895, covFunc.df_dSf(Array(7), Array(24.3)), 0.0001)
+    assertEquals(31.9999, covFunc.df_dSf(Array(7), Array(7)), 0.0001)
   }
   @Test def cov_df_dEll {
 

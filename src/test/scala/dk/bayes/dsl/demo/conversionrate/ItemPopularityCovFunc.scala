@@ -10,8 +10,8 @@ case class ItemPopularityCovFunc(brandLogSf: Double, brandLogEll: Double, modelL
 
   def covariance(item1: Item, item2: Item): Double = {
 
-    val (item1BrandVector, item2BrandVector) = if (item1.brand.equals(item2.brand)) (Matrix(1), Matrix(1)) else (Matrix(1, 0), Matrix(0, 1))
-    val (item1ModelVector, item2ModelVector) = if (item1.model.equals(item2.model)) (Matrix(1), Matrix(1)) else (Matrix(1, 0), Matrix(0, 1))
+    val (item1BrandVector, item2BrandVector) = if (item1.brand.equals(item2.brand)) (Array(1d), Array(1d)) else (Array(1d, 0d), Array(0d, 1d))
+    val (item1ModelVector, item2ModelVector) = if (item1.model.equals(item2.model)) (Array(1d), Array(1d)) else (Array(1d, 0d), Array(0d, 1d))
 
     val covValue = brandCov.cov(item1BrandVector, item2BrandVector) + modelCov.cov(item1ModelVector, item2ModelVector)
     covValue

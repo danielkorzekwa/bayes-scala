@@ -72,7 +72,7 @@ case class GenericGPRegression(x: Matrix, y: Matrix, covFunc: CovFunc, noiseStdD
    * @return [N x M] covariance matrix
    */
   private def cov(x: Matrix, z: Matrix): Matrix = {
-    Matrix(x.numRows, z.numRows, (rowIndex, colIndex) => covFunc.cov(x.row(rowIndex).t, z.row(colIndex).t))
+    Matrix(x.numRows, z.numRows, (rowIndex, colIndex) => covFunc.cov(x.row(rowIndex).t.toArray, z.row(colIndex).t.toArray))
   }
 
   private implicit def toDenseMatrix(m: Matrix): DenseMatrix[Double] = {
