@@ -66,15 +66,6 @@ With maven build tool, add to pom.xml config file:
 
 Multi task Gaussian process regression
 
-* [Gaussian Process Regression Networks](http://icml.cc/2012/papers/329.pdf)
-* [Gaussian Process Regression Networks (section: Gaussian Process Regression Networks)](http://www.cs.cmu.edu/~andrewgw/)
-* [Computationally Efficient Convolved Multiple Output Gaussian Processes](http://www.jmlr.org/papers/volume12/alvarez11a/alvarez11a.pdf)
-* [Dependent Gaussian Processes](http://papers.nips.cc/paper/2561-dependent-gaussian-processes.pdf)
-* [Multiple Output Gaussian Process Regression](http://citeseerx.ist.psu.edu/viewdoc/download;jsessionid=169DB9B94D0C1B16EDC68B55D8D92F6C?doi=10.1.1.114.3898&rep=rep1&type=pdf)
-* [Efficient Variational Inference for Gaussian Process Regression Networks](http://jmlr.csail.mit.edu/proceedings/papers/v31/nguyen13b.pdf)
-* [Multi-task Gaussian Process Prediction](http://papers.nips.cc/paper/3189-multi-task-gaussian-process-prediction.pdf)
-* [mtgp toolbox](https://github.com/ebonilla/mtgp)
-
 ## Examples
 
 * Examples illustrating the usage of a high level API for building Bayesian Networks
