@@ -3,10 +3,10 @@ package dk.bayes.infer.gp.gpr
 import org.junit._
 import org.junit.Assert._
 import breeze.linalg.DenseVector
-import breeze.linalg._
 import breeze.optimize.LBFGS
 import dk.bayes.math.linear._
 import scala.math._
+import dk.bayes.infer.gp.cov.CovSEiso
 
 /**
  * Learning gpml following http://www.gaussianprocess.org/gpml/code/matlab/doc/index.html regression example
@@ -39,4 +39,19 @@ class GpmlRegressionLearnTest {
     println("Learned gp parameters:" + newParams)
   }
 
+  @Test def predict_given_learned_parameters {
+    val covFunc = CovSEiso(sf = 0.68594, ell = -0.99340)
+    val noiseStdDev = -1.9025
+
+    val z = Matrix(Array(-1d, 1))
+    val model = GenericGPRegression(x, y, covFunc, noiseStdDev)
+
+    val predictions = model.predict(z)
+
+    assertEquals(0.037, predictions(0, 0), 0.0001) //z(0) mean
+    assertEquals(0.04051, predictions(0, 1), 0.0001) //z(0) variance
+
+    assertEquals(0.9783, predictions(1, 0), 0.0001) //z(1) mean
+    assertEquals(1.7361, predictions(1, 1), 0.0001) //z(1) variance
+  }
 }
