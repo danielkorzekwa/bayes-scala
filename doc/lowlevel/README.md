@@ -43,7 +43,6 @@ None
     * [Inference in Gaussian Process regression](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/infer/gp/gpr/GenericGPRegressionTest.scala)
     * [Inference in Gaussian Process regression with inducing variables](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/infer/gp/sgpr/GenericSparseGPRTest.scala)
     * [Parameters learning in Gaussian Process regression with inducing variables (variational lower bound on marginal likelihood)] (https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/infer/gp/sgpr/GenericSparseGPRLearnTest.scala)
-   
     * [Parameters learning in Gaussian Process regression (marginal likelihood maximisation)](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/infer/gp/gpr/GpmlRegressionLearnTest.scala)
     * [Parameters learning in Gaussian Process regression  (variational lower bound on marginal likelihood)](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/infer/gp/infercovparamsem/inferCovParamsEmTest.scala)
                                  
