@@ -49,7 +49,7 @@ class GenericSparseGPRTest {
     assertEquals(0.0371, predictions(0, 0), 0.0001) //z(0) mean
     assertEquals(0.01825, predictions(0, 1), 0.0001) //z(0) variance
 
-    assertEquals(0.9799, predictions(1, 0), 0.0001) //z(1) mean
+    assertEquals(0.9783, predictions(1, 0), 0.0001) //z(1) mean
     assertEquals(1.7139, predictions(1, 1), 0.0001) //z(1) variance
   }
 
@@ -69,10 +69,10 @@ class GenericSparseGPRTest {
 
     val predictions = model.predict(z)
 
-    assertEquals(-4.0546, predictions(0, 0), 0.0001) //z(0) mean
+    assertEquals(0.5467, predictions(0, 0), 0.0001) //z(0) mean
     assertEquals(8.3925e-4, predictions(0, 1), 0.0001) //z(0) variance
 
-    assertEquals(3.3626, predictions(1, 0), 0.0001) //z(1) mean
+    assertEquals(2.6868, predictions(1, 0), 0.0001) //z(1) mean
     assertEquals(8.3923e-4, predictions(1, 1), 0.0001) //z(1) variance
   }
 }

@@ -7,6 +7,7 @@ import breeze.optimize.LBFGS
 import dk.bayes.math.linear._
 import scala.math._
 import dk.bayes.infer.gp.cov.CovSEiso
+import dk.bayes.math.gaussian.MultivariateGaussian
 
 /**
  * Learning gpml following http://www.gaussianprocess.org/gpml/code/matlab/doc/index.html regression example
@@ -26,6 +27,7 @@ class GpmlRegressionLearnTest {
 
     val optimizer = new LBFGS[DenseVector[Double]](maxIter = 100, m = 3, tolerance = 1.0E-6)
     val optIterations = optimizer.iterations(diffFunction, initialParams).toList
+    println(optIterations.last.x)
     assertEquals(15, optIterations.size)
 
     val newParams = optIterations.last.x

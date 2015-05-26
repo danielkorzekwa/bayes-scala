@@ -16,4 +16,5 @@ trait SparseGPR {
    * Returns [mean,variance] for p(z|y)
    */
   def predict(z: Matrix): Matrix
+  
 }

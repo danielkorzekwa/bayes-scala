@@ -22,6 +22,20 @@ import scala.math._
 
 case class CovSEiso(sf: Double, ell: Double) extends CovFunc {
 
+  def covD(x: Matrix): Array[Matrix] = {
+    val covDfDSf = df_dSf(x)
+    val covDfDEll = df_dEll(x)
+
+    Array(covDfDSf, covDfDEll)
+  }
+
+  def covNMd(x: Matrix, z: Matrix): Array[Matrix] = {
+    val covDfDSf = df_dSf(x, z)
+    val covDfDEll = df_dEll(x, z)
+
+    Array(covDfDSf, covDfDEll)
+  }
+
   def cov(x1: Array[Double], x2: Array[Double]): Double = {
     require(x1.size == x2.size, "Vectors x1 and x2 have different sizes")
     val expArg = -0.5 * distance(x1, x2, exp(2 * ell))
@@ -35,6 +49,7 @@ case class CovSEiso(sf: Double, ell: Double) extends CovFunc {
    *
    */
   def df_dSf(x: Matrix): Matrix = Matrix(x.numRows, x.numRows, (rowIndex: Int, colIndex: Int) => df_dSf(x.row(rowIndex).t.toArray, x.row(colIndex).t.toArray))
+  def df_dSf(x: Matrix, z: Matrix): Matrix = Matrix(x.numRows, z.numRows, (rowIndex: Int, colIndex: Int) => df_dSf(x.row(rowIndex).t.toArray, z.row(colIndex).t.toArray))
   def df_dSf(x: Array[Double]): Matrix = Matrix(x.size, x.size, (rowIndex: Int, colIndex: Int) => df_dSf(x(rowIndex), x(colIndex)))
 
   /**
@@ -57,6 +72,7 @@ case class CovSEiso(sf: Double, ell: Double) extends CovFunc {
    *
    */
   def df_dEll(x: Matrix): Matrix = Matrix(x.numRows, x.numRows, (rowIndex: Int, colIndex: Int) => df_dEll(x.row(rowIndex).t.toArray(), x.row(colIndex).t.toArray()))
+  def df_dEll(x: Matrix, z: Matrix): Matrix = Matrix(x.numRows, z.numRows, (rowIndex: Int, colIndex: Int) => df_dEll(x.row(rowIndex).t.toArray(), z.row(colIndex).t.toArray()))
   def df_dEll(x: Array[Double]): Matrix = Matrix(x.size, x.size, (rowIndex: Int, colIndex: Int) => df_dEll(x(rowIndex), x(colIndex)))
 
   /**

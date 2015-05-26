@@ -8,6 +8,7 @@ import dk.bayes.infer.gp.cov.CovFunc
 import dk.bayes.infer.gp.mean.MeanFunc
 import dk.bayes.infer.gp.mean.ZeroMean
 import breeze.linalg.logdet
+import scala.language.implicitConversions
 
 /**
  * Gaussian Process Regression. It uses Gaussian likelihood and zero mean functions.
