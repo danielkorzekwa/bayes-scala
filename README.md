@@ -10,15 +10,15 @@ It is a Scala library for building Bayesian Networks with discrete/continuous va
 
 * Is it your own project? 
 
-Yes, I created it and I'm the main contributor, thought some people did some work too.
+Yes, I created it and I'm the main contributor, though some people did some work too.
 
 * Is there company support behind it?
 
-It is not officially supported by any company, but it is used at Betfair (company I work for) for some machine learning projects and there are a few (maybe 10) people/companies I know about that used it for commercial or academic work.
+It is not officially supported by any company, but it is used at Betfair (company I work for) for some machine learning projects, and there are a few (maybe 10) people/companies I know about that used it for commercial or academic work.
 
 * How much "future energy" does it have?
 
-A lot:). I pretty much implement what I need for company and some hobby ML projects. I truly love programming and machine learning, so I'm unlikely to stop working on it.
+A lot:). I pretty much implement what I need for a company and some hobby ML projects. I truly love programming and machine learning, so I'm unlikely to stop working on it.
 
 * What is the road map for 1 2 3 years?
 
