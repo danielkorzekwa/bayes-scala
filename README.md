@@ -22,7 +22,9 @@ A lot:). I pretty much implement what I need for company and some hobby ML proje
 
 * What is the road map for 1 2 3 years?
 
-Non parametric probabilistic collaborative models. Gaussian Processes are cool, but in their simple form they are nowhere near to Neural Networks for multi output large scale prediction models and sharing the statistical strength between different outputs. But, there is already some great work done in academia for building collaborative/convolved Gaussian Processes, including regression, classification and custom likelihood models.
+Non parametric probabilistic collaborative models. 
+
+Gaussian Processes are cool, but in their simple form they are nowhere near to Neural Networks for multi output large scale prediction models and sharing the statistical strength between different outputs. But, there has been already some great work done in academia for building collaborative/convolved Gaussian Processes, including regression, classification and custom likelihood models.
 
 The very next step is to implement Nguyen et al. Collaborative Multi-output Gaussian Processes, 2014 and compare it with independent GP model on Kaggle Walmart Weather Competition. A very simple GP got 5th place there, how much better the collaborative one might be?
 
@@ -82,10 +84,6 @@ With maven build tool, add to pom.xml config file:
     </dependency>
   <dependencies>
 ```
-
-## Roadmap
-
-Multi task Gaussian process regression
 
 ## Examples
 
