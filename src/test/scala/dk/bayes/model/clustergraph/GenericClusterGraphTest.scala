@@ -16,7 +16,7 @@ import StudentBN._
 
   val clusterGraph = createStudentGraph()
 
-  @Test(expected = classOf[IllegalArgumentException]) def add_edge_with_multiple_sepset_variables {
+  @Test(expected = classOf[IllegalArgumentException]) def add_edge_with_multiple_sepset_variables = {
     clusterGraph.addEdge(3, 3)
   }
 
@@ -62,7 +62,7 @@ import StudentBN._
     edge
   }
 
-  private def assertEdges(expected: Seq[Edge], actual: Seq[Edge]) {
+  private def assertEdges(expected: Seq[Edge], actual: Seq[Edge])= {
 
     assertEquals("Wrong number of edges:" + expected.size, expected.size, actual.size)
 

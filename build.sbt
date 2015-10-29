@@ -3,7 +3,7 @@ lazy val root = (project in file(".")).
     name := "bayes-scala",
     organization := "com.github.danielkorzekwa",
     version := "0.6-SNAPSHOT",
-    scalaVersion := "2.10.4",
+    scalaVersion := "2.11.6",
     scalacOptions ++= Seq(
       "-feature",
       "-deprecation",
@@ -14,7 +14,6 @@ lazy val root = (project in file(".")).
     ),
     ScoverageSbtPlugin.ScoverageKeys.coverageHighlighting := false, 
     libraryDependencies ++= Seq(
-      "com.googlecode.efficient-java-matrix-library" % "ejml" % "0.20",
       "org.apache.commons" % "commons-math3" % "3.3",
       "com.typesafe.scala-logging" %% "scala-logging-slf4j" % "2.1.2",
       "org.scalanlp" %% "breeze" % "0.11.2",

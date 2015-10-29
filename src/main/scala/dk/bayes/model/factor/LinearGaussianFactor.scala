@@ -7,6 +7,7 @@ import dk.bayes.math.gaussian.Gaussian
 import dk.bayes.model.factor.api.Factor
 import dk.bayes.model.factor.api.DoubleFactor
 import dk.bayes.math.gaussian.canonical._
+import breeze.linalg.DenseMatrix
 
 /**
  * This class represents a factor for a Linear Gaussian Distribution. N(ax + b,v)
@@ -32,7 +33,7 @@ case class LinearGaussianFactor(parentVarId: Int, varId: Int, a: Double, b: Doub
 
     val parentMsg = evidence match {
       case Some(evidence) => {
-        val linearCanonGaussian = DenseCanonicalGaussian(Matrix(a), b, v)
+        val linearCanonGaussian = DenseCanonicalGaussian(DenseMatrix(a), b, v)
         val msg = (linearCanonGaussian * DenseCanonicalGaussian(childFactor.m, childFactor.v).extend(2, 1)).withEvidence(1, evidence)
 
         msg.toGaussian
@@ -41,7 +42,7 @@ case class LinearGaussianFactor(parentVarId: Int, varId: Int, a: Double, b: Doub
         if (!childFactor.m.isNaN && !childFactor.v.isPosInfinity) {
           if (a == 1 && b == 0) Gaussian(childFactor.m, childFactor.v + v)
           else {
-            val linearCanonGaussian = DenseCanonicalGaussian(Matrix(a), b, v)
+            val linearCanonGaussian = DenseCanonicalGaussian(DenseMatrix(a), b, v)
             val msg = (linearCanonGaussian * DenseCanonicalGaussian(childFactor.m, childFactor.v).extend(2, 1)).marginalise(varId).toGaussian()
             msg
           }
@@ -65,7 +66,7 @@ case class LinearGaussianFactor(parentVarId: Int, varId: Int, a: Double, b: Doub
         val gaussianFactor = factor.asInstanceOf[GaussianFactor]
         require(gaussianFactor.varId == parentVarId || gaussianFactor.varId == varId, "Incorrect gaussian variable id")
 
-        val linearCanonGaussian = DenseCanonicalGaussian(Matrix(a), b, v)
+        val linearCanonGaussian = DenseCanonicalGaussian(DenseMatrix(a), b, v)
 
         val extendedGaussianFactor = if (gaussianFactor.varId == parentVarId) DenseCanonicalGaussian(gaussianFactor.m, gaussianFactor.v).extend(2, 0)
         else DenseCanonicalGaussian(gaussianFactor.m, gaussianFactor.v).extend(2, 1)

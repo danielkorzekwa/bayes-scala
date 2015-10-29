@@ -1,7 +1,6 @@
 package dk.bayes.math.gaussian.canonical
 
 import dk.bayes.math.numericops._
-import dk.bayes.math.linear.Matrix
 
 trait CanonicalGaussian {
 
@@ -72,8 +71,8 @@ object CanonicalGaussian {
 
   private def denseMultSparse(a: DenseCanonicalGaussian, b: SparseCanonicalGaussian): DenseCanonicalGaussian = {
 
-    val newK = a.k + Matrix(a.h.size, a.h.size, b.k.toDenseMatrix.data)
-    val newH = a.h + Matrix(b.h.toDenseVector.data)
+    val newK = a.k + b.k.toDenseMatrix
+    val newH = a.h + b.h.toDenseVector
     val newG = a.g + b.g
     new DenseCanonicalGaussian(newK, newH, newG)
   }
@@ -99,8 +98,8 @@ object CanonicalGaussian {
 
   private def denseDivideSparse(a: DenseCanonicalGaussian, b: SparseCanonicalGaussian): DenseCanonicalGaussian = {
 
-    val newK = a.k - Matrix(a.h.size, a.h.size, b.k.toDenseMatrix.data)
-    val newH = a.h - Matrix(b.h.toDenseVector.data)
+    val newK = a.k - b.k.toDenseMatrix
+    val newH = a.h - b.h.toDenseVector
     val newG = a.g - b.g
     new DenseCanonicalGaussian(newK, newH, newG)
   }

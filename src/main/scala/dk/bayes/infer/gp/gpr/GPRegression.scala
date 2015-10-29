@@ -1,6 +1,7 @@
 package dk.bayes.infer.gp.gpr
 
 import dk.bayes.math.linear._
+import breeze.linalg.DenseMatrix
 
 trait GPRegression {
 
@@ -10,7 +11,7 @@ trait GPRegression {
    * @param z Inputs for making predictions. [NxD] matrix. N - number of test points, D - dimensionality of input space
    * @return Predicted targets.[mean variance]
    */
-  def predict(z: Matrix): Matrix
+  def predict(z: DenseMatrix[Double]): DenseMatrix[Double]
 
   /**
    * Returns marginal likelihood int p(f|x)*p(y|f,x)df
@@ -22,5 +23,5 @@ trait GPRegression {
    *
    * @param covElemWiseD Element wise partial derivatives of covariance matrix K with respect to some parameter. K is given by: p(y) ~ N(mu,K)
    */
-  def loglikD(covElemWiseD: Matrix): Double
+  def loglikD(covElemWiseD: DenseMatrix[Double]): Double
 }

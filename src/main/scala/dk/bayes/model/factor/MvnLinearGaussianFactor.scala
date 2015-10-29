@@ -1,15 +1,14 @@
 package dk.bayes.model.factor
 
-import dk.bayes.math.linear._
 import dk.bayes.math.gaussian.LinearGaussian
 import dk.bayes.math.gaussian.Gaussian
 import dk.bayes.model.factor.api.Factor
 import dk.bayes.model.factor.api.DoubleFactor
-import dk.bayes.math.linear._
 import dk.bayes.model.factor.api.SingleFactor
-import dk.bayes.math.linear._
 import dk.bayes.math.gaussian.canonical.CanonicalGaussian
 import dk.bayes.math.gaussian.canonical.DenseCanonicalGaussian
+import breeze.linalg.DenseMatrix
+import breeze.linalg.DenseVector
 
 /**
  * This class represents a factor for a Linear Gaussian Distribution. N(ax + b,v)
@@ -22,15 +21,15 @@ import dk.bayes.math.gaussian.canonical.DenseCanonicalGaussian
  * @param b Mean term of N(ax + b,v)
  * @param v Variance term of N(ax + b,v)
  */
-case class MvnLinearGaussianFactor(parentVarId: Int, varId: Int, a: Matrix, b: Double, v: Double) extends DoubleFactor {
+case class MvnLinearGaussianFactor(parentVarId: Int, varId: Int, a: DenseMatrix[Double], b: Double, v: Double) extends DoubleFactor {
 
-  require(a.numRows == 1, "Only univariate child is supported")
+  require(a.rows == 1, "Only univariate child is supported")
 
   def getVariableIds(): Seq[Int] = Vector(parentVarId, varId)
 
   def marginal(varId: Int): SingleFactor = varId match {
     case `parentVarId` =>
-      MvnGaussianFactor(varId, DenseCanonicalGaussian(Matrix(a.size, 1), Matrix(a.size, a.size, (row: Int, col: Int) => Double.PositiveInfinity)))
+      MvnGaussianFactor(varId, DenseCanonicalGaussian(DenseVector.zeros[Double](a.size),  DenseMatrix.eye[Double](a.size)*100d ))
     case `varId` =>
       GaussianFactor(varId, 0, Double.PositiveInfinity)
   }
@@ -43,15 +42,15 @@ case class MvnLinearGaussianFactor(parentVarId: Int, varId: Int, a: Matrix, b: D
     val linearCanonGaussian = DenseCanonicalGaussian(a, b, v)
     val childFactorCanon = DenseCanonicalGaussian(childFactor.m, childFactor.v)
 
-    val parentMsg = (linearCanonGaussian * childFactorCanon.extend(a.numCols + a.numRows, a.numCols)).marginalise(a.numCols)
+    val parentMsg = (linearCanonGaussian * childFactorCanon.extend(a.cols + a.rows, a.cols)).marginalise(a.cols)
     //  val childMsg = CanonicalGaussianOps.*(linearCanonGaussian.varIds, parentFactor.canonGaussian, linearCanonGaussian).marginal(a.size + 1).toGaussian
     //  val childMsgMu = childMsg.m
     //   val childMsgVariance = childMsg.v
 
     val (parentMean, parentVariance) = (parentFactor.canonGaussian.mean, parentFactor.canonGaussian.variance)
-    val childMsgMu = (a * parentMean)(0) + b
-    val childMsgVariance = v + (a * parentVariance * a.transpose)(0)
-    Tuple2(MvnGaussianFactor(parentVarId, parentMsg), GaussianFactor(varId, childMsgMu, childMsgVariance))
+    val childMsgMu = (a * parentMean) + b
+    val childMsgVariance = a * parentVariance * a.t + v
+    Tuple2(MvnGaussianFactor(parentVarId, parentMsg), GaussianFactor(varId, childMsgMu(0), childMsgVariance(0,0)))
   }
 
 }

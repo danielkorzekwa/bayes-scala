@@ -1,13 +1,17 @@
 package dk.bayes.infer.gp.gpr
 
-import org.junit._
-import org.junit.Assert._
+import java.io.File
+
+import scala.math.log
+
+import org.junit.Assert.assertEquals
+import org.junit.Test
+
+import breeze.linalg.DenseMatrix
 import breeze.linalg.DenseVector
+import breeze.linalg.csvread
 import breeze.optimize.LBFGS
-import dk.bayes.math.linear._
-import scala.math._
 import dk.bayes.infer.gp.cov.CovSEiso
-import dk.bayes.math.gaussian.MultivariateGaussian
 
 /**
  * Learning gpml following http://www.gaussianprocess.org/gpml/code/matlab/doc/index.html regression example
@@ -15,11 +19,11 @@ import dk.bayes.math.gaussian.MultivariateGaussian
 class GpmlRegressionLearnTest {
 
   //[x,y]
-  private val data = loadCSV("src/test/resources/gpml/regression_data.csv", 1)
-  private val x = data.column(0)
-  private val y = data.column(1)
+  private val data = csvread(new File("src/test/resources/gpml/regression_data.csv"),skipLines=1)
+  private val x = data(::,0 to 0)
+  private val y = data(::,1)
 
-  @Test def test {
+  @Test def test = {
 
     // logarithm of [signal standard deviation,length-scale,likelihood noise standard deviation] 
     val initialParams = DenseVector(log(1d), log(1), log(0.1))
@@ -45,7 +49,7 @@ class GpmlRegressionLearnTest {
     val covFunc = CovSEiso(sf = 0.68594, ell = -0.99340)
     val noiseStdDev = -1.9025
 
-    val z = Matrix(Array(-1d, 1))
+    val z = DenseMatrix(-1d, 1)
     val model = GenericGPRegression(x, y, covFunc, noiseStdDev)
 
     val predictions = model.predict(z)

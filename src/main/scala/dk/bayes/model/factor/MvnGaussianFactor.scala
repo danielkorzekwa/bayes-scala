@@ -1,11 +1,11 @@
 package dk.bayes.model.factor
 
 import dk.bayes.model.factor.api.SingleFactor
-import dk.bayes.math.linear._
 import dk.bayes.model.factor.api.Factor
 import dk.bayes.math.gaussian.canonical.CanonicalGaussian
 import scala.math._
 import dk.bayes.math.gaussian.canonical.DenseCanonicalGaussian
+import dk.bayes.math.linear.isIdentical
 
 case class MvnGaussianFactor(varId: Int, canonGaussian: DenseCanonicalGaussian) extends SingleFactor {
 
@@ -45,9 +45,9 @@ case class MvnGaussianFactor(varId: Int, canonGaussian: DenseCanonicalGaussian) 
 
     val thesame = that match {
       case gaussianFactor: MvnGaussianFactor => {
-        (canonGaussian.k.matrix.isIdentical(gaussianFactor.canonGaussian.k.matrix, threshold) &&
-          canonGaussian.h.matrix.isIdentical(gaussianFactor.canonGaussian.h.matrix, threshold)) 
-          
+        (isIdentical(canonGaussian.k, gaussianFactor.canonGaussian.k, threshold) &&
+          isIdentical(canonGaussian.h, gaussianFactor.canonGaussian.h, threshold))
+
       }
       case _ => false
     }

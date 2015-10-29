@@ -1,6 +1,7 @@
 package dk.bayes.infer.gp.mean
 
-import dk.bayes.math.linear.Matrix
+import breeze.linalg.DenseMatrix
+import breeze.linalg.DenseVector
 
 /**
  * Mean function
@@ -12,5 +13,5 @@ trait MeanFunc {
    *
    * @param x [N x D] vector, N - number of random variables, D - dimensionality of random variable
    */
-  def mean(x: Matrix): Matrix
+  def mean(x:  DenseMatrix[Double]):  DenseVector[Double]
 }

@@ -3,6 +3,7 @@ package dk.bayes.math.gaussian
 import dk.bayes.math.linear._
 import dk.bayes.math.gaussian.canonical.CanonicalGaussian
 import dk.bayes.math.gaussian.canonical.DenseCanonicalGaussian
+import breeze.linalg.DenseMatrix
 
 /**
  * Linear Gaussian Model: N(m,v), where,
@@ -22,5 +23,5 @@ case class LinearGaussian(a: Double, b: Double, v: Double) {
    * Converts Linear Gaussian to a canonical form.
    *
    */
-  def toCanonical(): DenseCanonicalGaussian = DenseCanonicalGaussian(Matrix(a), b, v)
+  def toCanonical(): DenseCanonicalGaussian = DenseCanonicalGaussian(DenseMatrix(a), b, v)
 }

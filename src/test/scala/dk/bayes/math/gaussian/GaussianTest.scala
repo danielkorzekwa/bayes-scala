@@ -1,25 +1,30 @@
 package dk.bayes.math.gaussian
 
-import org.junit._
-import Assert._
-import dk.bayes.math.linear._
+import scala.math.pow
+
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
+import org.junit.Test
+
+import breeze.linalg.DenseMatrix
+import breeze.linalg.DenseVector
 import dk.bayes.math.discretise.Histogram
-import dk.bayes.testutil.AssertUtil._
-import scala.math._
+import dk.bayes.math.linear.isIdentical
+import dk.bayes.testutil.AssertUtil.assertGaussian
 
 class GaussianTest {
 
   /**
    * Tests for constructor.
    */
-  @Test(expected = classOf[IllegalArgumentException]) def constructor_variance_is_NaN {
+  @Test(expected = classOf[IllegalArgumentException]) def constructor_variance_is_NaN: Unit = {
     Gaussian(0, Double.NaN)
   }
-  @Test(expected = classOf[IllegalArgumentException]) def constructor_mean_is_NaN {
+  @Test(expected = classOf[IllegalArgumentException]) def constructor_mean_is_NaN: Unit = {
     Gaussian(Double.NaN, 2)
   }
 
-  @Test def pdf {
+  @Test def pdf = {
 
     assertEquals(0.398942, Gaussian(0, 1).pdf(0), 0.0001)
     assertEquals(0.2419, Gaussian(0, 1).pdf(-1), 0.0001)
@@ -31,7 +36,7 @@ class GaussianTest {
     assertEquals(0.4607, Gaussian(1.65, 0.5).pdf(1.2), 0.0001)
   }
 
-  @Test def cdf {
+  @Test def cdf = {
 
     assertEquals(0.5, Gaussian(0, 1).cdf(0), 0.0001)
     assertEquals(0.6914, Gaussian(0, 1).cdf(0.5), 0.0001)
@@ -43,7 +48,7 @@ class GaussianTest {
 
   }
 
-  @Test def invcdf {
+  @Test def invcdf = {
 
     assertEquals(0, Gaussian(0, 1).invcdf(0.5), 0.0001)
     assertEquals(0.4998, Gaussian(0, 1).invcdf(0.6914), 0.0001)
@@ -55,12 +60,12 @@ class GaussianTest {
 
   }
 
-  @Test def truncateGaussianWithInfiniteVariance {
+  @Test def truncateGaussianWithInfiniteVariance = {
     assertEquals(2, Gaussian(2, Double.PositiveInfinity).truncate(0.5, true).m, 0.0001)
     assertEquals(Double.PositiveInfinity, Gaussian(2, Double.PositiveInfinity).truncate(0.5, true).v, 0.0001)
   }
 
-  @Test def truncateUpperTail {
+  @Test def truncateUpperTail = {
 
     assertEquals(1.141, Gaussian(0, 1).truncate(0.5, true).m, 0.0001)
     assertEquals(0.2685, Gaussian(0, 1).truncate(0.5, true).v, 0.0001)
@@ -82,7 +87,7 @@ class GaussianTest {
 
   }
 
-  @Test def truncateLowerTail {
+  @Test def truncateLowerTail = {
     assertEquals(-0.50917, Gaussian(0, 1).truncate(0.5, false).m, 0.0001)
     assertEquals(0.48617, Gaussian(0, 1).truncate(0.5, false).v, 0.0001)
 
@@ -103,21 +108,21 @@ class GaussianTest {
 
   }
 
-  @Test def product_with_linear_gaussian {
+  @Test def product_with_linear_gaussian = {
 
     val priorProb = Gaussian(3, 1.5)
     val likelihoodProb = LinearGaussian(-0.1, 2, 0.5)
 
     val jointProb = priorProb * likelihoodProb
 
-    assertEquals(Matrix(Array(3, 1.7)).toString(), jointProb.m.toString())
-    assertEquals(Matrix(2, 2, Array(1.5, -0.15, -0.15, 0.515)).toString(), jointProb.v.toString())
+    assertEquals(DenseVector(Array(3, 1.7)).toString(), jointProb.m.toString())
+    assertTrue(isIdentical(new DenseMatrix(2, 2, Array(1.5, -0.15, -0.15, 0.515)), jointProb.v, 0.0001))
 
-    assertEquals(0.0111, jointProb.pdf(Matrix(Array(3.5, 0))), 0.0001d)
-    assertEquals(0.1679, jointProb.pdf(Matrix(Array(3d, 2))), 0.0001d)
+    assertEquals(0.0111, jointProb.pdf(DenseVector(Array(3.5, 0))), 0.0001d)
+    assertEquals(0.1679, jointProb.pdf(DenseVector(Array(3d, 2))), 0.0001d)
   }
 
-  @Test def product_of_different_gaussians {
+  @Test def product_of_different_gaussians = {
 
     val gaussian1 = Gaussian(2, 0.5)
     val gaussian2 = Gaussian(3, 0.2)
@@ -128,7 +133,7 @@ class GaussianTest {
     assertEquals(0.1428, product.v, 0.0001)
   }
 
-  @Test def product_of_single_gaussian {
+  @Test def product_of_single_gaussian = {
 
     val gaussian1 = Gaussian(2, 0.5)
 
@@ -138,7 +143,7 @@ class GaussianTest {
     assertEquals(0.25, product.v, 0.0001)
   }
 
-  @Test def product_gaussian_with_infinite_variance {
+  @Test def product_gaussian_with_infinite_variance = {
 
     val gaussian1 = Gaussian(2, 0.5)
     val gaussian2 = Gaussian(3, Double.PositiveInfinity)
@@ -154,7 +159,7 @@ class GaussianTest {
     assertEquals(0.5, product2.v, 0.0001)
   }
 
-  @Test def divide_negative_variance {
+  @Test def divide_negative_variance = {
     val gaussian1 = Gaussian(2, 0.5)
     val gaussian2 = Gaussian(3, 0.2)
 
@@ -164,7 +169,7 @@ class GaussianTest {
     assertEquals(-0.3333, div.v, 0.0001)
   }
 
-  @Test def divide {
+  @Test def divide = {
     val gaussian1 = Gaussian(2, 0.5)
     val gaussian2 = Gaussian(3, 0.2)
 
@@ -174,7 +179,7 @@ class GaussianTest {
     assertEquals(0.3333, div.v, 0.0001)
   }
 
-  @Test def divide_single_gaussian {
+  @Test def divide_single_gaussian = {
     val gaussian1 = Gaussian(2, 0.5)
 
     val div = gaussian1 / gaussian1
@@ -183,7 +188,7 @@ class GaussianTest {
     assertEquals(Double.PositiveInfinity, div.v, 0.0001)
   }
 
-  @Test def divide_with_infinite_gaussian {
+  @Test def divide_with_infinite_gaussian = {
     val gaussian1 = Gaussian(3, Double.PositiveInfinity)
     val gaussian2 = Gaussian(2, 0.5)
 
@@ -198,7 +203,7 @@ class GaussianTest {
     assertEquals(Double.PositiveInfinity, div2.v, 0.0001)
   }
 
-  @Test def product_then_divide {
+  @Test def product_then_divide = {
     val product = (Gaussian(4.000, 98.361) - Gaussian(41.000, 42.361)) * Gaussian(6.150, 10.096)
     val divide = product / Gaussian(6.150, 10.096)
 
@@ -206,7 +211,7 @@ class GaussianTest {
 
   }
 
-  @Test def add {
+  @Test def add = {
 
     val gaussian1 = Gaussian(2, 0.5)
     val gaussian2 = Gaussian(3, 0.2)
@@ -217,7 +222,7 @@ class GaussianTest {
     assertEquals(0.7, sum.v, 0.0001)
   }
 
-  @Test def multiply_by_a_constant {
+  @Test def multiply_by_a_constant = {
     val gaussian = Gaussian(0.3, pow(0.8, 2))
 
     val multGaussian = gaussian * 4
@@ -225,7 +230,7 @@ class GaussianTest {
     assertEquals(10.24, multGaussian.v, 0.0001)
   }
 
-  @Test def productXY {
+  @Test def productXY = {
 
     val x1 = Gaussian(0.3, pow(0.8, 2))
     val x2 = Gaussian(0.5, pow(0.6, 2))
@@ -245,7 +250,7 @@ class GaussianTest {
     assertEquals(0.2884, x1x2x3.v, 0.0001)
   }
 
-  @Test def subtract {
+  @Test def subtract = {
 
     val gaussian1 = Gaussian(2, 0.5)
     val gaussian2 = Gaussian(3, 0.2)
@@ -256,28 +261,28 @@ class GaussianTest {
     assertEquals(0.7, diff.v, 0.0001)
   }
 
-  @Test def derivativeMu {
+  @Test def derivativeMu = {
     assertEquals(-0.0023121, Gaussian(15, 101).derivativeM(3), 0.000001)
     assertEquals(0, Gaussian(15, 101).derivativeM(15), 0)
 
     assertEquals(0.1079, Gaussian(0, 1).derivativeM(2), 0.0001)
   }
 
-  @Test def derivativeSigma {
+  @Test def derivativeSigma = {
     assertEquals(0.000041015595, Gaussian(15, 101).derivativeV(3), 0.00000001)
 
     assertEquals(0.0809, Gaussian(0, 1).derivativeV(2), 0.0001)
   }
 
-  @Test(expected = classOf[IllegalArgumentException]) def projHistogram_inconsistent_values_with_probs {
+  @Test(expected = classOf[IllegalArgumentException]) def projHistogram_inconsistent_values_with_probs: Unit = {
     Gaussian.projHistogram(List(1, 2, 3), List(0.2, 0.3, 0.3, 0.2))
   }
 
-  @Test(expected = classOf[IllegalArgumentException]) def projHistogram_zero_probs {
+  @Test(expected = classOf[IllegalArgumentException]) def projHistogram_zero_probs: Unit = {
     Gaussian.projHistogram(List(1, 2, 3), List(0, 0, 0))
   }
 
-  @Test def projHistogram {
+  @Test def projHistogram = {
 
     val gaussian = Gaussian(10, 2)
     val histogram = Histogram(gaussian.m - 4 * gaussian.v, gaussian.m + 4 * gaussian.v, 50)

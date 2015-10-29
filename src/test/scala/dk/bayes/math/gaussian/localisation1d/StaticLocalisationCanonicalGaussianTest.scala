@@ -12,19 +12,19 @@ class StaticLocalisationCanonicalGaussianTest {
   val priorProb = Gaussian(m = 3, v = 1.5)
   val emissionProb = LinearGaussian(a = 1, b = 0, v = 0.9)
 
-  @Test def single_observation {
+  @Test def single_observation ={
 
     val location = priorProb.toCanonical()
     val observation = emissionProb.toCanonical()
 
     val locationPosterior = (location.extend(2, 0) * observation).withEvidence(1, 0.6)
 
-    assertEquals(1.5, locationPosterior.mean.at(0), 0.001)
-    assertEquals(0.5625, locationPosterior.variance.at(0), 0.001)
+    assertEquals(1.5, locationPosterior.mean(0), 0.001)
+    assertEquals(0.5625, locationPosterior.variance(0,0), 0.001)
 
   }
 
-  @Test def two_observations {
+  @Test def two_observations ={
 
     val location = priorProb.toCanonical()
 
@@ -37,12 +37,12 @@ class StaticLocalisationCanonicalGaussianTest {
     //Alternative approach - applying evidence in a serial order
     //val locationPosterior = (location * observation1).withEvidence(observation1Id, 0.6) * observation2.withEvidence(observation2Id, 0.62)
 
-    assertEquals(1.161, locationPosterior.mean.at(0), 0.001)
-    assertEquals(0.346, locationPosterior.variance.at(0), 0.001)
+    assertEquals(1.161, locationPosterior.mean(0), 0.001)
+    assertEquals(0.346, locationPosterior.variance(0,0), 0.001)
 
   }
 
-  @Test def multiple_100K_observations {
+  @Test def multiple_100K_observations ={
 
     val location = priorProb.toCanonical()
     val observation = emissionProb.toCanonical()
@@ -51,7 +51,7 @@ class StaticLocalisationCanonicalGaussianTest {
       (currLocation.extend(2, 0) * observation).withEvidence(1, 0.6)
     }
 
-    assertEquals(0.614, lastLocation.mean.at(0), 0.001)
-    assertEquals(0.008, lastLocation.variance.at(0), 0.001)
+    assertEquals(0.614, lastLocation.mean(0), 0.001)
+    assertEquals(0.008, lastLocation.variance(0,0), 0.001)
   }
 }

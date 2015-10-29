@@ -1,7 +1,9 @@
 package dk.bayes.infer.gp.cov
 
-import dk.bayes.math.linear._
 import scala.math._
+import breeze.linalg.DenseMatrix
+import breeze.linalg._
+import dk.bayes.math.linear.createDenseMatrixElemWise
 
 /**
  * Implementation based 'http://www.gaussianprocess.org/gpml/code/matlab/doc/index.html'
@@ -23,18 +25,19 @@ import scala.math._
 case class CovSEARDIso(sf: Double, ell: Array[Double]) extends CovFunc {
 
   private val l = ell.map(x => exp(2 * x))
-  
+
   /**
    * @param x [N x D] vector, N - number of random variables, D - dimensionality of random variable
    * @return ([N x N] covariance matrix, [N x N] partial derivatives matrix with respect to sf parameter, array of [NxN] partial derivative matrix with respect to ell parameters)
    */
-  def covWithD(x: Matrix, computeDfDSf: Boolean = true, computeDfDell: Boolean = true): Tuple3[Matrix, Option[Matrix], Option[Array[Matrix]]] = {
+  def covWithD(x: DenseMatrix[Double], computeDfDSf: Boolean = true, computeDfDell: Boolean = true): Tuple3[DenseMatrix[Double], Option[DenseMatrix[Double]], Option[Array[DenseMatrix[Double]]]] = {
     val covariance = cov(x)
-    val covDfSF = if (computeDfDSf) Some(2 * covariance) else None
+   
+    val covDfSF = if (computeDfDSf) Some(2d * covariance) else None
 
     val covDfDell = if (computeDfDell) {
 
-      val distanceDMatrixArray = (0 until ell.size).map { i => distanceMatrixD(x.column(i).toArray(), l(i)) }
+      val distanceDMatrixArray = (0 until ell.size).map { i => distanceMatrixD(x(::,i).toArray, l(i)) }
 
       val covDfDell = distanceDMatrixArray.map(m => covariance.:*(-0.5 * m)).toArray
       Some(covDfDell)
@@ -43,7 +46,7 @@ case class CovSEARDIso(sf: Double, ell: Array[Double]) extends CovFunc {
     (covariance, covDfSF, covDfDell)
   }
 
-  def cov(x1: Matrix, x2: Matrix): Double = {
+  def cov(x1: DenseVector[Double], x2: DenseVector[Double]): Double = {
     cov(x1.toArray, x2.toArray)
   }
 
@@ -51,7 +54,7 @@ case class CovSEARDIso(sf: Double, ell: Array[Double]) extends CovFunc {
     require(x1.size == x2.size, "Vectors x1 and x2 have different sizes")
 
     val expArg = -0.5 * distance(x1, x2)
-     exp(2 * sf) * exp(expArg)
+    exp(2 * sf) * exp(expArg)
   }
 
   private def distance(x1: Array[Double], x2: Array[Double]): Double = {
@@ -72,7 +75,7 @@ case class CovSEARDIso(sf: Double, ell: Array[Double]) extends CovFunc {
   }
 
   private def distanceMatrixD(x: Array[Double], l: Double) = {
-    Matrix(x.size, x.size, (rowIndex: Int, colIndex: Int) => distanceD(x(rowIndex), x(colIndex), l))
+    createDenseMatrixElemWise(x.size, x.size, (rowIndex: Int, colIndex: Int) => distanceD(x(rowIndex), x(colIndex), l))
   }
 
   private def distanceD(x1: Double, x2: Double, l: Double): Double = {

@@ -6,13 +6,15 @@ import dk.bayes.model.factor.api.DoubleFactor
 import dk.bayes.model.factor.api.Factor
 import dk.bayes.model.factor.api.SingleFactor
 import dk.bayes.math.gaussian.canonical.DenseCanonicalGaussian
+import breeze.linalg.DenseMatrix
+import breeze.linalg.DenseVector
 
 /**
  * This class represents bivariate Gaussian Factor.
  *
  * @author Daniel Korzekwa
  */
-case class BivariateGaussianFactor(parentVarId: Int, varId: Int, mean: Matrix, variance: Matrix) extends DoubleFactor {
+case class BivariateGaussianFactor(parentVarId: Int, varId: Int, mean: DenseVector[Double], variance: DenseMatrix[Double]) extends DoubleFactor {
 
   def getVariableIds(): Seq[Int] = Vector(parentVarId, varId)
 
@@ -30,7 +32,7 @@ case class BivariateGaussianFactor(parentVarId: Int, varId: Int, mean: Matrix, v
 
         val extendedGaussianFactor = if (gaussianFactor.varId == parentVarId) DenseCanonicalGaussian(gaussianFactor.m, gaussianFactor.v).extend(2, 0)
         else DenseCanonicalGaussian(gaussianFactor.m, gaussianFactor.v).extend(2, 1)
-        
+
         val productGaussian = canonGaussian * extendedGaussianFactor
         val bivariateGaussianFactor = BivariateGaussianFactor(parentVarId, varId, productGaussian.mean, productGaussian.variance)
         bivariateGaussianFactor

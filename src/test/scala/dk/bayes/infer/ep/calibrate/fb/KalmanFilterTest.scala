@@ -1,24 +1,24 @@
 package dk.bayes.infer.ep.calibrate.fb
 
-import org.junit._
-import Assert._
-import dk.bayes.model.factor.MvnGaussianFactor
-import dk.bayes.math.gaussian.canonical.CanonicalGaussian
-import dk.bayes.math.linear.Matrix
-import dk.bayes.model.factor.LinearGaussianFactor
-import dk.bayes.model.factorgraph.GenericFactorGraph
+import org.junit.Assert.assertEquals
+import org.junit.Test
+
+import breeze.linalg.DenseMatrix
+import breeze.linalg.DenseVector
 import dk.bayes.infer.ep.GenericEP
-import dk.bayes.model.factor.MvnLinearGaussianFactor
-import breeze.stats.distributions.MultivariateGaussian
 import dk.bayes.math.gaussian.canonical.DenseCanonicalGaussian
+import dk.bayes.model.factor.LinearGaussianFactor
+import dk.bayes.model.factor.MvnGaussianFactor
+import dk.bayes.model.factor.MvnLinearGaussianFactor
+import dk.bayes.model.factorgraph.GenericFactorGraph
 
 class KalmanFilterTest {
 
-  @Test def test {
+  @Test def test = {
 
-    val priorMvn = MvnGaussianFactor(varId = 1, DenseCanonicalGaussian(m = Matrix(0.92, 0.98), v = Matrix(2, 2, Array(1d, 0.5, 0.5, 1))))
+    val priorMvn = MvnGaussianFactor(varId = 1, DenseCanonicalGaussian(m = DenseVector(0.92, 0.98), v = new DenseMatrix(2, 2, Array(1d, 0.5, 0.5, 1))))
 
-    val prior = MvnLinearGaussianFactor(parentVarId = priorMvn.varId, varId = 2, a = Matrix(1, 0).t, b = 0, v = 1e-10)
+    val prior = MvnLinearGaussianFactor(parentVarId = priorMvn.varId, varId = 2, a = DenseMatrix(1.0, 0).t, b = 0, v = 1e-10)
     val likelihood1 = LinearGaussianFactor(prior.varId, 3, a = 1, b = 0, v = 2, evidence = Some(0.9))
     val likelihood2 = LinearGaussianFactor(prior.varId, 4, a = 1, b = 0, v = 2, evidence = Some(0.87))
 

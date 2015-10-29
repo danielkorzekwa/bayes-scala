@@ -1,21 +1,20 @@
 package dk.bayes.dsl.demo.variables
 
-import dk.bayes.dsl.Variable
-import dk.bayes.dsl.factor.DoubleFactor
-import dk.bayes.math.gaussian.LinearGaussian
-import dk.bayes.math.gaussian.Proj
-import dk.bayes.dsl.variable.Gaussian
-import dk.bayes.math.linear.Matrix
-import dk.bayes.math.gaussian.canonical.CanonicalGaussian
-import scala.reflect.runtime.universe._
-import scala.reflect.ClassTag
 import scala.reflect._
-import dk.bayes.dsl.variable.gaussian.multivariate.MultivariateGaussian
-import dk.bayes.math.gaussian.canonical.DenseCanonicalGaussian
-import dk.bayes.math.gaussian.canonical.SparseCanonicalGaussian
+import scala.reflect.ClassTag
+import scala.reflect.runtime.universe._
+
 import breeze.linalg.CSCMatrix
+import breeze.linalg.DenseMatrix
 import breeze.linalg.DenseVector
 import breeze.linalg.SparseVector
+import dk.bayes.dsl.Variable
+import dk.bayes.dsl.factor.DoubleFactor
+import dk.bayes.dsl.variable.Gaussian
+import dk.bayes.dsl.variable.gaussian.multivariate.MultivariateGaussian
+import dk.bayes.math.gaussian.canonical.CanonicalGaussian
+import dk.bayes.math.gaussian.canonical.DenseCanonicalGaussian
+import dk.bayes.math.gaussian.canonical.SparseCanonicalGaussian
 import dk.bayes.math.gaussian.canonical.SparseCanonicalGaussian
 import dk.bayes.math.gaussian.canonical.SparseCanonicalGaussian
 
@@ -48,7 +47,7 @@ trait ClutteredGaussianMvnParentFactor extends DoubleFactor[CanonicalGaussian, A
 
   private def calcYFactorMsgUpInternal(x: DenseCanonicalGaussian, oldFactorMsgUp: SparseCanonicalGaussian): Option[SparseCanonicalGaussian] = {
 
-    val oldfVarMsgUp = new DenseCanonicalGaussian(Matrix(oldFactorMsgUp.k(xIndex, xIndex)), Matrix(oldFactorMsgUp.h(xIndex)), oldFactorMsgUp.g)
+    val oldfVarMsgUp = new DenseCanonicalGaussian(DenseMatrix(oldFactorMsgUp.k(xIndex, xIndex)), DenseVector(oldFactorMsgUp.h(xIndex)), oldFactorMsgUp.g)
     val fFactorMsgDown = (x.marginal(xIndex) / (oldfVarMsgUp)).toGaussian
 
     val projValue = project(fFactorMsgDown, w, a, value)

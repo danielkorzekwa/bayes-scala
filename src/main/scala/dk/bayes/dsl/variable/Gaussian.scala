@@ -1,12 +1,13 @@
 package dk.bayes.dsl.variable
 
-import dk.bayes.math.linear.Matrix
+import breeze.linalg.DenseMatrix
+import breeze.linalg.DenseVector
 import dk.bayes.dsl.Variable
-import dk.bayes.dsl.variable.gaussian.univariate.UnivariateGaussian
 import dk.bayes.dsl.variable.gaussian.multivariate.MultivariateGaussian
-import dk.bayes.dsl.variable.gaussian.univariatelinear.UnivariateLinearGaussian
-import dk.bayes.dsl.variable.gaussian.univariatelinear.UnivariateLinearGaussian
 import dk.bayes.dsl.variable.gaussian.multivariatelinear.MultivariateLinearGaussian
+import dk.bayes.dsl.variable.gaussian.univariate.UnivariateGaussian
+import dk.bayes.dsl.variable.gaussian.univariatelinear.UnivariateLinearGaussian
+import dk.bayes.dsl.variable.gaussian.univariatelinear.UnivariateLinearGaussian
 
 /**
  * N(m,v)
@@ -25,7 +26,7 @@ object Gaussian {
   /**
    * N(m,v)
    */
-  def apply(m: Matrix, v: Matrix) = new MultivariateGaussian(m, v)
+  def apply(m: DenseVector[Double], v: DenseMatrix[Double]) = new MultivariateGaussian(m, v)
 
   /**
    * Constructors for UnivariateLinearGaussian
@@ -34,15 +35,15 @@ object Gaussian {
   /**
    * y = x + gaussian_noise
    */
-  def apply(x: UnivariateGaussian, v: Double, yValue: Double) = new UnivariateLinearGaussian(a = Matrix(1), Vector(x), b = 0, v, Some(yValue))
-  def apply(x: UnivariateGaussian, v: Double) = new UnivariateLinearGaussian(a = Matrix(1), Vector(x), b = 0, v, None)
+  def apply(x: UnivariateGaussian, v: Double, yValue: Double) = new UnivariateLinearGaussian(a = DenseMatrix(1d), Vector(x), b = 0, v, Some(yValue))
+  def apply(x: UnivariateGaussian, v: Double) = new UnivariateLinearGaussian(a = DenseMatrix(1d), Vector(x), b = 0, v, None)
 
   /**
    * y = A*x + b + gaussian_noise
    */
-  def apply(A: Matrix, x: Seq[Gaussian], v: Double) = new UnivariateLinearGaussian(A, x, b = 0, v, None)
-  def apply(A: Matrix, x: Seq[Gaussian], b: Double, v: Double, yValue: Double) = new UnivariateLinearGaussian(A, x, b, v, Some(yValue))
-  def apply(A: Matrix, x: Seq[Gaussian], b: Double, v: Double) = new UnivariateLinearGaussian(A, x, b, v, None)
+  def apply(A: DenseMatrix[Double], x: Seq[Gaussian], v: Double) = new UnivariateLinearGaussian(A, x, b = 0, v, None)
+  def apply(A: DenseMatrix[Double], x: Seq[Gaussian], b: Double, v: Double, yValue: Double) = new UnivariateLinearGaussian(A, x, b, v, Some(yValue))
+  def apply(A: DenseMatrix[Double], x: Seq[Gaussian], b: Double, v: Double) = new UnivariateLinearGaussian(A, x, b, v, None)
 
   /**
    * Constructors for MultivariateLinearGaussian
@@ -51,11 +52,11 @@ object Gaussian {
   /**
    * y = x + gaussian_noise
    */
-  def apply(x: MultivariateGaussian, v: Matrix, yValue: Matrix) = new MultivariateLinearGaussian(Matrix.identity(x.m.size), x, Matrix.zeros(x.m.size, 1), v, Some(yValue))
-  def apply(x: MultivariateGaussian, v: Matrix) = new MultivariateLinearGaussian(Matrix.identity(x.m.size), x, Matrix.zeros(x.m.size, 1), v, None)
+  def apply(x: MultivariateGaussian, v: DenseMatrix[Double], yValue: DenseVector[Double]) = new MultivariateLinearGaussian(DenseMatrix.eye[Double](x.m.size), x, DenseVector.zeros[Double](x.m.size), v, Some(yValue))
+  def apply(x: MultivariateGaussian, v: DenseMatrix[Double]) = new MultivariateLinearGaussian(DenseMatrix.eye[Double](x.m.size), x, DenseVector.zeros[Double](x.m.size), v, None)
   /**
    * y = A*x + b + gaussian_noise
    */
-  def apply(A: Matrix, x: MultivariateGaussian, b: Matrix, v: Matrix, yValue: Matrix) = new MultivariateLinearGaussian(A, x, b, v, Some(yValue))
-  def apply(A: Matrix, x: MultivariateGaussian, b: Matrix, v: Matrix) = new MultivariateLinearGaussian(A, x, b, v, None)
+  def apply(A: DenseMatrix[Double], x: MultivariateGaussian, b: DenseVector[Double], v: DenseMatrix[Double], yValue: DenseVector[Double]) = new MultivariateLinearGaussian(A, x, b, v, Some(yValue))
+  def apply(A: DenseMatrix[Double], x: MultivariateGaussian, b: DenseVector[Double], v: DenseMatrix[Double]) = new MultivariateLinearGaussian(A, x, b, v, None)
 }

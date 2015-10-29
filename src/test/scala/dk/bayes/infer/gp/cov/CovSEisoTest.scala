@@ -3,8 +3,8 @@ package dk.bayes.infer.gp.cov
 import org.junit._
 import Assert._
 import scala.math._
-import dk.bayes.math.linear.Matrix
 import scala.util.Random
+import breeze.linalg.DenseMatrix
 
 class CovSEisoTest {
 
@@ -111,7 +111,7 @@ class CovSEisoTest {
 
   @Test def perf_test_1d_df_dEll_matrix_input = {
 
-    val x = Matrix.zeros(1000, 1).toArray
+    val x = DenseMatrix.zeros[Double](1000, 1).toArray
     (1 to 10).foreach(_ => covFunc.df_dEll(x))
   }
 

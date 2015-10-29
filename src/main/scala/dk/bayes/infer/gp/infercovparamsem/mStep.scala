@@ -1,13 +1,14 @@
 package dk.bayes.infer.gp.infercovparamsem
 
-import breeze.linalg.DenseVector
-import dk.bayes.math.gaussian.MultivariateGaussian
-import breeze.optimize.DiffFunction
-import dk.bayes.math.linear.Matrix
-import breeze.optimize.LBFGS
-import scala.math._
-import breeze.linalg.logdet
 import breeze.linalg.DenseMatrix
+import breeze.linalg.DenseVector
+import breeze.linalg.cholesky
+import breeze.linalg.trace
+import breeze.optimize.DiffFunction
+import breeze.optimize.LBFGS
+import dk.bayes.math.gaussian.MultivariateGaussian
+import dk.bayes.math.linear.invchol
+import dk.bayes.math.linear.logdetchol
 
 /**
  * Returns new values of f's covariance parameters, that maximise the value of variational lower bound
@@ -24,7 +25,7 @@ object mStep {
    * @param calcFPriorVarD (params => derivatives of f prior variance with respect to hyper parameters
    */
   def apply(fPosterior: MultivariateGaussian, initialParams: Array[Double],
-            calcFPriorVar: (Array[Double]) => Matrix, calcFPriorVarD: (Array[Double]) => Array[Matrix]): Array[Double] = {
+            calcFPriorVar: (Array[Double]) => DenseMatrix[Double], calcFPriorVarD: (Array[Double]) => Array[DenseMatrix[Double]]): Array[Double] = {
     val initialParamsVec = DenseVector(initialParams)
 
     val diffFunction = GenericDiffFunction(fPosterior, calcFPriorVar, calcFPriorVarD)
@@ -37,7 +38,7 @@ object mStep {
     newParams.data
   }
 
-  case class GenericDiffFunction(fPosterior: MultivariateGaussian, calcFPriorVar: (Array[Double]) => Matrix, calcFPriorVarD: (Array[Double]) => Array[Matrix]) extends DiffFunction[DenseVector[Double]] {
+  case class GenericDiffFunction(fPosterior: MultivariateGaussian, calcFPriorVar: (Array[Double]) => DenseMatrix[Double], calcFPriorVarD: (Array[Double]) => Array[DenseMatrix[Double]]) extends DiffFunction[DenseVector[Double]] {
 
     /**
      * @param x Logarithm of [signal standard deviation,length-scale,likelihood noise standard deviation]
@@ -45,7 +46,7 @@ object mStep {
     def calculate(params: DenseVector[Double]): (Double, DenseVector[Double]) = {
 
       val fPriorVar = calcFPriorVar(params.data)
-      val fPriorVarInv = fPriorVar.inv
+      val fPriorVarInv = invchol(cholesky(fPriorVar).t)
       val fPriorVarD = calcFPriorVarD(params.data)
 
       val f = -loglik(fPriorVar, fPriorVarInv)
@@ -59,9 +60,9 @@ object mStep {
     /**
      * (http://mlg.eng.cam.ac.uk/zoubin/papers/ecml03.pdf, http://mlg.eng.cam.ac.uk/zoubin/papers/KimGha06-PAMI.pdf)
      */
-    private def loglik(fPriorVar: Matrix, fPriorVarInv: Matrix): Double = {
-      val logDet = logdet(new DenseMatrix(fPriorVar.numRows(),fPriorVar.numRows(),fPriorVar.toArray()))._2
-      -0.5 * logDet - 0.5 * (fPosterior.m.t * fPriorVar.inv * fPosterior.m)(0) - 0.5 * (fPriorVarInv * fPosterior.v).trace
+    private def loglik(fPriorVar: DenseMatrix[Double], fPriorVarInv:  DenseMatrix[Double]): Double = {
+      val logDet = logdetchol(cholesky(fPriorVar))
+      -0.5 * logDet - 0.5 * (fPosterior.m.t * invchol(cholesky(fPriorVar).t) * fPosterior.m) - 0.5 * trace(fPriorVarInv * fPosterior.v)
     }
 
     /**
@@ -69,8 +70,8 @@ object mStep {
      * (http://mlg.eng.cam.ac.uk/zoubin/papers/ecml03.pdf, http://mlg.eng.cam.ac.uk/zoubin/papers/KimGha06-PAMI.pdf)
      *
      */
-    private def loglikD(fPriorVarInv: Matrix, covD: Matrix): Double =
-      -0.5 * (fPriorVarInv * covD).trace + 0.5 * (fPosterior.m.t * fPriorVarInv * covD * fPriorVarInv * fPosterior.m)(0) +
-        0.5 * (fPriorVarInv * covD * fPriorVarInv * fPosterior.v).trace
+    private def loglikD(fPriorVarInv:  DenseMatrix[Double], covD:  DenseMatrix[Double]): Double =
+      -0.5 * trace(fPriorVarInv * covD) + 0.5 * (fPosterior.m.t * fPriorVarInv * covD * fPriorVarInv * fPosterior.m) +
+        0.5 * trace(fPriorVarInv * covD * fPriorVarInv * fPosterior.v)
   }
 }

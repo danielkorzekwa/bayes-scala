@@ -1,13 +1,10 @@
 package dk.bayes.dsl.variable.gaussian.univariate
 
 import dk.bayes.dsl.InferEngine
-import dk.bayes.infer.epnaivebayes.inferPosterior
-import dk.bayes.math.gaussian.Gaussian
-import dk.bayes.math.gaussian.canonical.CanonicalGaussian
-import dk.bayes.math.linear.Matrix
-import scala.math._
 import dk.bayes.dsl.factor.DoubleFactor
 import dk.bayes.infer.epnaivebayes.inferPosterior
+import dk.bayes.infer.epnaivebayes.inferPosterior
+import dk.bayes.math.gaussian.Gaussian
 
 object inferUnivariateGaussianEPNaiveBayes extends InferEngine[UnivariateGaussian, UnivariateGaussian] {
 

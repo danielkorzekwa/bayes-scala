@@ -10,6 +10,9 @@ import org.apache.commons.math3.random.MersenneTwister
 import dk.bayes.math.numericops.NumericOps
 import dk.bayes.math.gaussian.canonical.CanonicalGaussian
 import dk.bayes.math.gaussian.canonical.DenseCanonicalGaussian
+import breeze.linalg.DenseVector
+import breeze.linalg.DenseMatrix
+import breeze.linalg._
 
 /**
  * Univariate Gaussian Distribution.
@@ -91,15 +94,15 @@ case class Gaussian(m: Double, v: Double) extends NumericOps[Gaussian] {
   }
 
   def *(linearGaussian: LinearGaussian): MultivariateGaussian = {
-    val m = Matrix(this.m, linearGaussian.a * this.m + linearGaussian.b)
+    val m = DenseVector(this.m, linearGaussian.a * this.m + linearGaussian.b)
 
-    val R = Matrix.zeros(2, 2)
-    R.set(0, 0, 1 / this.v + pow(linearGaussian.a, 2) * (1 / linearGaussian.v))
-    R.set(0, 1, -linearGaussian.a * (1 / linearGaussian.v))
-    R.set(1, 0, (-1 / linearGaussian.v) * linearGaussian.a)
-    R.set(1, 1, 1 / linearGaussian.v)
+    val R = DenseMatrix.zeros[Double](2, 2)
+    R(0, 0) = 1 / this.v + pow(linearGaussian.a, 2) * (1 / linearGaussian.v)
+    R(0, 1) = -linearGaussian.a * (1 / linearGaussian.v)
+    R(1, 0) = (-1 / linearGaussian.v) * linearGaussian.a
+    R(1, 1) = 1 / linearGaussian.v
 
-    val v = R.inv
+    val v = invchol(cholesky(R).t)
 
     MultivariateGaussian(m, v)
   }
@@ -192,8 +195,8 @@ object Gaussian extends GaussianNumericOps {
    * Returns the value of cumulative distribution function of the standard normal distribution.
    */
   def stdCdf(x: Double): Double = standardNormal.cumulativeProbability(x)
-  
-   /**
+
+  /**
    * Returns the value of inverse cumulative distribution function of the standard normal distribution.
    */
   def stdInvCdf(x: Double): Double = standardNormal.inverseCumulativeProbability(x)

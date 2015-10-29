@@ -6,6 +6,8 @@ import dk.bayes.model.factor.BivariateGaussianFactor
 import dk.bayes.math.linear._
 import dk.bayes.math.gaussian.canonical.CanonicalGaussian
 import dk.bayes.math.gaussian.canonical.DenseCanonicalGaussian
+import breeze.linalg.DenseMatrix
+import breeze.linalg.DenseVector
 
 class GenericLDSMStepTest {
 
@@ -55,15 +57,15 @@ class GenericLDSMStepTest {
    * Tests for M-step (learning A and Q) - single sequence of latent variables.
    */
   @Test def mstep_for_a_and_q_single_stat {
-    val data = DenseCanonicalGaussian(Matrix(1.99966, 3.99959), Matrix(2, 2, Array(0.49020, 0.9808509, 0.9808509, 10.95929)))
+    val data = DenseCanonicalGaussian(DenseVector(1.99966, 3.99959), new DenseMatrix(2, 2, Array(0.49020, 0.9808509, 0.9808509, 10.95929)))
 
     assertEquals(2.0002, GenericLDSLearn.newA(Vector(data)), 0.0001)
     assertEquals(8.9966, GenericLDSLearn.newQ(Vector(data)), 0.0001)
   }
 
   @Test def mstep_for_a_and_q_two_stats {
-    val data1 = DenseCanonicalGaussian(Matrix(1.99966, 3.99959), Matrix(2, 2, Array(0.49020, 0.9808509, 0.9808509, 10.95929)))
-    val data2 = DenseCanonicalGaussian(Matrix(3.99959, 8), Matrix(2, 2, Array(10.95929, 21.89761, 21.89761, 52.78515)))
+    val data1 = DenseCanonicalGaussian(DenseVector(1.99966, 3.99959), new DenseMatrix(2, 2, Array(0.49020, 0.9808509, 0.9808509, 10.95929)))
+    val data2 = DenseCanonicalGaussian(DenseVector(3.99959, 8), new DenseMatrix(2, 2, Array(10.95929, 21.89761, 21.89761, 52.78515)))
     val data = Vector(data1, data2)
 
     assertEquals(1.9994, GenericLDSLearn.newA(data), 0.0001)
@@ -72,10 +74,10 @@ class GenericLDSMStepTest {
 
   @Test def mstep_for_a_and_q_four_stats {
 
-    val data1 = DenseCanonicalGaussian(Matrix(1.99966, 3.99959), Matrix(2, 2, Array(0.49020, 0.9808509, 0.9808509, 10.95929)))
-    val data2 = DenseCanonicalGaussian(Matrix(3.99959, 8), Matrix(2, 2, Array(10.95929, 21.89761, 21.89761, 52.78515)))
-    val data3 = DenseCanonicalGaussian(Matrix(2.99966, 6.99959), Matrix(2, 2, Array(0.49020, 0.9808509, 0.9808509, 10.95929)))
-    val data4 = DenseCanonicalGaussian(Matrix(6.99959, 12), Matrix(2, 2, Array(10.95929, 21.89761, 21.89761, 52.78515)))
+    val data1 = DenseCanonicalGaussian(DenseVector(1.99966, 3.99959), new DenseMatrix(2, 2, Array(0.49020, 0.9808509, 0.9808509, 10.95929)))
+    val data2 = DenseCanonicalGaussian(DenseVector(3.99959, 8), new DenseMatrix(2, 2, Array(10.95929, 21.89761, 21.89761, 52.78515)))
+    val data3 = DenseCanonicalGaussian(DenseVector(2.99966, 6.99959), new DenseMatrix(2, 2, Array(0.49020, 0.9808509, 0.9808509, 10.95929)))
+    val data4 = DenseCanonicalGaussian(DenseVector(6.99959, 12), new DenseMatrix(2, 2, Array(10.95929, 21.89761, 21.89761, 52.78515)))
     val data = Vector(data1, data2, data3, data4)
 
     assertEquals(1.8906, GenericLDSLearn.newA(data), 0.0001)

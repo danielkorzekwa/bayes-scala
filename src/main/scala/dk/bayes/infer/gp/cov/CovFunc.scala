@@ -1,6 +1,7 @@
 package dk.bayes.infer.gp.cov
 
 import dk.bayes.math.linear._
+import breeze.linalg.DenseMatrix
 
 /**
  * Covariance function that measures similarity between two points in some input space.
@@ -12,19 +13,19 @@ trait CovFunc {
    * @param x [N x D] vector, N - number of random variables, D - dimensionality of random variable
    * @return [N x N] covariance matrix
    */
-  def cov(x: Matrix): Matrix =
-    Matrix(x.numRows, x.numRows, (rowIndex: Int, colIndex: Int) => cov(x.row(rowIndex).t.toArray, x.row(colIndex).t.toArray))
-    
-  def cov(x: Array[Double]): Matrix =
-    Matrix(x.size, x.size, (rowIndex: Int, colIndex: Int) => cov(x(rowIndex), x(colIndex)))
+  def cov(x: DenseMatrix[Double]): DenseMatrix[Double] =
+    createDenseMatrixElemWise(x.rows, x.rows, (rowIndex: Int, colIndex: Int) => cov(x(rowIndex, ::).t.toArray, x(colIndex, ::).t.toArray))
+
+  def cov(x: Array[Double]): DenseMatrix[Double] =
+    createDenseMatrixElemWise(x.size, x.size, (rowIndex: Int, colIndex: Int) => cov(x(rowIndex), x(colIndex)))
 
   /**
    * @param x [N x D] vector, N - number of random variables, D - dimensionality of random variable
    * @param z [M x D] vector, N - number of random variables, D - dimensionality of random variable
    * @return [N x M] covariance matrix
    */
-  def covNM(x: Matrix, z: Matrix): Matrix =
-    Matrix(x.numRows, z.numRows, (rowIndex: Int, colIndex: Int) => cov(x.row(rowIndex).t.toArray, z.row(colIndex).t.toArray))
+  def covNM(x: DenseMatrix[Double], z: DenseMatrix[Double]): DenseMatrix[Double] =
+    createDenseMatrixElemWise(x.rows, z.rows, (rowIndex: Int, colIndex: Int) => cov(x(rowIndex, ::).t.toArray, z(colIndex, ::).t.toArray))
 
   /**
    * Returns similarity between two vectors.

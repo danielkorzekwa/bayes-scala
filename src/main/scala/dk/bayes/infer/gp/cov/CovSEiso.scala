@@ -1,7 +1,9 @@
 package dk.bayes.infer.gp.cov
 
-import dk.bayes.math.linear._
 import scala.math._
+
+import breeze.linalg.DenseMatrix
+import dk.bayes.math.linear._
 
 /**
  * Implementation based 'http://www.gaussianprocess.org/gpml/code/matlab/doc/index.html'
@@ -22,14 +24,14 @@ import scala.math._
 
 case class CovSEiso(sf: Double, ell: Double) extends CovFunc {
 
-  def covD(x: Matrix): Array[Matrix] = {
+  def covD(x: DenseMatrix[Double]): Array[DenseMatrix[Double]] = {
     val covDfDSf = df_dSf(x)
     val covDfDEll = df_dEll(x)
 
     Array(covDfDSf, covDfDEll)
   }
 
-  def covNMd(x: Matrix, z: Matrix): Array[Matrix] = {
+  def covNMd(x: DenseMatrix[Double], z: DenseMatrix[Double]): Array[DenseMatrix[Double]] = {
     val covDfDSf = df_dSf(x, z)
     val covDfDEll = df_dEll(x, z)
 
@@ -48,9 +50,12 @@ case class CovSEiso(sf: Double, ell: Double) extends CovFunc {
    * @param x [N x D] vector, N - number of random variables, D - dimensionality of random variable
    *
    */
-  def df_dSf(x: Matrix): Matrix = Matrix(x.numRows, x.numRows, (rowIndex: Int, colIndex: Int) => df_dSf(x.row(rowIndex).t.toArray, x.row(colIndex).t.toArray))
-  def df_dSf(x: Matrix, z: Matrix): Matrix = Matrix(x.numRows, z.numRows, (rowIndex: Int, colIndex: Int) => df_dSf(x.row(rowIndex).t.toArray, z.row(colIndex).t.toArray))
-  def df_dSf(x: Array[Double]): Matrix = Matrix(x.size, x.size, (rowIndex: Int, colIndex: Int) => df_dSf(x(rowIndex), x(colIndex)))
+  def df_dSf(x: DenseMatrix[Double]): DenseMatrix[Double] = 
+    createDenseMatrixElemWise(x.rows,x.rows, (rowIndex: Int, colIndex: Int) => df_dSf(x(rowIndex,::).t.toArray, x(colIndex,::).t.toArray))
+  def df_dSf(x: DenseMatrix[Double], z: DenseMatrix[Double]): DenseMatrix[Double] =
+    createDenseMatrixElemWise(x.rows, z.rows, (rowIndex: Int, colIndex: Int) => df_dSf(x(rowIndex,::).t.toArray, z(colIndex,::).t.toArray))
+  def df_dSf(x: Array[Double]): DenseMatrix[Double] = 
+    createDenseMatrixElemWise(x.size, x.size, (rowIndex: Int, colIndex: Int) => df_dSf(x(rowIndex), x(colIndex)))
 
   /**
    * Returns derivative of similarity between two vectors with respect to sf.
@@ -71,9 +76,13 @@ case class CovSEiso(sf: Double, ell: Double) extends CovFunc {
    * @param x [N x D] vector, N - number of random variables, D - dimensionality of random variable
    *
    */
-  def df_dEll(x: Matrix): Matrix = Matrix(x.numRows, x.numRows, (rowIndex: Int, colIndex: Int) => df_dEll(x.row(rowIndex).t.toArray(), x.row(colIndex).t.toArray()))
-  def df_dEll(x: Matrix, z: Matrix): Matrix = Matrix(x.numRows, z.numRows, (rowIndex: Int, colIndex: Int) => df_dEll(x.row(rowIndex).t.toArray(), z.row(colIndex).t.toArray()))
-  def df_dEll(x: Array[Double]): Matrix = Matrix(x.size, x.size, (rowIndex: Int, colIndex: Int) => df_dEll(x(rowIndex), x(colIndex)))
+  def df_dEll(x: DenseMatrix[Double]): DenseMatrix[Double] = 
+    createDenseMatrixElemWise(x.rows, x.rows, (rowIndex: Int, colIndex: Int) => df_dEll(x(rowIndex,::).t.toArray, x(colIndex,::).t.toArray))
+        
+  def df_dEll(x: DenseMatrix[Double], z: DenseMatrix[Double]): DenseMatrix[Double] = 
+   createDenseMatrixElemWise(x.rows, z.rows, (rowIndex: Int, colIndex: Int) => df_dEll(x(rowIndex,::).t.toArray, z(colIndex,::).t.toArray))
+  def df_dEll(x: Array[Double]): DenseMatrix[Double] = 
+    createDenseMatrixElemWise(x.size, x.size, (rowIndex: Int, colIndex: Int) => df_dEll(x(rowIndex), x(colIndex)))
 
   /**
    * Returns derivative of similarity between two vectors with respect to ell.

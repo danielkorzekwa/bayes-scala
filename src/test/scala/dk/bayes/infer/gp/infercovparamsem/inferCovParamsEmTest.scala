@@ -1,14 +1,18 @@
 package dk.bayes.infer.gp.infercovparamsem
 
-import org.junit._
-import Assert._
-import com.typesafe.scalalogging.slf4j.LazyLogging
-import dk.bayes.math.linear._
 import scala.math._
-import dk.bayes.math.gaussian.MultivariateGaussian
-import dk.bayes.infer.gp.cov.CovSEiso
-import dk.bayes.dsl.variable.Gaussian
+import org.junit._
+import org.junit.Assert._
+import com.typesafe.scalalogging.slf4j.LazyLogging
+import breeze.linalg.DenseMatrix
 import dk.bayes.dsl.infer
+import dk.bayes.dsl.variable.Gaussian
+import dk.bayes.infer.gp.cov.CovSEiso
+import dk.bayes.math.gaussian.MultivariateGaussian
+import dk.bayes.math.linear._
+import breeze.linalg._
+import java.io.File
+import dk.bayes.infer.gp.gpr.GenericGPRegression
 import dk.bayes.infer.gp.gpr.GenericGPRegression
 
 /**
@@ -21,9 +25,9 @@ import dk.bayes.infer.gp.gpr.GenericGPRegression
 class inferCovParamsEmTest extends LazyLogging {
 
   //[x,y]
-  private val data = loadCSV("src/test/resources/gpml/regression_data.csv", 1)
-  private val x = data.column(0)
-  private val y = data.column(1)
+  private val data =  csvread(new File("src/test/resources/gpml/regression_data.csv"),skipLines=1)
+  private val x = data(::,0 to 0)
+  private val y = data(::,1)
   val logLikStdDev = -1.9025
 
   @Test def test {
@@ -44,11 +48,11 @@ class inferCovParamsEmTest extends LazyLogging {
 
   private def eStep(params: Array[Double]): MultivariateGaussian = {
 
-    val m = Matrix.zeros(x.numRows(), 1)
+    val m = DenseVector.zeros[Double](x.rows)
     val v = calcFPriorVar(params)
     val fVar = dk.bayes.dsl.variable.gaussian.multivariate.MultivariateGaussian(m, v)
 
-    val likVarMatrix = pow(exp(logLikStdDev), 2) * Matrix.identity(x.numRows())
+    val likVarMatrix = pow(exp(logLikStdDev), 2) * DenseMatrix.eye[Double](x.rows)
     val yVar = Gaussian(fVar, likVarMatrix, yValue = y)
 
     val fPosterior = infer(fVar)
@@ -62,15 +66,15 @@ class inferCovParamsEmTest extends LazyLogging {
     MultivariateGaussian(fPosterior.m, fPosterior.v)
   }
 
-  private def calcFPriorVar(params: Array[Double]): Matrix = {
+  private def calcFPriorVar(params: Array[Double]): DenseMatrix[Double] = {
     val Array(logSf, logEll) = params
     val covFunc = CovSEiso(logSf, logEll)
 
-    val v = covFunc.cov(x) + Matrix.identity(x.numRows) * 1e-10
+    val v = covFunc.cov(x) + DenseMatrix.eye[Double](x.rows) * 1e-10
     v
   }
 
-  private def calcFPriorVarD(params: Array[Double]): Array[Matrix] = {
+  private def calcFPriorVarD(params: Array[Double]): Array[DenseMatrix[Double]] = {
 
     val Array(logSf, logEll) = params
     val covFunc = CovSEiso(logSf, logEll)

@@ -1,8 +1,10 @@
 package dk.bayes.dsl.variable.gaussian.multivariate
 
-import dk.bayes.math.linear.Matrix
+import scala.Vector
+
+import breeze.linalg.DenseMatrix
+import breeze.linalg.DenseVector
 import dk.bayes.dsl.Variable
-import dk.bayes.dsl.InferEngine
 import dk.bayes.dsl.variable.Gaussian
 
 /**
@@ -10,10 +12,10 @@ import dk.bayes.dsl.variable.Gaussian
  *
  * @author Daniel Korzekwa
  */
-case class MultivariateGaussian(val m: Matrix, val v: Matrix) extends Gaussian with MultivariateGaussianFactor {
+case class MultivariateGaussian(val m: DenseVector[Double], val v: DenseMatrix[Double]) extends Gaussian with MultivariateGaussianFactor {
 
-  require(v.numRows() == v.numCols(), "Multivariate Gaussian covariance must be a quare matrix")
-  require(m.size() == v.numRows(), "Mean size must be equal to variance square matrix size")
+  require(v.rows == v.cols, "Multivariate Gaussian covariance must be a quare matrix")
+  require(m.size == v.rows, "Mean size must be equal to variance square matrix size")
 
   def getParents(): Seq[Variable] = Nil
 }

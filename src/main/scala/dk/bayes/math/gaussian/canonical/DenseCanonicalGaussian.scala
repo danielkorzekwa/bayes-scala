@@ -1,13 +1,22 @@
 package dk.bayes.math.gaussian.canonical
 
-import scala.math._
-import org.ejml.simple.SimpleMatrix
-import org.ejml.simple.SimpleMatrix
-import org.ejml.ops.CommonOps
+import scala.language.implicitConversions
 import scala.collection.JavaConversions._
-import dk.bayes.math.linear._
-import dk.bayes.math.numericops._
+import scala.math.Pi
+import breeze.linalg.DenseMatrix
+import breeze.linalg.DenseVector
+import breeze.linalg.inv
+import breeze.numerics._
 import dk.bayes.math.gaussian.Gaussian
+import dk.bayes.math.linear.hasUncountable
+import dk.bayes.math.linear.filterNot
+import dk.bayes.math.linear.filterNotRow
+import dk.bayes.math.linear.filterNotColumn
+import breeze.linalg.det
+import breeze.linalg._
+import dk.bayes.math.linear.invchol
+import dk.bayes.math.linear.invchol
+import dk.bayes.math.linear.invchol
 
 /**
  * Canonical Gaussian following:
@@ -21,38 +30,42 @@ import dk.bayes.math.gaussian.Gaussian
  * @param h See Canonical Gaussian definition
  * @param g See Canonical Gaussian definition
  */
-case class DenseCanonicalGaussian(k: Matrix, h: Matrix, g: Double) extends CanonicalGaussian with NumericOps[DenseCanonicalGaussian] {
-  private lazy val kinv = k.inv
-
+case class DenseCanonicalGaussian(k: DenseMatrix[Double], h: DenseVector[Double], g: Double) extends CanonicalGaussian with dk.bayes.math.numericops.NumericOps[DenseCanonicalGaussian] {
+  private lazy val kinv = {
+    
+    if (k.size == 1 && k(0, 0) == 0) DenseMatrix(Double.PositiveInfinity) else invchol(cholesky(k).t)
+  }
   lazy val mean = {
-    if (!k.matrix.hasUncountable()) kinv * h
-    else Matrix(List.fill(h.size)(Double.NaN).toArray)
+    if (!hasUncountable(k)) kinv * h
+    else DenseVector(List.fill(h.size)(Double.NaN).toArray)
   }
 
-  lazy val variance = if (!k.matrix.hasUncountable()) kinv
-  else Matrix(h.size, h.size, List.fill(h.size * h.size)(Double.NaN).toArray)
+  lazy val variance = if (!hasUncountable(k)) kinv
+  else new DenseMatrix(h.size, h.size, List.fill(h.size * h.size)(Double.NaN).toArray)
 
-  require(k.numRows == k.numCols && k.numRows == h.numRows && h.numCols == 1, "k and(or) h matrices are incorrect")
+  require(k.rows == k.cols && k.rows == h.size, "k and(or) h matrices are incorrect")
 
   /**
    * Returns the value of probability density function for a given value of x.
    */
-  def pdf(x: Double): Double = pdf(Matrix(x))
+  def pdf(x: Double): Double = pdf(DenseVector(x))
 
   /**
    * Returns the value of probability density function for a given value of vector x.
    */
-  def pdf(x: Matrix): Double = exp(-0.5 * x.transpose * k * x + h.transpose * x + g)
+  def pdf(x: DenseVector[Double]): Double = {
+    exp(-0.5 * (x.t * k * x) + h.t * x + g)
+  }
 
   /**
    * Returns gaussian integral marginalising out the variable at a given index
    */
   def marginalise(varIndex: Int): DenseCanonicalGaussian = {
 
-    val kXX = k.filterNot(varIndex, varIndex)
-    val kXY = k.column(varIndex).filterNotRow(varIndex)
-    val kYX = k.row(varIndex).filterNotColumn(varIndex)
-    val hX = h.filterNotRow(varIndex)
+    val kXX = filterNot(k, varIndex, varIndex) //k.filterNot(varIndex, varIndex)
+    val kXY = filterNotRow(k(::, varIndex), varIndex) //k.column(varIndex).filterNotRow(varIndex)
+    val kYX = filterNotColumn(k(varIndex, ::).t.toDenseMatrix, varIndex) //k.row(varIndex).filterNotColumn(varIndex)
+    val hX = filterNotRow(h, varIndex) //h.filterNotRow(varIndex)
 
     val newK = kXX - kXY * (1d / k(varIndex, varIndex)) * kYX
     val newH = hX - kXY * (1d / k(varIndex, varIndex)) * h(varIndex)
@@ -75,13 +88,13 @@ case class DenseCanonicalGaussian(k: Matrix, h: Matrix, g: Double) extends Canon
    */
   def marginal(varIndex1: Int, varIndex2: Int): DenseCanonicalGaussian = {
 
-    val marginalMean = Matrix(mean(varIndex1), mean(varIndex2))
+    val marginalMean = DenseVector(mean(varIndex1), mean(varIndex2))
 
     val v11 = variance(varIndex1, varIndex1)
     val v12 = variance(varIndex1, varIndex2)
     val v21 = variance(varIndex2, varIndex1)
     val v22 = variance(varIndex2, varIndex2)
-    val marginalVariance = Matrix(2, 2, Array(v11, v12, v21, v22))
+    val marginalVariance = new DenseMatrix(2, 2, Array(v11, v12, v21, v22))
 
     val marginal = DenseCanonicalGaussian(marginalMean, marginalVariance)
     marginal
@@ -109,12 +122,12 @@ case class DenseCanonicalGaussian(k: Matrix, h: Matrix, g: Double) extends Canon
    */
   def withEvidence(varIndex: Int, varValue: Double): DenseCanonicalGaussian = {
 
-    val kXY = k.column(varIndex).filterNotRow(varIndex)
-    val hX = h.filterNotRow(varIndex)
+    val kXY = filterNotRow(k(::, varIndex), varIndex)
+    val hX = filterNotRow(h, varIndex)
 
-    val newK = k.filterNot(varIndex, varIndex)
+    val newK = filterNot(k, varIndex, varIndex)
     val newH = hX - kXY * varValue
-    val newG = g + h(varIndex, 0) * varValue - 0.5 * varValue * k(varIndex, varIndex) * varValue
+    val newG = g + h(varIndex) * varValue - 0.5 * varValue * k(varIndex, varIndex) * varValue
 
     DenseCanonicalGaussian(newK, newH, newG)
   }
@@ -123,7 +136,7 @@ case class DenseCanonicalGaussian(k: Matrix, h: Matrix, g: Double) extends Canon
 
     require(h.size == 1 && k.size == 1, "Multivariate gaussian cannot be transformed into univariate gaussian")
 
-    val variance = 1d / k(0)
+    val variance = 1d / k(0, 0)
     val mean = variance * h(0)
     Gaussian(mean, variance)
   }
@@ -132,11 +145,9 @@ case class DenseCanonicalGaussian(k: Matrix, h: Matrix, g: Double) extends Canon
    * Returns logarithm of normalisation constant.
    */
   def getLogP(): Double = {
-    val logP = g + (0.5 * mean.transpose * k * mean)(0)
+    val logP = 0.5 * (mean.t * k * mean) + g
     logP
   }
-
-  private def exp(m: Matrix) = scala.math.exp(m(0))
 
   /**
    * Extends the scope of Gaussian.
@@ -155,17 +166,18 @@ object DenseCanonicalGaussian extends DenseCanonicalGaussianNumericOps {
    * @param m Mean
    * @param v Variance
    */
-  def apply(m: Double, v: Double): DenseCanonicalGaussian = apply(Matrix(m), Matrix(v))
+  def apply(m: Double, v: Double): DenseCanonicalGaussian = apply(DenseVector(m), DenseMatrix(v))
 
   /**
    * @param m Mean
    * @param v Variance
    */
-  def apply(m: Matrix, v: Matrix): DenseCanonicalGaussian = {
-    val k = v.inv
+  def apply(m: DenseVector[Double], v: DenseMatrix[Double]): DenseCanonicalGaussian = {
+    
+    val k = invchol(cholesky(v).t)
     val h = k * m
-    val g = -0.5 * m.transpose * k * m - log(pow(2d * Pi, m.numRows.toDouble / 2d) * pow(v.det, 0.5))
-    new DenseCanonicalGaussian(k, h, g(0))
+    val g = -0.5 * (m.t * k * m) - log(pow(2d * Pi, m.size.toDouble / 2d) * pow(det(v), 0.5))
+    new DenseCanonicalGaussian(k, h, g)
   }
 
   /**
@@ -175,7 +187,7 @@ object DenseCanonicalGaussian extends DenseCanonicalGaussianNumericOps {
    * @param b Term of m = (ax+b)
    * @param v Variance
    */
-  def apply(a: Matrix, b: Double, v: Double): DenseCanonicalGaussian = apply(a, Matrix(b), Matrix(v))
+  def apply(a: DenseMatrix[Double], b: Double, v: Double): DenseCanonicalGaussian = apply(a, DenseVector(b), DenseMatrix(v))
 
   /**
    * Creates Canonical Gaussian from Linear Gaussian N(a * x + b, v)
@@ -184,31 +196,31 @@ object DenseCanonicalGaussian extends DenseCanonicalGaussianNumericOps {
    * @param b Term of m = (ax+b)
    * @param v Variance
    */
-  def apply(a: Matrix, b: Matrix, v: Matrix): DenseCanonicalGaussian = {
+  def apply(a: DenseMatrix[Double], b: DenseVector[Double], v: DenseMatrix[Double]): DenseCanonicalGaussian = {
 
-    val vInv = v.inv
+    val vInv = invchol(cholesky(v).t)
 
-    val k00 = a.transpose * vInv * a
-    val k01 = a.transpose.negative * vInv
-    val k10 = vInv.negative * a
+    val k00 = a.t * vInv * a
+    val k01 = (a.t * (-1d)) * vInv
+    val k10 = (vInv * (-1d)) * a
     val k11 = vInv
 
-    var k = k00.combine(0, k00.numCols, k01)
-    k = k.combine(k00.numRows, 0, k10)
-    k = k.combine(k00.numRows, k00.numCols, k11)
+    val k00k01 = DenseMatrix.horzcat(k00, k01)
+    val k10k11 = DenseMatrix.horzcat(k10, k11)
+    val k = DenseMatrix.vertcat(k00k01, k10k11)
 
-    val h00 = a.transpose.negative * vInv * b
+    val h00 = (-1d * a.t) * vInv * b
     val h01 = vInv * b
-    val h = h00.combine(h00.numRows, 0, h01)
+    val h = DenseVector.vertcat(h00, h01)
 
-    val g = -0.5 * b.transpose * v.inv * b + log(C(v))
+    val g = -0.5 * b.t * vInv * b + log(C(v))
 
     new DenseCanonicalGaussian(k, h, g(0))
   }
 
-  private def C(v: Matrix): Double = {
+  private def C(v: DenseMatrix[Double]): Double = {
     val n = v.size.toDouble
-    pow(2 * Pi, -n / 2) * pow(v.det, -0.5)
+    pow(2 * Pi, -n / 2) * pow(det(v), -0.5)
   }
 
   implicit def toGaussian(mvnGaussian: DenseCanonicalGaussian): Gaussian = mvnGaussian.toGaussian

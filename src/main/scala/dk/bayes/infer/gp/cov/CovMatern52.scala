@@ -1,7 +1,11 @@
 package dk.bayes.infer.gp.cov
 
-import dk.bayes.math.linear.Matrix
 import scala.math._
+import breeze.linalg.DenseVector
+import breeze.linalg.Matrix
+import breeze.linalg.DenseMatrix
+import breeze.linalg.cholesky
+import dk.bayes.math.linear.invchol
 
 /**
  * Matern covariance with v=5/2
@@ -17,7 +21,7 @@ case class CovMatern52(sf: Double, ell: Double) extends CovFunc {
 
     val P = calcP(x1.size)
     // r is the distance sqrt((x^p-x^q)'*inv(P)*(x^p-x^q))
-    val r = calcR(Matrix(x1), Matrix(x2), P)
+    val r = calcR(DenseVector(x1), DenseVector(x2), P)
     val t1 = calcT1(r)
     val t2 = calcT2(r)
 
@@ -42,7 +46,7 @@ case class CovMatern52(sf: Double, ell: Double) extends CovFunc {
    * @param x1 [Dx1] vector
    * @param x2 [Dx1] vector
    */
-  def df_dEll(x1: Matrix, x2: Matrix): Double = {
+  def df_dEll(x1: DenseVector[Double], x2: DenseVector[Double]): Double = {
     require(x1.size == x2.size, "Vectors x1 and x2 have different sizes")
 
     val P = calcP(x1.size)
@@ -56,10 +60,10 @@ case class CovMatern52(sf: Double, ell: Double) extends CovFunc {
       val t2 = calcT2(r)
 
       //derivative of Pinv with respect to ell 
-      val elemWiseD = 2 * exp(2 * ell) * Matrix.identity(x1.size)
+      val elemWiseD = 2 * exp(2 * ell) * DenseMatrix.eye[Double](x1.size)
 
       //derivative of r^2 with respect to ell
-      val dr2_dell = ((x1 - x2).t * (-1 * P * elemWiseD * P) * (x1 - x2))(0)
+      val dr2_dell = (x1 - x2).t * (-1d * P * elemWiseD * P) * (x1 - x2)
 
       val term1 = ((1 + t1 + t2) * exp(-t1)) * (-sqrt(5)) * (0.5 / r) * dr2_dell
       val term2 = exp(-t1) * (sqrt(5) * (0.5 / r) * dr2_dell + (5d / 3) * dr2_dell)
@@ -68,10 +72,10 @@ case class CovMatern52(sf: Double, ell: Double) extends CovFunc {
     }
   }
 
-  private def calcR(x1: Matrix, x2: Matrix, P: Matrix): Double = {
-    sqrt(((x1 - x2).t * P * (x1 - x2))(0))
+  private def calcR(x1: DenseVector[Double], x2:  DenseVector[Double], P:  DenseMatrix[Double]): Double = {
+    sqrt((x1 - x2).t * P * (x1 - x2))
   }
   private def calcT1(r: Double): Double = (sqrt(5) * r)
   private def calcT2(r: Double): Double = (5d / 3) * (r * r)
-  private def calcP(size: Int): Matrix = (exp(2 * ell) * Matrix.identity(size)).inv
+  private def calcP(size: Int):  DenseMatrix[Double] = invchol(cholesky(exp(2 * ell) *  DenseMatrix.eye[Double](size)).t)
 }

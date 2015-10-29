@@ -13,7 +13,7 @@ class HMMLocalisationCanonicalGaussianTest {
   val transitionProb = LinearGaussian(a = 1, b = 0, v = 0.2)
   val emissionProb = LinearGaussian(a = 1, b = 0, v = 0.9)
 
-  @Test def single_observation {
+  @Test def single_observation = {
 
     val location1 = priorProb.toCanonical()
     val location2 = transitionProb.toCanonical()
@@ -22,11 +22,11 @@ class HMMLocalisationCanonicalGaussianTest {
     val location2Marginal = (location1.extend(2, 0) * location2).marginalise(0)
     val location2Posterior = (location2Marginal.extend(2, 0) * observation).withEvidence(1, 0.6)
 
-    assertEquals(1.430, location2Posterior.mean.at(0), 0.001)
-    assertEquals(0.588, location2Posterior.variance.at(0), 0.001)
+    assertEquals(1.430, location2Posterior.mean(0), 0.001)
+    assertEquals(0.588, location2Posterior.variance(0,0), 0.001)
 
-    assertEquals(3, location2Marginal.mean.at(0), 0.001)
-    assertEquals(1.7, location2Marginal.variance.at(0), 0.001)
+    assertEquals(3, location2Marginal.mean(0), 0.001)
+    assertEquals(1.7, location2Marginal.variance(0,0), 0.001)
 
   }
 }

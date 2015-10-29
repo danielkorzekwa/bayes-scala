@@ -1,14 +1,12 @@
 package dk.bayes.infer.gp.cov
 
-import org.junit._
-import Assert._
+import scala.math.log
 import scala.util.Random
+
+import org.junit.Assert.assertEquals
+import org.junit.Test
+
 import breeze.linalg.DenseMatrix
-import scala.math._
-import dk.bayes.math.linear.Matrix
-import org.ejml.simple.SimpleMatrix
-import breeze.linalg.DenseVector
-import breeze.linalg.sum
 
 class CovSEARDIsoTest {
 
@@ -21,7 +19,7 @@ class CovSEARDIsoTest {
     Array.fill(d)(rand.nextDouble())
   }.toArray
 
-  val dataMatrix = Matrix(n, d, data)
+  val dataMatrix = new DenseMatrix(d, n, data).t
 
   val logSf = log(2)
   val logEll = Array.fill(d)(log(10 * rand.nextDouble()))

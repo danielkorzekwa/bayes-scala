@@ -1,19 +1,22 @@
 package dk.bayes.dsl.variable.gaussian.univariate
 
-import dk.bayes.dsl.InferEngine
 import java.util.concurrent.atomic.AtomicInteger
+
+import breeze.linalg.DenseMatrix
+import dk.bayes.dsl.InferEngine
 import dk.bayes.dsl.Variable
-import dk.bayes.model.factor.GaussianFactor
-import dk.bayes.model.factor.LinearGaussianFactor
-import dk.bayes.model.factor.api.Factor
 import dk.bayes.dsl.variable.categorical.CdfThresholdCategorical
-import dk.bayes.model.factor.TruncGaussianFactor
-import dk.bayes.math.linear.Matrix
-import dk.bayes.model.factor.DiffGaussianFactor
-import dk.bayes.model.factorgraph.GenericFactorGraph
+import dk.bayes.dsl.variable.gaussian.univariatelinear.UnivariateLinearGaussian
 import dk.bayes.infer.ep.GenericEP
 import dk.bayes.infer.ep.calibrate.fb.ForwardBackwardEPCalibrate
-import dk.bayes.dsl.variable.gaussian.univariatelinear.UnivariateLinearGaussian
+import dk.bayes.infer.ep.calibrate.fb.ForwardBackwardEPCalibrate
+import dk.bayes.math.linear.isIdentical
+import dk.bayes.model.factor.DiffGaussianFactor
+import dk.bayes.model.factor.GaussianFactor
+import dk.bayes.model.factor.LinearGaussianFactor
+import dk.bayes.model.factor.TruncGaussianFactor
+import dk.bayes.model.factor.api.Factor
+import dk.bayes.model.factorgraph.GenericFactorGraph
 
 object inferUnivariateGaussianFactorGraph extends InferEngine[UnivariateGaussian, UnivariateGaussian] {
 
@@ -50,10 +53,10 @@ object inferUnivariateGaussianFactorGraph extends InferEngine[UnivariateGaussian
       case v: UnivariateLinearGaussian if (v.x.size == 1 && v.yValue.isEmpty) => {
         val parentVarId = factorGraphVarsMap(v.x.head)
         val varId = factorVarId
-        LinearGaussianFactor(parentVarId, varId, a = v.a(0), b = v.b, v = v.v)
+        LinearGaussianFactor(parentVarId, varId, a = v.a(0,0), b = v.b, v = v.v)
       }
       //special case for a difference of two gaussians
-      case v: UnivariateLinearGaussian if (v.x.size == 2 && v.a.isIdentical(Matrix(1, -1), 0) && v.v==0) => {
+      case v: UnivariateLinearGaussian if (v.x.size == 2 && isIdentical(v.a,DenseMatrix(1.0, -1).t, 0d) && v.v==0) => { 
         val gaussian1VarId = factorGraphVarsMap(v.x(0))
         val gaussian2VarId = factorGraphVarsMap(v.x(1))
         val diffGaussianVarId = factorVarId

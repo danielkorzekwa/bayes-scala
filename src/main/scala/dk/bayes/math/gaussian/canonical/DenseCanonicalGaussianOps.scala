@@ -1,6 +1,8 @@
 package dk.bayes.math.gaussian.canonical
 
 import dk.bayes.math.linear._
+import breeze.linalg.DenseVector
+import breeze.linalg.DenseMatrix
 
 /**
  *  Multiples two canonical gaussians.
@@ -43,44 +45,50 @@ object DenseCanonicalGaussianOps {
     gaussian.copy(k = newK, h = newH)
   }
 
-  private def extendedScopeK(size: Int, startIndex: Int, k: Matrix): Matrix = {
+  private def extendedScopeK(size: Int, startIndex: Int, k: DenseMatrix[Double]): DenseMatrix[Double] = {
 
     val extendedK = if (startIndex == 0) {
-      val kMatrix = Matrix.zeros(size, size)
-      kMatrix.insertIntoThis(0, 0, k)
+      val kMatrix = DenseMatrix.zeros[Double](size, size)
+      kMatrix(0 until k.rows,0 until k.cols) := k
       kMatrix
     } else {
-      val kMatrix = Matrix.zeros(size, size)
+      val kMatrix = DenseMatrix.zeros[Double](size, size)
 
-      k.foreach { (rowId, colId) =>
-        val cellValue = k(rowId, colId)
+      k.foreachKey{case (rowId,colId) => 
+      
+         val cellValue = k(rowId, colId)
 
         val newRowId = startIndex + rowId
         val newColId = startIndex + colId
 
-        kMatrix.set(newRowId, newColId, cellValue)
+        kMatrix(newRowId, newColId) = cellValue
       }
+      
       kMatrix
     }
 
     extendedK
   }
 
-  private def extendedScopeH(size: Int, startIndex: Int, h: Matrix): Matrix = {
+  private def extendedScopeH(size: Int, startIndex: Int, h: DenseVector[Double]): DenseVector[Double] = {
 
     val extendedH = if (startIndex == 0) {
-      val hMatrix = Matrix.zeros(size, 1)
-      hMatrix.insertIntoThis(0, 0, h)
+      val hMatrix = DenseVector.zeros[Double](size)
+      
+      hMatrix(0 until h.size) := h
       hMatrix
     } else {
-      val hMatrix = Matrix.zeros(size, 1)
+      val hMatrix = DenseVector.zeros[Double](size)
 
-      h.foreach { (rowId, colId) =>
-        val cellValue = h(rowId, colId)
+      h.foreachKey { rowId => 
+        
+        val cellValue = h(rowId)
         val newRowId = startIndex + rowId
 
-        hMatrix.set(newRowId, 0, cellValue)
-      }
+        hMatrix(newRowId) = cellValue
+        
+        }
+      
       hMatrix
     }
     extendedH

@@ -1,15 +1,13 @@
 package dk.bayes.dsl.demo
 
 import org.junit._
-import Assert._
+import org.junit.Assert._
 import dk.bayes.dsl._
-import dk.bayes.math.gaussian.KalmanFilter
 import dk.bayes.dsl.variable.Gaussian
-import dk.bayes.math.linear.Matrix
 
 class KalmanFilterTest {
 
-  @Test def test_1d {
+  @Test def test_1d = {
 
     val x = Gaussian(0.5, 2)
     val y = Gaussian(x, v = 0.1, yValue = 0.7)

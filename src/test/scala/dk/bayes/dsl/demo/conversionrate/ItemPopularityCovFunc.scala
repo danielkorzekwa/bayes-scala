@@ -1,7 +1,8 @@
 package dk.bayes.dsl.demo.conversionrate
 
-import dk.bayes.math.linear.Matrix
+import breeze.linalg.DenseMatrix
 import dk.bayes.infer.gp.cov.CovSEiso
+import breeze.linalg._
 
 case class ItemPopularityCovFunc(brandLogSf: Double, brandLogEll: Double, modelLogSf: Double, modelLogEll: Double) {
 
@@ -17,8 +18,8 @@ case class ItemPopularityCovFunc(brandLogSf: Double, brandLogEll: Double, modelL
     covValue
   }
 
-  def covarianceMatrix(items: Seq[Item]): Matrix = {
-    val m = Matrix(items.size, items.size, (rowIndex, colIndex) => covariance(items(rowIndex), items(colIndex))) + Matrix.identity(items.size) * 1e-9
+  def covarianceMatrix(items: Seq[Item]): DenseMatrix[Double] = {
+    val m = DenseMatrix.tabulate(items.size, items.size)((rowIndex, colIndex) => covariance(items(rowIndex), items(colIndex))) + DenseMatrix.eye[Double](items.size) * 1e-9
     m
   }
 }

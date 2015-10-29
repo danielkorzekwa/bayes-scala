@@ -1,10 +1,10 @@
 package dk.bayes.infer.gp.infercovparamsem
 
+import scala.annotation.tailrec
+import scala.math._
 import com.typesafe.scalalogging.slf4j.LazyLogging
 import dk.bayes.math.gaussian.MultivariateGaussian
-import dk.bayes.math.linear.Matrix
-import scala.math._
-import scala.annotation.tailrec
+import breeze.linalg.DenseMatrix
 
 /**
  * Learning Gaussian Process covariance parameters by maximising variational lower bound:
@@ -27,7 +27,7 @@ object inferCovParamsEm extends LazyLogging {
    * @param currentIterParams Learned parameters at the current iteration
    */
   def apply(initialParams: Array[Double],
-            eStep: (Array[Double]) => MultivariateGaussian, calcFPriorVar: (Array[Double]) => Matrix, calcFPriorVarD: (Array[Double]) => Array[Matrix],
+            eStep: (Array[Double]) => MultivariateGaussian, calcFPriorVar: (Array[Double]) => DenseMatrix[Double], calcFPriorVarD: (Array[Double]) => Array[DenseMatrix[Double]],
             maxIter: Int = 100, tolerance: Double = 1e-6): Array[Double] = {
 
     @tailrec

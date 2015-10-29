@@ -1,8 +1,9 @@
 package dk.bayes.infer.gp.mean
 
-import dk.bayes.math.linear.Matrix
+import breeze.linalg.DenseMatrix
+import breeze.linalg.DenseVector
 
 case class ZeroMean() extends MeanFunc {
 
-  def mean(x: Matrix): Matrix = Matrix.zeros(x.numRows, 1)
+  def mean(x: DenseMatrix[Double]): DenseVector[Double] = DenseVector.zeros[Double](x.rows)
 }

@@ -19,7 +19,7 @@ object inferUnivariateGaussianSimplest extends InferEngine[UnivariateGaussian, U
     (child.getParents().size == 1 && child.getParents()(0).eq(x)) &&
       !child.hasChildren &&
       child.a.size == 1 &&
-      child.a(0) == 1 &&
+      child.a(0,0) == 1 &&
       child.b == 0 &&
       child.yValue.isDefined
 
@@ -29,7 +29,7 @@ object inferUnivariateGaussianSimplest extends InferEngine[UnivariateGaussian, U
 
     val child = x.getChildren.head.asInstanceOf[UnivariateLinearGaussian]
 
-    val a = child.a(0)
+    val a = child.a(0,0)
     val posteriorVar = 1d / (1d / x.v + 1d / child.v)
 
     val posteriorMean = posteriorVar * ((1d / child.v) * child.yValue.get + (1d / x.v) * x.m)

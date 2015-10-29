@@ -3,6 +3,9 @@ package dk.bayes.dsl.variable.gaussian.multivariate
 import dk.bayes.dsl.InferEngine
 import dk.bayes.dsl.variable.gaussian.multivariatelinear.MultivariateLinearGaussian
 import dk.bayes.math.gaussian.canonical.DenseCanonicalGaussian
+import breeze.linalg.inv
+import breeze.linalg.cholesky
+import dk.bayes.math.linear.invchol
 
 object inferMultivariateGaussianSimplest extends InferEngine[MultivariateGaussian, MultivariateGaussian] {
 
@@ -27,10 +30,10 @@ object inferMultivariateGaussianSimplest extends InferEngine[MultivariateGaussia
   def infer(x: MultivariateGaussian): MultivariateGaussian = {
     val child = x.getChildren.head.asInstanceOf[MultivariateLinearGaussian]
 
-    val xVInv = x.v.inv
-    val childVInv = child.v.inv
+    val xVInv = invchol(cholesky(x.v).t)
+    val childVInv = invchol(cholesky(child.v).t)
 
-    val posteriorVar = (xVInv + child.a.t * childVInv * child.a).inv
+    val posteriorVar = invchol(cholesky(xVInv + child.a.t * childVInv * child.a).t)
     val posteriorMean = posteriorVar * (child.a.t * childVInv * (child.yValue.get - child.b) + xVInv * x.m)
 
     new MultivariateGaussian(posteriorMean, posteriorVar)

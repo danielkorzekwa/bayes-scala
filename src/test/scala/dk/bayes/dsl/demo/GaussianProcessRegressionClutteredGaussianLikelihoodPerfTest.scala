@@ -1,29 +1,17 @@
 package dk.bayes.dsl.demo
 
-import org.junit._
-import Assert._
-import dk.bayes.dsl.variable.Gaussian
-import dk.bayes.math.linear.Matrix
-import dk.bayes.infer.gp.cov.CovSEiso
 import scala.math._
-import dk.bayes.dsl.infer
-import dk.bayes.testutil.AssertUtil._
+
+import org.junit._
+import org.junit.Assert._
+
+import breeze.linalg.DenseMatrix
+import breeze.linalg.DenseVector
 import dk.bayes.dsl.demo.variables.ClutteredGaussian
-import dk.bayes.math.numericops.NumericOps
-import dk.bayes.math.numericops.multOp
-import dk.bayes.dsl.factor.SingleFactor
-import dk.bayes.math.gaussian.canonical.DenseCanonicalGaussian
-import dk.bayes.dsl.factor.DoubleFactor
-import dk.bayes.infer.epnaivebayes.inferPosterior
-import dk.bayes.math.gaussian.canonical.SparseCanonicalGaussian
-import dk.bayes.math.gaussian.canonical.CanonicalGaussian
-import dk.bayes.math.numericops._
-import dk.bayes.math.gaussian.canonical.SparseCanonicalGaussian
-import dk.bayes.math.gaussian.canonical.SparseCanonicalGaussian
-import dk.bayes.math.gaussian.canonical.SparseCanonicalGaussian
-import dk.bayes.math.gaussian.canonical.SparseCanonicalGaussian
-import dk.bayes.math.gaussian.canonical.SparseCanonicalGaussian
-import dk.bayes.math.gaussian.canonical.SparseCanonicalGaussian
+import dk.bayes.dsl.infer
+import dk.bayes.dsl.variable.Gaussian
+import dk.bayes.infer.gp.cov.CovSEiso
+import dk.bayes.testutil.AssertUtil._
 
 class GaussianProcessRegressionClutteredGaussianLikelihoodPerfTest {
 
@@ -31,9 +19,9 @@ class GaussianProcessRegressionClutteredGaussianLikelihoodPerfTest {
 
     val n = 400
 
-    val fMean = Matrix.zeros(n, 1)
+    val fMean = DenseVector.zeros[Double](n)
 
-    val x = Matrix((1d to n by 1).toArray)
+    val x = DenseMatrix((1d to n by 1)).t
     val covFunc = CovSEiso(sf = log(7.5120), ell = log(2.1887))
     val fVar = covFunc.cov(x)
     val f = Gaussian(fMean, fVar) //f variable

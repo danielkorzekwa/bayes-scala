@@ -3,7 +3,6 @@ package dk.bayes.dsl.demo.conversionrate
 import org.junit._
 import Assert._
 import scala.math._
-import dk.bayes.math.linear.Matrix
 import scala.util.Random
 import dk.bayes.math.gaussian.Gaussian
 import dk.bayes.dsl.variable.categorical.MvnGaussianThreshold
@@ -11,6 +10,8 @@ import dk.bayes.dsl.variable.categorical.MvnGaussianThreshold
 import dk.bayes.dsl.variable.categorical.MvnGaussianThreshold
 import dk.bayes.dsl.variable.gaussian.multivariate.MultivariateGaussian
 import dk.bayes.dsl._
+import breeze.linalg.DenseMatrix
+import breeze.linalg.DenseVector
 
 /**
  * For practical usage, don't create single variable for every click. Instead, use one variable for all item clicks.
@@ -31,7 +32,7 @@ class ConversionRateTest {
      * Build Gaussian Process model
      */
 
-    val itemPopularityMean = Matrix.zeros(items.size, 1)
+    val itemPopularityMean = DenseVector.zeros[Double](items.size)
 
     val itemPopularityCovFunc = ItemPopularityCovFunc(
       brandLogSf = log(1), brandLogEll = log(1), modelLogSf = log(0.5), modelLogEll = log(1))

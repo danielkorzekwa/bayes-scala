@@ -1,8 +1,7 @@
 package dk.bayes.dsl.variable.gaussian.univariatelinear
 
+import breeze.linalg.DenseMatrix
 import dk.bayes.dsl.Variable
-import dk.bayes.math.linear.Matrix
-import dk.bayes.dsl.InferEngine
 import dk.bayes.dsl.variable.Gaussian
 
 /**
@@ -10,7 +9,7 @@ import dk.bayes.dsl.variable.Gaussian
  *
  * @author Daniel Korzekwa
  */
-class UnivariateLinearGaussian(val a: Matrix, val x: Seq[Gaussian], val b: Double, val v: Double, val yValue: Option[Double] = None) extends Gaussian
+class UnivariateLinearGaussian(val a: DenseMatrix[Double], val x: Seq[Gaussian], val b: Double, val v: Double, val yValue: Option[Double] = None) extends Gaussian
   with UnivariateLinearGaussianFactor {
   
   def getParents(): Seq[Variable] = x

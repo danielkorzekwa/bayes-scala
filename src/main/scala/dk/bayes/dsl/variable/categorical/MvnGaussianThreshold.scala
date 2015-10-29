@@ -8,10 +8,11 @@ import dk.bayes.math.gaussian.canonical.SparseCanonicalGaussian
 import breeze.linalg.CSCMatrix
 import breeze.linalg.SparseVector
 import dk.bayes.math.gaussian.canonical.DenseCanonicalGaussian
-import dk.bayes.math.linear.Matrix
 import MvnGaussianThreshold._
 import dk.bayes.math.gaussian.Gaussian
 import dk.bayes.dsl.variable.categorical.infer.inferEngineMvnGaussianThreshold
+import breeze.linalg.DenseMatrix
+import breeze.linalg.DenseVector
 
 /**
  * p(exceeds=true) = I(x + N(0,v)>threshold)
@@ -42,7 +43,7 @@ object MvnGaussianThreshold {
 
     private def calcYFactorMsgUpInternal(x: DenseCanonicalGaussian, oldFactorMsgUp: SparseCanonicalGaussian): Option[SparseCanonicalGaussian] = {
 
-      val oldYVarMsgUp = new DenseCanonicalGaussian(Matrix(oldFactorMsgUp.k(xIndex, xIndex)), Matrix(oldFactorMsgUp.h(xIndex)), oldFactorMsgUp.g)
+      val oldYVarMsgUp = new DenseCanonicalGaussian(DenseMatrix(oldFactorMsgUp.k(xIndex, xIndex)),DenseVector(oldFactorMsgUp.h(xIndex)), oldFactorMsgUp.g)
       val factorMsgDown = (x.marginal(xIndex) / (oldYVarMsgUp)).toGaussian + Gaussian(0, v)
 
       //compute new factor msg up
