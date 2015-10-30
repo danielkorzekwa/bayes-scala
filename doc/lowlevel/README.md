@@ -49,8 +49,6 @@ None
 	* Sparse Gaussian Process Regression
     	* [Inference in Gaussian Process regression with inducing variables - link to bayes-scala-gp project](https://github.com/danielkorzekwa/bayes-scala-gp/blob/master/src/test/scala/dk/gp/sgpr/sgprPredictTest.scala)
     	* [Parameters learning in Gaussian Process regression with inducing variables (variational lower bound on marginal likelihood) - link to bayes-scala-gp project] (https://github.com/danielkorzekwa/bayes-scala-gp/blob/master/src/test/scala/dk/gp/sgpr/sgprTrainTest.scala)
-    	* 
-  
     * [Parameters learning in Gaussian Process regression  (variational lower bound on marginal likelihood)](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/infer/gp/infercovparamsem/inferCovParamsEmTest.scala)
                                  
 *   Others 

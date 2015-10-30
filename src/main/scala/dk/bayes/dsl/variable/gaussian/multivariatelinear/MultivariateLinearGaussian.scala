@@ -11,7 +11,8 @@ import dk.bayes.dsl.variable.gaussian.multivariate.MultivariateGaussian
  *
  * @author Daniel Korzekwa
  */
-class MultivariateLinearGaussian(val a: DenseMatrix[Double], val x: MultivariateGaussian, val b: DenseVector[Double], val v: DenseMatrix[Double], val yValue: Option[DenseVector[Double]]) extends Gaussian {
+class MultivariateLinearGaussian(val a: DenseMatrix[Double], val x: MultivariateGaussian, val b: DenseVector[Double], val v: DenseMatrix[Double], val yValue: Option[DenseVector[Double]]) 
+extends Gaussian with MultivariateLinearGaussianFactor {
 
   def getParents(): Seq[Variable] = List(x)
 }

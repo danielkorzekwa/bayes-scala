@@ -10,14 +10,12 @@ It is a Scala library for building Bayesian Networks with discrete/continuous va
 
 ## How to use it from sbt and maven?
 
-Release and snaphot versions are available for Scala versions 2.10 and 2.11
-
 ### Release version
 
 SBT configuration: 
 
 ```scala
-libraryDependencies += "com.github.danielkorzekwa" % "bayes-scala_2.10" % "0.5"  
+libraryDependencies += "com.github.danielkorzekwa" %% "bayes-scala" % "0.5"  
 ```
 
 Maven configuration:
@@ -26,7 +24,7 @@ Maven configuration:
   <dependencies>
     <dependency>
       <groupId>com.github.danielkorzekwa</groupId>
-      <artifactId>bayes-scala_2.10</artifactId>
+      <artifactId>bayes-scala_2.10</artifactId> //or bayes-scala_2.11
       <version>0.5</version>
     </dependency>
   <dependencies>
@@ -39,7 +37,7 @@ Snapshot artifact is built by a Travis CI and deployed to Sonatype OSS Snapshots
 With sbt build tool, add to build.sbt config file:
 
 ```scala
-libraryDependencies += "com.github.danielkorzekwa" % "bayes-scala_2.10" % "0.6-SNAPSHOT"  
+libraryDependencies += "com.github.danielkorzekwa" %% "bayes-scala" % "0.6-SNAPSHOT"  
 
 resolvers += Resolver.sonatypeRepo("snapshots")
 ```
@@ -58,7 +56,7 @@ With maven build tool, add to pom.xml config file:
   <dependencies>
     <dependency>
       <groupId>com.github.danielkorzekwa</groupId>
-      <artifactId>bayes-scala_2.10</artifactId>
+      <artifactId>bayes-scala_2.11</artifactId>
       <version>0.6-SNAPSHOT</version>
     </dependency>
   <dependencies>

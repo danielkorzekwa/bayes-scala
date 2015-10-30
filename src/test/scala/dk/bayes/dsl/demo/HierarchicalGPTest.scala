@@ -2,7 +2,6 @@ package dk.bayes.dsl.demo
 
 import org.junit.Assert.assertTrue
 import org.junit.Test
-
 import breeze.linalg.DenseMatrix
 import breeze.linalg.DenseVector
 import breeze.linalg.cholesky
@@ -12,6 +11,7 @@ import dk.bayes.dsl.variable.Gaussian
 import dk.bayes.infer.gp.cov.CovSEiso
 import dk.bayes.math.linear.invchol
 import dk.bayes.math.linear.isIdentical
+import org.junit.Ignore
 
 class HierarchicalGPTest {
 
@@ -28,6 +28,25 @@ class HierarchicalGPTest {
   val kXU1 = covFunc.covNM(x1, u)
   val kXU2 = covFunc.covNM(x2, u)
 
+  @Ignore @Test def test_x1x2 = {
+
+    val uVariable = Gaussian(DenseVector.zeros[Double](u.rows), kUU)
+
+    val x1A = kXU1 * invchol(cholesky(kUU).t)
+    val x1b = DenseVector.zeros[Double](x1.rows)
+    val x1v = x1A * kXU1.t + DenseMatrix.eye[Double](x1.rows) * 1d
+    val x1Variable = Gaussian(x1A, uVariable, x1b, x1v, yValue = y1)
+    
+     val x2A = kXU2 * invchol(cholesky(kUU).t)
+    val x2b = DenseVector.zeros[Double](x2.rows)
+    val x2v = x2A * kXU2.t + DenseMatrix.eye[Double](x2.rows) * 1d
+    val x2Variable = Gaussian(x2A, uVariable, x2b, x2v, yValue = y2)
+
+    val uPosterior = infer(uVariable)
+    assertTrue("actual=" + uPosterior.m, isIdentical(DenseVector(2.148, 2.8088), uPosterior.m, 0.001))
+
+  }
+  
   @Test def test_x1 = {
 
     val uVariable = Gaussian(DenseVector.zeros[Double](u.rows), kUU)
