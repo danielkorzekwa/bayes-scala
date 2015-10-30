@@ -21,7 +21,7 @@ import LoopyBP._
  */
 case class LoopyBP(clusterGraph: ClusterGraph, threshold: Double = 0.00001) extends ClusterGraphInfer {
 
-  def calibrate(iterNum: (Int) => Unit = (iterNum: Int) => {}, messageOrder: MessageOrder = ForwardBackwardMsgOrder()) {
+  def calibrate(iterNum: (Int) => Unit = (iterNum: Int) => {}, messageOrder: MessageOrder = ForwardBackwardMsgOrder()):Unit = {
 
     @tailrec
     def calibrateUntilConverge(currentIter: Int): ClusterGraph = {
@@ -58,7 +58,7 @@ case class LoopyBP(clusterGraph: ClusterGraph, threshold: Double = 0.00001) exte
     evidenceLogLikelihood
   }
 
-  private def calibrateCluster(cluster: Cluster) {
+  private def calibrateCluster(cluster: Cluster):Unit = {
 
     cluster.getEdges().foreach { edge =>
 
@@ -137,7 +137,7 @@ case class LoopyBP(clusterGraph: ClusterGraph, threshold: Double = 0.00001) exte
     marginalFactor
   }
 
-  def setEvidence(evidence: Tuple2[Int, Int]) {
+  def setEvidence(evidence: Tuple2[Int, Int]):Unit = {
 
     for (cluster <- clusterGraph.getClusters()) {
 

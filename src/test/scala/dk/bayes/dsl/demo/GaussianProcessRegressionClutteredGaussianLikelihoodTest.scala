@@ -16,7 +16,7 @@ import dk.bayes.math.linear.isIdentical
 import dk.bayes.testutil.AssertUtil._
 class GaussianProcessRegressionClutteredGaussianLikelihoodTest {
 
-  @Test def test {
+  @Test def test:Unit = {
 
     val fMean = DenseVector(0d, 0, 0)
     val x = DenseMatrix(1d, 2, 3)

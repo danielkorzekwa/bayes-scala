@@ -13,7 +13,7 @@ class SingleFactorTest {
    * Tests for constructor
    */
 
-  @Test(expected = classOf[IllegalArgumentException]) def create_values_inconsistent_with_dim_size {
+  @Test(expected = classOf[IllegalArgumentException]) def create_values_inconsistent_with_dim_size:Unit = {
     SingleFactor(Var(1, 2), Array(0.3, 0.5, 0.2))
   }
 
@@ -29,15 +29,15 @@ class SingleFactorTest {
    * Tests for getValue() and getValues() methods.
    */
 
-  @Test(expected = classOf[IllegalArgumentException]) def getValue_empty_assignment {
+  @Test(expected = classOf[IllegalArgumentException]) def getValue_empty_assignment:Unit = {
     factor.getValue(Array())
   }
 
-  @Test(expected = classOf[IllegalArgumentException]) def getValue_multiple_assignments {
+  @Test(expected = classOf[IllegalArgumentException]) def getValue_multiple_assignments:Unit = {
     factor.getValue(Array(1, 2))
   }
 
-  @Test(expected = classOf[ArrayIndexOutOfBoundsException]) def getValue_assignment_value_out_of_range {
+  @Test(expected = classOf[ArrayIndexOutOfBoundsException]) def getValue_assignment_value_out_of_range:Unit = {
     factor.getValue(Array(3))
   }
 
@@ -48,17 +48,17 @@ class SingleFactorTest {
   /**
    * Tests for product() method.
    */
-  @Test(expected = classOf[IllegalArgumentException]) def product_factor_variable_ids_not_consistent {
+  @Test(expected = classOf[IllegalArgumentException]) def product_factor_variable_ids_not_consistent:Unit = {
     val thatFactor = SingleFactor(Var(2, 3), Array(0.3, 0.5, 0.2))
     factor.product(thatFactor)
   }
 
-  @Test(expected = classOf[IllegalArgumentException]) def product_factor_variable_dimensions_not_consistent {
+  @Test(expected = classOf[IllegalArgumentException]) def product_factor_variable_dimensions_not_consistent:Unit = {
     val thatFactor = SingleFactor(Var(1, 2), Array(0.3, 0.5))
     factor.product(thatFactor)
   }
 
-  @Test def product {
+  @Test def product:Unit = {
     val thatFactor = new SingleFactor(Var(1, 3), Array(0.4, 0.1, 0.5))
     val factorProduct = factor.product(thatFactor)
 
@@ -68,15 +68,15 @@ class SingleFactorTest {
   /**
    * Tests for withEvidence() method.
    */
-  @Test(expected = classOf[IllegalArgumentException]) def withEvidence_variable_not_found {
+  @Test(expected = classOf[IllegalArgumentException]) def withEvidence_variable_not_found:Unit = {
     factor.withEvidence(5, 1)
   }
 
-  @Test(expected = classOf[ArrayIndexOutOfBoundsException]) def withEvidence_variable_value_index_out_of_range {
+  @Test(expected = classOf[ArrayIndexOutOfBoundsException]) def withEvidence_variable_value_index_out_of_range:Unit = {
     factor.withEvidence(1, 3)
   }
 
-  @Test def withEvidence {
+  @Test def withEvidence:Unit = {
 
     val factorWithEvidence = factor.withEvidence(1, 2)
 
@@ -87,7 +87,7 @@ class SingleFactorTest {
    * Tests for marginal() method.
    */
 
-  @Test(expected = classOf[IllegalArgumentException]) def marginal_variable_not_found {
+  @Test(expected = classOf[IllegalArgumentException]) def marginal_variable_not_found:Unit = {
     factor.marginal(5)
   }
 
@@ -97,7 +97,7 @@ class SingleFactorTest {
    * Tests for normalise() method.
    */
 
-  @Test def normalise_already_normalised {
+  @Test def normalise_already_normalised:Unit = {
 
     val factor = SingleFactor(Var(1, 3), Array(0.3, 0.5, 0.2))
     val normalisedFactor = factor.normalise()
@@ -105,7 +105,7 @@ class SingleFactorTest {
     assertFactor(factor, normalisedFactor)
   }
 
-  @Test def normalise {
+  @Test def normalise:Unit = {
 
     val factor = SingleFactor(Var(1, 3), Array(0.3, 0, 0.2))
     val normalisedFactor = factor.normalise()
@@ -117,7 +117,7 @@ class SingleFactorTest {
    * Tests for mapAssignments
    */
 
-  @Test def mapAssignments {
+  @Test def mapAssignments:Unit = {
     val factor = SingleFactor(Var(1, 3), Array(0.3, 0.5, 0.2))
 
     val assignments = factor.mapAssignments(a => a(0) + 5)

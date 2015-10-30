@@ -10,40 +10,40 @@ class GaussianFactorTest {
   /**
    * Tests for constructor.
    */
-  @Test(expected = classOf[IllegalArgumentException]) def constructor_variance_is_NaN {
+  @Test(expected = classOf[IllegalArgumentException]) def constructor_variance_is_NaN:Unit = {
     GaussianFactor(10, 0, Double.NaN)
   }
-  @Test(expected = classOf[IllegalArgumentException]) def constructor_mean_is_NaN {
+  @Test(expected = classOf[IllegalArgumentException]) def constructor_mean_is_NaN:Unit = {
     GaussianFactor(10, Double.NaN, 2)
   }
 
-  @Test def getVariablesIds {
+  @Test def getVariablesIds:Unit = {
     assertEquals(List(1), gaussianFactor.getVariableIds)
   }
 
   @Test(expected = classOf[IllegalArgumentException])
-  def marginal_incorrect_var_id {
+  def marginal_incorrect_var_id:Unit = {
     gaussianFactor.marginal(123)
   }
 
   @Test
-  def marginal {
+  def marginal:Unit = {
     assertEquals(gaussianFactor, gaussianFactor.marginal(1))
   }
 
   @Test(expected = classOf[IllegalArgumentException])
-  def productMarginal_incorrect_var_id {
+  def productMarginal_incorrect_var_id:Unit = {
     gaussianFactor.productMarginal(123, Nil)
   }
 
   @Test(expected = classOf[IllegalArgumentException])
-  def productMarginal_incorrect_factors_var_id {
+  def productMarginal_incorrect_factors_var_id:Unit = {
     val factors = GaussianFactor(varId = 1, m = 5, v = 7) :: GaussianFactor(varId = 2, m = 5, v = 7) :: Nil
 
     gaussianFactor.productMarginal(1, factors)
   }
 
-  @Test def productMarginal {
+  @Test def productMarginal:Unit = {
     val factors = GaussianFactor(varId = 1, m = 5, v = 7) :: GaussianFactor(varId = 1, m = 15, v = 17) :: Nil
 
     val marginal = gaussianFactor.productMarginal(1, factors)
@@ -53,19 +53,19 @@ class GaussianFactorTest {
     assertEquals(1.8691, marginal.v, 0.0001)
   }
 
-  @Test(expected = classOf[IllegalArgumentException]) def product_var_id_do_not_match {
+  @Test(expected = classOf[IllegalArgumentException]) def product_var_id_do_not_match:Unit = {
     val f1 = GaussianFactor(varId = 1, m = 5, v = 7)
     val f2 = GaussianFactor(varId = 2, m = 15, v = 17)
     f1 * f2
   }
 
-  @Test(expected = classOf[IllegalArgumentException]) def product_with_non_gaussian_factor {
+  @Test(expected = classOf[IllegalArgumentException]) def product_with_non_gaussian_factor:Unit = {
     val f1 = GaussianFactor(varId = 1, m = 5, v = 7)
     val f2 = SingleTableFactor(1, 2, valueProbs = Array(0.7, 0.3))
     f1 * f2
   }
 
-  @Test def product {
+  @Test def product:Unit = {
     val f1 = GaussianFactor(varId = 1, m = 5, v = 7)
     val f2 = GaussianFactor(varId = 1, m = 15, v = 17)
     val product = f1 * f2
@@ -75,19 +75,19 @@ class GaussianFactorTest {
     assertEquals(4.9583, product.v, 0.0001)
   }
 
-  @Test(expected = classOf[IllegalArgumentException]) def divide_var_id_do_not_match {
+  @Test(expected = classOf[IllegalArgumentException]) def divide_var_id_do_not_match:Unit = {
     val f1 = GaussianFactor(varId = 1, m = 5, v = 7)
     val f2 = GaussianFactor(varId = 2, m = 15, v = 17)
     f1 / f2
   }
 
-  @Test(expected = classOf[IllegalArgumentException]) def divide_with_non_gaussian_factor {
+  @Test(expected = classOf[IllegalArgumentException]) def divide_with_non_gaussian_factor:Unit = {
     val f1 = GaussianFactor(varId = 1, m = 5, v = 7)
     val f2 = SingleTableFactor(1, 2, valueProbs = Array(0.7, 0.3))
     f1 / f2
   }
 
-  @Test def divide {
+  @Test def divide:Unit = {
     val f1 = GaussianFactor(varId = 1, m = 5, v = 7)
     val f2 = GaussianFactor(varId = 1, m = 15, v = 17)
     val product = f1 / f2
@@ -97,7 +97,7 @@ class GaussianFactorTest {
     assertEquals(11.9, product.v, 0.0001)
   }
 
-  @Test def equals {
+  @Test def equals:Unit = {
     val f1 = GaussianFactor(varId = 1, m = 5, v = 7)
     val f2 = GaussianFactor(varId = 1, m = 5.00000004, v = 7.00001)
 

@@ -20,7 +20,7 @@ class TrueSkillTwoPlayersTest {
   val perfDiff = Gaussian(A = DenseMatrix(1.0, -1).t, Vector(perf1, perf2), v = 0.0)
   val outcomeFactor = Categorical(perfDiff, cdfThreshold = 0, value = 0) //player 1 is a winner
 
-  @Test def test {
+  @Test def test:Unit = {
     
     val skill1Marginal = infer(skill1)
     assertEquals(27.1744, skill1Marginal.m, 0.0001)

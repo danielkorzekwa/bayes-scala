@@ -17,7 +17,7 @@ class StudentTest {
    * Tests for marginal() method
    */
 
-  @Test def marginal {
+  @Test def marginal:Unit = {
 
     assertVector(Array(0.6, 0.4), infer(difficulty).cpd, 0.0001)
     assertVector(Array(0.7, 0.3), infer(intelli).cpd, 0.0001)
@@ -27,7 +27,7 @@ class StudentTest {
 
   }
 
-  @Test def marginal_given_sat_is_high {
+  @Test def marginal_given_sat_is_high:Unit = {
 
     sat.setValue(0)
 

@@ -12,7 +12,7 @@ class HMMLocalisationKalmanTest {
   val transitionProb = LinearGaussian(a = 1, b = 0, v = 0.2)
   val emissionProb = LinearGaussian(a = 1, b = 0, v = 0.9)
 
-  @Test def single_observation {
+  @Test def single_observation:Unit = {
 
     val location2Marginal = KalmanFilter.marginal(priorProb, transitionProb.v)
     val location2Posterior = KalmanFilter.posterior(location2Marginal, emissionProb.v, 0.6)

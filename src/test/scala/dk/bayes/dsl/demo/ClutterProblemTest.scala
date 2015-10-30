@@ -13,7 +13,7 @@ import dk.bayes.dsl.infer
  */
 class ClutterProblemTest {
 
-  @Test def test {
+  @Test def test:Unit = {
 
     val x = Gaussian(15, 100)
     val y1 = ClutteredGaussian(x, w = 0.4, a = 10, value = 3)

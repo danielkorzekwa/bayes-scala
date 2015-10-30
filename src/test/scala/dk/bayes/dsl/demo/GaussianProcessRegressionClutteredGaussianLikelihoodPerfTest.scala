@@ -15,7 +15,7 @@ import dk.bayes.testutil.AssertUtil._
 
 class GaussianProcessRegressionClutteredGaussianLikelihoodPerfTest {
 
-  @Test def test {
+  @Test def test:Unit = {
 
     val n = 400
 

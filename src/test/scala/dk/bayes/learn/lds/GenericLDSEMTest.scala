@@ -6,7 +6,7 @@ import dk.bayes.math.gaussian.Gaussian
 
 class GenericLDSEMTest {
 
-  @Test def test_data {
+  @Test def test_data:Unit = {
     val data = Array(
       Array(2d, 4, 6),
       Array(20d, 40, 60),

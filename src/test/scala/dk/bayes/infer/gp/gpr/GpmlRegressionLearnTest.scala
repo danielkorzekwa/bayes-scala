@@ -45,7 +45,7 @@ class GpmlRegressionLearnTest {
     println("Learned gp parameters:" + newParams)
   }
 
-  @Test def predict_given_learned_parameters {
+  @Test def predict_given_learned_parameters:Unit = {
     val covFunc = CovSEiso(sf = 0.68594, ell = -0.99340)
     val noiseStdDev = -1.9025
 

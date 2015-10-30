@@ -22,7 +22,6 @@ object inferMultivariateGaussianSimplest extends InferEngine[MultivariateGaussia
 
     (child.getParents().size == 1 && child.getParents()(0).eq(x)) &&
       !child.hasChildren &&
-      child.b.size == x.m.size &&
       child.yValue.isDefined
 
   }

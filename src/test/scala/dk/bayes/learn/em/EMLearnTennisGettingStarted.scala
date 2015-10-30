@@ -13,7 +13,7 @@ class EMLearnTennisGettingStarted {
 
   def progress(progress: Progress) = println("EM progress(iterNum, logLikelihood): " + progress.iterNum + ", " + progress.logLikelihood)
   
-  @Test def test {
+  @Test def test:Unit = {
 
     val tennisClusterGraph = createTennisClusterGraph()
 

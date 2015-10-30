@@ -4,6 +4,8 @@ import org.junit._
 import org.junit.Assert._
 import dk.bayes.dsl._
 import dk.bayes.dsl.variable.Gaussian
+import breeze.linalg.DenseVector
+import breeze.linalg.DenseMatrix
 
 class KalmanFilterTwoObservationsTest {
 
@@ -17,5 +19,5 @@ class KalmanFilterTwoObservationsTest {
     assertEquals(1.0341, posteriorX.m, 0.0001)
     assertEquals(0.2647, posteriorX.v, 0.0001)
   }
-
+ 
 }

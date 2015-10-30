@@ -28,10 +28,10 @@ case class EPNaiveBayesFactorGraph[X](prior: SingleFactor[X], likelihoods: Seq[D
 
   def getPosterior(): X = posterior
 
-  def calibrate(maxIter: Int = 100, threshold: Double = 1e-6) {
+  def calibrate(maxIter: Int = 100, threshold: Double = 1e-6):Unit = {
 
     @tailrec
-    def calibrateIter(currPosterior: X, iterNum: Int) {
+    def calibrateIter(currPosterior: X, iterNum: Int):Unit = {
       if (iterNum >= maxIter) {      
         logger.warn(s"Factor graph did not converge in less than ${maxIter} iterations. Prior=%s, Posterior=%s".format(prior, posterior))
         return
@@ -45,7 +45,7 @@ case class EPNaiveBayesFactorGraph[X](prior: SingleFactor[X], likelihoods: Seq[D
     calibrateIter(posterior, 1)
   }
 
-  private def sendMsgsParallel() {
+  private def sendMsgsParallel():Unit = {
 
     msgsUp = msgsUp.zip(likelihoods).map {
       case (currMsgUp, llh) =>
@@ -61,7 +61,7 @@ case class EPNaiveBayesFactorGraph[X](prior: SingleFactor[X], likelihoods: Seq[D
     posterior = multOp(prior.factorMsgDown, multOp(msgsUp: _*))
   }
 
-  private def sendMsgsSerial() {
+  private def sendMsgsSerial():Unit = {
 
     msgsUp = msgsUp.zip(likelihoods).map {
       case (currMsgUp, llh) =>

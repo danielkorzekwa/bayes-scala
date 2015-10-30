@@ -11,7 +11,7 @@ import dk.bayes.model.factor.LinearGaussianFactor
  */
 class GenericFactorGraphMultipleFactorGraphsTest {
 
-  @Test def factor_graphs_list_is_empty {
+  @Test def factor_graphs_list_is_empty:Unit = {
 
     val factor = GaussianFactor(varId = 10, m = 1, v = 0)
 
@@ -25,7 +25,7 @@ class GenericFactorGraphMultipleFactorGraphsTest {
 
   }
 
-  @Test def no_factor_graph_for_new_factor {
+  @Test def no_factor_graph_for_new_factor:Unit = {
     val factor = GaussianFactor(varId = 10, m = 1, v = 0)
 
     val oldFactorGraph = GenericFactorGraph()
@@ -45,7 +45,7 @@ class GenericFactorGraphMultipleFactorGraphsTest {
     assertEquals(VarNode(20), newFactorGraph2.getNodes()(1))
   }
 
-  @Test def factor_belongs_to_single_factor_graph {
+  @Test def factor_belongs_to_single_factor_graph:Unit = {
     val factor = GaussianFactor(varId = 10, m = 1, v = 0)
 
     val oldFactorGraph1 = GenericFactorGraph()
@@ -69,7 +69,7 @@ class GenericFactorGraphMultipleFactorGraphsTest {
     assertEquals(VarNode(20), newFactorGraph2.getNodes()(1))
   }
 
-  @Test def factor_belongs_to_two_factor_graphs {
+  @Test def factor_belongs_to_two_factor_graphs:Unit = {
 
     val factor = LinearGaussianFactor(parentVarId = 10, varId = 20, a = 1, b = 0, v = 2)
 

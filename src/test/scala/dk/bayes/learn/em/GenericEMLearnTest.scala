@@ -30,14 +30,14 @@ class GenericEMLearnTest {
 
   def progress(progress: Progress) = println("EM progress(iterNum, logLikelihood): " + progress.iterNum + ", " + progress.logLikelihood)
 
-  @Test(expected = classOf[IllegalArgumentException]) def train_no_samples {
+  @Test(expected = classOf[IllegalArgumentException]) def train_no_samples:Unit = {
 
     val dataSet = DataSet(variableIds, Array())
 
     GenericEMLearn.learn(sprinklerGraph, dataSet, maxIterNum, progress)
   }
 
-  @Test def train_sprinkler_network_from_complete_data {
+  @Test def train_sprinkler_network_from_complete_data:Unit = {
 
     val dataSet = DataSet.fromFile("src/test/resources/sprinkler_data/sprinkler_10k_samples_no_missing_values.dat", variableIds)
 
@@ -57,7 +57,7 @@ class GenericEMLearnTest {
 
   }
 
-  @Test def train_sprinkler_network_from_incomplete_data {
+  @Test def train_sprinkler_network_from_incomplete_data:Unit = {
 
     val dataSet = DataSet.fromFile("src/test/resources/sprinkler_data/sprinkler_10k_samples_5pct_missing_values.dat", variableIds)
 

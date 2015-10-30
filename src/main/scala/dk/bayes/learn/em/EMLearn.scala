@@ -31,7 +31,7 @@ trait EMLearn {
    *
    *  @param progress Progress monitoring. It is called by this method at the end of every iteration
    */
-  def learn(clusterGraph: ClusterGraph, trainSet: DataSet, maxIterNum: Int, progress: (Progress) => Unit)
+  def learn(clusterGraph: ClusterGraph, trainSet: DataSet, maxIterNum: Int, progress: (Progress) => Unit):Unit
 }
 
 object EMLearn {

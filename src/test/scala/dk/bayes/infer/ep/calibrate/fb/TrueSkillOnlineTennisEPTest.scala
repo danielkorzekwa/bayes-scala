@@ -25,7 +25,7 @@ class TrueSkillOnlineTennisEPTest {
    * Tests for variable marginals.
    */
 
-  @Test(expected = classOf[NoSuchElementException]) def variable_marginal_var_id_not_found {
+  @Test(expected = classOf[NoSuchElementException]) def variable_marginal_var_id_not_found:Unit = {
 
     val tennisFactorGraph = createTennisFactorGraphAfterPlayer1Won()
 
@@ -37,7 +37,7 @@ class TrueSkillOnlineTennisEPTest {
   }
 
   /**http://atom.research.microsoft.com/trueskill/rankcalculator.aspx*/
-  @Test def variable_marginal_no_result_set {
+  @Test def variable_marginal_no_result_set:Unit = {
 
     val tennisFactorGraph = createTennisFactorGraphAfterPlayer1Won()
 
@@ -74,7 +74,7 @@ class TrueSkillOnlineTennisEPTest {
   }
 
   /**http://atom.research.microsoft.com/trueskill/rankcalculator.aspx*/
-  @Test def variable_marginal_player1_wins {
+  @Test def variable_marginal_player1_wins:Unit = {
     val tennisFactorGraph = createTennisFactorGraph()
 
     val ep = GenericEP(tennisFactorGraph)
@@ -97,7 +97,7 @@ class TrueSkillOnlineTennisEPTest {
   }
 
   /**http://atom.research.microsoft.com/trueskill/rankcalculator.aspx*/
-  @Test def variable_marginal_player1_looses {
+  @Test def variable_marginal_player1_looses:Unit = {
 
     val tennisFactorGraph = createTennisFactorGraphAfterPlayer1Won()
     val ep = GenericEP(tennisFactorGraph)
@@ -123,7 +123,7 @@ class TrueSkillOnlineTennisEPTest {
    * Tests for factor marginals.
    */
 
-  @Test(expected = classOf[NoSuchElementException]) def factor_marginal_var_id_not_found {
+  @Test(expected = classOf[NoSuchElementException]) def factor_marginal_var_id_not_found:Unit = {
 
     val tennisFactorGraph = createTennisFactorGraphAfterPlayer1Won()
     val ep = GenericEP(tennisFactorGraph)
@@ -131,7 +131,7 @@ class TrueSkillOnlineTennisEPTest {
     val perfMarginal = ep.marginal(skill1VarId, 345)
   }
 
-  @Test(expected = classOf[NoSuchElementException]) def factor_marginal_var_id_not_found2 {
+  @Test(expected = classOf[NoSuchElementException]) def factor_marginal_var_id_not_found2:Unit = {
 
     val tennisFactorGraph = createTennisFactorGraphAfterPlayer1Won()
     val ep = GenericEP(tennisFactorGraph)
@@ -201,7 +201,7 @@ class TrueSkillOnlineTennisEPTest {
   /**
    * Testing inference including GenericFactor
    */
-  @Test def genericfactor_test_factor_marginal_player1_wins {
+  @Test def genericfactor_test_factor_marginal_player1_wins:Unit = {
     val tennisFactorGraph = createTennisFactorGraphWithGenFactor()
     val ep = GenericEP(tennisFactorGraph)
     ep.setEvidence(outcomeVarId, true)

@@ -17,7 +17,7 @@ class TrueSkillDBNTennisEPTest {
 
   private def progress(currIter: Int) = println("EP iteration: " + currIter)
 
-  @Test def no_result_set {
+  @Test def no_result_set:Unit = {
 
     val tennisFactorGraph = createTennisFactorGraph()
     val ep = GenericEP(tennisFactorGraph)
@@ -43,7 +43,7 @@ class TrueSkillDBNTennisEPTest {
 
   }
 
-  @Test def two_results_are_known {
+  @Test def two_results_are_known:Unit = {
 
     val tennisFactorGraph = createTennisFactorGraph()
     val ep = GenericEP(tennisFactorGraph)

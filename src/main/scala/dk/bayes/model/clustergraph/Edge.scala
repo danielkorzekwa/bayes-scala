@@ -17,17 +17,17 @@ class Edge(val destClusterId: Int, val sepsetVariable: Var) {
   private var newMessage: SingleFactor = SingleFactor(sepsetVariable, Array.fill(sepsetVariable.dim)(1d))
   private var oldMessage: SingleFactor = newMessage
 
-  def setIncomingEdge(edge: Edge) {
+  def setIncomingEdge(edge: Edge):Unit = {
     incomingEdge = Some(edge)
   }
   def getIncomingEdge(): Option[Edge] = incomingEdge
 
-  def resetMessage() {
+  def resetMessage():Unit = {
     newMessage = SingleFactor(sepsetVariable, Array.fill(sepsetVariable.dim)(1d))
     oldMessage = newMessage
   }
 
-  def updateMessage(message: SingleFactor) {
+  def updateMessage(message: SingleFactor):Unit = {
     oldMessage = newMessage
     newMessage = message
   }

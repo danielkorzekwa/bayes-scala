@@ -22,7 +22,7 @@ class MontyHallProblemTest {
     1, 0, 0,
     0.5, 0.5, 0))
 
-  @Test def test {
+  @Test def test:Unit = {
 
     guestDoor.setValue(0) //Guest chooses door 1
     montyDoor.setValue(1) //Monty opens door 2 

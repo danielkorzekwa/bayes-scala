@@ -23,10 +23,10 @@ sealed abstract class Gate(initialMsg: SingleFactor) {
   /**Allows for comparing the age between different messages and finding the message that was updated least recently.*/
   private var msgIndex: Long = -1
 
-  def setEndGate(gate: END_GATE) { endGate = Some(gate) }
+  def setEndGate(gate: END_GATE):Unit = { endGate = Some(gate) }
   def getEndGate(): END_GATE = endGate.get
 
-  def setMessage(newMessage: SingleFactor, msgIndex: Long) {
+  def setMessage(newMessage: SingleFactor, msgIndex: Long):Unit = {
     oldMessage = message
     message = newMessage
 

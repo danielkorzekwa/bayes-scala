@@ -13,7 +13,7 @@ trait FactorGraph {
   /**
    * Adds factor to the factor graph.
    */
-  def addFactor(factor: Factor)
+  def addFactor(factor: Factor):Unit
 
   /**
    * Returns all nodes (factors and variables) in a graph.

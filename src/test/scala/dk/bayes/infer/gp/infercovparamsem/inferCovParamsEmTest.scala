@@ -30,7 +30,7 @@ class inferCovParamsEmTest extends LazyLogging {
   private val y = data(::,1)
   val logLikStdDev = -1.9025
 
-  @Test def test {
+  @Test def test:Unit = {
 
     logger.info("Start learning GPR with EM-EP")
 

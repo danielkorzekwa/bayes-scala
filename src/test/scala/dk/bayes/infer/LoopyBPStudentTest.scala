@@ -22,7 +22,7 @@ class LoopyBPStudentTest {
    * Tests for marginal() method
    */
 
-  @Test def marginal {
+  @Test def marginal:Unit = {
 
     loopyBP.calibrate(progress)
 
@@ -39,7 +39,7 @@ class LoopyBPStudentTest {
     assertFactor(Factor(Var(5, 2), Array(0.4976, 0.5023)), letterMarginal, 0.0001)
   }
 
-  @Test def marginal_given_sat_is_high {
+  @Test def marginal_given_sat_is_high:Unit = {
     loopyBP.setEvidence(satVar.id, 0)
 
     loopyBP.calibrate(progress)
@@ -62,7 +62,7 @@ class LoopyBPStudentTest {
    * Tests for clusterBelief() method
    */
 
-  @Test def cluster_belief {
+  @Test def cluster_belief:Unit = {
 
     loopyBP.calibrate(progress)
 
@@ -82,7 +82,7 @@ class LoopyBPStudentTest {
     assertFactor(Factor(Var(3, 3), Var(5, 2), Array(0.0362, 0.3258, 0.1154, 0.1730, 0.3461, 0.0035)), letterClusterBelief, 0.0001)
   }
 
-  @Test def cluster_belief_given_sat_is_high {
+  @Test def cluster_belief_given_sat_is_high:Unit = {
     loopyBP.setEvidence(satVar.id, 0)
 
     loopyBP.calibrate(progress)
@@ -104,7 +104,7 @@ class LoopyBPStudentTest {
 
   }
 
-  @Test def cluster_belief_given_full_evidence {
+  @Test def cluster_belief_given_full_evidence:Unit = {
     loopyBP.setEvidence(difficultyVar.id, 0)
     loopyBP.setEvidence(intelliVar.id, 1)
     loopyBP.setEvidence(gradeVar.id, 0)
@@ -132,25 +132,25 @@ class LoopyBPStudentTest {
   /**
    * Tests for logLikelihood() method
    */
-  @Test(expected = classOf[IllegalArgumentException]) def logLikelihood_empty_assignment {
+  @Test(expected = classOf[IllegalArgumentException]) def logLikelihood_empty_assignment:Unit = {
     loopyBP.logLikelihood(Array())
   }
 
-  @Test(expected = classOf[IllegalArgumentException]) def logLikelihood_partial_assignment {
+  @Test(expected = classOf[IllegalArgumentException]) def logLikelihood_partial_assignment:Unit = {
 
     val assignment = Array((1, 0), (2, 0))
 
     loopyBP.logLikelihood(assignment)
   }
 
-  @Test(expected = classOf[IllegalArgumentException]) def logLikelihood_assignment_not_unique {
+  @Test(expected = classOf[IllegalArgumentException]) def logLikelihood_assignment_not_unique:Unit = {
 
     val assignment = Array((1, 0), (2, 0), (1, 0), (3, 0))
 
     loopyBP.logLikelihood(assignment)
   }
 
-  @Test def logLikelihood {
+  @Test def logLikelihood:Unit = {
     val assignment = Array((1, 0), (2, 1), (3, 1), (4, 0), (5, 1))
 
     val llh = loopyBP.logLikelihood(assignment)
@@ -163,7 +163,7 @@ class LoopyBPStudentTest {
    *
    */
 
-  @Test def logLikelihood_of_sat_is_high {
+  @Test def logLikelihood_of_sat_is_high:Unit = {
 
     val logLikelihood = loopyBP.calibrateWithEvidence(List((satVar.id, 0)), progress)
 
@@ -186,7 +186,7 @@ class LoopyBPStudentTest {
 
   }
 
-  @Test def logLikelihood_of_full_evidence {
+  @Test def logLikelihood_of_full_evidence:Unit = {
     val evidence = List((difficultyVar.id, 0), (intelliVar.id, 1), (gradeVar.id, 0), (satVar.id, 0), (letterVar.id, 1))
     val logLikelihood = loopyBP.calibrateWithEvidence(evidence, progress)
 

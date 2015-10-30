@@ -20,7 +20,7 @@ trait EP {
    * @param varId  Variable id
    * @param varValue Variable value
    */
-  def setEvidence(varId: Int, varValue: AnyVal)
+  def setEvidence(varId: Int, varValue: AnyVal):Unit
  
   /**
    * Returns marginal factor for a given variable(s) in a factor graph.

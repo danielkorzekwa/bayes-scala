@@ -27,7 +27,7 @@ case class GenericClusterGraph() extends ClusterGraph {
 
   def getCluster(clusterId: Int): Cluster = clusters.find(c => c.id == clusterId).get
 
-  def addEdge(clusterId1: Int, clusterId2: Int) {
+  def addEdge(clusterId1: Int, clusterId2: Int):Unit = {
     val cluster1 = clusters.find(c => c.id == clusterId1).get
     val cluster2 = clusters.find(c => c.id == clusterId2).get
     val sepsetVariable = calcSepsetVariable(cluster1, cluster2)
@@ -42,7 +42,7 @@ case class GenericClusterGraph() extends ClusterGraph {
     cluster2.addEdge(edge21)
   }
 
-  def addEdges(firstEdge: Tuple2[Int, Int], nextEdges: Tuple2[Int, Int]*) {
+  def addEdges(firstEdge: Tuple2[Int, Int], nextEdges: Tuple2[Int, Int]*):Unit = {
     addEdge(firstEdge._1, firstEdge._2)
     nextEdges.foreach(e => addEdge(e._1, e._2))
   }

@@ -22,12 +22,12 @@ trait ClusterGraph {
    *
    * @param factor Initial cluster potentials
    */
-  def addCluster(clusterId: Int, factor: Factor, clusterTypeId: Option[Int]=None)
+  def addCluster(clusterId: Int, factor: Factor, clusterTypeId: Option[Int]=None):Unit
 
   /**
    * Adds edge between clusters in this cluster graph.
    */
-  def addEdge(clusterId1: Int, clusterId2: Int)
+  def addEdge(clusterId1: Int, clusterId2: Int):Unit
 
   /**
    * Adds edges between clusters in this cluster graph.
@@ -35,7 +35,7 @@ trait ClusterGraph {
    * @param firstEdge Tuple2[clusterId, clusterId2]
    * @param nextEdges Tuple2[clusterId, clusterId2]
    */
-  def addEdges(firstEdge: Tuple2[Int, Int], nextEdges: Tuple2[Int, Int]*)
+  def addEdges(firstEdge: Tuple2[Int, Int], nextEdges: Tuple2[Int, Int]*):Unit
 
   /**
    * Returns all clusters in this cluster graph.

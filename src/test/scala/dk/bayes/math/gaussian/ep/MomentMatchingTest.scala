@@ -14,7 +14,7 @@ import dk.bayes.math.gaussian.Proj
  */
 class MomentMatchingTest {
 
-  @Test def clutter_problem {
+  @Test def clutter_problem:Unit = {
 
     val q = Gaussian(15, 100)
     //t = (1-w)*N(q.m,1) + w*N(0,a)

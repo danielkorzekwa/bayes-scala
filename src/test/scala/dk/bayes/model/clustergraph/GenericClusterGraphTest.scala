@@ -20,7 +20,7 @@ import StudentBN._
     clusterGraph.addEdge(3, 3)
   }
 
-  @Test def getClusters {
+  @Test def getClusters:Unit = {
     val clusters = clusterGraph.getClusters()
 
     assertEquals(5, clusters.size)

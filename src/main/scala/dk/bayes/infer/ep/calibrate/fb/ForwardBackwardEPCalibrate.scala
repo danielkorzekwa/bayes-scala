@@ -66,7 +66,7 @@ case class ForwardBackwardEPCalibrate(factorGraph: FactorGraph, threshold: Doubl
    * Executes a single message passing routine on a factor graph.
    *
    */
-  private def calibrateIteration(nodes: Seq[Node], newMsgIndex: () => Long) {
+  private def calibrateIteration(nodes: Seq[Node], newMsgIndex: () => Long):Unit = {
 
     val nodesNum = nodes.size
 
@@ -80,7 +80,7 @@ case class ForwardBackwardEPCalibrate(factorGraph: FactorGraph, threshold: Doubl
     }
   }
 
-  private def sendFactorMessage(factorNode: FactorNode, newMsgIndex: () => Long) {
+  private def sendFactorMessage(factorNode: FactorNode, newMsgIndex: () => Long):Unit = {
 
     factorNode match {
       case factorNode: SingleFactorNode => sendFactorMessage(factorNode, newMsgIndex)
@@ -91,7 +91,7 @@ case class ForwardBackwardEPCalibrate(factorGraph: FactorGraph, threshold: Doubl
 
   }
 
-  private def sendFactorMessage(factorNode: SingleFactorNode, newMsgIndex: () => Long) {
+  private def sendFactorMessage(factorNode: SingleFactorNode, newMsgIndex: () => Long):Unit = {
     val newMessage = factorNode.getFactor().asInstanceOf[SingleFactor]
    
     factorNode.gate.setMessage(newMessage, newMsgIndex())
@@ -100,7 +100,7 @@ case class ForwardBackwardEPCalibrate(factorGraph: FactorGraph, threshold: Doubl
 
   }
 
-  private def sendFactorMessage(factorNode: DoubleFactorNode, newMsgIndex: () => Long) {
+  private def sendFactorMessage(factorNode: DoubleFactorNode, newMsgIndex: () => Long):Unit = {
 
     val gate1MsgIn = factorNode.gate1.getEndGate.getMessage
     val gate2MsgIn = factorNode.gate2.getEndGate.getMessage
@@ -116,7 +116,7 @@ case class ForwardBackwardEPCalibrate(factorGraph: FactorGraph, threshold: Doubl
 
   }
 
-  private def sendFactorMessage(factorNode: TripleFactorNode, newMsgIndex: () => Long) {
+  private def sendFactorMessage(factorNode: TripleFactorNode, newMsgIndex: () => Long):Unit = {
 
     val gate1MsgIn = factorNode.gate1.getEndGate.getMessage
     val gate2MsgIn = factorNode.gate2.getEndGate.getMessage
@@ -136,7 +136,7 @@ case class ForwardBackwardEPCalibrate(factorGraph: FactorGraph, threshold: Doubl
 
   }
 
-  private def sendFactorMessage(factorNode: GenericFactorNode, newMsgIndex: () => Long) {
+  private def sendFactorMessage(factorNode: GenericFactorNode, newMsgIndex: () => Long):Unit = {
     val msgsIn = factorNode.gates.map(g => g.getEndGate.getMessage())
     val factor = factorNode.getFactor().asInstanceOf[GenericFactor]
 
@@ -152,7 +152,7 @@ case class ForwardBackwardEPCalibrate(factorGraph: FactorGraph, threshold: Doubl
   }
 
   /**Returns the number of messages sent.*/
-  private def sendVariableMessage(varNode: VarNode, newMsgIndex: () => Long) {
+  private def sendVariableMessage(varNode: VarNode, newMsgIndex: () => Long):Unit = {
 
     var marginalFactor = varNode.getGates()(0).getEndGate.getMessage()
     var i = 1

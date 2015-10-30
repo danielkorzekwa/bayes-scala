@@ -18,7 +18,7 @@ trait ClusterGraphInfer {
    * @param messageOrder Order of clusters in which messages are sent for a single iteration of Belief Propagation
    *
    */
-  def calibrate(iterNum: (Int) => Unit, messageOrder: MessageOrder)
+  def calibrate(iterNum: (Int) => Unit, messageOrder: MessageOrder):Unit
 
   /**
    * Applies evidence and calibrates cluster graph.
@@ -55,5 +55,5 @@ trait ClusterGraphInfer {
    *
    *  @param evidence Tuple2[variableId, variable value]
    */
-  def setEvidence(evidence: Tuple2[Int, Int])
+  def setEvidence(evidence: Tuple2[Int, Int]):Unit
 }

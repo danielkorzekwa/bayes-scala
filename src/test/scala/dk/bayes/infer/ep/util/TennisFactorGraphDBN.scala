@@ -49,7 +49,7 @@ object TennisFactorGraphDBN {
     factorGraph.addFactor(GaussianFactor(player3Time1VarId, 4, 81))
     factorGraph.addFactor(LinearGaussianFactor(player3Time1VarId, player3Time2VarId, 1, 0, pow(25d / 6, 2)))
 
-    def addTennisGameToFactorGraph(player1VarId: Int, player2VarId: Int, matchVarId: Int) {
+    def addTennisGameToFactorGraph(player1VarId: Int, player2VarId: Int, matchVarId: Int):Unit = {
 
       val perf1VarId = varId.getAndIncrement()
       val perf2VarId = varId.getAndIncrement()

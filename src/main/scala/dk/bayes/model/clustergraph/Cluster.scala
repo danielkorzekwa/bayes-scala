@@ -1,6 +1,6 @@
 package dk.bayes.model.clustergraph
 
-import factor._
+import factor.Factor
 
 /**
  * Represents cluster in a cluster graph.
@@ -20,19 +20,19 @@ class Cluster(val id: Int, val typeId: Int, factor: Factor) {
   private var _factor: Factor = factor
   private var edges: List[Edge] = List()
 
-  def addEdge(edge: Edge) { edges = edge :: edges }
+  def addEdge(edge: Edge):Unit = { edges = edge :: edges }
 
   def getEdges(): Seq[Edge] = edges
 
   def getFactor(): Factor = _factor
 
-  def updateFactor(newFactor: Factor) {
+  def updateFactor(newFactor: Factor):Unit = {
     _factor = newFactor
 
     resetMessages()
   }
   
-  def resetMessages() {
+  def resetMessages():Unit = {
     edges.foreach { edge => edge.resetMessage() }
   }
 }

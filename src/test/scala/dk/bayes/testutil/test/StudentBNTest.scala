@@ -12,7 +12,7 @@ class StudentBNTest {
   val studentGraph = createStudentGraph()
   val loopyBP = LoopyBP(studentGraph)
 
-  @Test def marginal_for_grade_given_sat_is_high {
+  @Test def marginal_for_grade_given_sat_is_high:Unit = {
 
     loopyBP.setEvidence(satVar.id, 0)
 

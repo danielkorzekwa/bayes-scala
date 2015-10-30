@@ -29,7 +29,7 @@ class ClutterProblemEPTest {
    * P(v|z) = f0_to_v * f1_to_v
    *
    */
-  @Test def single_observation {
+  @Test def single_observation:Unit = {
 
     val f0 = Gaussian(m = 15, v = 100)
 
@@ -75,7 +75,7 @@ class ClutterProblemEPTest {
    * P(v|z1,z2) = f0_to_v * f1_to_v * f2_to_v
    *
    */
-  @Test def two_ovservations {
+  @Test def two_ovservations:Unit = {
     val f0 = Gaussian(m = 15, v = 100)
 
     //f1,f2
@@ -89,7 +89,7 @@ class ClutterProblemEPTest {
     var f1_to_v = Gaussian(m = 0, v = Double.PositiveInfinity)
     var f2_to_v = Gaussian(m = 0, v = Double.PositiveInfinity)
 
-    def passMessages() {
+    def passMessages():Unit = {
       f0_to_v = (f0 * f1_to_v * f2_to_v) / (f1_to_v * f2_to_v)
       f1_to_v = project(f0_to_v * f2_to_v, w, a, x1) / (f0_to_v * f2_to_v)
       f2_to_v = project(f0_to_v * f1_to_v, w, a, x2) / (f0_to_v * f1_to_v)

@@ -11,7 +11,7 @@ import dk.bayes.testutil.SprinklerBN.winterVar
 
 class DataSetTest {
 
-  @Test def fromFile {
+  @Test def fromFile:Unit = {
 
     val variableIds = Array(winterVar.id, rainVar.id, sprinklerVar.id, slipperyRoadVar.id, wetGrassVar.id)
     val dataSet = DataSet.fromFile("src/test/resources/sprinkler_data/sprinkler_10k_samples_5pct_missing_values.dat", variableIds)

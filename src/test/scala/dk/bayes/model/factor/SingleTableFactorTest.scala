@@ -5,7 +5,7 @@ import Assert._
 
 class SingleTableFactorTest {
 
-  @Test def equals {
+  @Test def equals:Unit = {
     val f1 = SingleTableFactor(7, 2, Array(1.0, 0))
     val f2 = SingleTableFactor(7, 2, Array(1.0, Double.NaN))
     val f3 = SingleTableFactor(7, 2, Array(1.0, 1.0))

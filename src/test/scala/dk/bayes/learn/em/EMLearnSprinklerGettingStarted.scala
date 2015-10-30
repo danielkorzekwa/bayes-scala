@@ -11,7 +11,7 @@ class EMLearnSprinklerGettingStarted {
 
   def progress(progress: Progress) = println("EM progress(iterNum, logLikelihood): " + progress.iterNum + ", " + progress.logLikelihood)
   
-  @Test def test {
+  @Test def test:Unit = {
 
     //Create variables
     val winterVar = Var(1, 2)

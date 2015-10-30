@@ -32,18 +32,25 @@ None
 *   Continuous Bayesian Networks
     * [Linear Gaussian Models - 1D localisation, 4 approaches: Canonical Gaussian, Bayes's theorem for Gaussian Variables, Expectation Propagation and Kalman Filter](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/localisation_example/localisation_example.md)
 *   Hybrid Bayesian Networks
-    * [Gaussian approximation with moment matching, aka proj() operator in Expectation Propagation](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/moment_matching/moment_matching.md)
-    * [Expectation Propagation for the Clutter Problem](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/clutter_problem_ep/clutter_problem_ep.md)
-    * [TrueSkill - Updating player skills in tennis with Expectation Propagation inference algorithm](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/trueskill_in_tennis/trueskill_in_tennis.md)
-    * [TrueSkill on a factor graph in Tennis] (https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/trueskill_in_tennis_factor_graph/trueskill_in_tennis_factor_graph.md)
-    * [TrueSkill on a factor graph in Tennis (Dynamic Bayesian Network for 3 players with 6 games over 3 time slices)] (https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/trueskill_in_tennis_factor_graph_dbn/trueskill_in_tennis_factor_graph_dbn.md)
+	* EP   
+    	* [Gaussian approximation with moment matching, aka proj() operator in Expectation Propagation](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/moment_matching/moment_matching.md)
+    	* [Expectation Propagation for the Clutter Problem](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/clutter_problem_ep/clutter_problem_ep.md)
+	* TrueSkill
+    	* [TrueSkill - Updating player skills in tennis with Expectation Propagation inference algorithm](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/trueskill_in_tennis/trueskill_in_tennis.md)
+    	* [TrueSkill on a factor graph in Tennis] (https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/trueskill_in_tennis_factor_graph/trueskill_in_tennis_factor_graph.md)
+    	* [TrueSkill on a factor graph in Tennis (Dynamic Bayesian Network for 3 players with 6 games over 3 time slices)] (https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/trueskill_in_tennis_factor_graph_dbn/trueskill_in_tennis_factor_graph_dbn.md)
 * Code examples only
-    * [Linear Dynamical Systems M-step (prior mean, emission variance, transition variance)](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/learn/lds/GenericLDSMStepTest.scala)
-    * [Linear Dynamical Systems EM (learning prior mean and emission variance only from multiple data sequences)](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/learn/lds/GenericLDSEMTest.scala)
-    * [Inference in Gaussian Process regression](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/infer/gp/gpr/GenericGPRegressionTest.scala)
-    * [Inference in Gaussian Process regression with inducing variables - link to bayes-scala-gp project](https://github.com/danielkorzekwa/bayes-scala-gp/blob/master/src/test/scala/dk/gp/sgpr/sgprPredictTest.scala)
-    * [Parameters learning in Gaussian Process regression with inducing variables (variational lower bound on marginal likelihood) - link to bayes-scala-gp project] (https://github.com/danielkorzekwa/bayes-scala-gp/blob/master/src/test/scala/dk/gp/sgpr/sgprTrainTest.scala)
-    * [Parameters learning in Gaussian Process regression (marginal likelihood maximisation)](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/infer/gp/gpr/GpmlRegressionLearnTest.scala)
+	* Linear Dynamical Systems 	
+    	* [Linear Dynamical Systems M-step (prior mean, emission variance, transition variance)](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/learn/lds/GenericLDSMStepTest.scala)
+    	* [Linear Dynamical Systems EM (learning prior mean and emission variance only from multiple data sequences)](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/learn/lds/GenericLDSEMTest.scala)
+    * Gaussian Process Regression
+    	* [Inference in Gaussian Process regression](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/infer/gp/gpr/GenericGPRegressionTest.scala)
+    	* [Parameters learning in Gaussian Process regression (marginal likelihood maximisation)](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/infer/gp/gpr/GpmlRegressionLearnTest.scala)
+	* Sparse Gaussian Process Regression
+    	* [Inference in Gaussian Process regression with inducing variables - link to bayes-scala-gp project](https://github.com/danielkorzekwa/bayes-scala-gp/blob/master/src/test/scala/dk/gp/sgpr/sgprPredictTest.scala)
+    	* [Parameters learning in Gaussian Process regression with inducing variables (variational lower bound on marginal likelihood) - link to bayes-scala-gp project] (https://github.com/danielkorzekwa/bayes-scala-gp/blob/master/src/test/scala/dk/gp/sgpr/sgprTrainTest.scala)
+    	* 
+  
     * [Parameters learning in Gaussian Process regression  (variational lower bound on marginal likelihood)](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/infer/gp/infercovparamsem/inferCovParamsEmTest.scala)
                                  
 *   Others 

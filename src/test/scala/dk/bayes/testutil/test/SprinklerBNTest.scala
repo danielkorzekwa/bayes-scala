@@ -12,7 +12,7 @@ class SprinklerBNTest {
   val sprinklerGraph = createSprinklerGraph()
   val loopyBP = LoopyBP(sprinklerGraph)
 
-  @Test def marginal_for_slipperyRoad_given_sprinkler_and_wet_grass_are_true {
+  @Test def marginal_for_slipperyRoad_given_sprinkler_and_wet_grass_are_true:Unit = {
 
     loopyBP.setEvidence(2, 0)
     loopyBP.setEvidence(4, 0)

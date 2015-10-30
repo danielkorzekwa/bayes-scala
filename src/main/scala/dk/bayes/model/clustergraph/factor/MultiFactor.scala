@@ -141,7 +141,7 @@ class MultiFactor(variables: Array[Var], values: Array[Double]) extends Factor {
    * @param stepSize Number of steps before reaching next assignment for a given dimension
    * @param process (valueIndex, variableIndex) => Unit
    */
-  private def processValues(dim: Int, stepSize: Int, process: (Int, Int) => Unit) {
+  private def processValues(dim: Int, stepSize: Int, process: (Int, Int) => Unit):Unit = {
 
     var i = 0
     var varIndex = 0

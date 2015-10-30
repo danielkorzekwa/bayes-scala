@@ -22,11 +22,11 @@ trait Variable {
 
   init()
 
-  private def init() {
+  private def init() = {
     getParents().foreach(p => p.addChild(this))
   }
 
-  def addChild(v: Variable) {
+  def addChild(v: Variable) = {
     children += v
   }
   def getChildren(): Seq[Variable] = children.toList
@@ -40,7 +40,7 @@ trait Variable {
   def getAllVariables(): Seq[Variable] = {
     val variables = new HashSet[Variable]()
 
-    def addVariable(v: Variable) {
+    def addVariable(v: Variable):Unit = {
 
       if (!variables.contains(v)) {
         variables += v

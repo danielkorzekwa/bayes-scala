@@ -37,7 +37,7 @@ class LoopyBPGettingStarted {
   val loopyBP = LoopyBP(clusterGraph)
   loopyBP.calibrate()
 
-  @Test def compute_marginal_for_grade_variable {
+  @Test def compute_marginal_for_grade_variable:Unit = {
 
     //Get marginal for Grade variable
     val gradeMarginal = loopyBP.marginal(gradeVar.id)
@@ -47,7 +47,7 @@ class LoopyBPGettingStarted {
     assertFactor(Factor(Var(3, 3), Array(0.3620, 0.2884, 0.3496)), gradeMarginal, 0.0001)
   }
 
-  @Test def compute_marginal_for_grade_variable_given_SAT_is_high {
+  @Test def compute_marginal_for_grade_variable_given_SAT_is_high:Unit = {
 
     loopyBP.setEvidence(satVar.id, 0)
     loopyBP.calibrate()

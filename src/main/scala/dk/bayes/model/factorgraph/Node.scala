@@ -32,7 +32,7 @@ sealed abstract class FactorNode(factor: Factor) extends Node {
   private var _factor: Factor = factor
 
   def getFactor(): Factor = _factor
-  def setFactor(factor: Factor) { _factor = factor }
+  def setFactor(factor: Factor):Unit = { _factor = factor }
 
   /**
    * Returns the product of the factor and all incoming messages.

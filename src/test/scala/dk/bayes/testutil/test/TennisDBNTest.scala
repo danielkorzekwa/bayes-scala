@@ -12,7 +12,7 @@ class TennisDBNTest {
   val tennisGraph = createTennisClusterGraph()
   val loopyBP = LoopyBP(tennisGraph)
 
-  @Test def marginal_for_grade_given_sat_is_high {
+  @Test def marginal_for_grade_given_sat_is_high:Unit = {
 
     loopyBP.setEvidence(match1v2Time0Var.id, 0)
     loopyBP.setEvidence(match1v2Time1Var.id, 0)

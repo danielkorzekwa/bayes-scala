@@ -23,7 +23,7 @@ class StaticLocalisationEPTest {
    * P(v|z) = f0_to_v * f1_to_v
    *
    */
-  @Test def single_observation {
+  @Test def single_observation:Unit = {
 
     val f0 = Gaussian(m = 3, v = 1.5)
     val f1 = LinearGaussian(a = 1, b = 0, v = 0.9)
@@ -63,7 +63,7 @@ class StaticLocalisationEPTest {
    *  * P(v|z1,z2) = f0_to_v * f1_to_v * f2_to_v
    *
    */
-  @Test def two_observations {
+  @Test def two_observations:Unit = {
     
     val f0 = Gaussian(m = 3, v = 1.5)
     val f1 = LinearGaussian(a = 1, b = 0, v = 0.9)

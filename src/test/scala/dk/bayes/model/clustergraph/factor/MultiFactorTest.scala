@@ -12,22 +12,22 @@ class MultiFactorTest {
    * Tests for constructor
    */
 
-  @Test(expected = classOf[IllegalArgumentException]) def create_values_inconsistent_with_dim_size {
+  @Test(expected = classOf[IllegalArgumentException]) def create_values_inconsistent_with_dim_size:Unit = {
     MultiFactor(Var(1, 3), Var(2, 2), Array(0.05, 0.1, 0.15, 0.2, 0.225))
   }
 
   /**
    * Tests for getVariables() method.
    */
-  @Test(expected = classOf[IllegalArgumentException]) def getValue_empty_assignment {
+  @Test(expected = classOf[IllegalArgumentException]) def getValue_empty_assignment:Unit = {
     factor.getValue(Array())
   }
 
-  @Test(expected = classOf[IllegalArgumentException]) def getValue_partial_assignment {
+  @Test(expected = classOf[IllegalArgumentException]) def getValue_partial_assignment:Unit = {
     factor.getValue(Array(1))
   }
 
-  @Test(expected = classOf[IllegalArgumentException]) def getValue_assignment_value_out_of_range {
+  @Test(expected = classOf[IllegalArgumentException]) def getValue_assignment_value_out_of_range:Unit = {
     factor.getValue(Array(1, 2))
   }
 
@@ -43,29 +43,29 @@ class MultiFactorTest {
   /**
    * Tests for product() method.
    */
-  @Test(expected = classOf[IllegalArgumentException]) def product_single_factor_variable_not_found {
+  @Test(expected = classOf[IllegalArgumentException]) def product_single_factor_variable_not_found:Unit = {
     val thatFactor = SingleFactor(Var(3, 3), Array(0.3, 0.5, 0.2))
     factor.product(thatFactor)
   }
 
-  @Test(expected = classOf[IllegalArgumentException]) def product_factor_variable_ids_not_consistent {
+  @Test(expected = classOf[IllegalArgumentException]) def product_factor_variable_ids_not_consistent:Unit = {
     val thatFactor = SingleFactor(Var(2, 3), Array(0.3, 0.5, 0.2))
     factor.product(thatFactor)
   }
 
-  @Test(expected = classOf[IllegalArgumentException]) def product_factor_variable_dimensions_not_consistent {
+  @Test(expected = classOf[IllegalArgumentException]) def product_factor_variable_dimensions_not_consistent:Unit = {
     val thatFactor = SingleFactor(Var(1, 2), Array(0.3, 0.5))
     factor.product(thatFactor)
   }
 
-  @Test def product_variable_1 {
+  @Test def product_variable_1:Unit = {
     val thatFactor = new SingleFactor(Var(1, 3), Array(0.4, 0.1, 0.5))
     val factorProduct = factor.product(thatFactor)
 
     assertFactor(MultiFactor(Var(1, 3), Var(2, 2), Array(0.02, 0.04, 0.015, 0.02, 0.1125, 0.1375)), factorProduct, 0.0001)
   }
 
-  @Test def product_variable_2 {
+  @Test def product_variable_2:Unit = {
     val thatFactor = new SingleFactor(Var(2, 2), Array(0.2, 0.8))
     val factorProduct = factor.product(thatFactor)
 
@@ -76,15 +76,15 @@ class MultiFactorTest {
    * Tests for withEvidence() method.
    */
 
-  @Test(expected = classOf[IllegalArgumentException]) def withEvidence_variable_not_found {
+  @Test(expected = classOf[IllegalArgumentException]) def withEvidence_variable_not_found:Unit = {
     factor.withEvidence(5, 1)
   }
 
-  @Test(expected = classOf[IllegalArgumentException]) def withEvidence_variable_value_index_out_of_range {
+  @Test(expected = classOf[IllegalArgumentException]) def withEvidence_variable_value_index_out_of_range:Unit = {
     factor.withEvidence(1, 3)
   }
 
-  @Test def withEvidence {
+  @Test def withEvidence:Unit = {
 
     val factorWithEvidence = factor.withEvidence(1, 2)
     val expectedFactor = MultiFactor(Var(1, 3), Var(2, 2), Array(0, 0, 0, 0, 0.225, 0.275))
@@ -94,11 +94,11 @@ class MultiFactorTest {
   /**
    * Tests for marginal() method.
    */
-  @Test(expected = classOf[IllegalArgumentException]) def marginal_variable_not_found {
+  @Test(expected = classOf[IllegalArgumentException]) def marginal_variable_not_found:Unit = {
     factor.marginal(3)
   }
 
-  @Test def marginal {
+  @Test def marginal:Unit = {
 
     val marginalFactor = factor.marginal(2)
     val expectedMarginalFactor = SingleFactor(Var(2, 2), Array(0.425, 0.575))
@@ -109,7 +109,7 @@ class MultiFactorTest {
   /**
    * Tests for normalise() method.
    */
-  @Test def normalise_aready_normalised {
+  @Test def normalise_aready_normalised:Unit = {
 
     val factor = MultiFactor(Var(1, 3), Var(2, 2), Array(0.05, 0.1, 0.15, 0.2, 0.225, 0.275))
     val normalisedFactor = factor.normalise()
@@ -117,7 +117,7 @@ class MultiFactorTest {
     assertFactor(factor, normalisedFactor)
   }
 
-  @Test def normalise {
+  @Test def normalise:Unit = {
 
     val factor = MultiFactor(Var(1, 3), Var(2, 2), Array(0.05, 0.1, 0.15, 0, 0.225, 0.275))
     val normalisedFactor = factor.normalise()
@@ -129,7 +129,7 @@ class MultiFactorTest {
    * Tests for mapAssignments
    */
 
-  @Test def mapAssignments {
+  @Test def mapAssignments:Unit = {
     val factor = MultiFactor(Var(1, 3), Var(2, 2), Array(0.05, 0.1, 0.15, 0, 0.225, 0.275))
 
     val assignments = factor.mapAssignments(f => f)

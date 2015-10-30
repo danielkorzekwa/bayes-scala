@@ -50,7 +50,7 @@ object GenericEMLearn extends EMLearn {
 
   }
 
-  private def updateInitialClusterPotentials(clusterGraph: ClusterGraph, clusterPotentialsByTypeId: Map[Int, Factor]) {
+  private def updateInitialClusterPotentials(clusterGraph: ClusterGraph, clusterPotentialsByTypeId: Map[Int, Factor]):Unit = {
     for (cluster <- clusterGraph.getClusters()) {
       val clusterTypePotentials = clusterPotentialsByTypeId(cluster.typeId)
       val newClusterPotentials = cluster.getFactor().copy(clusterTypePotentials.getValues())

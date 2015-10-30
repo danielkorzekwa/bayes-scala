@@ -10,7 +10,7 @@ import breeze.linalg.DenseMatrix
 
 class ClutteredGaussianWithMvnGaussianParentTest {
 
-  @Test def test_not_correlated {
+  @Test def test_not_correlated:Unit = {
 
     val x = Gaussian(DenseVector(0.0, 15), new DenseMatrix(2, 2, Array(100.0, 0, 0, 100)))
     val y1 = ClutteredGaussian(x, xIndex = 1, w = 0.4, a = 10, value = 3)

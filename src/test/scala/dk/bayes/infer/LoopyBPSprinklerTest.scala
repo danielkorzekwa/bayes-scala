@@ -19,7 +19,7 @@ class LoopyBPSprinklerTest {
 
   val loopyBP = LoopyBP(sprinklerGraph)
 
-  @Test(expected = classOf[IllegalArgumentException]) def cluster_belief_given_full_evidence_with_zero_probability {
+  @Test(expected = classOf[IllegalArgumentException]) def cluster_belief_given_full_evidence_with_zero_probability:Unit = {
     val wetGrassFactorWithZeroProbability = Factor(sprinklerVar, rainVar, wetGrassVar, Array(0.95, 0.05, 0.9, 0.1, 0.8, 0.2, 0, 1))
     sprinklerGraph.getCluster(wetGrassVar.id).updateFactor(wetGrassFactorWithZeroProbability)
 
@@ -29,7 +29,7 @@ class LoopyBPSprinklerTest {
     loopyBP.setEvidence(wetGrassVar.id, 0)
   }
 
-  @Test(expected = classOf[IllegalArgumentException]) def incompatible_evidence {
+  @Test(expected = classOf[IllegalArgumentException]) def incompatible_evidence:Unit = {
     loopyBP.setEvidence(winterVar.id, 0)
     loopyBP.setEvidence(winterVar.id, 1)
   }
@@ -38,7 +38,7 @@ class LoopyBPSprinklerTest {
    * This test checks, whether cluster messages are reset to 1 at the beginning of loopy belief calibration.
    * If they weren't then cluster beliefs would equal to NaN.
    */
-  @Test def cluster_belief_calibrate_twice_for_two_different_full_assignments {
+  @Test def cluster_belief_calibrate_twice_for_two_different_full_assignments:Unit = {
     loopyBP.setEvidence(winterVar.id, 0)
     loopyBP.setEvidence(sprinklerVar.id, 1)
     loopyBP.setEvidence(rainVar.id, 0)

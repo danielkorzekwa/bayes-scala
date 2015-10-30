@@ -12,7 +12,7 @@ class HMMLocalisationGaussianTest {
   val transitionProb = LinearGaussian(a = 1, b = 0, v = 0.2)
   val emissionProb = LinearGaussian(a = 1, b = 0, v = 0.9)
 
-  @Test def single_observation {
+  @Test def single_observation:Unit = {
 
     val location2Marginal = (priorProb * transitionProb).marginalise(0)
     val location2Posterior = (location2Marginal * emissionProb).withEvidence(1, 0.6)

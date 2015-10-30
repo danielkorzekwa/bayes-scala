@@ -15,7 +15,7 @@ class GenericFactorGraphTest {
    * Tests for addFactor
    */
 
-  @Test def add_generic_factor {
+  @Test def add_generic_factor = {
     val factorGraph = GenericFactorGraph()
 
     val factor = TestGenericFactor(varIds = List(1, 2, 3))
@@ -28,14 +28,14 @@ class GenericFactorGraphTest {
   /**
    * Tests for getVariables()
    */
-  @Test def getVariables_single_variable {
+  @Test def getVariables_single_variable = {
     val factorGraph = GenericFactorGraph()
     factorGraph.addFactor(GaussianFactor(varId = 10, m = 0, v = 1))
 
     assertEquals(List(10), factorGraph.getVariables())
   }
 
-  @Test def getVariables_two_variables_across_two_factors {
+  @Test def getVariables_two_variables_across_two_factors = {
     val factorGraph = GenericFactorGraph()
     factorGraph.addFactor(GaussianFactor(varId = 10, m = 0, v = 1))
     factorGraph.addFactor(LinearGaussianFactor(parentVarId = 10, varId = 20, a = 1, b = 0, v = 2))
@@ -48,7 +48,7 @@ class GenericFactorGraphTest {
    */
 
   @Test(expected = classOf[IllegalArgumentException])
-  def merge_two_factor_graphs_containing_the_same_variable {
+  def merge_two_factor_graphs_containing_the_same_variable:Unit = {
     val factorGraph1 = GenericFactorGraph()
     factorGraph1.addFactor(GaussianFactor(varId = 10, m = 0, v = 1))
     factorGraph1.addFactor(LinearGaussianFactor(parentVarId = 10, varId = 20, a = 1, b = 0, v = 2))
@@ -59,7 +59,7 @@ class GenericFactorGraphTest {
     factorGraph1.merge(factorGraph2)
   }
 
-  @Test def merge_two_empty_factor_graphs {
+  @Test def merge_two_empty_factor_graphs = {
     val factorGraph1 = GenericFactorGraph()
     val factorGraph2 = GenericFactorGraph()
 
@@ -67,7 +67,7 @@ class GenericFactorGraphTest {
     assertEquals(0, mergedFactorGraph.getNodes.size)
   }
 
-  @Test def merge_non_empty_factor_graph_with_empty_factor_graph {
+  @Test def merge_non_empty_factor_graph_with_empty_factor_graph = {
 
     val factorGraph1 = GenericFactorGraph()
     factorGraph1.addFactor(GaussianFactor(varId = 10, m = 0, v = 1))
@@ -86,7 +86,7 @@ class GenericFactorGraphTest {
 
   }
 
-  @Test def merge_empty_factor_graph_with_non_empty_factor_graph {
+  @Test def merge_empty_factor_graph_with_non_empty_factor_graph = {
 
     val factorGraph1 = GenericFactorGraph()
     factorGraph1.addFactor(GaussianFactor(varId = 10, m = 0, v = 1))
@@ -104,7 +104,7 @@ class GenericFactorGraphTest {
 
   }
 
-  @Test def merge_two_factor_graphs {
+  @Test def merge_two_factor_graphs = {
     val factorGraph1 = GenericFactorGraph()
     factorGraph1.addFactor(GaussianFactor(varId = 10, m = 0, v = 1))
 

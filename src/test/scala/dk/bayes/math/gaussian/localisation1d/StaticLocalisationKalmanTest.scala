@@ -12,14 +12,14 @@ class StaticLocalisationKalmanTest {
   val priorProb = Gaussian(m = 3, v = 1.5)
   val emissionProb = LinearGaussian(a = 1, b = 0, v = 0.9)
 
-  @Test def single_observation {
+  @Test def single_observation:Unit = {
     val locationPosterior = KalmanFilter.posterior(priorProb, emissionProb.v, 0.6)
     
     assertEquals(1.5, locationPosterior.m, 0.001)
     assertEquals(0.5625, locationPosterior.v, 0.001)
   }
 
-  @Test def two_observations {
+  @Test def two_observations:Unit = {
 
     val locationPosterior1 = KalmanFilter.posterior(priorProb, emissionProb.v, 0.6)
     val locationPosterior2 = KalmanFilter.posterior(locationPosterior1, emissionProb.v, 0.62)
@@ -28,7 +28,7 @@ class StaticLocalisationKalmanTest {
     assertEquals(0.346, locationPosterior2.v, 0.001)
   }
 
-  @Test def multiple_100K_observations {
+  @Test def multiple_100K_observations:Unit = {
 
     val lastLocation = (1 to 100).foldLeft(priorProb) { (currLocation, i) =>
       KalmanFilter.posterior(currLocation, emissionProb.v, 0.6)

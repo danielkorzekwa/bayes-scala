@@ -16,10 +16,16 @@ lazy val root = (project in file(".")).
     libraryDependencies ++= Seq(
       "org.apache.commons" % "commons-math3" % "3.3",
       "com.typesafe.scala-logging" %% "scala-logging-slf4j" % "2.1.2",
-      "org.scalanlp" %% "breeze" % "0.11.2",
-      "org.scalanlp" %% "breeze-natives" % "0.11.2",
+      "org.scalanlp" %% "breeze" % "0.12-SNAPSHOT",
       // test scoped
       "org.slf4j" % "slf4j-log4j12" % "1.7.2" % Test,
       "com.novocode" % "junit-interface" % "0.11" % Test
+    ),
+    
+    resolvers ++= Seq(
+    // other resolvers here
+    // if you want to use snapshot builds (currently 0.12-SNAPSHOT), use this.
+    "Sonatype Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots/",
+    "Sonatype Releases" at "https://oss.sonatype.org/content/repositories/releases/"
     )
   )

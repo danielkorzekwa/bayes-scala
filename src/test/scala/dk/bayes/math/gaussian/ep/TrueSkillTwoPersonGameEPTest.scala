@@ -20,7 +20,7 @@ import dk.bayes.math.linear._
 class TrueSkillTwoPersonGameEPTest {
 
   /**http://atom.research.microsoft.com/trueskill/rankcalculator.aspx*/
-  @Test def skills_marginals_match_true_skill_calculator {
+  @Test def skills_marginals_match_true_skill_calculator:Unit = {
     val skillTransitionFactor = LinearGaussian(1, 0, pow(25d / 300, 2))
     val performanceFactor = LinearGaussian(1, 0, pow(25d / 6, 2))
 
@@ -29,7 +29,7 @@ class TrueSkillTwoPersonGameEPTest {
     assertGaussian(Gaussian(33.8460, 20.8610), player2, 0.0001)
   }
 
-  @Test def skills_marginals {
+  @Test def skills_marginals:Unit = {
     val skillTransitionFactor = LinearGaussian(1, 0, 0.5)
     val performanceFactor = LinearGaussian(1, 0, 2)
 
@@ -51,7 +51,7 @@ class TrueSkillTwoPersonGameEPTest {
 
   }
 
-  @Test def outcome_marginal {
+  @Test def outcome_marginal:Unit = {
     val skillTransitionFactor = LinearGaussian(1, 0, pow(25d / 300, 2))
     val performanceFactor = LinearGaussian(1, 0, pow(25d / 6, 2))
 
