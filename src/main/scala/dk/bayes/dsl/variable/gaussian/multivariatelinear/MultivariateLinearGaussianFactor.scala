@@ -13,20 +13,18 @@ trait MultivariateLinearGaussianFactor extends DoubleFactor[DenseCanonicalGaussi
   this: MultivariateLinearGaussian =>
 
   val initFactorMsgUp: DenseCanonicalGaussian = {
-    val m = DenseVector.zeros[Double](this.b.size)
-    val v = DenseMatrix.eye[Double](this.b.size) * 1000d
+    val m = DenseVector.zeros[Double](this.a.cols)
+    val v = DenseMatrix.eye[Double](this.a.cols) * 1000d
     DenseCanonicalGaussian(m, v)
   }
 
   def calcYFactorMsgUp(x: DenseCanonicalGaussian, oldFactorMsgUp: DenseCanonicalGaussian): Option[DenseCanonicalGaussian] = {
-
     val xVarMsgDown = x / oldFactorMsgUp
 
     val xVariable = Gaussian(xVarMsgDown.mean, xVarMsgDown.variance)
     val yVariable = Gaussian(this.a, xVariable, this.b, this.v, this.yValue.get)
 
     val xPosterior: MultivariateGaussian = infer(xVariable)
-
     val newFactorMsgUp = DenseCanonicalGaussian(xPosterior.m, xPosterior.v) / xVarMsgDown
     Some(newFactorMsgUp)
   }
