@@ -30,6 +30,7 @@ object inferMultivariateGaussianSimplest extends InferEngine[MultivariateGaussia
     val child = x.getChildren.head.asInstanceOf[MultivariateLinearGaussian]
 
     val xVInv = invchol(cholesky(x.v).t)
+   
     val childVInv = invchol(cholesky(child.v).t)
 
     val posteriorVar = invchol(cholesky(xVInv + child.a.t * childVInv * child.a).t)

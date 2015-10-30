@@ -12,6 +12,7 @@ import dk.bayes.infer.gp.cov.CovSEiso
 import dk.bayes.math.linear.invchol
 import dk.bayes.math.linear.isIdentical
 import org.junit.Ignore
+import breeze.linalg.inv
 
 class HierarchicalGPTest {
 
@@ -38,12 +39,14 @@ class HierarchicalGPTest {
 
     val x1A = kXU1 * invchol(cholesky(kUU).t)
     val x1b = DenseVector.zeros[Double](x1.rows)
-    val x1v = kXX1 - x1A * kXU1.t + DenseMatrix.eye[Double](x1.rows) * 1d
+    val x1kXUInvLUU = kXU1 * inv(cholesky(kUU).t)
+    val x1v = kXX1 - x1kXUInvLUU * x1kXUInvLUU.t + DenseMatrix.eye[Double](x1.rows) * 1d
     val x1Variable = Gaussian(x1A, uVariable, x1b, x1v, yValue = y1)
 
     val x2A = kXU2 * invchol(cholesky(kUU).t)
     val x2b = DenseVector.zeros[Double](x2.rows)
-    val x2v = kXX2 - x2A * kXU2.t + DenseMatrix.eye[Double](x2.rows) * 1d
+    val x2kXUInvLUU = kXU2 * inv(cholesky(kUU).t)
+    val x2v = kXX2 - x2kXUInvLUU * x2kXUInvLUU.t + DenseMatrix.eye[Double](x2.rows) * 1d
     val x2Variable = Gaussian(x2A, uVariable, x2b, x2v, yValue = y2)
 
     val uPosterior = infer(uVariable)
@@ -57,7 +60,9 @@ class HierarchicalGPTest {
 
     val x1A = kXU1 * invchol(cholesky(kUU).t)
     val x1b = DenseVector.zeros[Double](x1.rows)
-    val x1v = kXX1 - x1A * kXU1.t + DenseMatrix.eye[Double](x1.rows) * 1d
+
+    val x1kXUInvLUU = kXU1 * inv(cholesky(kUU).t)
+    val x1v = kXX1 - x1kXUInvLUU * x1kXUInvLUU.t + DenseMatrix.eye[Double](x1.rows) * 1d
     val x1Variable = Gaussian(x1A, uVariable, x1b, x1v, yValue = y1)
 
     val uPosterior = infer(uVariable)
