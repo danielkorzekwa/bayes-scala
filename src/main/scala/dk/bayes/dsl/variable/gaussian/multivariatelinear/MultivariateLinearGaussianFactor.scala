@@ -4,6 +4,9 @@ import dk.bayes.dsl.factor.DoubleFactor
 import dk.bayes.math.gaussian.canonical.DenseCanonicalGaussian
 import breeze.linalg.DenseVector
 import breeze.linalg.DenseMatrix
+import dk.bayes.dsl.variable.Gaussian
+import dk.bayes.dsl.infer
+import dk.bayes.dsl.variable.gaussian.multivariate.MultivariateGaussian
 
 trait MultivariateLinearGaussianFactor extends DoubleFactor[DenseCanonicalGaussian, Any] {
 
@@ -16,6 +19,15 @@ trait MultivariateLinearGaussianFactor extends DoubleFactor[DenseCanonicalGaussi
   }
 
   def calcYFactorMsgUp(x: DenseCanonicalGaussian, oldFactorMsgUp: DenseCanonicalGaussian): Option[DenseCanonicalGaussian] = {
-    throw new UnsupportedOperationException("Not implemented yet")
+
+    val xVarMsgDown = x / oldFactorMsgUp
+
+    val xVariable = Gaussian(xVarMsgDown.mean, xVarMsgDown.variance)
+    val yVariable = Gaussian(this.a, xVariable, this.b, this.v, this.yValue.get)
+
+    val xPosterior: MultivariateGaussian = infer(xVariable)
+
+    val newFactorMsgUp = DenseCanonicalGaussian(xPosterior.m, xPosterior.v) / xVarMsgDown
+    Some(newFactorMsgUp)
   }
 }
