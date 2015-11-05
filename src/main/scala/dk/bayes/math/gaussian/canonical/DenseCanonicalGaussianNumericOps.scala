@@ -35,8 +35,10 @@ trait DenseCanonicalGaussianNumericOps {
 
   implicit val isIdentical = new isIdentical[DenseCanonicalGaussian] {
     def apply(x1: DenseCanonicalGaussian, x2: DenseCanonicalGaussian, tolerance: Double): Boolean = {
-      dk.bayes.math.linear.isIdentical(x1.mean, x2.mean, tolerance) &&
-        dk.bayes.math.linear.isIdentical(x1.variance, x2.variance, tolerance)
+
+      val isMeanIdentical = dk.bayes.math.linear.isIdentical(x1.mean, x2.mean, tolerance)
+      val isVarIdentical = dk.bayes.math.linear.isIdentical(x1.variance, x2.variance, tolerance)
+      isMeanIdentical && isVarIdentical
     }
   }
 }

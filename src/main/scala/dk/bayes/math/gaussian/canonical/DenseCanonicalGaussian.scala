@@ -175,8 +175,9 @@ object DenseCanonicalGaussian extends DenseCanonicalGaussianNumericOps {
   def apply(m: DenseVector[Double], v: DenseMatrix[Double]): DenseCanonicalGaussian = {
     
     val k = invchol(cholesky(v).t)
-    val h = k * m
-    val g = -0.5 * (m.t * k * m) - log(pow(2d * Pi, m.size.toDouble / 2d) * pow(det(v), 0.5))
+    val h = k * m 
+    val g = -0.5 * (m.t * k * m) - log(pow(2d * Pi, m.size.toDouble / 2d)) - 0.5*logdet(v)._2
+   
     new DenseCanonicalGaussian(k, h, g)
   }
 
