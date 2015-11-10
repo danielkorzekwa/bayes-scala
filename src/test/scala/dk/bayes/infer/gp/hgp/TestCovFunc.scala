@@ -10,10 +10,10 @@ case class TestCovFunc() extends CovFunc {
 
   def cov(x1: DenseMatrix[Double], x2: DenseMatrix[Double], covFuncParams: DenseVector[Double]): DenseMatrix[Double] = {
 
-    val (cust1Vec, cust2Vec) = if (x1(0, 0) == x2(0, 0)) (DenseVector.zeros[Double](x1.rows), DenseVector.zeros[Double](x2.rows))
+    val (task1Vec, task2Vec) = if (x1(0, 0) == x2(0, 0)) (DenseVector.zeros[Double](x1.rows), DenseVector.zeros[Double](x2.rows))
     else (DenseVector.zeros[Double](x1.rows), DenseVector.ones[Double](x2.rows))
 
-    val accountIdCov = CovSEiso().cov(cust1Vec.toDenseMatrix.t, cust2Vec.toDenseMatrix.t, DenseVector(log(1e-3), log(1e-10)))
+    val accountIdCov = CovSEiso().cov(task1Vec.toDenseMatrix.t, task2Vec.toDenseMatrix.t, DenseVector(log(1e-3), log(1e-10)))
 
     accountIdCov + CovSEiso().cov(x1(::, 1 to 1), x2(::, 1 to 1), covFuncParams)
   }

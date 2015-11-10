@@ -17,39 +17,39 @@ case class HgpFactorGraph(x: DenseMatrix[Double], y: DenseVector[Double], u: Den
   private val uMean = DenseVector.zeros[Double](u.rows)
   private val priorU = DenseCanonicalGaussian(uMean, kUU)
 
-  private val xFactorMsgUpByCustId: Map[Int, DenseCanonicalGaussian] = {
+  private val xFactorMsgUpByTaskId: Map[Int, DenseCanonicalGaussian] = {
 
-    val custIds = x(::, 0).toArray.distinct
+    val taskIds = x(::, 0).toArray.distinct
 
-    val custMsgsUp = custIds.par.map { cId =>
-      val idx = x(::, 0).findAll { x => x == cId }
-      val custX = x(idx, ::).toDenseMatrix
-      val custY = y(idx).toDenseVector
-      val kXX = covFunc.cov(custX, custX, covFuncParams) + DenseMatrix.eye[Double](custX.rows) * 1e-7
-      val kXU = covFunc.cov(custX, u, covFuncParams)
+    val taskMsgsUp = taskIds.par.map { taskId =>
+      val idx = x(::, 0).findAll { x => x == taskId }
+      val taskX = x(idx, ::).toDenseMatrix
+      val taskY = y(idx).toDenseVector
+      val kXX = covFunc.cov(taskX, taskX, covFuncParams) + DenseMatrix.eye[Double](taskX.rows) * 1e-7
+      val kXU = covFunc.cov(taskX, u, covFuncParams)
 
       val A = kXU * invchol(cholesky(kUU).t)
-      val b = DenseVector.zeros[Double](custX.rows)
+      val b = DenseVector.zeros[Double](taskX.rows)
       val kXUInvLUU = kXU * inv(cholesky(kUU).t)
-      val v = kXX - kXUInvLUU * kXUInvLUU.t + DenseMatrix.eye[Double](custX.rows) * exp(2 * likNoiseLogStdDev)
+      val v = kXX - kXUInvLUU * kXUInvLUU.t + DenseMatrix.eye[Double](taskX.rows) * exp(2 * likNoiseLogStdDev)
 
       val priorUVariable = dk.bayes.dsl.variable.Gaussian(priorU.mean, priorU.variance)
-      val xVariable = Gaussian(A, priorUVariable, b, v, yValue = custY)
+      val xVariable = Gaussian(A, priorUVariable, b, v, yValue = taskY)
       val uPosterior = infer(priorUVariable)
       val xMsgUp = DenseCanonicalGaussian(uPosterior.m, uPosterior.v) / priorU
 
-      cId.toInt -> xMsgUp
+      taskId.toInt -> xMsgUp
 
     }
 
-    custMsgsUp.toList.toMap
+    taskMsgsUp.toList.toMap
   }
 
   def getUFactorMsgDown(): DenseCanonicalGaussian = priorU
 
-  def getXFactorMsgUp(cId: Int): DenseCanonicalGaussian = xFactorMsgUpByCustId(cId)
-  def getXFactorMsgs(): Seq[DenseCanonicalGaussian] = xFactorMsgUpByCustId.values.toList
-  
-  def calcUPosterior():DenseCanonicalGaussian = getUFactorMsgDown()*getXFactorMsgs.reduceLeft(_ * _)
-  
+  def getXFactorMsgUp(cId: Int): DenseCanonicalGaussian = xFactorMsgUpByTaskId(cId)
+  def getXFactorMsgs(): Seq[DenseCanonicalGaussian] = xFactorMsgUpByTaskId.values.toList
+
+  def calcUPosterior(): DenseCanonicalGaussian = getUFactorMsgDown() * getXFactorMsgs.reduceLeft(_ * _)
+
 }
