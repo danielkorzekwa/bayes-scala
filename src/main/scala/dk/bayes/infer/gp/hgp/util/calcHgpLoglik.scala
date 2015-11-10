@@ -5,14 +5,16 @@ import dk.gp.gpr.gprLoglik
 import breeze.linalg.cholesky
 import dk.gp.math.invchol
 import breeze.numerics._
-import dk.bayes.dsl.variable.gaussian.multivariate.MultivariateGaussian
 import dk.bayes.infer.gp.hgp.HgpModel
+import dk.gp.math.MultivariateGaussian
+import dk.gp.math.MultivariateGaussian
 
 object calcHgpLoglik {
 
   def apply(model: HgpModel): Double = {
 
-    val (uPosteriorMean, uPosteriorVar) = inferUPosterior(model.x, model.y, model.u, model.covFunc, model.covFuncParams, model.likNoiseLogStdDev)
+    val hgpFactorGraph = HgpFactorGraph(model.x, model.y, model.u, model.covFunc, model.covFuncParams, model.likNoiseLogStdDev)
+    val uPosterior = hgpFactorGraph.calcUPosterior()
 
     val custIds = model.x(::, 0).toArray.distinct
 
@@ -22,7 +24,10 @@ object calcHgpLoglik {
       val custX = model.x(idx, ::).toDenseMatrix
       val custY = model.y(idx).toDenseVector
 
-      val (xPriorMean, cPriorVar) = inferXPrior(custX, model.u, MultivariateGaussian(uPosteriorMean, uPosteriorVar), model.covFunc, model.covFuncParams, model.likNoiseLogStdDev)
+      val xFactorMsgUp = hgpFactorGraph.getXFactorMsgUp(cId.toInt)
+
+      val uVarMsgDown = uPosterior / xFactorMsgUp
+      val (xPriorMean, cPriorVar) = inferXPrior(custX, model.u, uVarMsgDown, model.covFunc, model.covFuncParams, model.likNoiseLogStdDev)
       val cPriorVarWithNoise = cPriorVar + DenseMatrix.eye[Double](custX.rows) * exp(2 * model.likNoiseLogStdDev)
       val loglik = gprLoglik(xPriorMean, cPriorVarWithNoise, invchol(cholesky(cPriorVarWithNoise).t), custY)
 

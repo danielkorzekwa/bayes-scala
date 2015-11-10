@@ -1,6 +1,5 @@
 package dk.bayes.infer.gp.hgp.util
 
-import dk.bayes.dsl.variable.gaussian.multivariate.MultivariateGaussian
 import dk.gp.cov.CovFunc
 import breeze.linalg.DenseVector
 import breeze.linalg.DenseMatrix
@@ -11,10 +10,12 @@ import breeze.numerics._
 import dk.bayes.dsl.variable.Gaussian
 import dk.bayes.dsl.infer
 import dk.gp.math.UnivariateGaussian
+import dk.gp.math.MultivariateGaussian
+import dk.bayes.math.gaussian.canonical.DenseCanonicalGaussian
 
 object inferXPrior {
 
-  def apply(x: DenseMatrix[Double], u: DenseMatrix[Double], uPosterior: MultivariateGaussian, covFunc: CovFunc, covFuncParams: DenseVector[Double], likNoiseLogStdDev: Double): (DenseVector[Double], DenseMatrix[Double]) = {
+  def apply(x: DenseMatrix[Double], u: DenseMatrix[Double], uPosterior: DenseCanonicalGaussian, covFunc: CovFunc, covFuncParams: DenseVector[Double], likNoiseLogStdDev: Double): (DenseVector[Double], DenseMatrix[Double]) = {
 
     val kUU = covFunc.cov(u, u, covFuncParams) + DenseMatrix.eye[Double](u.rows) * 1e-7
 
@@ -26,7 +27,7 @@ object inferXPrior {
     val kXUInvLUU = kXU * inv(cholesky(kUU).t)
     val v = kXX - kXUInvLUU * kXUInvLUU.t
 
-    val uPosteriorCopy = MultivariateGaussian(uPosterior.m, uPosterior.v)
+    val uPosteriorCopy = dk.bayes.dsl.variable.gaussian.multivariate.MultivariateGaussian(uPosterior.mean, uPosterior.variance)
 
     val cVariable = Gaussian(A, uPosteriorCopy, b, v)
     val cPosterior = infer(cVariable)
