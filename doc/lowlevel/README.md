@@ -50,7 +50,8 @@ None
     	* [Inference in Gaussian Process regression with inducing variables - link to bayes-scala-gp project](https://github.com/danielkorzekwa/bayes-scala-gp/blob/master/src/test/scala/dk/gp/sgpr/sgprPredictTest.scala)
     	* [Parameters learning in Gaussian Process regression with inducing variables (variational lower bound on marginal likelihood) - link to bayes-scala-gp project] (https://github.com/danielkorzekwa/bayes-scala-gp/blob/master/src/test/scala/dk/gp/sgpr/sgprTrainTest.scala)
     * [Parameters learning in Gaussian Process regression  (variational lower bound on marginal likelihood)](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/infer/gp/infercovparamsem/inferCovParamsEmTest.scala)
-                                 
+    * Hierarchical Gaussian Process Regression
+    	* [Trainging and prediction](https://github.com/danielkorzekwa/bayes-scala-gp/blob/master/src/test/scala/dk/gp/hgp/hgpPredictTest.scala)                            
 *   Others 
     * [Plotting gaussians](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/plotting_gaussian/plotting_gaussian.md)
     * [Resources for Bayesian Networks](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/bn_resources/bn_resources.md)
