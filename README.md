@@ -77,7 +77,7 @@ With maven build tool, add to pom.xml config file:
 ## Others
 
 * [Low level algorithms] which are used behind the scenes for Bayesian Inference, e.g. Loopy Belief Propagation, Expectation Propagation, Variational Inference.
-* Bayes-scala at some point will depend on [bayes-scala-gp] library for Gaussian Processes
+* The [bayes-scala-gp] library for Gaussian Processes is built on top of bayes-scala
 
 [Low level algorithms]: https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/lowlevel/README.md
 [bayes-scala-gp]: https://github.com/danielkorzekwa/bayes-scala-gp/blob/master/README.md
