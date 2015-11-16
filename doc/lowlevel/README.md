@@ -43,13 +43,6 @@ None
 	* Linear Dynamical Systems 	
     	* [Linear Dynamical Systems M-step (prior mean, emission variance, transition variance)](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/learn/lds/GenericLDSMStepTest.scala)
     	* [Linear Dynamical Systems EM (learning prior mean and emission variance only from multiple data sequences)](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/learn/lds/GenericLDSEMTest.scala)
-    * Gaussian Process Regression
-    	* [Inference in Gaussian Process regression](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/infer/gp/gpr/GenericGPRegressionTest.scala)
-    	* [Parameters learning in Gaussian Process regression (marginal likelihood maximisation)](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/infer/gp/gpr/GpmlRegressionLearnTest.scala)
-	* Sparse Gaussian Process Regression
-    	* [Inference in Gaussian Process regression with inducing variables - link to bayes-scala-gp project](https://github.com/danielkorzekwa/bayes-scala-gp/blob/master/src/test/scala/dk/gp/sgpr/sgprPredictTest.scala)
-    	* [Parameters learning in Gaussian Process regression with inducing variables (variational lower bound on marginal likelihood) - link to bayes-scala-gp project] (https://github.com/danielkorzekwa/bayes-scala-gp/blob/master/src/test/scala/dk/gp/sgpr/sgprTrainTest.scala)
-    * [Parameters learning in Gaussian Process regression  (variational lower bound on marginal likelihood)](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/infer/gp/infercovparamsem/inferCovParamsEmTest.scala)
     * Gaussian Processes - It has been moved to [bayes-scala-gp project](https://github.com/danielkorzekwa/bayes-scala-gp)   
                         
 *   Others 
