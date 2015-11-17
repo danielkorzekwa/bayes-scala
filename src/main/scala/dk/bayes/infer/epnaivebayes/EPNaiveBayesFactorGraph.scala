@@ -28,6 +28,8 @@ case class EPNaiveBayesFactorGraph[X](prior: SingleFactor[X], likelihoods: Seq[D
 
   def getPosterior(): X = posterior
 
+  def getMsgsUp():Seq[X] = msgsUp
+  
   def calibrate(maxIter: Int = 100, threshold: Double = 1e-6):Unit = {
 
     @tailrec
