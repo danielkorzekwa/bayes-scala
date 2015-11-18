@@ -40,8 +40,8 @@ object MvnGaussianThreshold {
       val oldYVarMsgUp = new DenseCanonicalGaussian(DenseMatrix(oldFactorMsgUp.k(xIndex, xIndex)), DenseVector(oldFactorMsgUp.h(xIndex)), oldFactorMsgUp.g)
       val factorMsgDown = (x.marginal(xIndex) / (oldYVarMsgUp)).toGaussian + Gaussian(0, v)
 
-      if (exceeds.get) Gaussian.stdCdf(factorMsgDown.m / sqrt(factorMsgDown.v))
-      else Gaussian.stdCdf(-factorMsgDown.m / sqrt(factorMsgDown.v))
+      if (exceeds.get) log(Gaussian.stdCdf(factorMsgDown.m / sqrt(factorMsgDown.v)))
+      else log(Gaussian.stdCdf(-factorMsgDown.m / sqrt(factorMsgDown.v)))
     }
 
     def calcYFactorMsgUp(x: CanonicalGaussian, oldFactorMsgUp: CanonicalGaussian): Option[CanonicalGaussian] = {
@@ -54,16 +54,16 @@ object MvnGaussianThreshold {
 
       val oldYVarMsgUp = new DenseCanonicalGaussian(DenseMatrix(oldFactorMsgUp.k(xIndex, xIndex)), DenseVector(oldFactorMsgUp.h(xIndex)), oldFactorMsgUp.g)
       val factorMsgDown = (x.marginal(xIndex) / (oldYVarMsgUp)).toGaussian + Gaussian(0, v)
-
       //compute new factor msg up
       val projValue = (factorMsgDown).truncate(0, exceeds.get)
+       
       val yVarMsgUp = (projValue / factorMsgDown) + Gaussian(0, v)
+    
       val yVarMsgUpCanon = DenseCanonicalGaussian(yVarMsgUp.m, yVarMsgUp.v)
 
       val newFactorMsgUp = createZeroFactorMsgUp(this.x.m.size, yVarMsgUpCanon.g)
       newFactorMsgUp.k(xIndex, xIndex) = yVarMsgUpCanon.k(0, 0)
       newFactorMsgUp.h(xIndex) = yVarMsgUpCanon.h(0)
-
       Some(newFactorMsgUp)
     }
 

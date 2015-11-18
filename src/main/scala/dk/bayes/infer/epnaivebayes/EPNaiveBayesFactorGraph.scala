@@ -1,7 +1,6 @@
 package dk.bayes.infer.epnaivebayes
 
 import com.typesafe.scalalogging.slf4j.LazyLogging
-
 import scala.annotation.tailrec
 import dk.bayes.dsl.factor.DoubleFactor
 import dk.bayes.dsl.factor.SingleFactor
@@ -28,14 +27,14 @@ case class EPNaiveBayesFactorGraph[X](prior: SingleFactor[X], likelihoods: Seq[D
 
   def getPosterior(): X = posterior
 
-  def getMsgsUp():Seq[X] = msgsUp
-  
-  def calibrate(maxIter: Int = 100, threshold: Double = 1e-6):Unit = {
+  def getMsgsUp(): Seq[X] = msgsUp
+
+  def calibrate(maxIter: Int = 100, threshold: Double = 1e-6): Unit = {
 
     @tailrec
-    def calibrateIter(currPosterior: X, iterNum: Int):Unit = {
-      if (iterNum >= maxIter) {      
-        logger.warn(s"Factor graph did not converge in less than ${maxIter} iterations. Prior=%s, Posterior=%s".format(prior, posterior))
+    def calibrateIter(currPosterior: X, iterNum: Int): Unit = {
+      if (iterNum >= maxIter) {
+        logger.warn(s"Factor graph did not converge in less than ${maxIter} iterations")
         return
       }
       if (paralllelMessagePassing) sendMsgsParallel() else sendMsgsSerial()
@@ -47,13 +46,13 @@ case class EPNaiveBayesFactorGraph[X](prior: SingleFactor[X], likelihoods: Seq[D
     calibrateIter(posterior, 1)
   }
 
-  private def sendMsgsParallel():Unit = {
+  private def sendMsgsParallel(): Unit = {
 
     msgsUp = msgsUp.zip(likelihoods).map {
       case (currMsgUp, llh) =>
 
         val newMsgUp = llh.calcYFactorMsgUp(posterior, currMsgUp) match {
-          case Some(msg) => msg
+          case Some(msg) =>  msg
           case None      => currMsgUp
         }
 
@@ -61,9 +60,10 @@ case class EPNaiveBayesFactorGraph[X](prior: SingleFactor[X], likelihoods: Seq[D
     }
 
     posterior = multOp(prior.factorMsgDown, multOp(msgsUp: _*))
+
   }
 
-  private def sendMsgsSerial():Unit = {
+  private def sendMsgsSerial(): Unit = {
 
     msgsUp = msgsUp.zip(likelihoods).map {
       case (currMsgUp, llh) =>
