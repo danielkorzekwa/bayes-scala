@@ -14,7 +14,6 @@ lazy val root = (project in file(".")).
     ),
     ScoverageSbtPlugin.ScoverageKeys.coverageHighlighting := false, 
     libraryDependencies ++= Seq(
-      "com.github.danielkorzekwa" %% "bayes-scala-gp" % "0.1-SNAPSHOT",
       "org.apache.commons" % "commons-math3" % "3.3",
       "com.typesafe.scala-logging" %% "scala-logging-slf4j" % "2.1.2",
       "org.scalanlp" %% "breeze" % "0.12-SNAPSHOT",
