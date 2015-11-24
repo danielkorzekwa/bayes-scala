@@ -21,7 +21,7 @@ trait DenseCanonicalGaussianNumericOps {
     }
 
     def apply(a: DenseCanonicalGaussian, b: DenseCanonicalGaussian): DenseCanonicalGaussian = {
-      if (b.g.isNaN) a else DenseCanonicalGaussianOps.*(a, b)
+      DenseCanonicalGaussianOps.*(a, b)
     }
   }
 
@@ -30,7 +30,7 @@ trait DenseCanonicalGaussianNumericOps {
    */
   implicit val divideOp = new divideOp[DenseCanonicalGaussian] {
     def apply(a: DenseCanonicalGaussian, b: DenseCanonicalGaussian): DenseCanonicalGaussian = {
-      if (b.g.isNaN()) a else DenseCanonicalGaussianOps./(a, b)
+      DenseCanonicalGaussianOps./(a, b)
     }
   }
 
