@@ -2,6 +2,7 @@ package dk.bayes.dsl.variable.gaussian.multivariatelinear
 
 import dk.bayes.dsl.InferEngine
 import dk.bayes.dsl.variable.gaussian.multivariate.MultivariateGaussian
+import breeze.linalg.cholesky
 
 object inferMultivariateLinearGaussianSimplest extends InferEngine[MultivariateLinearGaussian, MultivariateGaussian] {
 
@@ -26,8 +27,8 @@ object inferMultivariateLinearGaussianSimplest extends InferEngine[MultivariateL
     val x = v.x
 
     val skillMean = v.a * x.m + v.b
-    val skillVar = v.v + v.a * x.v * v.a.t
-
+    val al = v.a*cholesky(x.v)
+    val skillVar = v.v + al*al.t
     new MultivariateGaussian(skillMean, skillVar)
   }
 }
