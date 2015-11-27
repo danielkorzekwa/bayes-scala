@@ -50,12 +50,12 @@ case class CovSEiso(sf: Double, ell: Double) extends CovFunc {
    * @param x [N x D] vector, N - number of random variables, D - dimensionality of random variable
    *
    */
-  def df_dSf(x: DenseMatrix[Double]): DenseMatrix[Double] = 
-    createDenseMatrixElemWise(x.rows,x.rows, (rowIndex: Int, colIndex: Int) => df_dSf(x(rowIndex,::).t.toArray, x(colIndex,::).t.toArray))
+  def df_dSf(x: DenseMatrix[Double]): DenseMatrix[Double] =
+    DenseMatrix.tabulate(x.rows, x.rows) { case (rowIndex: Int, colIndex: Int) => df_dSf(x(rowIndex, ::).t.toArray, x(colIndex, ::).t.toArray) }
   def df_dSf(x: DenseMatrix[Double], z: DenseMatrix[Double]): DenseMatrix[Double] =
-    createDenseMatrixElemWise(x.rows, z.rows, (rowIndex: Int, colIndex: Int) => df_dSf(x(rowIndex,::).t.toArray, z(colIndex,::).t.toArray))
-  def df_dSf(x: Array[Double]): DenseMatrix[Double] = 
-    createDenseMatrixElemWise(x.size, x.size, (rowIndex: Int, colIndex: Int) => df_dSf(x(rowIndex), x(colIndex)))
+    DenseMatrix.tabulate(x.rows, z.rows) { case (rowIndex: Int, colIndex: Int) => df_dSf(x(rowIndex, ::).t.toArray, z(colIndex, ::).t.toArray) }
+  def df_dSf(x: Array[Double]): DenseMatrix[Double] =
+    DenseMatrix.tabulate(x.size, x.size) { case (rowIndex: Int, colIndex: Int) => df_dSf(x(rowIndex), x(colIndex)) }
 
   /**
    * Returns derivative of similarity between two vectors with respect to sf.
@@ -76,13 +76,13 @@ case class CovSEiso(sf: Double, ell: Double) extends CovFunc {
    * @param x [N x D] vector, N - number of random variables, D - dimensionality of random variable
    *
    */
-  def df_dEll(x: DenseMatrix[Double]): DenseMatrix[Double] = 
-    createDenseMatrixElemWise(x.rows, x.rows, (rowIndex: Int, colIndex: Int) => df_dEll(x(rowIndex,::).t.toArray, x(colIndex,::).t.toArray))
-        
-  def df_dEll(x: DenseMatrix[Double], z: DenseMatrix[Double]): DenseMatrix[Double] = 
-   createDenseMatrixElemWise(x.rows, z.rows, (rowIndex: Int, colIndex: Int) => df_dEll(x(rowIndex,::).t.toArray, z(colIndex,::).t.toArray))
-  def df_dEll(x: Array[Double]): DenseMatrix[Double] = 
-    createDenseMatrixElemWise(x.size, x.size, (rowIndex: Int, colIndex: Int) => df_dEll(x(rowIndex), x(colIndex)))
+  def df_dEll(x: DenseMatrix[Double]): DenseMatrix[Double] =
+    DenseMatrix.tabulate(x.rows, x.rows) { case (rowIndex: Int, colIndex: Int) => df_dEll(x(rowIndex, ::).t.toArray, x(colIndex, ::).t.toArray) }
+
+  def df_dEll(x: DenseMatrix[Double], z: DenseMatrix[Double]): DenseMatrix[Double] =
+    DenseMatrix.tabulate(x.rows, z.rows) { case (rowIndex: Int, colIndex: Int) => df_dEll(x(rowIndex, ::).t.toArray, z(colIndex, ::).t.toArray) }
+  def df_dEll(x: Array[Double]): DenseMatrix[Double] =
+    DenseMatrix.tabulate(x.size, x.size) { case (rowIndex: Int, colIndex: Int) => df_dEll(x(rowIndex), x(colIndex)) }
 
   /**
    * Returns derivative of similarity between two vectors with respect to ell.

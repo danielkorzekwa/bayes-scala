@@ -14,10 +14,10 @@ trait CovFunc {
    * @return [N x N] covariance matrix
    */
   def cov(x: DenseMatrix[Double]): DenseMatrix[Double] =
-    createDenseMatrixElemWise(x.rows, x.rows, (rowIndex: Int, colIndex: Int) => cov(x(rowIndex, ::).t.toArray, x(colIndex, ::).t.toArray))
+    DenseMatrix.tabulate(x.rows, x.rows) { case (rowIndex, colIndex) => cov(x(rowIndex, ::).t.toArray, x(colIndex, ::).t.toArray) }
 
   def cov(x: Array[Double]): DenseMatrix[Double] =
-    createDenseMatrixElemWise(x.size, x.size, (rowIndex: Int, colIndex: Int) => cov(x(rowIndex), x(colIndex)))
+    DenseMatrix.tabulate(x.size, x.size) { case (rowIndex, colIndex) => cov(x(rowIndex), x(colIndex)) }
 
   /**
    * @param x [N x D] vector, N - number of random variables, D - dimensionality of random variable
@@ -25,7 +25,7 @@ trait CovFunc {
    * @return [N x M] covariance matrix
    */
   def covNM(x: DenseMatrix[Double], z: DenseMatrix[Double]): DenseMatrix[Double] =
-    createDenseMatrixElemWise(x.rows, z.rows, (rowIndex: Int, colIndex: Int) => cov(x(rowIndex, ::).t.toArray, z(colIndex, ::).t.toArray))
+    DenseMatrix.tabulate(x.rows, z.rows) { case (rowIndex: Int, colIndex: Int) => cov(x(rowIndex, ::).t.toArray, z(colIndex, ::).t.toArray) }
 
   /**
    * Returns similarity between two vectors.

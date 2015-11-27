@@ -3,7 +3,6 @@ package dk.bayes.infer.gp.cov
 import scala.math._
 import breeze.linalg.DenseMatrix
 import breeze.linalg._
-import dk.bayes.math.linear.createDenseMatrixElemWise
 
 /**
  * Implementation based 'http://www.gaussianprocess.org/gpml/code/matlab/doc/index.html'
@@ -75,7 +74,7 @@ case class CovSEARDIso(sf: Double, ell: Array[Double]) extends CovFunc {
   }
 
   private def distanceMatrixD(x: Array[Double], l: Double) = {
-    createDenseMatrixElemWise(x.size, x.size, (rowIndex: Int, colIndex: Int) => distanceD(x(rowIndex), x(colIndex), l))
+   DenseMatrix.tabulate(x.size,x.size){case (rowIndex: Int, colIndex: Int) => distanceD(x(rowIndex), x(colIndex), l)}
   }
 
   private def distanceD(x1: Double, x2: Double, l: Double): Double = {
