@@ -17,6 +17,7 @@ trait DenseCanonicalGaussianNumericOps {
     def apply(a: DenseCanonicalGaussian*): DenseCanonicalGaussian = {
       a match {
         case Seq(a, b) => apply(a, b)
+        case _ => a.reduceLeft((total, b) => DenseCanonicalGaussianOps.*(total,b))
       }
     }
 
