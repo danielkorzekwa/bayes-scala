@@ -8,14 +8,14 @@ Based on Daphne Koller, Nir Friedman. Probabilistic Graphical Models, Principles
 * [Getting Started - Learning parameters with Expectation Maximisation in Bayesian Networks from incomplete data](#getting-started---learning-parameters-with-expectation-maximisation-in-bayesian-networks-from-incomplete-data--1)
 * [Getting Started - Learning parameters with Expectation Maximisation in Unrolled Dynamic Bayesian Networks from incomplete data](#getting-started---learning-parameters-with-expectation-maximisation-in-unrolled-dynamic-bayesian-networks-from-incomplete-data--1)
 
-Getting Started - Loopy Belief Propagation in a Cluster Graph [1](#references)
----------------
+### Getting Started - Loopy Belief Propagation in a Cluster Graph [1](#references)
+
 
 Consider the following example of a Bayesian Network [1](#references), created with SamIam tool [2](#references).
 
-![Student Bayesian Network](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/student_bn.png "Student Bayesian Network")
+![Student Bayesian Network](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/clustergraph/student_bn.png "Student Bayesian Network")
 
-### Example 1: Create cluster graph and compute marginal for Grade variable ([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/infer/LoopyBPGettingStarted.scala))
+#### Example 1: Create cluster graph and compute marginal for Grade variable ([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/infer/LoopyBPGettingStarted.scala))
 
 Create cluster graph:
 
@@ -55,7 +55,7 @@ Calibrate cluster graph and get Grade marginal:
 	gradeMarginal.getVariables() // Var(3,3)
 	gradeMarginal.getValues() // List(0.3620, 0.2884, 0.3496)
 
-### Example 2: Compute marginal for Grade variable given SAT test is high ([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/infer/LoopyBPGettingStarted.scala))
+#### Example 2: Compute marginal for Grade variable given SAT test is high ([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/infer/LoopyBPGettingStarted.scala))
 
 Set evidence for SAT variable and compute marginal for Grade variable:
 
@@ -66,12 +66,12 @@ Set evidence for SAT variable and compute marginal for Grade variable:
 	gradeMarginal.getVariables() // Var(3,3)
 	gradeMarginal.getValues() // List(0.2446, 0.3257, 0.4295)
 
-Getting Started - Learning parameters with Expectation Maximisation in Bayesian Networks from incomplete data  [1](#references)
----------------
+### Getting Started - Learning parameters with Expectation Maximisation in Bayesian Networks from incomplete data  [1](#references)
+
 
 In this example we learn parameters of a Sprinkler Bayesian Network [3](#references). ([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/learn/em/EMLearnSprinklerGettingStarted.scala))
 
-![Sprinkler Bayesian Network](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/sprinkler_bn.png "Sprinkler Bayesian Network")
+![Sprinkler Bayesian Network](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/clustergraph/sprinkler_bn.png "Sprinkler Bayesian Network")
 
 Create Sprinkler Network with table CPT parameters:
 
@@ -114,8 +114,7 @@ Learn parameters of Sprinkler Network from samples ([sprinkler_10k_samples_5pct_
 	sprinklerGraph.getCluster(wetGrassVar.id).getFactor() //Factor(sprinklerVar, rainVar, wetGrassVar, Array(0.9481, 0.0518, 0.9052, 0.0947, 0.7924, 0.2075, 0.00001, 0.9999))
 	sprinklerGraph.getCluster(slipperyRoadVar.id).getFactor() //Factor(rainVar, slipperyRoadVar, Array(.6984, 0.3015, 0.00001, 0.9999))
 
-Getting Started - Learning parameters with Expectation Maximisation in Unrolled Dynamic Bayesian Networks from incomplete data  [1](#references)
----------------
+### Getting Started - Learning parameters with Expectation Maximisation in Unrolled Dynamic Bayesian Networks from incomplete data  [1](#references)
 
 For this scenario we learn parameters in a Dynamic Bayesian Network designed for predicting outcomes of tennis matches.
  
@@ -156,7 +155,7 @@ For better understanding of this structure, look at diagram below, which reflect
 	1,3,lost,2
 	2,3,won,2
 
-![Tennis Dynamic Bayesian Network](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/tennis_dbn.png "Tennis Dynamic Bayesian Network")
+![Tennis Dynamic Bayesian Network](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/clustergraph/tennis_dbn.png "Tennis Dynamic Bayesian Network")
 
 Probability distribution of tennis data is modelled with prior, emission and transition parameters:
 
@@ -184,7 +183,7 @@ Probability distribution of tennis data is modelled with prior, emission and tra
 Those parameters are shared by corresponding variables, for example emission parameter is shared by all Match Outcome variables.
 The following figure presents initial guess about network parameters, which we will learn from historical data applying Expectation Maximisation algorithm.
 
-![Parameters for Tennis Dynamic Bayesian Network](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/tennis_dbn_parameters.png "Parameters for Tennis Dynamic Bayesian Network")
+![Parameters for Tennis Dynamic Bayesian Network](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/clustergraph/tennis_dbn_parameters.png "Parameters for Tennis Dynamic Bayesian Network")
 
 In the reminder of this tutorial we build cluster graph for Tennis Network and learn its prior, emission and transition parameters.
 
@@ -215,3 +214,13 @@ Learn parameters of Tennis Network from samples ([source code](https://github.co
 	
 	//Emission parameter - Array(0.0000, 1.0000, 0.0000, 1.0000, 0.0000, 1.0000, 0.9930, 0.0070, 0.9198, 0.0802, 0.8337, 0.1663, 0.9980, 0.0020, 0.9956, 0.0044, 0.9960, 0.0040)
 	tennisClusterGraph.getCluster(match1v2Time2Var.id).getFactor()
+	
+References
+---------------
+1. Daphne Koller, Nir Friedman. Probabilistic Graphical Models, Principles and Techniques, 2009
+2. Automated Reasoning Group of Professor Adnan Darwiche at UCLA. SamIam: Sensitivity Analysis, Modelling, Inference and More, version 3.0
+3. Adnan Darwiche. Modeling and Reasoning with Bayesian Networks, 2009
+4. Stuart Russell, Peter Norvig. Artificial Intelligence - A Modern Approach, Third Edition, 2010
+5. Kevin P. Murphy. A Variational Approximation for Bayesian Networks with Discrete and Continuous Latent Variables, 1999
+6. Christopher M. Bishop. Pattern Recognition and Machine Learning (Information Science and Statistics), 2009
+7. Carl Edward Rasmussen and Christopher K. I. Williams, The MIT Press, 2006
