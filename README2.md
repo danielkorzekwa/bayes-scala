@@ -6,12 +6,15 @@
 
 It is a Scala library for Bayesian Networks and Probabilistic Graphical Models. It allows for defining Baysian models and performing Bayesian inference in a number of ways:
 
-* DSL - This is a high level api for defining Bayesian Networks. 
-* Factor graph - It supports discrete and continuous variables. Inference is performed with Expectation Propagation.
-* Factor graph2 - Different (newer) implemenation of factor graph.
-* Cluster graph - Supports discrete variables only.
+* [DSL] - This is a high level api for defining Bayesian Networks. 
+* [Factor graph] - It supports discrete and continuous variables. Inference is performed with Expectation Propagation.
+* [Factor graph 2] - Different (newer) implemenation of factor graph.
+* [Cluster graph] - Supports discrete variables only.
 
-[Can you please clarify for us: what is the future of bayes-scala?](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/future_of_bayes_scala.md) 
+Links
+* [Some code examples for moment matching, linear gaussian, linear dynamical systems, EP, etc.]
+* The [bayes-scala-gp] library for Gaussian Processes is built on top of bayes-scala.
+* [Can you please clarify for us: what is the future of bayes-scala?](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/future_of_bayes_scala.md) 
 
 ## How to use it from sbt and maven?
 
@@ -82,7 +85,11 @@ With maven build tool, add to pom.xml config file:
 ## Others
 
 * [Low level algorithms] which are used behind the scenes for Bayesian Inference, e.g. Loopy Belief Propagation, Expectation Propagation, Variational Inference.
-* The [bayes-scala-gp] library for Gaussian Processes is built on top of bayes-scala
 
+[DSL]: https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/dsl/dsl.md
+[Factor graph]: https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/factorgraph/factorgraph.md
+[Factor graph 2]: https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/factorgraph2/factorgraph2.md
+[Cluster graph]: https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/clustergraph/clustergraph.md
+[Some code examples for moment matching, linear gaussian, linear dynamical systems, EP, etc.](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/others/others.md)
 [Low level algorithms]: https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/lowlevel/README.md
 [bayes-scala-gp]: https://github.com/danielkorzekwa/bayes-scala-gp/blob/master/README.md
