@@ -125,9 +125,9 @@ Plotting Gaussians with Gnuplot
 	
 	splot gaussian(x,y)
 
-![Multivariate Gaussian](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/plotting_gaussian/gnuplot_multivariate_gaussian.png "Multivariate Gaussian")
+![Multivariate Gaussian](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/others/plotting_gaussian/gnuplot_multivariate_gaussian.png "Multivariate Gaussian")
 
-![Multivariate Gaussian](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/plotting_gaussian/gnuplot_multivariate_gaussian_contour.png "Multivariate Gaussian")
+![Multivariate Gaussian](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/others/plotting_gaussian/gnuplot_multivariate_gaussian_contour.png "Multivariate Gaussian")
 
 ### Linear Gaussian
 
@@ -148,8 +148,8 @@ Plotting Gaussians with Gnuplot
 	
 	splot [-5:5] [-5:5] linear_gaussian(x,y,sigma)
 
-![Linear Gaussian](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/plotting_gaussian/gnuplot_linear_gaussian.png "Linear Gaussian")
-![Linear Gaussian](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/plotting_gaussian/gnuplot_linear_gaussian_contour.png "Linear Gaussian")
+![Linear Gaussian](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/others/plotting_gaussian/gnuplot_linear_gaussian.png "Linear Gaussian")
+![Linear Gaussian](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/others/plotting_gaussian/gnuplot_linear_gaussian_contour.png "Linear Gaussian")
 
 References
 ---------------
