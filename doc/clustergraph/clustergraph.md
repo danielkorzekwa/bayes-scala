@@ -17,7 +17,7 @@ Consider the following example of a Bayesian Network [1](#references), created w
 
 ![Student Bayesian Network](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/clustergraph/student_bn.png "Student Bayesian Network")
 
-#### Example 1: Create cluster graph and compute marginal for Grade variable ([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/infer/LoopyBPGettingStarted.scala))
+#### Example 1: Create cluster graph and compute marginal for Grade variable ([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/clustergraph/infer/LoopyBPGettingStarted.scala))
 
 Create cluster graph:
 
@@ -57,7 +57,7 @@ Calibrate cluster graph and get Grade marginal:
 	gradeMarginal.getVariables() // Var(3,3)
 	gradeMarginal.getValues() // List(0.3620, 0.2884, 0.3496)
 
-#### Example 2: Compute marginal for Grade variable given SAT test is high ([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/infer/LoopyBPGettingStarted.scala))
+#### Example 2: Compute marginal for Grade variable given SAT test is high ([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/clustergraph/infer/LoopyBPGettingStarted.scala))
 
 Set evidence for SAT variable and compute marginal for Grade variable:
 
@@ -71,7 +71,7 @@ Set evidence for SAT variable and compute marginal for Grade variable:
 ### Getting Started - Learning parameters with Expectation Maximisation in Bayesian Networks from incomplete data  [1](#references)
 
 
-In this example we learn parameters of a Sprinkler Bayesian Network [3](#references). ([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/learn/em/EMLearnSprinklerGettingStarted.scala))
+In this example we learn parameters of a Sprinkler Bayesian Network [3](#references). ([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/clustergraph/em/EMLearnSprinklerGettingStarted.scala))
 
 ![Sprinkler Bayesian Network](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/clustergraph/sprinkler_bn.png "Sprinkler Bayesian Network")
 
@@ -189,11 +189,11 @@ The following figure presents initial guess about network parameters, which we w
 
 In the reminder of this tutorial we build cluster graph for Tennis Network and learn its prior, emission and transition parameters.
 
-Create cluster graph for Tennis Network ([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/testutil/TennisDBN.scala)):
+Create cluster graph for Tennis Network ([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/clustergraph/testutil/TennisDBN.scala)):
 
 	val tennisClusterGraph = createTennisClusterGraph()
 	 
-Learn parameters of Tennis Network from samples ([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/learn/em/EMLearnTennisGettingStarted.scala), [tennis_3_players_network.dat](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/resources/tennis_data/tennis_3_players_network.dat)):
+Learn parameters of Tennis Network from samples ([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/clustergraph/em/EMLearnTennisGettingStarted.scala), [tennis_3_players_network.dat](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/resources/tennis_data/tennis_3_players_network.dat)):
 
 	//Prepare training set
 	val variableIds = Array(
