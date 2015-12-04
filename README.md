@@ -4,9 +4,17 @@
 [![Build Status](https://travis-ci.org/danielkorzekwa/bayes-scala.svg)](https://travis-ci.org/danielkorzekwa/bayes-scala)
 [![Codacy Badge](https://www.codacy.com/project/badge/2a48694cabbe4cd386af1be55602cbbf)](https://www.codacy.com/public/danielkorzekwa/bayes-scala)
 
-It is a Scala library for building Bayesian Networks with discrete/continuous variables and running deterministic Bayesian inference.
+It is a Scala library for Bayesian Networks and Probabilistic Graphical Models. It allows for defining Baysian models and performing Bayesian inference in a number of ways:
 
-[Can you please clarify for us: what is the future of bayes-scala?](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/future_of_bayes_scala.md) 
+* [DSL] - This is a high level api for defining Bayesian Networks. 
+* [Factor graph] - It supports discrete and continuous variables. Inference is performed with Expectation Propagation.
+* [Factor graph 2] - Different (newer) implemenation of factor graph.
+* [Cluster graph] - Supports discrete variables only.
+
+Links
+* [Some code examples for moment matching, linear gaussian, linear dynamical systems, EP, etc.]
+* The [bayes-scala-gp] library for Gaussian Processes is built on top of bayes-scala.
+* [Can you please clarify for us: what is the future of bayes-scala?](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/future_of_bayes_scala.md) 
 
 ## How to use it from sbt and maven?
 
@@ -62,22 +70,10 @@ With maven build tool, add to pom.xml config file:
   <dependencies>
 ```
 
-## Examples
-
-* Examples illustrating the usage of a high level API for building Bayesian Networks
-  * [Student Bayesian Network](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/dsl_examples/student_bayesian_network/student_bayesian_network.md) 
-  * [Monty Hall problem](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/dsl_examples/monty_hall_problem/monty_hall_problem.md)
-  * [TrueSkill](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/dsl_examples/true_skill/true_skill.md)
-  * [Clutter problem](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/dsl_examples/clutter_problem/clutter_problem.md) 
-  * [Gaussian process regression](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/dsl_examples/gaussian_process_regression/gaussian_process_regression.md)
-  * [Gaussian process regression with cluttered Gaussian likelihood](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/dsl_examples/gaussian_process_regression_cluttered_gaussian_likelihood/gaussian_process_regression_cluttered_gaussian_likelihood.md)
-  * [1D Kalman filter] (https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/dsl_examples/1d_kalman_filter/1d_kalman_filter.md)
-  * [Conversion rate](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/dsl_examples/conversionrate/conversion_rate.md)
-  
-## Others
-
-* [Low level algorithms] which are used behind the scenes for Bayesian Inference, e.g. Loopy Belief Propagation, Expectation Propagation, Variational Inference.
-* The [bayes-scala-gp] library for Gaussian Processes is built on top of bayes-scala
-
+[DSL]: https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/dsl/dsl.md
+[Factor graph]: https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/factorgraph/factorgraph.md
+[Factor graph 2]: https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/factorgraph2/factorgraph2.md
+[Cluster graph]: https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/clustergraph/clustergraph.md
+[Some code examples for moment matching, linear gaussian, linear dynamical systems, EP, etc.]:https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/others/others.md
 [Low level algorithms]: https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/lowlevel/README.md
 [bayes-scala-gp]: https://github.com/danielkorzekwa/bayes-scala-gp/blob/master/README.md
