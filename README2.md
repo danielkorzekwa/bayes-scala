@@ -4,7 +4,7 @@
 [![Build Status](https://travis-ci.org/danielkorzekwa/bayes-scala.svg)](https://travis-ci.org/danielkorzekwa/bayes-scala)
 [![Codacy Badge](https://www.codacy.com/project/badge/2a48694cabbe4cd386af1be55602cbbf)](https://www.codacy.com/public/danielkorzekwa/bayes-scala)
 
-It is a Scala library for Bayesian Networks and Probabilistic Graphical Models. It allows for defining Baysian models and performance Bayesian inference in a number of ways:
+It is a Scala library for Bayesian Networks and Probabilistic Graphical Models. It allows for defining Baysian models and performing Bayesian inference in a number of ways:
 
 * DSL - This is a high level api for defining Bayesian Networks. 
 * Factor graph - It supports discrete and continuous variables. Inference is performed with Expectation Propagation.
