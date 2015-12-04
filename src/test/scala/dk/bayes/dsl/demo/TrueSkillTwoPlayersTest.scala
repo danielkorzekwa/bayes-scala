@@ -5,7 +5,7 @@ import org.junit.Assert._
 import dk.bayes.dsl.infer
 import dk.bayes.dsl.variable.Categorical
 import dk.bayes.dsl.variable.Gaussian
-import dk.bayes.testutil.AssertUtil._
+import dk.bayes.clustergraph.testutil.AssertUtil._
 import breeze.linalg.DenseMatrix
 import scala.math._
 

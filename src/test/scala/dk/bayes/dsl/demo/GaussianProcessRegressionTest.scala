@@ -12,7 +12,7 @@ import dk.bayes.dsl.infer
 import dk.bayes.dsl.variable.Gaussian
 import dk.bayes.infer.gp.cov.CovSEiso
 import dk.bayes.math.linear.isIdentical
-import dk.bayes.testutil.AssertUtil._
+import dk.bayes.clustergraph.testutil.AssertUtil._
 class GaussianProcessRegressionTest {
 
   @Test def test = {

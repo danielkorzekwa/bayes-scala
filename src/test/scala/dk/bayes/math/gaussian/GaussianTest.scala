@@ -10,7 +10,7 @@ import breeze.linalg.DenseMatrix
 import breeze.linalg.DenseVector
 import dk.bayes.math.discretise.Histogram
 import dk.bayes.math.linear.isIdentical
-import dk.bayes.testutil.AssertUtil.assertGaussian
+import dk.bayes.clustergraph.testutil.AssertUtil.assertGaussian
 
 class GaussianTest {
 

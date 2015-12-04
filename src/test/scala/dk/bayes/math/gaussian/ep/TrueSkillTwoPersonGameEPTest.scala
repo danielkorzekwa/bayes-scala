@@ -3,7 +3,7 @@ package dk.bayes.math.gaussian.ep
 import org.junit._
 import Assert._
 import dk.bayes.math.gaussian.Gaussian
-import dk.bayes.testutil.AssertUtil.assertGaussian
+import dk.bayes.clustergraph.testutil.AssertUtil.assertGaussian
 import dk.bayes.math.gaussian.LinearGaussian
 import scala.math._
 import dk.bayes.math.gaussian.LinearGaussian

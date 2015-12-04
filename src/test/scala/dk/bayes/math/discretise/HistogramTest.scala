@@ -2,7 +2,7 @@ package dk.bayes.math.discretise
 
 import org.junit._
 import Assert._
-import dk.bayes.testutil.AssertUtil._
+import dk.bayes.clustergraph.testutil.AssertUtil._
 
 class HistogramTest {
 

@@ -4,7 +4,7 @@ import org.junit._
 import Assert._
 import dk.bayes.dsl.variable.Categorical
 import dk.bayes.dsl.infer
-import dk.bayes.testutil.AssertUtil._
+import dk.bayes.clustergraph.testutil.AssertUtil._
 class StudentTest {
 
   val difficulty = Categorical(Vector(0.6, 0.4))

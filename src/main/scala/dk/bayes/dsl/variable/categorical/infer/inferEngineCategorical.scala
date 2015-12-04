@@ -3,10 +3,10 @@ package dk.bayes.dsl.variable.categorical.infer
 import dk.bayes.dsl.InferEngine
 import dk.bayes.dsl.variable.Categorical
 import java.util.concurrent.atomic.AtomicInteger
-import dk.bayes.model.clustergraph.factor.Var
-import dk.bayes.model.clustergraph.factor.Factor
-import dk.bayes.model.clustergraph.ClusterGraph
-import dk.bayes.infer.LoopyBP
+import dk.bayes.clustergraph.factor.Var
+import dk.bayes.clustergraph.factor.Factor
+import dk.bayes.clustergraph.ClusterGraph
+import dk.bayes.clustergraph.infer.LoopyBP
 
 object inferEngineCategorical extends InferEngine[Categorical, Categorical] {
 

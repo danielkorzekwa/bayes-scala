@@ -1,13 +1,13 @@
 package dk.bayes.dsl.variable
 
 import dk.bayes.dsl.InferEngine
-import dk.bayes.model.clustergraph.factor.Var
+import dk.bayes.clustergraph.factor.Var
 import dk.bayes.dsl.Variable
-import dk.bayes.model.clustergraph.ClusterGraph
-import dk.bayes.infer.LoopyBP
+import dk.bayes.clustergraph.ClusterGraph
+import dk.bayes.clustergraph.infer.LoopyBP
 import dk.bayes.infer._
 import java.util.concurrent.atomic.AtomicInteger
-import dk.bayes.model.clustergraph.factor.Factor
+import dk.bayes.clustergraph.factor.Factor
 import dk.bayes.dsl.variable.categorical.CdfThresholdCategorical
 import dk.bayes.dsl.variable.categorical.infer.inferEngineCategorical
 
