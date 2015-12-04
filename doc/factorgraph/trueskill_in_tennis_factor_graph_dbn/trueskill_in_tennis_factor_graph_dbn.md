@@ -3,7 +3,7 @@ TrueSkill on a factor graph in Tennis (Dynamic Bayesian Network)
 
 Dynamic Bayesian Network for 3 players with 6 games over 3 time slices. [(Scala code example)](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/infer/ep/calibrate/fb/TrueSkillDBNTennisEPTest.scala)
 
-![TruSkill Tennis DBN](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/trueskill_in_tennis_factor_graph_dbn/trueskill_tennis_dbn.png "TruSkill Tennis DBN")
+![TruSkill Tennis DBN](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/factorgraph/trueskill_in_tennis_factor_graph_dbn/trueskill_tennis_dbn.png "TruSkill Tennis DBN")
 
 
 Create factor variables:

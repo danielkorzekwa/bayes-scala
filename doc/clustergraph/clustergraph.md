@@ -2,6 +2,8 @@
 
 Based on Daphne Koller, Nir Friedman. Probabilistic Graphical Models, Principles and Techniques, 2009
 
+Discrete variables only. Inference performed with Loopy Belief Propagation.
+
 ## Examples
 
 * [Getting Started - Loopy Belief Propagation in a Cluster Graph](#getting-started---loopy-belief-propagation-in-a-cluster-graph-1)
@@ -220,7 +222,3 @@ Learn parameters of Tennis Network from samples ([source code](https://github.co
 1. Daphne Koller, Nir Friedman. Probabilistic Graphical Models, Principles and Techniques, 2009
 2. Automated Reasoning Group of Professor Adnan Darwiche at UCLA. SamIam: Sensitivity Analysis, Modelling, Inference and More, version 3.0
 3. Adnan Darwiche. Modeling and Reasoning with Bayesian Networks, 2009
-4. Stuart Russell, Peter Norvig. Artificial Intelligence - A Modern Approach, Third Edition, 2010
-5. Kevin P. Murphy. A Variational Approximation for Bayesian Networks with Discrete and Continuous Latent Variables, 1999
-6. Christopher M. Bishop. Pattern Recognition and Machine Learning (Information Science and Statistics), 2009
-7. Carl Edward Rasmussen and Christopher K. I. Williams, The MIT Press, 2006
