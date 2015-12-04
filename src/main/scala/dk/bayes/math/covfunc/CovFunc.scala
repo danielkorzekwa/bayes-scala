@@ -1,4 +1,4 @@
-package dk.bayes.infer.gp.cov
+package dk.bayes.math.covfunc
 
 import dk.bayes.math.linear._
 import breeze.linalg.DenseMatrix

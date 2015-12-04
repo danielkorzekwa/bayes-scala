@@ -1,12 +1,11 @@
-package dk.bayes.infer.gp.cov
+package dk.bayes.math.covfunc
 
 import scala.math.log
 import scala.util.Random
-
 import org.junit.Assert.assertEquals
 import org.junit.Test
-
 import breeze.linalg.DenseMatrix
+import dk.bayes.math.covfunc.CovSEARDIso
 
 class CovSEARDIsoTest {
 

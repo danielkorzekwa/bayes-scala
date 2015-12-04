@@ -1,12 +1,13 @@
-package dk.bayes.learn.lds
+package dk.bayes.math.lds
 
 import org.junit._
-import Assert._
+import org.junit.Assert._
 import dk.bayes.math.linear._
-import dk.bayes.math.gaussian.canonical.CanonicalGaussian
 import dk.bayes.math.gaussian.canonical.DenseCanonicalGaussian
 import breeze.linalg.DenseMatrix
 import breeze.linalg.DenseVector
+import dk.bayes.math.lds.GenericLDSLearn
+import scala.Vector
 
 class GenericLDSMStepTest {
 

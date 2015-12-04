@@ -1,14 +1,10 @@
-package dk.bayes.infer.epnaivebayes
+package dk.bayes.dsl.epnaivebayes
 
 import com.typesafe.scalalogging.slf4j.LazyLogging
 import scala.annotation.tailrec
 import dk.bayes.dsl.factor.DoubleFactor
 import dk.bayes.dsl.factor.SingleFactor
 import dk.bayes.math.numericops._
-import dk.bayes.math.gaussian.canonical.DenseCanonicalGaussian
-import dk.bayes.math.gaussian.canonical.SparseCanonicalGaussian
-import dk.bayes.math.gaussian.canonical.SparseCanonicalGaussian
-import dk.bayes.math.gaussian.Gaussian
 
 /**
  * Computes posterior of X for a naive bayes net. Variables: X, Y1|X, Y2|X,...Yn|X

@@ -1,10 +1,10 @@
-package dk.bayes.infer.gp.cov
+package dk.bayes.math.covfunc
 
 import org.junit._
-import Assert._
+import org.junit.Assert._
 import scala.math._
 import breeze.linalg.DenseVector
-import breeze.linalg.Matrix
+import dk.bayes.math.covfunc.CovMatern52
 
 class CovMaternTest {
 

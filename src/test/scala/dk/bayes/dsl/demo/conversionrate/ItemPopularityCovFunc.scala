@@ -1,7 +1,7 @@
 package dk.bayes.dsl.demo.conversionrate
 
 import breeze.linalg.DenseMatrix
-import dk.bayes.infer.gp.cov.CovSEiso
+import dk.bayes.math.covfunc.CovSEiso
 import breeze.linalg._
 
 case class ItemPopularityCovFunc(brandLogSf: Double, brandLogEll: Double, modelLogSf: Double, modelLogEll: Double) {

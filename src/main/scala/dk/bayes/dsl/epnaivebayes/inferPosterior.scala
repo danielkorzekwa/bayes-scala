@@ -1,4 +1,4 @@
-package dk.bayes.infer.epnaivebayes
+package dk.bayes.dsl.epnaivebayes
 
 import dk.bayes.dsl.factor.SingleFactor
 import dk.bayes.dsl.factor.DoubleFactor

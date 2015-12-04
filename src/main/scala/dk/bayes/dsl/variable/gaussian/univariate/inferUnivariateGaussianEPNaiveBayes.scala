@@ -2,9 +2,8 @@ package dk.bayes.dsl.variable.gaussian.univariate
 
 import dk.bayes.dsl.InferEngine
 import dk.bayes.dsl.factor.DoubleFactor
-import dk.bayes.infer.epnaivebayes.inferPosterior
-import dk.bayes.infer.epnaivebayes.inferPosterior
 import dk.bayes.math.gaussian.Gaussian
+import dk.bayes.dsl.epnaivebayes.inferPosterior
 
 object inferUnivariateGaussianEPNaiveBayes extends InferEngine[UnivariateGaussian, UnivariateGaussian] {
 

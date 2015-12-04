@@ -1,4 +1,4 @@
-package dk.bayes.learn.lds
+package dk.bayes.math.lds
 
 import dk.bayes.math.gaussian.Gaussian
 

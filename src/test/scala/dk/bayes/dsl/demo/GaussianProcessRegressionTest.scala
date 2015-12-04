@@ -10,7 +10,7 @@ import breeze.linalg.DenseVector
 import breeze.linalg.diag
 import dk.bayes.dsl.infer
 import dk.bayes.dsl.variable.Gaussian
-import dk.bayes.infer.gp.cov.CovSEiso
+import dk.bayes.math.covfunc.CovSEiso
 import dk.bayes.math.linear.isIdentical
 import dk.bayes.clustergraph.testutil.AssertUtil._
 class GaussianProcessRegressionTest {

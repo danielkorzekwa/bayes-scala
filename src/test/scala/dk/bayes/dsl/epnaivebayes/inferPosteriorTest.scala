@@ -1,8 +1,7 @@
-package dk.bayes.infer.epnaivebayes
+package dk.bayes.dsl.epnaivebayes
 
 import org.junit._
 import org.junit.Assert._
-
 import dk.bayes.dsl.variable.Gaussian
 
 class inferPosteriorTest {

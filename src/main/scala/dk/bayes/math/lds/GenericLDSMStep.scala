@@ -1,7 +1,6 @@
-package dk.bayes.learn.lds
+package dk.bayes.math.lds
 
 import scala.math._
-import dk.bayes.math.gaussian.canonical.CanonicalGaussian
 import dk.bayes.math.gaussian.canonical.DenseCanonicalGaussian
 
 /**

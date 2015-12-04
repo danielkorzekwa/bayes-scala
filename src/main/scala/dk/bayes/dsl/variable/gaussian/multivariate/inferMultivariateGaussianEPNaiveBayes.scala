@@ -1,13 +1,11 @@
 package dk.bayes.dsl.variable.gaussian.multivariate
 
 import scala.reflect.runtime.universe._
-
 import dk.bayes.dsl.InferEngine
 import dk.bayes.dsl.factor.DoubleFactor
-import dk.bayes.infer.epnaivebayes.inferPosterior
-import dk.bayes.infer.epnaivebayes.inferPosterior
 import dk.bayes.math.gaussian.canonical.CanonicalGaussian
 import dk.bayes.math.gaussian.canonical.DenseCanonicalGaussian
+import dk.bayes.dsl.epnaivebayes.inferPosterior
 
 object inferMultivariateGaussianEPNaiveBayes extends InferEngine[MultivariateGaussian, MultivariateGaussian] {
 

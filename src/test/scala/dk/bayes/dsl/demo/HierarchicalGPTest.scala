@@ -8,7 +8,7 @@ import breeze.linalg.cholesky
 import breeze.numerics.log
 import dk.bayes.dsl.infer
 import dk.bayes.dsl.variable.Gaussian
-import dk.bayes.infer.gp.cov.CovSEiso
+import dk.bayes.math.covfunc.CovSEiso
 import dk.bayes.math.linear.invchol
 import dk.bayes.math.linear.isIdentical
 import org.junit.Ignore

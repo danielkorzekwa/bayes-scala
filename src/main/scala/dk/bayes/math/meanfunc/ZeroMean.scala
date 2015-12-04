@@ -1,4 +1,4 @@
-package dk.bayes.infer.gp.mean
+package dk.bayes.math.meanfunc
 
 import breeze.linalg.DenseMatrix
 import breeze.linalg.DenseVector

@@ -1,8 +1,9 @@
-package dk.bayes.learn.lds
+package dk.bayes.math.lds
 
 import org.junit._
-import Assert._
+import org.junit.Assert._
 import dk.bayes.math.gaussian.Gaussian
+import dk.bayes.math.lds.GenericLDSEM
 
 class GenericLDSEMTest {
 

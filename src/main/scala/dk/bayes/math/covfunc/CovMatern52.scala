@@ -1,8 +1,7 @@
-package dk.bayes.infer.gp.cov
+package dk.bayes.math.covfunc
 
 import scala.math._
 import breeze.linalg.DenseVector
-import breeze.linalg.Matrix
 import breeze.linalg.DenseMatrix
 import breeze.linalg.cholesky
 import dk.bayes.math.linear.invchol
