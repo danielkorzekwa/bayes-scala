@@ -7,16 +7,15 @@ import dk.bayes.dsl.InferEngine
 import dk.bayes.dsl.Variable
 import dk.bayes.dsl.variable.categorical.CdfThresholdCategorical
 import dk.bayes.dsl.variable.gaussian.univariatelinear.UnivariateLinearGaussian
-import dk.bayes.infer.ep.GenericEP
-import dk.bayes.infer.ep.calibrate.fb.ForwardBackwardEPCalibrate
-import dk.bayes.infer.ep.calibrate.fb.ForwardBackwardEPCalibrate
+import dk.bayes.factorgraph.GenericFactorGraph
+import dk.bayes.factorgraph.ep.GenericEP
+import dk.bayes.factorgraph.ep.calibrate.fb.ForwardBackwardEPCalibrate
+import dk.bayes.factorgraph.factor.DiffGaussianFactor
+import dk.bayes.factorgraph.factor.GaussianFactor
+import dk.bayes.factorgraph.factor.LinearGaussianFactor
+import dk.bayes.factorgraph.factor.TruncGaussianFactor
+import dk.bayes.factorgraph.factor.api.Factor
 import dk.bayes.math.linear.isIdentical
-import dk.bayes.model.factor.DiffGaussianFactor
-import dk.bayes.model.factor.GaussianFactor
-import dk.bayes.model.factor.LinearGaussianFactor
-import dk.bayes.model.factor.TruncGaussianFactor
-import dk.bayes.model.factor.api.Factor
-import dk.bayes.model.factorgraph.GenericFactorGraph
 
 object inferUnivariateGaussianFactorGraph extends InferEngine[UnivariateGaussian, UnivariateGaussian] {
 

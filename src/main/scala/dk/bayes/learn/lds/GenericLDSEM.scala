@@ -2,15 +2,15 @@ package dk.bayes.learn.lds
 
 import com.typesafe.scalalogging.slf4j.LazyLogging
 import dk.bayes.math.gaussian.canonical.CanonicalGaussian
-import dk.bayes.model.factor.LinearGaussianFactor
-import dk.bayes.model.factor.GaussianFactor
-import dk.bayes.model.factorgraph.GenericFactorGraph
-import dk.bayes.infer.ep.GenericEP
-import dk.bayes.infer.ep.calibrate.fb.ForwardBackwardEPCalibrate
+import dk.bayes.factorgraph.factor.GaussianFactor
+import dk.bayes.factorgraph.GenericFactorGraph
 import java.util.concurrent.atomic.AtomicInteger
 import scala.annotation.tailrec
 import dk.bayes.math.gaussian.Gaussian
 import dk.bayes.math.gaussian.canonical.DenseCanonicalGaussian
+import dk.bayes.factorgraph.factor.LinearGaussianFactor
+import dk.bayes.factorgraph.ep.GenericEP
+import dk.bayes.factorgraph.ep.calibrate.fb.ForwardBackwardEPCalibrate
 
 object GenericLDSEM extends LDSEM with LazyLogging {
 
