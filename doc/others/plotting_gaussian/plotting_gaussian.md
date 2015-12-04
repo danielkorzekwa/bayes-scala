@@ -27,7 +27,7 @@ Plotting Gaussians with Octave
 	  ylabel('pdf(x)')
 	end
 
-![Univariate Gaussian](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/plotting_gaussian/octave_univariate_gaussian.png "Univariate Gaussian")
+![Univariate Gaussian](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/others/plotting_gaussian/octave_univariate_gaussian.png "Univariate Gaussian")
 
 ### Multivariate Gaussian
 
@@ -53,9 +53,9 @@ Plotting Gaussians with Octave
 	  zlabel('pdf(x,y)')
 	end
 
-![Multivariate Gaussian](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/plotting_gaussian/octave_multivariate_gaussian.png "Multivariate Gaussian")
+![Multivariate Gaussian](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/others/plotting_gaussian/octave_multivariate_gaussian.png "Multivariate Gaussian")
 
-![Multivariate Gaussian](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/plotting_gaussian/octave_multivariate_gaussian_contour.png "Multivariate Gaussian")
+![Multivariate Gaussian](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/others/plotting_gaussian/octave_multivariate_gaussian_contour.png "Multivariate Gaussian")
 
 ### Linear Gaussian
 
@@ -81,8 +81,8 @@ Plotting Gaussians with Octave
 	  zlabel('pdf(x,y)')
 	end
 
-![Linear Gaussian](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/plotting_gaussian/octave_linear_gaussian.png "Linear Gaussian")
-![Linear Gaussian](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/plotting_gaussian/octave_linear_gaussian_contour.png "Linear Gaussian")
+![Linear Gaussian](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/others/plotting_gaussian/octave_linear_gaussian.png "Linear Gaussian")
+![Linear Gaussian](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/others/plotting_gaussian/octave_linear_gaussian_contour.png "Linear Gaussian")
 
 Plotting Gaussians with Gnuplot
 -------------------------------
@@ -97,7 +97,7 @@ Plotting Gaussians with Gnuplot
 	
 	plot [mu-4*sigma:mu+4*sigma] gaussian(x,mu,sigma)
 
-![Univariate Gaussian](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/plotting_gaussian/gnuplot_univariate_gaussian.png "Univariate Gaussian")
+![Univariate Gaussian](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/others/plotting_gaussian/gnuplot_univariate_gaussian.png "Univariate Gaussian")
 
 ### Multivariate Gaussian
 

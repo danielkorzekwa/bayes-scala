@@ -11,21 +11,21 @@ Static localisation
 
 Probabilistic graphical model for static robot localisation:
 
-![Static localisation 1D](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/localisation_example/static_localisation_1d.png "Static localisation 1D")
+![Static localisation 1D](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/others/localisation_example/static_localisation_1d.png "Static localisation 1D")
 
 Robot location:
 
-![Prior prob](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/localisation_example/static_prior_prob.png "Prior prob")
+![Prior prob](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/others/localisation_example/static_prior_prob.png "Prior prob")
 
 Measured robot position given its current position:
 
-![Emission prob](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/localisation_example/static_emission_prob.png "Emission prob")
+![Emission prob](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/others/localisation_example/static_emission_prob.png "Emission prob")
 
 Predicted robot position given observed position:
 
-![Posterior](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/localisation_example/static_posterior.png "Posterior")
+![Posterior](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/others/localisation_example/static_posterior.png "Posterior")
 
-![1D static localisation](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/localisation_example/static_localisation_gaussian.png "1D static localisation")
+![1D static localisation](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/others/localisation_example/static_localisation_gaussian.png "1D static localisation")
 
 * Scala code examples
   * [Kalman Filter](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/math/gaussian/localisation1d/StaticLocalisationKalmanTest.scala)
