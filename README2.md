@@ -70,26 +70,10 @@ With maven build tool, add to pom.xml config file:
   <dependencies>
 ```
 
-## Examples
-
-* Examples illustrating the usage of a high level API for building Bayesian Networks
-  * [Student Bayesian Network](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/dsl_examples/student_bayesian_network/student_bayesian_network.md) 
-  * [Monty Hall problem](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/dsl_examples/monty_hall_problem/monty_hall_problem.md)
-  * [TrueSkill](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/dsl_examples/true_skill/true_skill.md)
-  * [Clutter problem](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/dsl_examples/clutter_problem/clutter_problem.md) 
-  * [Gaussian process regression](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/dsl_examples/gaussian_process_regression/gaussian_process_regression.md)
-  * [Gaussian process regression with cluttered Gaussian likelihood](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/dsl_examples/gaussian_process_regression_cluttered_gaussian_likelihood/gaussian_process_regression_cluttered_gaussian_likelihood.md)
-  * [1D Kalman filter] (https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/dsl_examples/1d_kalman_filter/1d_kalman_filter.md)
-  * [Conversion rate](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/dsl_examples/conversionrate/conversion_rate.md)
-  
-## Others
-
-* [Low level algorithms] which are used behind the scenes for Bayesian Inference, e.g. Loopy Belief Propagation, Expectation Propagation, Variational Inference.
-
 [DSL]: https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/dsl/dsl.md
 [Factor graph]: https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/factorgraph/factorgraph.md
 [Factor graph 2]: https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/factorgraph2/factorgraph2.md
 [Cluster graph]: https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/clustergraph/clustergraph.md
-[Some code examples for moment matching, linear gaussian, linear dynamical systems, EP, etc.](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/others/others.md)
+[Some code examples for moment matching, linear gaussian, linear dynamical systems, EP, etc.]:https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/others/others.md
 [Low level algorithms]: https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/lowlevel/README.md
 [bayes-scala-gp]: https://github.com/danielkorzekwa/bayes-scala-gp/blob/master/README.md
