@@ -13,7 +13,7 @@ Based on Daphne Koller, Nir Friedman. Probabilistic Graphical Models, Principles
 
 Consider the following example of a Bayesian Network [1](#references), created with SamIam tool [2](#references).
 
-![Student Bayesian Network](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/clustergraph/student_bn.png "Student Bayesian Network")
+![Student Bayesian Network](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/student_bn.png "Student Bayesian Network")
 
 #### Example 1: Create cluster graph and compute marginal for Grade variable ([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/infer/LoopyBPGettingStarted.scala))
 
@@ -71,7 +71,7 @@ Set evidence for SAT variable and compute marginal for Grade variable:
 
 In this example we learn parameters of a Sprinkler Bayesian Network [3](#references). ([source code](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/learn/em/EMLearnSprinklerGettingStarted.scala))
 
-![Sprinkler Bayesian Network](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/clustergraph/sprinkler_bn.png "Sprinkler Bayesian Network")
+![Sprinkler Bayesian Network](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/sprinkler_bn.png "Sprinkler Bayesian Network")
 
 Create Sprinkler Network with table CPT parameters:
 
@@ -155,7 +155,7 @@ For better understanding of this structure, look at diagram below, which reflect
 	1,3,lost,2
 	2,3,won,2
 
-![Tennis Dynamic Bayesian Network](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/clustergraph/tennis_dbn.png "Tennis Dynamic Bayesian Network")
+![Tennis Dynamic Bayesian Network](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/tennis_dbn.png "Tennis Dynamic Bayesian Network")
 
 Probability distribution of tennis data is modelled with prior, emission and transition parameters:
 
@@ -183,7 +183,7 @@ Probability distribution of tennis data is modelled with prior, emission and tra
 Those parameters are shared by corresponding variables, for example emission parameter is shared by all Match Outcome variables.
 The following figure presents initial guess about network parameters, which we will learn from historical data applying Expectation Maximisation algorithm.
 
-![Parameters for Tennis Dynamic Bayesian Network](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/clustergraph/tennis_dbn_parameters.png "Parameters for Tennis Dynamic Bayesian Network")
+![Parameters for Tennis Dynamic Bayesian Network](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/tennis_dbn_parameters.png "Parameters for Tennis Dynamic Bayesian Network")
 
 In the reminder of this tutorial we build cluster graph for Tennis Network and learn its prior, emission and transition parameters.
 
@@ -215,8 +215,8 @@ Learn parameters of Tennis Network from samples ([source code](https://github.co
 	//Emission parameter - Array(0.0000, 1.0000, 0.0000, 1.0000, 0.0000, 1.0000, 0.9930, 0.0070, 0.9198, 0.0802, 0.8337, 0.1663, 0.9980, 0.0020, 0.9956, 0.0044, 0.9960, 0.0040)
 	tennisClusterGraph.getCluster(match1v2Time2Var.id).getFactor()
 	
-References
----------------
+## References
+
 1. Daphne Koller, Nir Friedman. Probabilistic Graphical Models, Principles and Techniques, 2009
 2. Automated Reasoning Group of Professor Adnan Darwiche at UCLA. SamIam: Sensitivity Analysis, Modelling, Inference and More, version 3.0
 3. Adnan Darwiche. Modeling and Reasoning with Bayesian Networks, 2009
