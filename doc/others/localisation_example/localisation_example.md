@@ -39,25 +39,25 @@ Dynamic localisation
 
 Probabilistic graphical model for dynamic robot localisation:
 
-![Dynamic localisation 1D](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/localisation_example/dynamic_localisation_1d.png "Dynamic localisation 1D")
+![Dynamic localisation 1D](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/others/localisation_example/dynamic_localisation_1d.png "Dynamic localisation 1D")
 
 Robot location at the time t0:
 
-![Prior prob](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/localisation_example/dynamic_prior_prob.png "Prior prob")
+![Prior prob](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/others/localisation_example/dynamic_prior_prob.png "Prior prob")
 
 Robot location at the time t1 given its location at the time t0:
 
-![Transition prob](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/localisation_example/dynamic_transition_prob.png "Transition prob")
+![Transition prob](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/others/localisation_example/dynamic_transition_prob.png "Transition prob")
 
 Measured robot position given its current location:
 
-![Emission prob](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/localisation_example/dynamic_emission_prob.png "Emission prob")
+![Emission prob](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/others/localisation_example/dynamic_emission_prob.png "Emission prob")
 
 Predicted robot location given observed position:
 
-![Posterior](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/localisation_example/dynamic_posterior.png "Posterior")
+![Posterior](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/others/localisation_example/dynamic_posterior.png "Posterior")
 
-![1D dynamic localisation](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/localisation_example/dynamic_localisation_gaussian.png "1D dynamic localisation")
+![1D dynamic localisation](https://raw.github.com/danielkorzekwa/bayes-scala/master/doc/others/localisation_example/dynamic_localisation_gaussian.png "1D dynamic localisation")
 
 * Scala code examples
  * [Kalman Filter](https://github.com/danielkorzekwa/bayes-scala/blob/master/src/test/scala/dk/bayes/math/gaussian/localisation1d/HMMLocalisationKalmanTest.scala)
