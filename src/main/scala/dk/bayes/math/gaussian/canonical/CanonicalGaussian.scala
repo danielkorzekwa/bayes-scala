@@ -70,7 +70,7 @@ object CanonicalGaussian {
   }
 
   private def denseMultSparse(a: DenseCanonicalGaussian, b: SparseCanonicalGaussian): DenseCanonicalGaussian = {
-
+    //@TODO converting to DenseMatrix is not needed anymore, check for performance improvements
     val newK = a.k + b.k.toDenseMatrix
     val newH = a.h + b.h.toDenseVector
     val newG = a.g + b.g
@@ -97,7 +97,7 @@ object CanonicalGaussian {
   }
 
   private def denseDivideSparse(a: DenseCanonicalGaussian, b: SparseCanonicalGaussian): DenseCanonicalGaussian = {
-
+    //@TODO converting to DenseMatrix is not needed anymore, check for performance improvements
     val newK = a.k - b.k.toDenseMatrix
     val newH = a.h - b.h.toDenseVector
     val newG = a.g - b.g

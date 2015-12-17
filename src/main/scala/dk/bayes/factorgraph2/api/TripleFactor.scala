@@ -26,6 +26,12 @@ trait TripleFactor[V1, V2, V3] {
   def getMsgV3(): Message[V3] = msgV3
   def updateMsgV3() = msgV3.set(calcNewMsgV3())
 
+  def updateMsg1V1V2() = {
+    val (newMsgV1,newMsgV2) = calcNewMsgV1V2()
+    msgV1.set(newMsgV1)
+    msgV2.set(newMsgV2)
+  }
+  
   /**
    * Definitions
    */
@@ -42,4 +48,5 @@ trait TripleFactor[V1, V2, V3] {
   def getInitialMsgV3(): V3
   def calcNewMsgV3(): V3
 
+  def calcNewMsgV1V2():(V1,V2)
 }

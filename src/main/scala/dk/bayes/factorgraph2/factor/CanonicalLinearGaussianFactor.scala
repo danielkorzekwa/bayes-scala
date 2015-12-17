@@ -43,7 +43,9 @@ case class CanonicalLinearGaussianFactor(v1: CanonicalGaussianVariable, v2: Cano
     msgV1New
   }
 
-  def calcNewMsgV2(): CanonicalGaussian = {
+  def calcNewMsgV2(): CanonicalGaussian =  calcNewMsgV2(a, b, v)
+
+  def calcNewMsgV2(a: DenseMatrix[Double], b: DenseVector[Double], v: DenseMatrix[Double]): CanonicalGaussian = {
     val v1 = this.getV1.get.asInstanceOf[DenseCanonicalGaussian]
     val msgV1 = this.getMsgV1.get.asInstanceOf[DenseCanonicalGaussian]
 
@@ -56,5 +58,4 @@ case class CanonicalLinearGaussianFactor(v1: CanonicalGaussianVariable, v2: Cano
 
     DenseCanonicalGaussian(msgV2New.m, msgV2New.v)
   }
-
 }
