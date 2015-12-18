@@ -8,6 +8,10 @@ import dk.bayes.dsl._
 import dk.bayes.factorgraph2.api.DoubleFactor
 import dk.bayes.factorgraph2.variable.CanonicalGaussianVariable
 import dk.bayes.factorgraph2.api.Variable
+import breeze.linalg.cholesky
+import dk.bayes.math.linear.invchol
+import breeze.linalg.inv
+import dk.bayes.math.gaussian.canonical.canonicalLinearGaussianMsgUp
 
 /**
  * Linear Conditional Gaussian p(t|x) = N(t|Ax+b,v)
@@ -35,15 +39,12 @@ case class CanonicalLinearGaussianFactor(v1: CanonicalGaussianVariable, v2: Cano
     val msgV2 = this.getMsgV2.get.asInstanceOf[DenseCanonicalGaussian]
     val v2MsgUp = v2 / msgV2
 
-    val linearGaussianCanon = DenseCanonicalGaussian(a, b, v)
-
-    val factorTimesMsg = linearGaussianCanon * v2MsgUp.extend(a.cols + a.rows, a.cols)
-    val msgV1New = factorTimesMsg.marginal((0 until a.cols): _*)
+    val msgV1New = canonicalLinearGaussianMsgUp(a, b, v, v2MsgUp)
 
     msgV1New
   }
 
-  def calcNewMsgV2(): CanonicalGaussian =  calcNewMsgV2(a, b, v)
+  def calcNewMsgV2(): CanonicalGaussian = calcNewMsgV2(a, b, v)
 
   def calcNewMsgV2(a: DenseMatrix[Double], b: DenseVector[Double], v: DenseMatrix[Double]): CanonicalGaussian = {
     val v1 = this.getV1.get.asInstanceOf[DenseCanonicalGaussian]
@@ -58,4 +59,5 @@ case class CanonicalLinearGaussianFactor(v1: CanonicalGaussianVariable, v2: Cano
 
     DenseCanonicalGaussian(msgV2New.m, msgV2New.v)
   }
+
 }

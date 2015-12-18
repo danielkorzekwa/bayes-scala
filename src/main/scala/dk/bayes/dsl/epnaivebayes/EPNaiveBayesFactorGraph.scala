@@ -18,6 +18,8 @@ import dk.bayes.math.numericops._
  */
 case class EPNaiveBayesFactorGraph[X](prior: SingleFactor[X], likelihoods: Seq[DoubleFactor[X, _]], paralllelMessagePassing: Boolean = false)(implicit val multOp: multOp[X], val divideOp: divideOp[X], val isIdentical: isIdentical[X]) extends LazyLogging {
 
+  private val priorMsgDown = prior.factorMsgDown()
+  
   private var msgsUp: Seq[X] = likelihoods.map(l => l.initFactorMsgUp)
   private var posterior = multOp(prior.factorMsgDown, multOp(msgsUp: _*))
 
@@ -56,7 +58,7 @@ case class EPNaiveBayesFactorGraph[X](prior: SingleFactor[X], likelihoods: Seq[D
         newMsgUp
     }
 
-    posterior = multOp(prior.factorMsgDown, multOp(msgsUp: _*))
+    posterior = multOp(priorMsgDown, multOp(msgsUp: _*))
 
   }
 

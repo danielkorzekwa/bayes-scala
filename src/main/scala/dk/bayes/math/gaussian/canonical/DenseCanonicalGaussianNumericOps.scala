@@ -17,7 +17,7 @@ trait DenseCanonicalGaussianNumericOps {
     def apply(a: DenseCanonicalGaussian*): DenseCanonicalGaussian = {
       a match {
         case Seq(a, b) => apply(a, b)
-        case _ => a.reduceLeft((total, b) => DenseCanonicalGaussianOps.*(total,b))
+        case _         => a.reduceLeft((total, b) => DenseCanonicalGaussianOps.*(total, b))
       }
     }
 
@@ -37,10 +37,11 @@ trait DenseCanonicalGaussianNumericOps {
 
   implicit val isIdentical = new isIdentical[DenseCanonicalGaussian] {
     def apply(x1: DenseCanonicalGaussian, x2: DenseCanonicalGaussian, tolerance: Double): Boolean = {
-      
-      val isMeanIdentical = dk.bayes.math.linear.isIdentical(x1.mean, x2.mean, tolerance)
-      val isVarIdentical = dk.bayes.math.linear.isIdentical(diag(x1.variance), diag(x2.variance), tolerance)
-      isMeanIdentical && isVarIdentical
+
+      val isKIdentical = dk.bayes.math.linear.isIdentical(diag(x1.k), diag(x2.k), tolerance)
+      val isHIdentical = dk.bayes.math.linear.isIdentical(x1.h, x2.h, tolerance)
+      isKIdentical && isHIdentical
+
     }
   }
 }
