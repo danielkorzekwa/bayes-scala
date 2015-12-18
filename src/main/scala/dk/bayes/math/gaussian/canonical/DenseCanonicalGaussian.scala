@@ -32,7 +32,7 @@ import dk.bayes.math.linear.invchol
  */
 case class DenseCanonicalGaussian(k: DenseMatrix[Double], h: DenseVector[Double], g: Double) extends CanonicalGaussian with dk.bayes.math.numericops.NumericOps[DenseCanonicalGaussian] {
   private lazy val kinv = {
-    
+
     if (k.size == 1 && k(0, 0) == 0) DenseMatrix(Double.PositiveInfinity) else invchol(cholesky(k).t)
   }
   lazy val mean = {
@@ -173,11 +173,11 @@ object DenseCanonicalGaussian extends DenseCanonicalGaussianNumericOps {
    * @param v Variance
    */
   def apply(m: DenseVector[Double], v: DenseMatrix[Double]): DenseCanonicalGaussian = {
-    
+
     val k = invchol(cholesky(v).t)
-    val h = k * m 
-    val g = -0.5 * (m.t * k * m) - log(pow(2d * Pi, m.size.toDouble / 2d)) - 0.5*logdet(v)._2
-   
+    val h = k * m
+    val g = -0.5 * (m.t * k * m) - log(pow(2d * Pi, m.size.toDouble / 2d)) - 0.5 * logdet(v)._2
+
     new DenseCanonicalGaussian(k, h, g)
   }
 
@@ -199,9 +199,11 @@ object DenseCanonicalGaussian extends DenseCanonicalGaussianNumericOps {
    */
   def apply(a: DenseMatrix[Double], b: DenseVector[Double], v: DenseMatrix[Double]): DenseCanonicalGaussian = {
 
-    val vInv = invchol(cholesky(v).t)
+    val linv = inv(cholesky(v).t)
+    val vInv = linv * linv.t
+    val atlinv = a.t * linv
 
-    val k00 = a.t * vInv * a
+    val k00 = atlinv * atlinv.t
     val k01 = (a.t * (-1d)) * vInv
     val k10 = (vInv * (-1d)) * a
     val k11 = vInv

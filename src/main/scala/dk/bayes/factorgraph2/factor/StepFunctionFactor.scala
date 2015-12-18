@@ -12,6 +12,7 @@ import dk.bayes.math.gaussian.Gaussian
 import dk.bayes.math.gaussian.canonical.CanonicalGaussian
 import dk.bayes.math.gaussian.canonical.DenseCanonicalGaussian
 import dk.bayes.math.gaussian.canonical.SparseCanonicalGaussian
+import breeze.numerics._
 
 case class StepFunctionFactor(v1: CanonicalGaussianVariable, v2: BernVariable, v1Size: Int, v1Index: Int, v: Double) extends DoubleFactor[CanonicalGaussian, Double] {
 
@@ -24,7 +25,7 @@ case class StepFunctionFactor(v1: CanonicalGaussianVariable, v2: BernVariable, v
 
     val v1 = this.getV1.get.asInstanceOf[DenseCanonicalGaussian]
     val msgV1 = this.getMsgV1.get.asInstanceOf[SparseCanonicalGaussian]
-    val exceeds = v2.k==1
+    val exceeds = v2.k == 1
 
     val pointVarMsgUp = new DenseCanonicalGaussian(DenseMatrix(msgV1.k(v1Index, v1Index)), DenseVector(msgV1.h(v1Index)), msgV1.g)
     val pointFactorMsgDown = (v1.marginal(v1Index) / (pointVarMsgUp)).toGaussian + Gaussian(0, v)
@@ -44,7 +45,18 @@ case class StepFunctionFactor(v1: CanonicalGaussianVariable, v2: BernVariable, v
 
   def getInitialMsgV2(): Double = Double.NaN
 
-  def calcNewMsgV2(): Double = ???
+  def calcNewMsgV2(): Double = {
+
+    val v1 = this.getV1.get.asInstanceOf[DenseCanonicalGaussian]
+    val msgV1 = this.getMsgV1.get.asInstanceOf[SparseCanonicalGaussian]
+    val exceeds = v2.k == 1
+
+    val pointVarMsgUp = new DenseCanonicalGaussian(DenseMatrix(msgV1.k(v1Index, v1Index)), DenseVector(msgV1.h(v1Index)), msgV1.g)
+    val pointFactorMsgDown = (v1.marginal(v1Index) / (pointVarMsgUp)).toGaussian + Gaussian(0, v)
+
+    val newMsgV2 = Gaussian.stdCdf(pointFactorMsgDown.m / sqrt(pointFactorMsgDown.v))
+    newMsgV2
+  }
 
   private def createZeroFactorMsgUp(n: Int, g: Double): SparseCanonicalGaussian = {
     val newFactorMsgUpK = CSCMatrix.zeros[Double](n, n)
