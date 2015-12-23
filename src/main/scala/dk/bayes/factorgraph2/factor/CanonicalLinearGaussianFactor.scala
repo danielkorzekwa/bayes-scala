@@ -11,7 +11,6 @@ import dk.bayes.factorgraph2.api.Variable
 import breeze.linalg.cholesky
 import dk.bayes.math.linear.invchol
 import breeze.linalg.inv
-import dk.bayes.math.gaussian.canonical.canonicalLinearGaussianMsgUp
 import dk.bayes.math.gaussian.canonical.CanonicalLinearGaussianMsgUpFactory
 
 /**
