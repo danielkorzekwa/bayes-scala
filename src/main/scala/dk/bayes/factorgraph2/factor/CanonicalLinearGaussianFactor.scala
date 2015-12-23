@@ -11,15 +11,16 @@ import dk.bayes.factorgraph2.api.Variable
 import breeze.linalg.cholesky
 import dk.bayes.math.linear.invchol
 import breeze.linalg.inv
-import dk.bayes.math.gaussian.canonical.CanonicalLinearGaussianMsgUpFactory
+import dk.bayes.math.gaussian.canonical.CanonicalLinearGaussianMsgFactory
+import dk.bayes.math.gaussian.canonical.CanonicalLinearGaussianMsgFactory
 
 /**
  * Linear Conditional Gaussian p(t|x) = N(t|Ax+b,v)
  */
 case class CanonicalLinearGaussianFactor(v1: CanonicalGaussianVariable, v2: CanonicalGaussianVariable, a: DenseMatrix[Double], b: DenseVector[Double], v: DenseMatrix[Double]) extends DoubleFactor[CanonicalGaussian, CanonicalGaussian] {
 
-  private val canonicalLinearGaussianMsgUpFactory = CanonicalLinearGaussianMsgUpFactory(a,b,v)
-  
+  private val canonicalLinearGaussianMsgUpFactory = CanonicalLinearGaussianMsgFactory(a, b, v)
+
   def getV1(): Variable[CanonicalGaussian] = v1
   def getV2(): Variable[CanonicalGaussian] = v2
 
@@ -46,20 +47,19 @@ case class CanonicalLinearGaussianFactor(v1: CanonicalGaussianVariable, v2: Cano
     msgV1New
   }
 
-  def calcNewMsgV2(): CanonicalGaussian = calcNewMsgV2(a, b, v)
+  def calcNewMsgV2(): CanonicalGaussian = calcNewMsgV2(canonicalLinearGaussianMsgUpFactory)
 
-  def calcNewMsgV2(a: DenseMatrix[Double], b: DenseVector[Double], v: DenseMatrix[Double]): CanonicalGaussian = {
+  def calcNewMsgV2(a: DenseMatrix[Double], b: DenseVector[Double], v: DenseMatrix[Double]): CanonicalGaussian = calcNewMsgV2(CanonicalLinearGaussianMsgFactory(a, b, v))
+
+  def calcNewMsgV2(canonicalLinearGaussianMsgUpFactory: CanonicalLinearGaussianMsgFactory): CanonicalGaussian = {
     val v1 = this.getV1.get.asInstanceOf[DenseCanonicalGaussian]
     val msgV1 = this.getMsgV1.get.asInstanceOf[DenseCanonicalGaussian]
 
     val v1MsgDown = v1 / msgV1
 
-    val v1MsgDownVariable = dk.bayes.dsl.variable.gaussian.multivariate.MultivariateGaussian(v1MsgDown.mean, v1MsgDown.variance)
+    val msgV2 = canonicalLinearGaussianMsgUpFactory.msgDown(v1MsgDown)
 
-    val linearGaussianVariable = dk.bayes.dsl.variable.Gaussian(a, v1MsgDownVariable, b, v)
-    val msgV2New = infer(linearGaussianVariable)
-
-    DenseCanonicalGaussian(msgV2New.m, msgV2New.v)
+    msgV2
   }
 
 }
