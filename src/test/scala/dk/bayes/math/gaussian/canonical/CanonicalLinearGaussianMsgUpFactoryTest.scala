@@ -16,7 +16,7 @@ class canonicalLinearGaussianMsgUpTest {
 
   @Test def test = {
 
-    val marginal = canonicalLinearGaussianMsgUp(a, b, v, msgUp)
+    val marginal = CanonicalLinearGaussianMsgUpFactory(a, b, v).msgUp(msgUp)
 
     assertTrue(isIdentical(DenseMatrix((0.004975, 0.04975, 0.01990), (0.04975, 0.49751, 0.19900), (0.01990, 0.19900, 0.07960)), marginal.k, 0.0001))
     assertTrue(isIdentical(DenseVector(0.02985074626865636, 0.29850746268656536, 0.11940298507462543), marginal.h, 0.0001))

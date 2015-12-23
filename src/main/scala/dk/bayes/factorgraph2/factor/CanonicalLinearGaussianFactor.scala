@@ -12,12 +12,15 @@ import breeze.linalg.cholesky
 import dk.bayes.math.linear.invchol
 import breeze.linalg.inv
 import dk.bayes.math.gaussian.canonical.canonicalLinearGaussianMsgUp
+import dk.bayes.math.gaussian.canonical.CanonicalLinearGaussianMsgUpFactory
 
 /**
  * Linear Conditional Gaussian p(t|x) = N(t|Ax+b,v)
  */
 case class CanonicalLinearGaussianFactor(v1: CanonicalGaussianVariable, v2: CanonicalGaussianVariable, a: DenseMatrix[Double], b: DenseVector[Double], v: DenseMatrix[Double]) extends DoubleFactor[CanonicalGaussian, CanonicalGaussian] {
 
+  private val canonicalLinearGaussianMsgUpFactory = CanonicalLinearGaussianMsgUpFactory(a,b,v)
+  
   def getV1(): Variable[CanonicalGaussian] = v1
   def getV2(): Variable[CanonicalGaussian] = v2
 
@@ -39,7 +42,7 @@ case class CanonicalLinearGaussianFactor(v1: CanonicalGaussianVariable, v2: Cano
     val msgV2 = this.getMsgV2.get.asInstanceOf[DenseCanonicalGaussian]
     val v2MsgUp = v2 / msgV2
 
-    val msgV1New = canonicalLinearGaussianMsgUp(a, b, v, v2MsgUp)
+    val msgV1New = canonicalLinearGaussianMsgUpFactory.msgUp(v2MsgUp)
 
     msgV1New
   }

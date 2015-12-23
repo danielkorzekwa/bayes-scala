@@ -11,26 +11,27 @@ import breeze.linalg.DenseVector
  * Following up:
  * - Bishop's book chapter 2.3 The Gaussian Distribution
  * - Daphne Koller's book on Probabilistic Graphical Models, chapter on Canonical Gaussian
+ *
+ *  @param a,b,v p(y|x) = N(ax+b,v)
  */
-object canonicalLinearGaussianMsgUp {
+case class CanonicalLinearGaussianMsgUpFactory(a: DenseMatrix[Double], b: DenseVector[Double], v: DenseMatrix[Double]) {
+
+  private val linv = inv(cholesky(v).t)
+  private val vInv = linv * linv.t
+
+  private val k00linv = a.t * linv
+  private val k00 = k00linv * k00linv.t // a.t * vInv * a
+  private val k01 = (a.t * (-1d)) * vInv
+  private val k10 = (vInv * (-1d)) * a
+  private val k11 = vInv
+
+  private val h00 = (-1d * a.t) * vInv * b
+  private val h01 = vInv * b
 
   /**
-   * @param a,b,v p(y|x) = N(ax+b,v)
    * @param y p(y)
    */
-  def apply(a: DenseMatrix[Double], b: DenseVector[Double], v: DenseMatrix[Double], y: DenseCanonicalGaussian): DenseCanonicalGaussian = {
-
-    val linv = inv(cholesky(v).t)
-    val vInv = linv * linv.t
-
-    val k00linv = a.t * linv
-    val k00 = k00linv * k00linv.t // a.t * vInv * a
-    val k01 = (a.t * (-1d)) * vInv
-    val k10 = (vInv * (-1d)) * a
-    val k11 = vInv
-
-    val h00 = (-1d * a.t) * vInv * b
-    val h01 = vInv * b
+  def msgUp(y: DenseCanonicalGaussian): DenseCanonicalGaussian = {
 
     val k11sum = k11 + y.k
     val k11sumLInv = inv(cholesky(k11sum).t)
