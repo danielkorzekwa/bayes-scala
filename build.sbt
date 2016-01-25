@@ -16,7 +16,7 @@ lazy val root = (project in file(".")).
     libraryDependencies ++= Seq(
       "org.apache.commons" % "commons-math3" % "3.3",
       "com.typesafe.scala-logging" %% "scala-logging-slf4j" % "2.1.2",
-      "org.scalanlp" %% "breeze" % "0.12-SNAPSHOT",
+      "org.scalanlp" %% "breeze" % "0.12",
       // test scoped
       "org.slf4j" % "slf4j-log4j12" % "1.7.2" % Test,
       "com.novocode" % "junit-interface" % "0.11" % Test
