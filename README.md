@@ -23,7 +23,7 @@ Links
 SBT configuration: 
 
 ```scala
-libraryDependencies += "com.github.danielkorzekwa" %% "bayes-scala" % "0.5"  
+libraryDependencies += "com.github.danielkorzekwa" %% "bayes-scala" % "0.6"  
 ```
 
 Maven configuration:
@@ -32,7 +32,7 @@ Maven configuration:
   <dependencies>
     <dependency>
       <groupId>com.github.danielkorzekwa</groupId>
-      <artifactId>bayes-scala_2.10</artifactId> //or bayes-scala_2.11
+      <artifactId>bayes-scala_2.11</artifactId>
       <version>0.5</version>
     </dependency>
   <dependencies>
@@ -45,7 +45,7 @@ Snapshot artifact is built by a Travis CI and deployed to Sonatype OSS Snapshots
 With sbt build tool, add to build.sbt config file:
 
 ```scala
-libraryDependencies += "com.github.danielkorzekwa" %% "bayes-scala" % "0.6-SNAPSHOT"  
+libraryDependencies += "com.github.danielkorzekwa" %% "bayes-scala" % "0.7-SNAPSHOT"  
 
 resolvers += Resolver.sonatypeRepo("snapshots")
 ```
@@ -65,7 +65,7 @@ With maven build tool, add to pom.xml config file:
     <dependency>
       <groupId>com.github.danielkorzekwa</groupId>
       <artifactId>bayes-scala_2.11</artifactId>
-      <version>0.6-SNAPSHOT</version>
+      <version>0.7-SNAPSHOT</version>
     </dependency>
   <dependencies>
 ```
