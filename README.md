@@ -11,9 +11,10 @@ It is a Scala library for Bayesian Networks and Probabilistic Graphical Models. 
 * [Factor graph 2] - Different (newer) implemenation of factor graph.
 * [Cluster graph] - Supports discrete variables only.
 
+The [bayes-scala-gp] library for Gaussian Processes is built on top of bayes-scala.
+
 Links
 * [Some code examples for moment matching, linear gaussian, linear dynamical systems, EP, etc.]
-* The [bayes-scala-gp] library for Gaussian Processes is built on top of bayes-scala.
 * [Can you please clarify for us: what is the future of bayes-scala?](https://github.com/danielkorzekwa/bayes-scala/blob/master/doc/future_of_bayes_scala.md) 
 
 ## How to use it from sbt and maven?
