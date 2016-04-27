@@ -23,7 +23,7 @@ pomExtra := (
   </licenses>
   <scm>
     <url>git@github.com:danielkorzekwa/bayes-scala.git</url>
-    <connection>scm:git:git@github.com:danielkorzekwa/bayes-scala.git.git</connection>
+    <connection>scm:git:git@github.com:danielkorzekwa/bayes-scala.git</connection>
   </scm>
   <developers>
     <developer>
