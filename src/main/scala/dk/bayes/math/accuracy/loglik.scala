@@ -15,6 +15,16 @@ object loglik {
         else if (actual == 0) log1p(-expected)
         else throw new IllegalArgumentException("Actual value must be 0 or 1:" + actual)
     }
-    loglik.sum
+    sum(loglik)
+  }
+  
+   def apply(expected: DenseMatrix[Double], actual: DenseVector[Double]): Double = {
+    require(expected.rows == actual.size)
+
+     val loglik = actual.mapPairs{(index,actual) => 
+      log(expected(index,actual.toInt))
+    }
+  
+   sum( loglik)
   }
 }
