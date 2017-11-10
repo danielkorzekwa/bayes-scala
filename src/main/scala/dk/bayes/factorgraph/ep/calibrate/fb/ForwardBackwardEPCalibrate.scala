@@ -2,7 +2,7 @@ package dk.bayes.factorgraph.ep.calibrate.fb
 
 import dk.bayes.factorgraph.FactorGraph
 import java.util.concurrent.atomic.AtomicLong
-import com.typesafe.scalalogging.slf4j.Logger
+import com.typesafe.scalalogging.Logger
 import org.slf4j.LoggerFactory
 import dk.bayes.factorgraph.factor.api.Factor
 import dk.bayes.factorgraph.factor.api.TripleFactor

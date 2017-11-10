@@ -1,6 +1,6 @@
 package dk.bayes.dsl.epnaivebayes
 
-import com.typesafe.scalalogging.slf4j.LazyLogging
+import com.typesafe.scalalogging.LazyLogging
 import scala.annotation.tailrec
 import dk.bayes.dsl.factor.DoubleFactor
 import dk.bayes.dsl.factor.SingleFactor

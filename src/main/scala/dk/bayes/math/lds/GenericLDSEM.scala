@@ -1,6 +1,6 @@
 package dk.bayes.math.lds
 
-import com.typesafe.scalalogging.slf4j.LazyLogging
+import com.typesafe.scalalogging.LazyLogging
 import dk.bayes.factorgraph.factor.GaussianFactor
 import dk.bayes.factorgraph.GenericFactorGraph
 import java.util.concurrent.atomic.AtomicInteger

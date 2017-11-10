@@ -3,7 +3,8 @@ lazy val root = (project in file(".")).
     name := "bayes-scala",
     organization := "com.github.danielkorzekwa",
     version := "0.7-SNAPSHOT",
-    scalaVersion := "2.11.6",
+    scalaVersion := "2.12.4",
+    crossScalaVersions := Seq("2.12.4", "2.11.11"),
     scalacOptions ++= Seq(
       "-feature",
       "-deprecation",
@@ -12,11 +13,12 @@ lazy val root = (project in file(".")).
       "-Xfuture"
       //"-Ywarn-unused-import"     // 2.11 only
     ),
-    ScoverageSbtPlugin.ScoverageKeys.coverageHighlighting := false, 
+    //coverageEnabled := true,
+    coverageHighlighting := false,
     libraryDependencies ++= Seq(
-      "org.apache.commons" % "commons-math3" % "3.3",
-      "com.typesafe.scala-logging" %% "scala-logging-slf4j" % "2.1.2",
-      "org.scalanlp" %% "breeze" % "0.12",
+      "org.apache.commons" % "commons-math3" % "3.6.1",
+      "com.typesafe.scala-logging" %% "scala-logging" % "3.7.2",
+      "org.scalanlp" %% "breeze" % "0.13.2",
       // test scoped
       "org.slf4j" % "slf4j-log4j12" % "1.7.2" % Test,
       "com.novocode" % "junit-interface" % "0.11" % Test

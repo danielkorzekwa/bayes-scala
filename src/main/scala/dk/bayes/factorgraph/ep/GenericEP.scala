@@ -1,7 +1,7 @@
 package dk.bayes.factorgraph.ep
 
 import org.slf4j.LoggerFactory
-import com.typesafe.scalalogging.slf4j.Logger
+import com.typesafe.scalalogging.Logger
 import dk.bayes.factorgraph.factor.api.Factor
 import dk.bayes.factorgraph.FactorGraph
 import dk.bayes.factorgraph.FactorNode
